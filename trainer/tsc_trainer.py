@@ -109,23 +109,22 @@ class TSCTrainer(BaseTrainer):
 
         self.total_decision_num = 0
         
+        self.forward_models = []
+        self.inverse_models = []
+
+        self.total_decision_num = 0
+        self.mean_uncertainty = 0
+        # Dictionary to store the last two uncertainties for each agent
+        self.last_two_uncertainties = {idx: [] for idx in range(len(self.agents_sim))}
+        self.avg_agent_uncertainties = [0 for i in range(len(self.agents_sim))]
+
+        self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+
+        # Considers number of agents in both input and output dimension calculations to allow for multi-agent setting
+        num_agents = len(self.agents_real)
+        
         # Initialize GAT models
         if self.gat == True:
-
-            self.forward_models = []
-            self.inverse_models = []
-
-            self.total_decision_num = 0
-            self.mean_uncertainty = 0
-            # Dictionary to store the last two uncertainties for each agent
-            self.last_two_uncertainties = {idx: [] for idx in range(len(self.agents_sim))}
-            self.avg_agent_uncertainties = [0 for i in range(len(self.agents_sim))]
-
-            self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-
-            # Considers number of agents in both input and output dimension calculations to allow for multi-agent setting
-            num_agents = len(self.agents_real)
-            
             # Initialize centralized GAT models
             if self.gattype == "centralized":
                 self.last_two_central_uncertainties = []
