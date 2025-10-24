@@ -69,8 +69,11 @@ class Intersection(object):
 
 
 
-        self.lane_links = world.eng.trafficlight.getControlledLinks(self.id)
-        for link in self.lane_links:
+        self.lanelinks = world.eng.trafficlight.getControlledLinks(self.id)
+        for link in self.lanelinks:
+            # skip if empty link
+            if not link:
+                continue
             link = link[0]
             if link[0][:-2] not in self.road_lane_mapping.keys():
                 self.road_lane_mapping.update({link[0][:-2]: []})  # assume less than 9 lanes in each road
@@ -106,7 +109,18 @@ class Intersection(object):
             tmp_startane = []
             for n, i in enumerate(p.state):
                 if i == 'G' or i == 's':
-                    links = self.world.eng.trafficlight.getControlledLinks(self.id)[n][0]
+                    # skip if empty link
+                    links = self.world.eng.trafficlight.getControlledLinks(self.id)
+                    
+                    # links = links[n]
+                    if n >= len(links):
+                        break
+                    else:
+                        links = links[n]
+                                            
+                    if not links:
+                        continue
+                    links = links[0]
                     tmp_lanelinks.append([links[0], links[1]])
                     if links[0] not in tmp_startane:
                         tmp_startane.append(links[0])
@@ -116,11 +130,11 @@ class Intersection(object):
             self.phase_available_lanelinks.append(tmp_lanelinks)
 
         self.full_phases, self.yellow_dict = self.create_yellows(self.green_phases, self.yellow_phase_time, self.interface_flag)
-        programs = self.eng.trafficlight.getAllProgramLogics(self.id)
-        logic = programs[0]
-        logic.type = 0
-        logic.phases = self.full_phases
+        # programs = self.eng.trafficlight.getAllProgramLogics(self.id)
+        tl_id = self.id + "_rl"
+        logic = self.eng.trafficlight.Logic(tl_id, 0, 0, self.full_phases)
         self.eng.trafficlight.setProgramLogic(self.id, logic)
+        self.eng.trafficlight.setProgram(self.id, tl_id)
 
         # dictionary of remembered features
         self.waiting_times = dict()
@@ -249,7 +263,7 @@ class Intersection(object):
         # TODO: check if change state, yellow phase must less than minimum of action time
         # test yellow finished first
         self.virtual_phase = action
-        if self.current_phase_time == self.yellow_phase_time:
+        if self.current_phase_time >= self.yellow_phase_time:
             self._change_phase(action)
         else:
             if action != self.get_current_phase() and self.current_phase_time > self.yellow_phase_time:
@@ -385,19 +399,17 @@ class World(object):
             raise Exception('NOT IMPORTED YET')
         with open(sumo_config) as f:
             sumo_dict = json.load(f)
-        if sumo_dict['gui'] == True:
-            sumo_cmd = [sumolib.checkBinary('sumo-gui'), '--quit-on-end']
+        if sumo_dict['gui'] == "True" or sumo_dict['gui'] == True:
+            sumo_cmd = [sumolib.checkBinary('sumo-gui')]
         else:
             sumo_cmd = [sumolib.checkBinary('sumo')]
         if not sumo_dict.get('combined_file'):
             sumo_cmd += ['-n', os.path.join(sumo_dict['dir'], sumo_dict['roadnetFile']),
                          '-r', os.path.join(sumo_dict['dir'], sumo_dict['flowFile']),
-                         '--no-warnings', str(sumo_dict['no_warning'])] #'--full-output', '/test/out.xml'
+                         '--no-warnings', str(sumo_dict['no_warning'])]
         else:
             sumo_cmd += ['-c', os.path.join(sumo_dict['dir'], sumo_dict['combined_file']),
                          '--no-warnings', str(sumo_dict['no_warning'])]
-
-
         self.net = os.path.join(sumo_dict['dir'], sumo_dict['roadnetFile'])
         self.route = os.path.join(sumo_dict['dir'], sumo_dict['flowFile'])
         self.sumo_cmd = sumo_cmd
@@ -421,7 +433,7 @@ class World(object):
         self.interval = sumo_dict['interval']
         self.step_ratio = 1  # TODO: register in Registry later
         self.step_length = 1  # should be 1 in our setting
-        self.max_distance = 1000 # TODO: set in registry
+        self.max_distance = 10000 # TODO: set in registry
         # get all intersections (dict here)
         self.intersection_ids = self.eng.trafficlight.getIDList()
         # prepare phase information for each intersections
@@ -476,6 +488,7 @@ class World(object):
             "time": self.get_current_time,
             "vehicle_distance": None,
             "pressure": self.get_pressure,
+            "lane_pressure": self.get_lane_pressure,
             "lane_waiting_time_count": self.get_lane_waiting_time_count,
             "lane_delay": self.get_lane_delay,
             "real_delay": self.get_real_delay,
@@ -1008,5 +1021,23 @@ class World(object):
         avg_delay = avg_delay / count
         return avg_delay
 
+    def get_lane_pressure(self):
+        '''
+        get_lane_pressure
+        Get pressure of each lane in an intersection. 
+        Pressure of each lane equals to number of vehicles that in the in_lane minus number of vehicles that in out_lane.
+        
+        :param: None
+        :return pressures: pressure of each lane
+        '''
+        lvc = self.get_lane_vehicle_count()
+        pressures = {}
+        pressures = {x:0 for x in self.in_lanes}
+        for inter_obj in self.intersections:
+            for lanelink in inter_obj.lanelinks:
+                start, end = lanelink[0][0], lanelink[0][1]
+                pressures[start] += lvc[start]
+                pressures[start] -= lvc[end]
+        return pressures
 
 

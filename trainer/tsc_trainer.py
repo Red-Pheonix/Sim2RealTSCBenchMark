@@ -1333,3 +1333,5 @@ class TSCTrainer(BaseTrainer):
         log_handle.write(res + "\n")
         log_handle.close()
 
+    def test(self):
+        self.logger.info("Test function not implemented")
