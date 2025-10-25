@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <input>
+        <net-file value="tempe_1x1.net.xml"/>
+        <route-files value="tempe_1x1.rou.xml"/>
+    </input>
+    <time>
+        <begin value="27000"/>
+        <end value="34200"/>
+        <step-length value="1"/>
+    </time>
+
+    <!-- <processing>
+        <time-to-teleport value="0" />
+        <default.departlane value="random"/>
+        <lanechange.duration value="5"/>
+    </processing>
+
+    <random_number>
+        <seed value="23423"/>
+    </random_number> -->
+
+</configuration>
