@@ -29,7 +29,7 @@ class LaneVehicleGenerator(BaseGenerator):
         if in_only:
             roads = I.in_roads
         else:
-            roads = I.roads
+            roads = I.in_roads + I.out_roads
 
         # ---------------------------------------------------------------------
         # # resort roads order to NESW
@@ -101,6 +101,8 @@ class LaneVehicleGenerator(BaseGenerator):
         elif isinstance(world, world_cityflow.World):
             for road in roads:
                 from_zero = (road["startIntersection"] == I.id) if self.world.RIGHT else (road["endIntersection"] == I.id)
+                # hacky fix for now
+                from_zero = False
                 self.lanes.append([road["id"] + "_" + str(i) for i in range(len(road["lanes"]))[::(1 if from_zero else -1)]])
                 self.roads.extend(road['id'] for _ in range(len(road["lanes"])))
                 self.directions.extend(self.I._get_direction(road, False) for _ in range(len(road["lanes"])))

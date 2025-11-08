@@ -12,6 +12,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.nn.utils import clip_grad_norm_
 from generator import LaneVehicleGenerator, IntersectionPhaseGenerator, IntersectionVehicleGenerator
+import logging
 
 
 @Registry.register_model('presslight')
@@ -65,7 +66,22 @@ class PressLightAgent(RLAgent):
                                        lr=self.learning_rate,
                                        alpha=0.9, centered=False, eps=1e-7)
 
-        self.neighbors = 0
+        # self.neighbors = 0
+        # if hasattr(self.world.eng, "__module__"):
+        #     if self.world.eng.__module__ == "cityflow":
+        #         world_name = "cityflow"
+        # else:
+        #     world_name = "sumo"
+        
+        # self.logger = logging.getLogger(f"presslight_{inter_id}")
+        # self.logger.setLevel(logging.INFO)
+        # self.logger.propagate = False
+        # log_path = os.path.join("logs", f"presslight_{world_name}_{inter_id}.log")
+        # handler = logging.FileHandler(log_path, mode="w")
+        # formatter = logging.Formatter("%(asctime)s - %(message)s")
+        # handler.setFormatter(formatter)
+        # self.logger.addHandler(handler)
+        # print(f"Intersection: {inter_id} Input: {self.ob_length}, Ob Length: {self.ob_generator.ob_length}, Output: {self.action_space.n}")
 
     def __repr__(self):
         return self.model.__repr__()
@@ -102,6 +118,7 @@ class PressLightAgent(RLAgent):
         x_obs = []
         x_obs.append(self.ob_generator.generate())
         x_obs = np.array(x_obs, dtype=np.float32)
+        # self.logger.info(f"Observation: {x_obs[0]}")
         return x_obs #(1,24)
     
     def get_reward(self):
@@ -153,7 +170,9 @@ class PressLightAgent(RLAgent):
         observation = torch.tensor(feature, dtype=torch.float32)
         actions = self.model(observation, train=False)
         actions = actions.clone().detach().numpy()
-        return np.argmax(actions, axis=1)
+        action = np.argmax(actions, axis=1)        
+        # self.logger.info(f"Action: {action}")
+        return action
 
     def sample(self):
         '''
@@ -264,29 +283,38 @@ class PressLightAgent(RLAgent):
         self.target_model.load_state_dict(weights)
 
     def load_model(self, e, pretrained=False, network="cityflow1x3"):
-        if pretrained:
-            project_dir = os.getcwd()  # Get current project directory
-            network_dir = "1x3" if network == "cityflow1x3" else "4x4"
-            pretrained_dir = os.path.join(project_dir, "pretrained", network_dir)
+        # if pretrained:
+        #     project_dir = os.getcwd()  # Get current project directory
+        #     network_dir = "1x3" if network == "cityflow1x3" else "4x4"
+        #     pretrained_dir = os.path.join(project_dir, "pretrained", network_dir)
         
-            if not os.path.exists(pretrained_dir):
-                raise FileNotFoundError(f"Pretrained directory {network_dir} not found in {project_dir}/pretrained")
+        #     if not os.path.exists(pretrained_dir):
+        #         raise FileNotFoundError(f"Pretrained directory {network_dir} not found in {project_dir}/pretrained")
         
-            # Iterate over files in the directory
-            matching_file = None
-            for file_name in os.listdir(pretrained_dir):
-                if file_name.endswith(f"_{self.rank}.pt"):  # Check if filename ends with _rank.pt
-                    matching_file = os.path.join(pretrained_dir, file_name)
-                    break  # Stop at the first match
+        #     # Iterate over files in the directory
+        #     matching_file = None
+        #     for file_name in os.listdir(pretrained_dir):
+        #         if file_name.endswith(f"_{self.rank}.pt"):  # Check if filename ends with _rank.pt
+        #             matching_file = os.path.join(pretrained_dir, file_name)
+        #             break  # Stop at the first match
         
-            if matching_file:
-                model_name = matching_file
-            else:
-                raise FileNotFoundError(f"No model file found for rank {self.rank} in {pretrained_dir}")
-        else:
-            model_name = os.path.join(
-                Registry.mapping['logger_mapping']['path'].path, 'model', f'{e}_{self.rank}.pt')
-            
+        #     if matching_file:
+        #         model_name = matching_file
+        #     else:
+        #         raise FileNotFoundError(f"No model file found for rank {self.rank} in {pretrained_dir}")
+        # else:
+        #     model_name = os.path.join(
+        #         Registry.mapping['logger_mapping']['path'].path, 'model', f'{e}_{self.rank}.pt')
+        # if pretrained:
+        #     model_name = "pretrained/cityflow_tempe_1x1/100_0.pt"
+        # else:
+        #     model_name = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model', f'{e}_{self.rank}.pt')
+        
+        # model_name = "pretrained/cityflow_tempe_1x1/100_0.pt"
+        # model_name = "pretrained/cityflow_tempe_1x1_2/100_0.pt"
+        # model_name = "pretrained/sumo_tempe_1x1/100_0.pt"
+        model_name = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model', f'{e}_{self.rank}.pt')
+        
         self.model = self._build_model()
         self.model.load_state_dict(torch.load(model_name, weights_only=True))
         self.target_model = self._build_model()

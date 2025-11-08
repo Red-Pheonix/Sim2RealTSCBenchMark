@@ -143,9 +143,9 @@ class TSCTrainer(BaseTrainer):
                 # Single state and action for forward model and single states for inverse model input, identical to vanilla GAT
                 for i in range(num_agents):
                     self.forward_model = NN_predictor(self.logger,
-                                                    (1, self.agents_real[0].ob_generator.ob_length), (1, self.agents_real[0].action_space.n),
-                                                    self.agents_real[0].ob_generator.ob_length, self.device, gat_path, 'collected/ereal_train_full.pkl')
-                    self.inverse_model = UNCERTAINTY_predictor(self.logger, (1, self.agents_real[0].ob_generator.ob_length), 0, 0, (1, self.agents_real[0].ob_generator.ob_length), self.agents_real[0].action_space.n, self.device, gat_path, 'collected/esim_train_full.pkl', backward=True, history=1, mode='dec')
+                                                    (1, self.agents_real[i].ob_generator.ob_length), (1, self.agents_real[i].action_space.n),
+                                                    self.agents_real[i].ob_generator.ob_length, self.device, gat_path, 'collected/ereal_train_full.pkl')
+                    self.inverse_model = UNCERTAINTY_predictor(self.logger, (1, self.agents_real[i].ob_generator.ob_length), 0, 0, (1, self.agents_real[i].ob_generator.ob_length), self.agents_real[i].action_space.n, self.device, gat_path, 'collected/esim_train_full.pkl', backward=True, history=1, mode='dec')
                     
                     self.forward_models.append(self.forward_model)
                     self.inverse_models.append(self.inverse_model)
@@ -541,7 +541,8 @@ class TSCTrainer(BaseTrainer):
                         elif self.gattype == "decentralized":
                             for idx, ag in enumerate(self.agents_sim):
                                 individual_state = last_obs[idx]
-                                individual_action = idx2onehot(np.array([actions[idx]]), 8)
+                                action_dim = ag.action_space.n
+                                individual_action = idx2onehot(np.array([actions[idx]]), action_dim)
 
                                 
                                 individual_state = torch.from_numpy(individual_state).float().to(self.device).unsqueeze(0)
@@ -556,13 +557,13 @@ class TSCTrainer(BaseTrainer):
                                 if self.uncertainty_setting == True:
                                     agent_uncertainty_sums[idx] += uncertainty.item()
                                     if uncertainty < self.avg_agent_uncertainties[idx]:
-                                        actions[idx] = torch.argmax(grounded_action.view(1, 8), dim=1).cpu().item()
+                                        actions[idx] = torch.argmax(grounded_action.view(1, action_dim), dim=1).cpu().item()
                                         
                                         grounded_actions[idx] = actions[idx]
                                         grounded_action_count += 1
                                         ga_by_agent[idx] += 1
                                 else:
-                                    actions[idx] = torch.argmax(grounded_action.view(1, 8), dim=1).cpu().item()
+                                    actions[idx] = torch.argmax(grounded_action.view(1, action_dim), dim=1).cpu().item()
                                     
                                     grounded_actions[idx] = actions[idx]
                                     grounded_action_count += 1
@@ -1003,10 +1004,12 @@ class TSCTrainer(BaseTrainer):
                     
                 elif self.gattype == "decentralized":
                     # Load and split the real and sim data to prepare for forward / inverse model training
-
+                    # get action
+                    action_dims = [model.action_dim[-1] for model in self.forward_models]
+                    
                     # Forward data split using real data
                     load_and_split_forward_data("collected/ereal_train.pkl", "collected/ereal_train_full", "collected/ereal_test_full",
-                                       8, 0.2, 42, "decentralized", len(self.agents_real))
+                                       action_dims, 0.2, 42, "decentralized", len(self.agents_real))
 
                     # Inverse data split using sim data
                     load_and_split_inverse_data("collected/esim_train.pkl", "collected/esim_train_full", "collected/esim_test_full",

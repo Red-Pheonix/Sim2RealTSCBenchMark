@@ -103,10 +103,10 @@ class TSCTrainer2(BaseTrainer):
                 ag.link_agents(self.agents)
         
         # load models from checkpoint if enabled
-        # is_load_model = Registry.mapping['model_mapping']['setting'].param['load_model']
         # load_model_episode = Registry.mapping['model_mapping']['setting'].param['load_model_episode']
-        # if is_load_model:
-        #     [ag.load_model(load_model_episode) for ag in self.agents]
+        is_load_model = Registry.mapping['model_mapping']['setting'].param['load_model']
+        if is_load_model:
+            [ag.load_model(100) for ag in self.agents]
 
         
         

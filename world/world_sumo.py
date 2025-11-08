@@ -68,7 +68,7 @@ class Intersection(object):
         self.map_name = world.map  # TODO: try to add it to Registry later
 
 
-
+        # TODO: needs massive rewrite here
         self.lanelinks = world.eng.trafficlight.getControlledLinks(self.id)
         for link in self.lanelinks:
             # skip if empty link
@@ -93,6 +93,14 @@ class Intersection(object):
                 self.directions.append(self._get_direction(road, True))
             elif link[1][:-2] in self.road_lane_mapping.keys() and link[1] not in self.road_lane_mapping[link[1][:-2]]:
                 self.road_lane_mapping[link[1][:-2]].append(link[1])
+
+        # hacky fix for missing lanes
+        for road in self.roads:
+            num_lanes = self.eng.edge.getLaneNumber(road)
+            for lane_index in range(num_lanes):
+                lane_id = f"{road}_{lane_index}"
+                if lane_id not in self.road_lane_mapping[road]:
+                    self.road_lane_mapping[road].insert(lane_index, lane_id)
 
         self._sort_roads()
         for key in self.road_lane_mapping.keys():
@@ -533,9 +541,12 @@ class World(object):
         :return valid_phases: valid phases that will be executed by intersections later.
         '''
         valid_phases = dict()
-        for i in range(0, 500):    # TODO grab info. directly from tllogic python interface
-            for lightID in self.intersection_ids:
-                current_phase = self.eng.trafficlight.getRedYellowGreenState(lightID)
+        for lightID in self.intersection_ids:
+            program_id = int(self.eng.trafficlight.getProgram(lightID))
+            all_phases = self.eng.trafficlight.getAllProgramLogics(lightID)[program_id].phases
+            all_phases = [phase.state for phase in all_phases]
+            
+            for current_phase in all_phases:
                 if not lightID in valid_phases:
                     valid_phases[lightID] = []
                 has_phase = False
@@ -544,7 +555,7 @@ class World(object):
                         has_phase = True
                 if not has_phase:
                     valid_phases[lightID].append(current_phase)
-            self.step_sim()
+            
         for ts in valid_phases:
             green_phases = []
             for phase in valid_phases[ts]:     # Convert to SUMO phase type

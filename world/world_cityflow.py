@@ -308,7 +308,7 @@ class World(object):
             "phase": self.get_cur_phase,
             "throughput": self.get_cur_throughput,
             "averate_travel_time": self.get_average_travel_time,
-            "segmented_lane_count": self.get_segmented_lane_count
+            # "segmented_lane_count": self.get_segmented_lane_count
             # "action_executed": self.get_executed_action
         }
         self.fns = []
@@ -488,7 +488,7 @@ class World(object):
                 if lane in out_lanes:
                     pressure -= vehicles[lane]
             pressures[i.id] = pressure
-        self.get_segmented_lane_count()
+        # self.get_segmented_lane_count()
         return pressures
     
     def get_segmented_lane_count(self):

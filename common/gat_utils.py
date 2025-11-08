@@ -27,7 +27,7 @@ def save_data_to_pkl(data, file_path):
         pickle.dump(data, f)
 
 def load_and_split_forward_data(
-    pkl_file_path, train_pkl_file, test_pkl_file, spices=8, test_size=0.2, random_seed=42, mode="decentralized", num_agents=1
+    pkl_file_path, train_pkl_file, test_pkl_file, action_dims, test_size=0.2, random_seed=42, mode="decentralized", num_agents=1
 ):
     """
     Load and process data for forward models, storing agent-specific data for decentralized mode.
@@ -48,9 +48,9 @@ def load_and_split_forward_data(
             next_states = record[3]
 
             for state, action, next_state in zip(states, actions, next_states):
-                
+                action_dim = action_dims[agent_idx]
                 one_hot_actions = torch.tensor(
-                np.concatenate([idx2onehot(np.array([action]), spices) for action in actions], axis=0),
+                np.concatenate([idx2onehot(np.array([action]), action_dim) for action in actions], axis=0),
                 dtype=torch.float32
             )
             
@@ -90,7 +90,7 @@ def load_and_split_forward_data(
             actions = record[1]  # Actions taken
             next_states = record[2]  # States at time t+1
     
-            one_hot_actions = np.concatenate([idx2onehot(np.array([action]), spices) for action in actions], axis=0)
+            one_hot_actions = np.concatenate([idx2onehot(np.array([action]), action_dims) for action in actions], axis=0)
     
             # Append the data as a tuple of arrays
             agent_data.append((
