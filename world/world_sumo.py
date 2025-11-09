@@ -596,11 +596,11 @@ class World(object):
         entering_v = self.eng.simulation.getDepartedIDList()
         for v in entering_v:
             self.inside_vehicles.update({v: self.get_current_time()})
-            self.vehicle_blocked.update({v: self.eng.vehicle.getDepartDelay(v)})
+            # self.vehicle_blocked.update({v: self.eng.vehicle.getDepartDelay(v)})
         exiting_v = self.eng.simulation.getArrivedIDList()
         for v in exiting_v:
-            # self.vehicles.update({v: self.get_current_time() - self.inside_vehicles[v]})
-            self.vehicles.update({v: self.get_current_time() - self.inside_vehicles[v] + self.vehicle_blocked[v]})
+            self.vehicles.update({v: self.get_current_time() - self.inside_vehicles[v]})
+            # self.vehicles.update({v: self.get_current_time() - self.inside_vehicles[v] + self.vehicle_blocked[v]})
 
         self._update_infos()
         self.vehicle_trajectory, self.vehicle_maxspeed = self.get_vehicle_trajectory()
@@ -840,27 +840,26 @@ class World(object):
         :param: None
         :return tvg_time: average travel time of all vehicles
         '''
-        result = 0
-        count = 0
-        # finished ones
-        for v in self.vehicles.keys():
-            count += 1
-            result += self.vehicles[v]
-        # in roadnet vehicles
-        cur_time = self.eng.simulation.getTime()
-        for i in self.eng.vehicle.getIDList():
-            count += 1
-            result += (cur_time - self.eng.vehicle.getDeparture(i) + self.eng.vehicle.getDepartDelay(i)) 
-        # delayed in buffer
-        for j in self.eng.simulation.getPendingVehicles():
-            count += 1
-            result += self.eng.vehicle.getDepartDelay(j)
-        if count == 0:
-            return 0
-        else:
-            return result/count
-
-
+        # result = 0
+        # count = 0
+        # # finished ones
+        # for v in self.vehicles.keys():
+        #     count += 1
+        #     result += self.vehicles[v]
+        # # in roadnet vehicles
+        # cur_time = self.eng.simulation.getTime()
+        # for i in self.eng.vehicle.getIDList():
+        #     count += 1
+        #     result += (cur_time - self.eng.vehicle.getDeparture(i) + self.eng.vehicle.getDepartDelay(i)) 
+        # # delayed in buffer
+        # for j in self.eng.simulation.getPendingVehicles():
+        #     count += 1
+        #     result += self.eng.vehicle.getDepartDelay(j)
+        # if count == 0:
+        #     return 0
+        # else:
+        #     return result/count
+        tvg_time = self.get_vehicles()
         # self.eng.vehicle.getDepartDelay(1)
         return tvg_time
 
