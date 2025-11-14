@@ -66,6 +66,7 @@ class PressLightAgent(RLAgent):
                                        lr=self.learning_rate,
                                        alpha=0.9, centered=False, eps=1e-7)
 
+        # print(f"Intersection: {inter_id} Rank: {self.rank}")
         # self.neighbors = 0
         # if hasattr(self.world.eng, "__module__"):
         #     if self.world.eng.__module__ == "cityflow":
@@ -305,16 +306,17 @@ class PressLightAgent(RLAgent):
         # else:
         #     model_name = os.path.join(
         #         Registry.mapping['logger_mapping']['path'].path, 'model', f'{e}_{self.rank}.pt')
-        # if pretrained:
-        #     model_name = "pretrained/cityflow_tempe_1x1/100_0.pt"
-        # else:
-        #     model_name = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model', f'{e}_{self.rank}.pt')
+        if pretrained:
+            model_name = f"pretrained/cityflow_tempe_16/100_{self.rank}.pt"
+        else:
+            model_name = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model', f'{e}_{self.rank}.pt')
         
         # model_name = "pretrained/cityflow_tempe_1x1/100_0.pt"
         # model_name = "pretrained/cityflow_tempe_1x1_2/100_0.pt"
         # model_name = "pretrained/sumo_tempe_1x1/100_0.pt"
-        model_name = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model', f'{e}_{self.rank}.pt')
+        # model_name = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model', f'{e}_{self.rank}.pt')
         
+        # model_name = f"pretrained/cityflow_tempe_16/100_{self.rank}.pt"
         self.model = self._build_model()
         self.model.load_state_dict(torch.load(model_name, weights_only=True))
         self.target_model = self._build_model()
