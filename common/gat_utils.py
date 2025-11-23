@@ -114,7 +114,7 @@ def load_and_split_forward_data(
 
 
 
-def load_and_split_inverse_data(pkl_file_path, train_pkl_file, test_pkl_file, spices=8, test_size=0.2, random_seed=42, mode="decentralized", num_agents=1):
+def load_and_split_inverse_data(pkl_file_path, train_pkl_file, test_pkl_file, action_dims, test_size=0.2, random_seed=42, mode="decentralized", num_agents=1):
     """
     Load and process data for inverse models, storing agent-specific data for decentralized mode.
     """
@@ -175,7 +175,7 @@ def load_and_split_inverse_data(pkl_file_path, train_pkl_file, test_pkl_file, sp
             for state, action, next_state, i_action in zip(states, n_actions, next_states, ind_action):
                 
                 one_hot_actions = torch.tensor(
-                np.concatenate([idx2onehot(np.array([action]), spices) for action in n_actions], axis=0),
+                np.concatenate([idx2onehot(np.array([action]), action_dims) for action in n_actions], axis=0),
                 dtype=torch.float32
             )
             
@@ -220,9 +220,9 @@ def load_and_split_inverse_data(pkl_file_path, train_pkl_file, test_pkl_file, sp
             ind_action = record[5]
 
             for state, n_state, action, next_state, i_action in zip(states, n_states, n_actions, next_states, ind_action):
-                
+                action_dim = action_dims[agent_idx]
                 one_hot_actions = torch.tensor(
-                np.concatenate([idx2onehot(np.array([action]), spices) for action in n_actions], axis=0),
+                np.concatenate([idx2onehot(np.array([action]), action_dim) for action in n_actions], axis=0),
                 dtype=torch.float32
             )
             

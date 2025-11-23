@@ -8,7 +8,7 @@ world:
   seed: 0
   dir: data/
 
-  saveReplay: True
+  saveReplay: False
   report_log_mode: normal # cbengine
   report_log_rate: 10
 
@@ -29,23 +29,22 @@ trainer:
   episodes: 300
   update_model_rate: 1
   update_target_rate: 10
-  test_when_train: True
+  test_when_train: False
   gat: True
   gattype: "jlgat"
   uncertainty: False
   delayedgat: False
-  grounding_pattern: False
   ground_original: False
   training_iterations: 1
   last_n_uncertainties: 2
-  prob_grounding: 0
-  network_version: 0 # 2 for inverse without neighbor actions
-  load_pretrained: True
+  prob_grounding: 0.33
+  load_pretrained: False
+  probing_radius: 500 # for JL-GAT, in meters
 
 model:
   name: "non-rl"
   train_model: True
-  test_model: False
+  test_model: True
   load_model: False
   graphic: False
   vehicle_max: 1

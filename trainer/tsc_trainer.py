@@ -12,13 +12,14 @@ from common.stat_utils import log_passing_lane_actinon, write_action_record
 import torch
 import torch.optim as optim
 import random
+import json
+import itertools
 
 
 print(torch.cuda.is_available())  # Should return True if CUDA is available
 print(torch.cuda.device_count()) # Number of GPUs detected
 
 from common.gat_utils import load_and_split_forward_data, load_and_split_inverse_data, NN_predictor, UNCERTAINTY_predictor, PKLDataset
-
 
 @Registry.register_trainer("tsc")
 class TSCTrainer(BaseTrainer):
@@ -55,14 +56,13 @@ class TSCTrainer(BaseTrainer):
         self.gattype = Registry.mapping['trainer_mapping']['setting'].param['gattype']
         self.uncertainty_setting = Registry.mapping['trainer_mapping']['setting'].param['uncertainty']
         self.delayedgat = Registry.mapping['trainer_mapping']['setting'].param['delayedgat']
-        self.grounding_pattern = Registry.mapping['trainer_mapping']['setting'].param['grounding_pattern']
         self.ground_original = Registry.mapping['trainer_mapping']['setting'].param['ground_original']
         self.last_n_uncertainties = Registry.mapping['trainer_mapping']['setting'].param['last_n_uncertainties']
         self.prob_grounding = Registry.mapping['trainer_mapping']['setting'].param['prob_grounding']
-        self.network_version = Registry.mapping['trainer_mapping']['setting'].param['network_version']
 
         self.net = Registry.mapping['trainer_mapping']['setting'].param['network']
         self.load_pretrained = Registry.mapping['trainer_mapping']['setting'].param['load_pretrained']
+        self.probing_radius = Registry.mapping['trainer_mapping']['setting'].param['probing_radius']
         
         # replay file is only valid in cityflow now. 
         # TODO: support SUMO and Openengine later
@@ -123,6 +123,21 @@ class TSCTrainer(BaseTrainer):
         # Considers number of agents in both input and output dimension calculations to allow for multi-agent setting
         num_agents = len(self.agents_real)
         
+        # setup neighbour information
+        inter_positions = {self.world_sim.id2idx[inter["id"]]:inter["point"] for inter in self.world_sim.roadnet["intersections"] if inter["id"] in self.world_sim.intersection_ids}
+        inter_positions = dict(sorted(inter_positions.items()))
+        
+        # distances = {}
+        self.neighbour_infos = {}
+        for inter_id, point1 in inter_positions.items():
+            distances = [self.calc_dist(point1, point2) for point2 in inter_positions.values()]
+            self.neighbour_infos[inter_id] = [i for i, dist in enumerate(distances) if dist < self.probing_radius]
+        
+        # list neigbours
+        print(f"Probing radius: {self.probing_radius}")
+        print(f"Neighbours map: {self.neighbour_infos}")
+        
+        
         # Initialize GAT models
         if self.gat == True:
             # Initialize centralized GAT models
@@ -155,70 +170,31 @@ class TSCTrainer(BaseTrainer):
                 print(f"\n------- INITIALIZING JL-GAT MODELS -------\n")
                 gat_path = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model')
                 
-                # Hardcoded values for # of neighbors for each agent until I fix later
-                if self.net == "cityflow1x3":
-                    self.agents_real[0].neighbors = 2
-                    self.agents_real[1].neighbors = 3
-                    self.agents_real[2].neighbors = 2
-
-                # Hardcoded values for # of neighbors for each agent until I fix later
-                elif self.net == "cityflow4x4":
+                # Calculate number of neighbors
+                # NO MORE HARD CODING !!!
+                for rank, neighbors in self.neighbour_infos.items():
+                    self.agents_real[rank].neighbors = len(neighbors)
                 
-                    # Bottom row
-                    self.agents_real[0].neighbors = 3
-                    self.agents_real[1].neighbors = 4
-                    self.agents_real[2].neighbors = 4
-                    self.agents_real[3].neighbors = 3
-
-                    # 2nd from bottom row
-                    self.agents_real[4].neighbors = 4
-                    self.agents_real[5].neighbors = 5
-                    self.agents_real[6].neighbors = 5
-                    self.agents_real[7].neighbors = 4
-
-                    # 3rd from bottom row
-                    self.agents_real[8].neighbors = 4
-                    self.agents_real[9].neighbors = 5
-                    self.agents_real[10].neighbors = 5
-                    self.agents_real[11].neighbors = 4
-
-                    # Top row
-                    self.agents_real[12].neighbors = 3
-                    self.agents_real[13].neighbors = 4
-                    self.agents_real[14].neighbors = 4
-                    self.agents_real[15].neighbors = 3
+                action_length = max([self.agents_real[inter].action_space.n for inter in inter_positions.keys()])
                 
                 for idx, ag in enumerate(self.agents_real):
+                    ob_length = max([self.agents_real[inter].ob_generator.ob_length for inter in self.neighbour_infos[idx]])
+                    self.forward_model = NN_predictor(self.logger,
+                                            (ag.neighbors, ob_length), (ag.neighbors, action_length),
+                                            self.agents_real[idx].ob_generator.ob_length, self.device, gat_path, 'collected/ereal_train_full.pkl')
 
-                    # Forward model outputs a single predicted next state based on joint local information
-                    # Initialized with the following dimensions: Joint local State: (Agent + Neighbors, State size), Joint local action: (Agent + Neighbors, Action size)
-                    if self.network_version == 4:
-                        self.forward_model = NN_predictor(self.logger,
-                                                (ag.neighbors, self.agents_real[0].ob_generator.ob_length), (1, self.agents_real[0].action_space.n),
-                                                self.agents_real[0].ob_generator.ob_length, self.device, gat_path, 'collected/ereal_train_full.pkl', backward=False, history=1, mode='jlgat4')
-                    elif self.network_version == 5:
-                        self.forward_model = NN_predictor(self.logger,
-                                                (1, self.agents_real[0].ob_generator.ob_length), (ag.neighbors, self.agents_real[0].action_space.n),
-                                                self.agents_real[0].ob_generator.ob_length, self.device, gat_path, 'collected/ereal_train_full.pkl', backward=False, history=1, mode='jlgat5')
-                    else:
-                        self.forward_model = NN_predictor(self.logger,
-                                                (ag.neighbors, self.agents_real[0].ob_generator.ob_length), (ag.neighbors, self.agents_real[0].action_space.n),
-                                                self.agents_real[0].ob_generator.ob_length, self.device, gat_path, 'collected/ereal_train_full.pkl')
-
-                    # Inverse model outputs a single predicted action based on joint local information (also added actions of neighbors to inverse model, assuming they're fixed)
-                    if self.network_version == 2:
-                        self.inverse_model = UNCERTAINTY_predictor(self.logger, (ag.neighbors, self.agents_real[0].ob_generator.ob_length), 0, 0, (1, self.agents_real[0].ob_generator.ob_length), self.agents_real[0].action_space.n, self.device, gat_path, 'collected/esim_train_full.pkl', backward=True, history=1, mode='wo_action')
-                    elif self.network_version == 3:
-                        self.inverse_model = UNCERTAINTY_predictor(self.logger, (1, self.agents_real[0].ob_generator.ob_length), 0, (ag.neighbors - 1, self.agents_real[0].action_space.n), (1, self.agents_real[0].ob_generator.ob_length), self.agents_real[0].action_space.n, self.device, gat_path, 'collected/esim_train_full.pkl', backward=True, history=1, mode='wo_state')
-                    else:
-                        self.inverse_model = UNCERTAINTY_predictor(self.logger, (1, self.agents_real[0].ob_generator.ob_length), (ag.neighbors - 1, self.agents_real[0].ob_generator.ob_length), (ag.neighbors - 1, self.agents_real[0].action_space.n), (1, self.agents_real[0].ob_generator.ob_length),
-                                                        self.agents_real[0].action_space.n, self.device, gat_path,
-                                                        'collected/esim_train_full.pkl', backward=True)
+                    only_neighbors = [inter for inter in self.neighbour_infos[idx] if inter != idx]
+                    n_ob_length = max([self.agents_real[inter].ob_generator.ob_length for inter in only_neighbors])                    
+                    self.inverse_model = UNCERTAINTY_predictor(self.logger, (1, self.agents_real[idx].ob_generator.ob_length), (ag.neighbors - 1, n_ob_length), (ag.neighbors - 1, action_length), (1, self.agents_real[idx].ob_generator.ob_length),
+                                                    self.agents_real[idx].action_space.n, self.device, gat_path,
+                                                    'collected/esim_train_full.pkl', backward=True)
                     
                     self.forward_models.append(self.forward_model)
                     self.inverse_models.append(self.inverse_model)
                     
-
+        # setup action dims
+        self.action_dims = [model.action_dim[-1] for model in self.forward_models]
+        
     def create_world(self):
         '''
         create_world
@@ -570,326 +546,74 @@ class TSCTrainer(BaseTrainer):
                                     ga_by_agent[idx] += 1
 
                         # Currently setup for 1x3 only
-                        elif self.gattype == "jlgat":
-                            
-                            if self.net == "cityflow1x3":
-                                for idx, ag in enumerate(self.agents_sim):
-                                            
-                                    # Ground based upon neighbor static actions (avoid cascade)
-                                    
-                                    if idx == 0:  # Agent 0: Uses its own state + agent 1's state + its own & agent 1's actions
-                                        relevant_states = np.concatenate([last_obs[0], last_obs[1]])
-                                        relevant_actions = np.concatenate([
-                                        idx2onehot(np.array([actions[0]]), 8),
-                                        idx2onehot(np.array([actions[1]]), 8)
-                                        ])
-
-                                        ind_action = idx2onehot(np.array([actions[0]]), 8)
-
-                                        ind_state = last_obs[0]
-                                        neighbor_states = last_obs[1]
-                                        
-                                        neighbor_actions = idx2onehot(np.array([actions[1]]), 8)
-                                        
-                                    elif idx == 1:  # Agent 1: Uses all agent states and actions
-                                        relevant_states = np.concatenate([last_obs[0], last_obs[1], last_obs[2]])
-                                        relevant_actions = np.concatenate([
-                                        idx2onehot(np.array([actions[0].cpu().numpy()]) if isinstance(actions[0], torch.Tensor) else np.array([actions[0]]), 8),
-                                        idx2onehot(np.array([actions[1].cpu().numpy()]) if isinstance(actions[1], torch.Tensor) else np.array([actions[1]]), 8),
-                                        idx2onehot(np.array([actions[2].cpu().numpy()]) if isinstance(actions[2], torch.Tensor) else np.array([actions[2]]), 8)
-                                    ])
-
-                                        ind_state = last_obs[1]
-                                        neighbor_states = np.concatenate([last_obs[0], last_obs[2]])
-
-                                        ind_action = idx2onehot(np.array([actions[1]]), 8)
-
-                                        neighbor_actions = np.concatenate([
-                                        idx2onehot(np.array([actions[0].cpu().numpy()]) if isinstance(actions[0], torch.Tensor) else np.array([actions[0]]), 8),
-                                        idx2onehot(np.array([actions[2].cpu().numpy()]) if isinstance(actions[2], torch.Tensor) else np.array([actions[2]]), 8)
-                                        ])
-                                            
-                                    elif idx == 2:  # Agent 2: Uses its own state + agent 1's state + its own & agent 1's actions
-                                        relevant_states = np.concatenate([last_obs[1], last_obs[2]])
-                                        relevant_actions = np.concatenate([
-                                        idx2onehot(np.array([actions[1].cpu().numpy()]) if isinstance(actions[1], torch.Tensor) else np.array([actions[1]]), 8),
-                                        idx2onehot(np.array([actions[2].cpu().numpy()]) if isinstance(actions[2], torch.Tensor) else np.array([actions[2]]), 8)
-                                        ])
-
-                                        ind_state = last_obs[2]
-                                        neighbor_states = last_obs[1]
-
-                                        ind_action = idx2onehot(np.array([actions[2]]), 8)
-                                        
-                                        neighbor_actions = idx2onehot(np.array([actions[1]]), 8)
-
-                                    
-                                    # Create tensors for use in input
-                                    relevant_states = torch.from_numpy(relevant_states).float().to(self.device).unsqueeze(0)
-                                    ind_state = torch.from_numpy(ind_state).float().to(self.device).unsqueeze(0)
-                                    ind_action = torch.from_numpy(ind_action).float().to(self.device).unsqueeze(0)
-                                    neighbor_states = torch.from_numpy(neighbor_states).float().to(self.device).unsqueeze(0)
-                                    actions_ = torch.from_numpy(relevant_actions).float().to(self.device).unsqueeze(0)
-                                    neighbor_actions_tensor = torch.from_numpy(neighbor_actions).float().to(self.device).unsqueeze(0)
-
-                                    # Predict next state
-                                    if self.network_version == 4:
-                                        pred_next_state = self.forward_models[idx].model(relevant_states, ind_action)
-                                    elif self.network_version == 5:
-                                        pred_next_state = self.forward_models[idx].model(ind_state, actions_)
-                                    else:
-                                        pred_next_state = self.forward_models[idx].model(relevant_states, actions_).unsqueeze(0)
-                            
-                                    # Compute inverse model results
-                                    if self.network_version == 2:
-                                        result = self.inverse_models[idx].model(relevant_states, pred_next_state)
-                                    elif self.network_version == 3:
-                                        result = self.inverse_models[idx].model(ind_state, neighbor_actions_tensor, pred_next_state)
-                                    else:
-                                        result = self.inverse_models[idx].model(ind_state, neighbor_states, neighbor_actions_tensor, pred_next_state)
-                                    
-                                    grounded_action, uncertainty = result[0], result[1]
-
-                                    # Use uncertainty
-                                    if self.uncertainty_setting:
-
-                                        agent_uncertainty_sums[idx] += uncertainty.item()
-
-                                        if self.grounding_pattern:
-
-                                            if episode % 2 == 0:
-                                                ground_pattern = 0
-                                            else:
-                                                ground_pattern = 1
-                                            
-                                            # If none of the above settings, run the traditional UGAT approach
-                                            if uncertainty < self.avg_agent_uncertainties[idx]:
-
-                                                if ground_pattern == 0 and (idx == 0 or idx == 2):
-                                                    
-                                                    if self.network_version == 2:
-                                                        actions[idx] = torch.argmax(grounded_action.view(1, 8), dim=1).cpu().item()
-                                                    else:
-                                                        actions[idx] = torch.argmax(grounded_action, dim=1).cpu().item()
-                                                    
-                                                    grounded_actions[idx] = actions[idx]
-                                                    grounded_action_count += 1
-            
-                                                    ga_by_agent[idx] += 1
-
-                                                elif ground_pattern == 1 and idx == 1:
-                            
-                                                    if self.network_version == 2:
-                                                        actions[idx] = torch.argmax(grounded_action.view(1, 8), dim=1).cpu().item()
-                                                    else:
-                                                        actions[idx] = torch.argmax(grounded_action, dim=1).cpu().item()
-                                                        
-                                                    grounded_actions[idx] = actions[idx]
-                                                    grounded_action_count += 1
-        
-                                                    ga_by_agent[idx] += 1
-                                                    
-                                        else:
-                                                            
-                                            # If none of the above settings, run the traditional UGAT approach
-                                            if uncertainty < self.avg_agent_uncertainties[idx]:
+                        elif self.gattype == "jlgat":    
+                            for idx, ag in enumerate(self.agents_sim):
+                                relevant_indices = self.neighbour_infos.get(idx, [])
                                 
-                                                if self.network_version == 2:
-                                                    actions[idx] = torch.argmax(grounded_action.view(1, 8), dim=1).cpu().item()
-                                                else:
-                                                    actions[idx] = torch.argmax(grounded_action, dim=1).cpu().item()
-                                                        
-                                                grounded_actions[idx] = actions[idx]
-                                                grounded_action_count += 1
-        
-                                                ga_by_agent[idx] += 1
+                                # Collect relevant states
+                                relevant_states = pad_and_concat([last_obs[i] for i in relevant_indices])
 
-
-                                    # Use grounding pattern without uncertainty
-                                    elif self.grounding_pattern:
-
-                                        if episode % 2 == 0:
-                                            ground_pattern = 0
-                                        else:
-                                            ground_pattern = 1
-
-                                        if ground_pattern == 0 and (idx == 0 or idx == 2):
-                                                    
-                                            if self.network_version == 2:
-                                                actions[idx] = torch.argmax(grounded_action.view(1, 8), dim=1).cpu().item()
-                                            else:
-                                                actions[idx] = torch.argmax(grounded_action, dim=1).cpu().item()
-                                                    
-                                            grounded_actions[idx] = actions[idx]
-                                            grounded_action_count += 1
-            
-                                            ga_by_agent[idx] += 1
-
-                                        elif ground_pattern == 1 and idx == 1:
-                            
-                                            if self.network_version == 2:
-                                                actions[idx] = torch.argmax(grounded_action.view(1, 8), dim=1).cpu().item()
-                                            else:
-                                                actions[idx] = torch.argmax(grounded_action, dim=1).cpu().item()
-                                                        
-                                            grounded_actions[idx] = actions[idx]
-                                            grounded_action_count += 1
-        
-                                            ga_by_agent[idx] += 1
-
-                                    # If probabilistic grounding flag, determine whether to ground based on that flag setting
-                                    elif self.prob_grounding != 0:
-
-                                        if random.random() < self.prob_grounding:
-
-                                            if self.network_version == 2:
-                                                actions[idx] = torch.argmax(grounded_action.view(1, 8), dim=1).cpu().item()
-                                            else:
-                                                actions[idx] = torch.argmax(grounded_action, dim=1).cpu().item()
-                                                    
-                                            grounded_actions[idx] = actions[idx]
-                                            grounded_action_count += 1
-        
-                                            ga_by_agent[idx] += 1
-                                                
-                                    # If no flags always ground every action
-                                    else:
-                                        if self.network_version == 2 or self.network_version == 3:
-                                            actions[idx] = torch.argmax(grounded_action.view(1, 8), dim=1).cpu().item()
-                                        else:
-                                            actions[idx] = torch.argmax(grounded_action, dim=1).cpu().item()
-                                                
-                                        grounded_actions[idx] = actions[idx]
-                                        grounded_action_count += 1
-
-                                        ga_by_agent[idx] += 1
-                                        
-                            elif self.net == "cityflow4x4":
-
-                                agent_info_map = {
-                                    0: [0, 1, 4],  # Agent 0 gets info from itself, agent 1, and agent 4
-                                    1: [0, 1, 2, 5],
-                                    2: [1, 2, 3, 6],
-                                    3: [2, 3, 7],
-                                    4: [0, 4, 5, 8],
-                                    5: [1, 4, 5, 6, 9],
-                                    6: [2, 5, 6, 7, 10],
-                                    7: [3, 6, 7, 11],
-                                    8: [4, 8, 9, 12],
-                                    9: [5, 8, 9, 10, 13],
-                                    10: [6, 9, 10, 11, 14],
-                                    11: [7, 10, 11, 15],
-                                    12: [8, 12, 13],
-                                    13: [9, 12, 13, 14],
-                                    14: [10, 13, 14, 15],
-                                    15: [11, 14, 15]
-                                }
+                                # Collect neighbor relevant states
+                                relevant_n_states = pad_and_concat([last_obs[i] for i in relevant_indices if i != idx])
                                 
-                                for idx, ag in enumerate(self.agents_sim):
-                                    relevant_indices = agent_info_map.get(idx, [])
-                                    
-                                    # Collect relevant states
-                                    relevant_states = np.concatenate([last_obs[i] for i in relevant_indices])
+                                # Collect relevant actions
+                                relevant_actions = pad_and_concat([
+                                    idx2onehot(np.array([actions[i]]), self.action_dims[i]) for i in relevant_indices])
 
-                                    # Collect neighbor relevant states
-                                    relevant_n_states = np.concatenate([last_obs[i] for i in relevant_indices if i != idx])
-                                    
-                                    # Collect relevant actions
-                                    relevant_actions = np.concatenate([
-                                        idx2onehot(np.array([actions[i]]), 8) for i in relevant_indices])
+                                # Update neighbor_actions by excluding the current agent's own action
+                                neighbor_actions = pad_and_concat([
+                                    idx2onehot(np.array([actions[i]]), self.action_dims[i]) for i in relevant_indices if i != idx])
 
-                                    # Update neighbor_actions by excluding the current agent's own action
-                                    neighbor_actions = np.concatenate([
-                                        idx2onehot(np.array([actions[i]]), 8) for i in relevant_indices if i != idx])
-
-                                    ind_state = last_obs[idx]
-                            
-                                    # Create tensors for use in input
-                                    relevant_states = torch.from_numpy(relevant_states).float().to(self.device).unsqueeze(0)
-                                    relevant_n_states = torch.from_numpy(relevant_n_states).float().to(self.device).unsqueeze(0)
-                                    actions_ = torch.from_numpy(relevant_actions).float().to(self.device).unsqueeze(0)
-                                    neighbor_actions_tensor = torch.from_numpy(neighbor_actions).float().to(self.device).unsqueeze(0)
-                                    ind_state = torch.from_numpy(ind_state).float().to(self.device).unsqueeze(0)
-
-                                    # Predict next state
-                                    pred_next_state = self.forward_models[idx].model(relevant_states, actions_).unsqueeze(0)
-                            
-                                    # Compute inverse model results
-                                    # Compute inverse model results
-                                    if self.network_version == 2:
-                                        result = self.inverse_models[idx].model(relevant_states, pred_next_state)
-                                    else:
-                                        result = self.inverse_models[idx].model(ind_state, relevant_n_states, neighbor_actions_tensor, pred_next_state)
-                                    
-                                    grounded_action, uncertainty = result[0], result[1]
-
-                                    # Use uncertainty
-                                    if self.uncertainty_setting:
-                                                    
-                                        # If none of the above settings, run the traditional UGAT approach
-                                        agent_uncertainty_sums[idx] += uncertainty.item()
-                                        if uncertainty < self.avg_agent_uncertainties[idx]:
+                                ind_state = last_obs[idx]
                         
-                                            if self.network_version == 2:
-                                                actions[idx] = torch.argmax(grounded_action.view(1, 8), dim=1).cpu().item()
-                                            else:
-                                                actions[idx] = torch.argmax(grounded_action, dim=1).cpu().item()
+                                # Create tensors for use in input
+                                relevant_states = torch.from_numpy(relevant_states).float().to(self.device).unsqueeze(0)
+                                relevant_n_states = torch.from_numpy(relevant_n_states).float().to(self.device).unsqueeze(0)
+                                actions_ = torch.from_numpy(relevant_actions).float().to(self.device).unsqueeze(0)
+                                neighbor_actions_tensor = torch.from_numpy(neighbor_actions).float().to(self.device).unsqueeze(0)
+                                ind_state = torch.from_numpy(ind_state).float().to(self.device).unsqueeze(0)
+
+                                # Predict next state
+                                pred_next_state = self.forward_models[idx].model(relevant_states, actions_).unsqueeze(0)
+                                # Compute inverse model results
+                                result = self.inverse_models[idx].model(ind_state, relevant_n_states, neighbor_actions_tensor, pred_next_state)
+                                
+                                grounded_action, uncertainty = result[0], result[1]
+
+                                # Use uncertainty
+                                if self.uncertainty_setting:
                                                 
-                                            grounded_actions[idx] = actions[idx]
-                                            grounded_action_count += 1
-
-                                            ga_by_agent[idx] += 1
-
-                                    
-                                    # Use grounding pattern without uncertainty
-                                    elif self.grounding_pattern:
-
-                                        if episode % 2 == 0:
-                                            ground_pattern = 0
-                                        else:
-                                            ground_pattern = 1
-
-                                        if ground_pattern == 0 and idx in {0, 2, 5, 7, 8, 10, 13, 15}:
+                                    # If none of the above settings, run the traditional UGAT approach
+                                    agent_uncertainty_sums[idx] += uncertainty.item()
+                                    if uncertainty < self.avg_agent_uncertainties[idx]:
+                                        actions[idx] = torch.argmax(grounded_action, dim=1).cpu().item()
                                             
-                                            actions[idx] = torch.argmax(grounded_action, dim=1).cpu().item()
-                                                    
-                                            grounded_actions[idx] = actions[idx]
-                                            grounded_action_count += 1
-            
-                                            ga_by_agent[idx] += 1
-
-                                        elif ground_pattern == 1 and idx in {1, 3, 4, 6, 9, 11, 12, 14}:
-                            
-                                            actions[idx] = torch.argmax(grounded_action, dim=1).cpu().item()
-                                                        
-                                            grounded_actions[idx] = actions[idx]
-                                            grounded_action_count += 1
-        
-                                            ga_by_agent[idx] += 1
-
-                                    # If probabilistic grounding flag, determine whether to ground based on that flag setting
-                                    elif self.prob_grounding != 0:
-
-                                        if random.random() < self.prob_grounding:
-                                            
-                                            actions[idx] = torch.argmax(grounded_action, dim=1).cpu().item()
-                                                    
-                                            grounded_actions[idx] = actions[idx]
-                                            grounded_action_count += 1
-        
-                                            ga_by_agent[idx] += 1
-                                                
-                                    # If no flags always ground every action
-                                    else:
-                                        if self.network_version == 2:
-                                            actions[idx] = torch.argmax(grounded_action.view(1, 8), dim=1).cpu().item()
-                                        else:
-                                            actions[idx] = torch.argmax(grounded_action, dim=1).cpu().item()
-
                                         grounded_actions[idx] = actions[idx]
                                         grounded_action_count += 1
 
                                         ga_by_agent[idx] += 1
+                                
+                                
+                                # If probabilistic grounding flag, determine whether to ground based on that flag setting
+                                elif self.prob_grounding != 0:
+
+                                    if random.random() < self.prob_grounding:
+                                        
+                                        actions[idx] = torch.argmax(grounded_action, dim=1).cpu().item()
+                                                
+                                        grounded_actions[idx] = actions[idx]
+                                        grounded_action_count += 1
+    
+                                        ga_by_agent[idx] += 1
+                                            
+                                # If no flags always ground every action
+                                else:
+                                    actions[idx] = torch.argmax(grounded_action, dim=1).cpu().item()
+
+                                    grounded_actions[idx] = actions[idx]
+                                    grounded_action_count += 1
+
+                                    ga_by_agent[idx] += 1
                             
     
                     actions = actions.flatten()
@@ -984,71 +708,61 @@ class TSCTrainer(BaseTrainer):
     def gat_training(self, e):
         
         # If GAT training desired, handle after both sim and real datasets updated above
-            if self.gat == True:
-                if self.gattype == "centralized":
-                    # Load and split the real and sim data to prepare for forward / inverse model training
+        if self.gat == True:
+            if self.gattype == "centralized":
+                # Load and split the real and sim data to prepare for forward / inverse model training
 
-                    # Forward data split using real data
-                    load_and_split_forward_data("collected/ereal_train.pkl", "collected/ereal_train_full.pkl", "collected/ereal_test_full.pkl",
-                                       8, 0.2, 42, "centralized", len(self.agents_real))
+                # Forward data split using real data
+                load_and_split_forward_data("collected/ereal_train.pkl", "collected/ereal_train_full.pkl", "collected/ereal_test_full.pkl",
+                                    8, 0.2, 42, "centralized", len(self.agents_real))
 
-                    # Inverse data split using sim data
-                    load_and_split_inverse_data("collected/esim_train.pkl", "collected/esim_train_full.pkl", "collected/esim_test_full.pkl",
-                                       8, 0.2, 42, "centralized", len(self.agents_sim))
+                # Inverse data split using sim data
+                load_and_split_inverse_data("collected/esim_train.pkl", "collected/esim_train_full.pkl", "collected/esim_test_full.pkl",
+                                    8, 0.2, 42, "centralized", len(self.agents_sim))
 
-                    # Train the centralized forward model
-                    self.forward_model.train(100, 'forward', len(self.agents_real), 5000 * len(self.agents_real))
+                # Train the centralized forward model
+                self.forward_model.train(100, 'forward', len(self.agents_real), 5000 * len(self.agents_real))
 
-                    # Train the centralized inverse model
-                    self.inverse_model.train(100, 'inverse', len(self.agents_sim), 5000 * len(self.agents_real))
+                # Train the centralized inverse model
+                self.inverse_model.train(100, 'inverse', len(self.agents_sim), 5000 * len(self.agents_real))
+                
+            elif self.gattype == "decentralized":
+                # Load and split the real and sim data to prepare for forward / inverse model training
+                # get action
+                # action_dims = [model.action_dim[-1] for model in self.forward_models]
+                
+                # Forward data split using real data
+                load_and_split_forward_data("collected/ereal_train.pkl", "collected/ereal_train_full", "collected/ereal_test_full",
+                                    self.action_dims, 0.2, 42, "decentralized", len(self.agents_real))
+
+                # Inverse data split using sim data
+                load_and_split_inverse_data("collected/esim_train.pkl", "collected/esim_train_full", "collected/esim_test_full",
+                                    self.action_dims, 0.2, 42, "decentralized", len(self.agents_sim))
+
+                for idx, ag in enumerate(self.agents_sim):
                     
-                elif self.gattype == "decentralized":
-                    # Load and split the real and sim data to prepare for forward / inverse model training
-                    # get action
-                    action_dims = [model.action_dim[-1] for model in self.forward_models]
+                    # Train the decentralized forward model
+                    self.forward_models[idx].train(100, 'forward', idx, 5000, "decentralized")
+
+                    # Train the decentralized inverse model
+                    self.inverse_models[idx].train(100, 'inverse', idx, 5000, "decentralized")
                     
-                    # Forward data split using real data
-                    load_and_split_forward_data("collected/ereal_train.pkl", "collected/ereal_train_full", "collected/ereal_test_full",
-                                       action_dims, 0.2, 42, "decentralized", len(self.agents_real))
 
-                    # Inverse data split using sim data
-                    load_and_split_inverse_data("collected/esim_train.pkl", "collected/esim_train_full", "collected/esim_test_full",
-                                       8, 0.2, 42, "decentralized", len(self.agents_sim))
+            elif self.gattype == "jlgat":                    
+                # Forward data split using real data
+                load_and_split_forward_data("collected/ereal_train.pkl", "collected/ereal_train_full", "collected/ereal_test_full",
+                                self.action_dims, 0.2, 42, "jlgat", len(self.agents_real))
 
-                    for idx, ag in enumerate(self.agents_sim):
-                        
-                        # Train the decentralized forward model
-                        self.forward_models[idx].train(100, 'forward', idx, 5000, "decentralized")
-    
-                        # Train the decentralized inverse model
-                        self.inverse_models[idx].train(100, 'inverse', idx, 5000, "decentralized")
-                        
+                # Inverse data split using sim data
+                load_and_split_inverse_data("collected/esim_train.pkl", "collected/esim_train_full", "collected/esim_test_full",
+                                        self.action_dims, 0.2, 42, "jlgat", len(self.agents_sim))
 
-                elif self.gattype == "jlgat":
-                    # Load and split the real and sim data to prepare for forward / inverse model training
+                for idx, ag in enumerate(self.agents_sim):
+                    # Train the JLGAT forward model
+                    self.forward_models[idx].train(100, 'forward', idx, 5000, "jlgat")
 
-                    # Forward data split using real data
-                    load_and_split_forward_data("collected/ereal_train.pkl", "collected/ereal_train_full", "collected/ereal_test_full",
-                                    8, 0.2, 42, "jlgat", len(self.agents_real))
-
-                    # Inverse data split using sim data
-                    if self.network_version == 2:
-                        load_and_split_inverse_data("collected/esim_train.pkl", "collected/esim_train_full", "collected/esim_test_full",
-                                           8, 0.2, 42, "decentralized", len(self.agents_sim))
-                    elif self.network_version == 3:
-                        load_and_split_inverse_data("collected/esim_train.pkl", "collected/esim_train_full", "collected/esim_test_full",
-                                           8, 0.2, 42, "jlgat3", len(self.agents_sim))
-                    else:
-                        load_and_split_inverse_data("collected/esim_train.pkl", "collected/esim_train_full", "collected/esim_test_full",
-                                           8, 0.2, 42, "jlgat", len(self.agents_sim))
-
-                    for idx, ag in enumerate(self.agents_sim):
-                        
-                        # Train the JLGAT forward model
-                        self.forward_models[idx].train(100, 'forward', idx, 5000, "jlgat", self.network_version)
-    
-                        # Train the JLGAT inverse model
-                        self.inverse_models[idx].train(100, 'inverse', idx, 5000, "jlgat", self.network_version)
+                    # Train the JLGAT inverse model
+                    self.inverse_models[idx].train(100, 'inverse', idx, 5000, "jlgat")
                     
     
     def sim_rollout(self, e, mode="centralized"):
@@ -1106,61 +820,18 @@ class TSCTrainer(BaseTrainer):
                     for idx, (state, action, next_state) in enumerate(zip(last_obs, actions, obs)):
                         state_action_next_state.append((idx, state, action, next_state))
 
-                # Data format is (Individual state, Joint-local state for neighbors, actions taken by neighbors, next individual state, individual action to cause transition)
-                elif mode == "jlgat" and self.net == "cityflow1x3":
-
-                    if self.network_version == 2:
-                        # Joint local information storage for cityflow1x3 network
-                        state_action_next_state.append((0, np.concatenate([last_obs[0], last_obs[1]], axis=0), actions[0].reshape(-1, 1), obs[0], actions[0].reshape(-1, 1)))
-                        state_action_next_state.append((1, np.concatenate([last_obs[0], last_obs[1], last_obs[2]], axis=0), actions[1].reshape(-1, 1), obs[1], actions[1].reshape(-1, 1)))
-                        state_action_next_state.append((2, np.concatenate([last_obs[1], last_obs[2]], axis=0), actions[2].reshape(-1, 1), obs[2], actions[2].reshape(-1, 1)))
-                    elif self.network_version == 3:
-                        # Joint local information storage for cityflow1x3 network
-                        state_action_next_state.append((0, last_obs[0], actions[1].reshape(-1, 1), obs[0], actions[0].reshape(-1, 1)))
-                        state_action_next_state.append((1, last_obs[2], np.concatenate([actions[0], actions[2]], axis=0).reshape(-1, 1), obs[1], actions[1].reshape(-1, 1)))
-                        state_action_next_state.append((2, last_obs[2], actions[2].reshape(-1, 1).reshape(-1, 1), obs[2], actions[2].reshape(-1, 1)))
-                    else:
-                        # Joint local information storage for cityflow1x3 network
-                        state_action_next_state.append((0, last_obs[0], last_obs[1], actions[1].reshape(-1, 1), obs[0],  actions[0].reshape(-1, 1)))
-                        state_action_next_state.append((1, last_obs[1], np.concatenate([last_obs[0], last_obs[2]], axis=0), np.concatenate([actions[0], actions[2]], axis=0).reshape(-1, 1), obs[1], actions[1].reshape(-1, 1)))
-                        state_action_next_state.append((2, last_obs[2], last_obs[1], actions[1].reshape(-1, 1), obs[2],  actions[2].reshape(-1, 1)))
-
                 # Data format is (Joint-local state, actions taken by neighbors, next individual state, individual action to cause transition)
-                elif mode == "jlgat" and self.net == "cityflow4x4":
-                    agent_info_map = {
-                                    0: [0, 1, 4],  # Agent 0 gets info from itself, agent 1, and agent 4
-                                    1: [0, 1, 2, 5],
-                                    2: [1, 2, 3, 6],
-                                    3: [2, 3, 7],
-                                    4: [0, 4, 5, 8],
-                                    5: [1, 4, 5, 6, 9],
-                                    6: [2, 5, 6, 7, 10],
-                                    7: [3, 6, 7, 11],
-                                    8: [4, 8, 9, 12],
-                                    9: [5, 8, 9, 10, 13],
-                                    10: [6, 9, 10, 11, 14],
-                                    11: [7, 10, 11, 15],
-                                    12: [8, 12, 13],
-                                    13: [9, 12, 13, 14],
-                                    14: [10, 13, 14, 15],
-                                    15: [11, 14, 15]
-                                }
-                    
-                    for agent, neighbors in agent_info_map.items():
+                elif mode == "jlgat":
+                    for agent, neighbors in self.neighbour_infos.items():
                         
                         # Exclude the agent's own actions from the list of neighbor actions
                         neighbor_idx = [i for i in neighbors if i != agent]
-
                         total_idx = [i for i in neighbors]
                         
-                        # Collect the joint-local state for the agent and its neighbors
-                        joint_local_state = np.concatenate([last_obs[i] for i in neighbor_idx], axis=0)
-
-                        full_local_state = np.concatenate([last_obs[i] for i in total_idx], axis=0)
-                        
+                        joint_local_state = pad_and_concat([last_obs[i] for i in neighbor_idx])
+                        full_local_state = pad_and_concat([last_obs[i] for i in total_idx])
                         # Collect actions taken by the neighbors (excluding the agent itself)
                         actions_taken_by_neighbors = np.concatenate([actions[i] for i in neighbor_idx], axis=0).reshape(-1, 1)
-
                         # Individual state
                         individual_state = last_obs[agent]
                         
@@ -1171,10 +842,7 @@ class TSCTrainer(BaseTrainer):
                         individual_action = actions[agent]
                         
                         # Append the tuple to the list
-                        if self.network_version == 2:
-                            state_action_next_state.append((agent, full_local_state, individual_action, next_state))
-                        else:
-                            state_action_next_state.append((agent, individual_state, joint_local_state, actions_taken_by_neighbors, next_state, individual_action))
+                        state_action_next_state.append((agent, individual_state, joint_local_state, actions_taken_by_neighbors, next_state, individual_action))
                 else:
                     state_action_next_state.append((last_obs, actions, obs))
                     
@@ -1233,45 +901,11 @@ class TSCTrainer(BaseTrainer):
                         state_action_next_state.append((idx, state, action, next_state))
 
                 # Joint Local state, Joint Local action, Individual next state
-                elif mode == "jlgat" and self.net == "cityflow1x3":
 
-                    # Ablation without neighbor action info in forward
-                    if self.network_version == 4:
-                        # Joint local information storage for cityflow1x3 network
-                        state_action_next_state.append((0, np.concatenate([last_obs[0], last_obs[1]], axis=0), actions[0].reshape(-1, 1), obs[0]))
-                        state_action_next_state.append((1, np.array(last_obs).squeeze(axis=1), actions[1].reshape(-1, 1), obs[1]))
-                        state_action_next_state.append((2, np.concatenate([last_obs[1], last_obs[2]], axis=0), actions[2].reshape(-1, 1), obs[2]))
-                    # Ablation without neighbor state info in forward
-                    elif self.network_version == 5:
-                        # Joint local information storage for cityflow1x3 network
-                        state_action_next_state.append((0, last_obs[0], np.concatenate([actions[0], actions[1]], axis=0).reshape(-1, 1), obs[0]))
-                        state_action_next_state.append((1, last_obs[1], np.concatenate([actions[0], actions[1], actions[2]], axis=0).reshape(-1, 1), obs[1]))
-                        state_action_next_state.append((2, last_obs[2], np.concatenate([actions[1], actions[2]], axis=0).reshape(-1, 1), obs[2]))
-                    else:
-                        # Joint local information storage for cityflow1x3 network
-                        state_action_next_state.append((0, np.concatenate([last_obs[0], last_obs[1]], axis=0), np.concatenate([actions[0], actions[1]], axis=0).reshape(-1, 1), obs[0]))
-                        state_action_next_state.append((1, np.array(last_obs).squeeze(axis=1), actions.reshape(-1, 1), obs[1]))
-                        state_action_next_state.append((2, np.concatenate([last_obs[1], last_obs[2]], axis=0), np.concatenate([actions[1], actions[2]], axis=0).reshape(-1, 1), obs[2]))
-
-                elif mode == "jlgat" and self.net == "cityflow4x4":
+                elif mode == "jlgat":
                     # Joint local information storage for cityflow4x4 network
-                    state_action_next_state.append((0, np.concatenate([last_obs[i] for i in [0, 1, 4]], axis=0), np.concatenate([actions[i] for i in [0, 1, 4]], axis=0).reshape(-1, 1), obs[0]))
-                    state_action_next_state.append((1, np.concatenate([last_obs[i] for i in [0, 1, 2, 5]], axis=0), np.concatenate([actions[i] for i in [0, 1, 2, 5]], axis=0).reshape(-1, 1), obs[1]))
-                    state_action_next_state.append((2, np.concatenate([last_obs[i] for i in [1, 2, 3, 6]], axis=0), np.concatenate([actions[i] for i in [1, 2, 3, 6]], axis=0).reshape(-1, 1), obs[2]))
-                    state_action_next_state.append((3, np.concatenate([last_obs[i] for i in [2, 3, 7]], axis=0), np.concatenate([actions[i] for i in [2, 3, 7]], axis=0).reshape(-1, 1), obs[3]))
-                    state_action_next_state.append((4, np.concatenate([last_obs[i] for i in [0, 4, 5, 8]], axis=0), np.concatenate([actions[i] for i in [0, 4, 5, 8]], axis=0).reshape(-1, 1), obs[4]))
-                    state_action_next_state.append((5, np.concatenate([last_obs[i] for i in [1, 4, 5, 6, 9]], axis=0), np.concatenate([actions[i] for i in [1, 4, 5, 6, 9]], axis=0).reshape(-1, 1), obs[5]))
-                    state_action_next_state.append((6, np.concatenate([last_obs[i] for i in [2, 5, 6, 7, 10]], axis=0), np.concatenate([actions[i] for i in [2, 5, 6, 7, 10]], axis=0).reshape(-1, 1), obs[6]))
-                    state_action_next_state.append((7, np.concatenate([last_obs[i] for i in [3, 6, 7, 11]], axis=0), np.concatenate([actions[i] for i in [3, 6, 7, 11]], axis=0).reshape(-1, 1), obs[7]))
-                    state_action_next_state.append((8, np.concatenate([last_obs[i] for i in [4, 8, 9, 12]], axis=0), np.concatenate([actions[i] for i in [4, 8, 9, 12]], axis=0).reshape(-1, 1), obs[8]))
-                    state_action_next_state.append((9, np.concatenate([last_obs[i] for i in [5, 8, 9, 10, 13]], axis=0), np.concatenate([actions[i] for i in [5, 8, 9, 10, 13]], axis=0).reshape(-1, 1), obs[9]))
-                    state_action_next_state.append((10, np.concatenate([last_obs[i] for i in [6, 9, 10, 11, 14]], axis=0), np.concatenate([actions[i] for i in [6, 9, 10, 11, 14]], axis=0).reshape(-1, 1), obs[10]))
-                    state_action_next_state.append((11, np.concatenate([last_obs[i] for i in [7, 10, 11, 15]], axis=0), np.concatenate([actions[i] for i in [7, 10, 11, 15]], axis=0).reshape(-1, 1), obs[11]))
-                    state_action_next_state.append((12, np.concatenate([last_obs[i] for i in [8, 12, 13]], axis=0), np.concatenate([actions[i] for i in [8, 12, 13]], axis=0).reshape(-1, 1), obs[12]))
-                    state_action_next_state.append((13, np.concatenate([last_obs[i] for i in [9, 12, 13, 14]], axis=0), np.concatenate([actions[i] for i in [9, 12, 13, 14]], axis=0).reshape(-1, 1), obs[13]))
-                    state_action_next_state.append((14, np.concatenate([last_obs[i] for i in [10, 13, 14, 15]], axis=0), np.concatenate([actions[i] for i in [10, 13, 14, 15]], axis=0).reshape(-1, 1), obs[14]))
-                    state_action_next_state.append((15, np.concatenate([last_obs[i] for i in [11, 14, 15]], axis=0), np.concatenate([actions[i] for i in [11, 14, 15]], axis=0).reshape(-1, 1), obs[15]))
-                
+                    for rank, neighbors in self.neighbour_infos.items():
+                        state_action_next_state.append((rank, pad_and_concat([last_obs[i] for i in neighbors]), np.concatenate([actions[i] for i in neighbors], axis=0).reshape(-1, 1), obs[rank]))
                 else:
                     state_action_next_state.append((last_obs, actions, obs))
 
@@ -1338,3 +972,21 @@ class TSCTrainer(BaseTrainer):
 
     def test(self):
         self.logger.info("Test function not implemented")
+    
+    def calc_dist(self, p1, p2):
+        return np.sqrt((p1["x"]-p2["x"])**2 + (p1["y"]-p2["y"])**2)
+
+def pad_and_concat(arrays, pad_value=0):
+    max_width = max(a.shape[-1] for a in arrays)
+
+    # Pad each array
+    padded = [
+        np.pad(a,
+            pad_width=[(0, 0), (0, max_width - a.shape[-1])],
+            mode="constant",
+            constant_values=pad_value)
+        for a in arrays
+    ]
+
+    # Concatenate along axis 0
+    return np.concatenate(padded, axis=0)
