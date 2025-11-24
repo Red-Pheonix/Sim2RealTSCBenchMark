@@ -1,18 +1,22 @@
-from . import RLAgent
-from common.registry import Registry
-from agent import utils
-import numpy as np
+import logging
 import os
 import random
 from collections import deque
+
 import gym
+import numpy as np
 import torch
-from torch import nn
 import torch.nn.functional as F
 import torch.optim as optim
+from torch import nn
 from torch.nn.utils import clip_grad_norm_
-from generator import LaneVehicleGenerator, IntersectionPhaseGenerator, IntersectionVehicleGenerator
-import logging
+
+from agent import utils
+from common.registry import Registry
+from generator import (IntersectionPhaseGenerator,
+                       IntersectionVehicleGenerator, LaneVehicleGenerator)
+
+from . import RLAgent
 
 
 @Registry.register_model('presslight')
@@ -283,40 +287,13 @@ class PressLightAgent(RLAgent):
         weights = self.model.state_dict()
         self.target_model.load_state_dict(weights)
 
-    def load_model(self, e, pretrained=False, network="cityflow1x3"):
-        # if pretrained:
-        #     project_dir = os.getcwd()  # Get current project directory
-        #     network_dir = "1x3" if network == "cityflow1x3" else "4x4"
-        #     pretrained_dir = os.path.join(project_dir, "pretrained", network_dir)
-        
-        #     if not os.path.exists(pretrained_dir):
-        #         raise FileNotFoundError(f"Pretrained directory {network_dir} not found in {project_dir}/pretrained")
-        
-        #     # Iterate over files in the directory
-        #     matching_file = None
-        #     for file_name in os.listdir(pretrained_dir):
-        #         if file_name.endswith(f"_{self.rank}.pt"):  # Check if filename ends with _rank.pt
-        #             matching_file = os.path.join(pretrained_dir, file_name)
-        #             break  # Stop at the first match
-        
-        #     if matching_file:
-        #         model_name = matching_file
-        #     else:
-        #         raise FileNotFoundError(f"No model file found for rank {self.rank} in {pretrained_dir}")
-        # else:
-        #     model_name = os.path.join(
-        #         Registry.mapping['logger_mapping']['path'].path, 'model', f'{e}_{self.rank}.pt')
+    def load_model(self, e, pretrained=False, network=""):
         if pretrained:
-            model_name = f"pretrained/cityflow_tempe_16/100_{self.rank}.pt"
+            model_name = os.path.join("pretrained", network, f"{self.rank}.pt")
         else:
-            model_name = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model', f'{e}_{self.rank}.pt')
-        
-        # model_name = "pretrained/cityflow_tempe_1x1/100_0.pt"
-        # model_name = "pretrained/cityflow_tempe_1x1_2/100_0.pt"
-        # model_name = "pretrained/sumo_tempe_1x1/100_0.pt"
-        # model_name = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model', f'{e}_{self.rank}.pt')
-        
-        # model_name = f"pretrained/cityflow_tempe_16/100_{self.rank}.pt"
+            model_name = os.path.join(
+                Registry.mapping['logger_mapping']['path'].path, 'model', f'{e}_{self.rank}.pt')
+
         self.model = self._build_model()
         self.model.load_state_dict(torch.load(model_name, weights_only=True))
         self.target_model = self._build_model()
