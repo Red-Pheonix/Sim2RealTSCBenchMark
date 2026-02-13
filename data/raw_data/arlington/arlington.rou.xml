@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+
+    <vType id="pkw" length="5.0" width="2.0" minGap="2.5"
+           maxSpeed="11.111" accel="2.0" decel="4.5"/>
+
+    <flow id="flow_0" type="pkw" begin="0" end="3600" vehsPerHour="150">
+        <route edges="4_6 6_2"/>
+    </flow>
+
+    <flow id="flow_1" type="pkw" begin="0" end="3600" vehsPerHour="60">
+        <route edges="4_6 6_7"/>
+    </flow>
+
+    <flow id="flow_2" type="pkw" begin="0" end="3600" vehsPerHour="30">
+        <route edges="4_6 6_5"/>
+    </flow>
+
+    <flow id="flow_3" type="pkw" begin="0" end="3600" vehsPerHour="60">
+        <route edges="2_6 6_4"/>
+    </flow>
+
+    <flow id="flow_4" type="pkw" begin="0" end="3600" vehsPerHour="24">
+        <route edges="2_6 6_5"/>
+    </flow>
+
+    <flow id="flow_5" type="pkw" begin="0" end="3600" vehsPerHour="60">
+        <route edges="5_6 6_7"/>
+    </flow>
+
+    <flow id="flow_6" type="pkw" begin="0" end="3600" vehsPerHour="60">
+        <route edges="5_6 6_4"/>
+    </flow>
+
+    <flow id="flow_7" type="pkw" begin="0" end="3600" vehsPerHour="75">
+        <route edges="7_6 6_5"/>
+    </flow>
+
+    <flow id="flow_8" type="pkw" begin="0" end="3600" vehsPerHour="30">
+        <route edges="7_6 6_2"/>
+    </flow>
+
+    <flow id="flow_9" type="pkw" begin="0" end="3600" vehsPerHour="60">
+        <route edges="7_6 6_4"/>
+    </flow>
+
+</routes>
