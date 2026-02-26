@@ -3,6 +3,7 @@ from common.registry import Registry
 from agent import utils
 import numpy as np
 import os
+import json
 import random
 from collections import deque
 import gym
@@ -62,6 +63,21 @@ class DQNAgent(RLAgent):
         self.learning_rate = Registry.mapping['model_mapping']['setting'].param['learning_rate']
         self.vehicle_max = Registry.mapping['model_mapping']['setting'].param['vehicle_max']
         self.batch_size = Registry.mapping['model_mapping']['setting'].param['batch_size']
+        
+        # join two together to make filename
+        phase_trans_filename = Registry.mapping["world_mapping"]["setting"].param.get("phaseTransitions")
+        
+        if phase_trans_filename is not None:
+            phase_trans_filename = os.path.join(
+                Registry.mapping["world_mapping"]["setting"].param["dir"],
+                phase_trans_filename
+            )
+            # open the file
+            with open(phase_trans_filename, 'r') as f:
+                self.phase_transitions = json.load(f)
+        else:
+            self.phase_transitions = None
+            
 
         self.model = self._build_model()
         self.target_model = self._build_model()
@@ -70,142 +86,8 @@ class DQNAgent(RLAgent):
         self.optimizer = optim.RMSprop(self.model.parameters(),
                                        lr=self.learning_rate,
                                        alpha=0.9, centered=False, eps=1e-7)
-        
-        # transitions
-        # self.phase_transitions = {
-        #     1: {
-        #         2: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 23},
-        #         3: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 23},
-        #         4: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 23},
-        #         5: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 23},
-        #         6: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 23},
-        #         7: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 23},
-        #         8: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 23},
-        #     },
-        #     2: {
-        #         1: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 37},
-        #         3: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 37},
-        #         4: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 37},
-        #         5: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 37},
-        #         6: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 37},
-        #         7: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 37},
-        #         8: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 37},
-        #     },
-        #     3: {
-        #         1: {"allowed": 1, "min_time_to_transition": 13, "max_time_to_transition": 23},
-        #         2: {"allowed": 1, "min_time_to_transition": 13, "max_time_to_transition": 23},
-        #         4: {"allowed": 1, "min_time_to_transition": 13, "max_time_to_transition": 23},
-        #         5: {"allowed": 1, "min_time_to_transition": 13, "max_time_to_transition": 23},
-        #         6: {"allowed": 1, "min_time_to_transition": 13, "max_time_to_transition": 23},
-        #         7: {"allowed": 1, "min_time_to_transition": 13, "max_time_to_transition": 23},
-        #         8: {"allowed": 1, "min_time_to_transition": 13, "max_time_to_transition": 23},
-        #     },
-        #     4: {
-        #         1: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 23},
-        #         2: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 23},
-        #         3: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 23},
-        #         5: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 23},
-        #         6: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 23},
-        #         7: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 23},
-        #         8: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 23},
-        #     },
-        #     5: {
-        #         1: {"allowed": 1, "min_time_to_transition": 13, "max_time_to_transition": 21},
-        #         2: {"allowed": 1, "min_time_to_transition": 13, "max_time_to_transition": 21},
-        #         3: {"allowed": 1, "min_time_to_transition": 13, "max_time_to_transition": 21},
-        #         4: {"allowed": 1, "min_time_to_transition": 13, "max_time_to_transition": 21},
-        #         6: {"allowed": 1, "min_time_to_transition": 13, "max_time_to_transition": 21},
-        #         7: {"allowed": 1, "min_time_to_transition": 13, "max_time_to_transition": 21},
-        #         8: {"allowed": 1, "min_time_to_transition": 13, "max_time_to_transition": 21},
-        #     },
-        #     6: {
-        #         1: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 21},
-        #         2: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 21},
-        #         3: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 21},
-        #         4: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 21},
-        #         5: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 21},
-        #         7: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 21},
-        #         8: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 21},
-        #     },
-        #     7: {
-        #         1: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 38},
-        #         2: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 38},
-        #         3: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 38},
-        #         4: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 38},
-        #         5: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 38},
-        #         6: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 38},
-        #         8: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 38},
-        #     },
-        #     8: {
-        #         1: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 42},
-        #         2: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 42},
-        #         3: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 42},
-        #         4: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 42},
-        #         5: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 42},
-        #         6: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 42},
-        #         7: {"allowed": 1, "min_time_to_transition": 15, "max_time_to_transition": 42},
-        #     }
-        # }
-        
-        self.phase_transitions = {
-            1: {
-                2: {
-                    "allowed": 1,
-                    "min_time_to_transition": 15,
-                    "max_time_to_transition": 23
-                }
-            },
-            2: {
-                3: {
-                    "allowed": 1,
-                    "min_time_to_transition": 15,
-                    "max_time_to_transition": 37
-                }
-            },
-            3: {
-                4: {
-                    "allowed": 1,
-                    "min_time_to_transition": 13,
-                    "max_time_to_transition": 23
-                }
-            },
-            4: {
-                5: {
-                    "allowed": 1,
-                    "min_time_to_transition": 15,
-                    "max_time_to_transition": 23
-                }
-            },
-            5: {
-                6: {
-                    "allowed": 1,
-                    "min_time_to_transition": 13,
-                    "max_time_to_transition": 21
-                }
-            },
-            6: {
-                7: {
-                    "allowed": 1,
-                    "min_time_to_transition": 15,
-                    "max_time_to_transition": 21
-                }
-            },
-            7: {
-                8: {
-                    "allowed": 1,
-                    "min_time_to_transition": 15,
-                    "max_time_to_transition": 38
-                }
-            },
-            8: {
-                1: {
-                    "allowed": 1,
-                    "min_time_to_transition": 15,
-                    "max_time_to_transition": 42
-                }
-        }
-        }
-        
+
+
         num_phases = self.action_space.n
         # allowed transitions mask
         self.allowed_mask = torch.zeros(num_phases, num_phases, dtype=torch.bool)
@@ -216,21 +98,13 @@ class DQNAgent(RLAgent):
 
         for from_phase, _ in self.phase_transitions.items():
             for to_phase in self.phase_transitions[from_phase]:
-
                 t = self.phase_transitions[from_phase][to_phase]
+                self.allowed_mask[int(from_phase) - 1, int(to_phase) - 1] = bool(t["allowed"])
+                self.min_time[int(from_phase) - 1, int(to_phase) - 1] = t["min_time_to_transition"]
+                self.max_time[int(from_phase) - 1, int(from_phase) - 1] = t["max_time_to_transition"]
 
-                self.allowed_mask[from_phase - 1, to_phase - 1] = bool(t["allowed"])
-                
-                self.min_time[from_phase - 1, to_phase - 1] = t["min_time_to_transition"]
-                # self.min_time[from_phase - 1, from_phase - 1] = t["min_time_to_transition"]
-                
-                # self.max_time[from_phase - 1, to_phase - 1] = t["max_time_to_transition"]
-                self.max_time[from_phase - 1, from_phase - 1] = t["max_time_to_transition"]
-        
         # Allow phase -> same phase
         self.allowed_mask |= torch.eye(num_phases, dtype=torch.bool)
-
-        self.prev_action = 0
 
 
     def __repr__(self):
@@ -307,7 +181,7 @@ class DQNAgent(RLAgent):
         :param phase: current phase
         :param test: boolean, decide whether is test process
         :return action: action that has the highest score
-        '''    
+        '''
         if self.phase:
             if self.one_hot:
                 feature = np.concatenate([ob, utils.idx2onehot(phase, self.action_space.n)], axis=1)
@@ -317,10 +191,24 @@ class DQNAgent(RLAgent):
             feature = ob
         observation = torch.tensor(feature, dtype=torch.float32)
         # TODO: no need to calculate gradient when interacting with environment
-        
+
         # grab current time
         current_phase_time = self.phase_generator.I.current_phase_time
-        
+        valid_action_mask = self.generate_action_mask(phase, current_phase_time)
+
+        if not test:
+            if np.random.rand() <= self.epsilon:
+                action = torch.multinomial(valid_action_mask.float(), num_samples=1)[0]
+                return action
+
+        actions = self.model(observation, train=False)
+        actions = actions.masked_fill(~valid_action_mask, float("-inf"))
+        actions = actions.clone().detach().numpy()
+        action = np.argmax(actions, axis=1)
+
+        return action
+    
+    def generate_action_mask(self, phase, current_phase_time):
         allowed = self.allowed_mask[phase]
 
         min_ok = current_phase_time >= self.min_time[phase]
@@ -330,24 +218,7 @@ class DQNAgent(RLAgent):
 
         valid_mask = allowed & time_ok
         
-        if not test:
-            if np.random.rand() <= self.epsilon:
-                action = torch.multinomial(valid_mask.float(), num_samples=1)[0]
-                
-                cur_action = int(action)
-                self.prev_action = cur_action
-        
-                return action
-        
-        actions = self.model(observation, train=False)    
-        actions = actions.masked_fill(~valid_mask, float("-inf"))
-        actions = actions.clone().detach().numpy()
-        action = np.argmax(actions, axis=1)
-        
-        cur_action = int(action)
-        self.prev_action = cur_action
-        
-        return action
+        return valid_mask
 
     def sample(self):
         '''
