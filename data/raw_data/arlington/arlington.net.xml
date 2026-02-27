@@ -1,20 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2026-02-13 15:35:04 by Eclipse SUMO netconvert Version v1_21_0+1578-ba65e573d86
-<netconvertConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+<!-- generated on 2026-02-13 17:12:58 by Eclipse SUMO netedit Version v1_21_0+1578-ba65e573d86
+<neteditConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/neteditConfiguration.xsd">
 
     <input>
-        <node-files value="/home/local/ASURITE/longchao/Desktop/ferdousProject/git_projects/LibSignal/arlington.nod.xml"/>
-        <edge-files value="/home/local/ASURITE/longchao/Desktop/ferdousProject/git_projects/LibSignal/arlington.edg.xml"/>
-        <connection-files value="/home/local/ASURITE/longchao/Desktop/ferdousProject/git_projects/LibSignal/arlington.con.xml"/>
-        <tllogic-files value="/home/local/ASURITE/longchao/Desktop/ferdousProject/git_projects/LibSignal/arlington.tll.xml"/>
+        <route-files value="arlington.rou.xml"/>
+        <sumo-net-file value="arlington.net.xml"/>
     </input>
 
     <output>
-        <output-file value="/home/local/ASURITE/longchao/Desktop/ferdousProject/git_projects/LibSignal/arlington.net.xml"/>
+        <output-file value="arlington.net.xml"/>
     </output>
 
-</netconvertConfiguration>
+    <processing>
+        <geometry.min-radius.fix.railways value="false"/>
+        <geometry.max-grade.fix value="false"/>
+        <offset.disable-normalization value="true"/>
+        <lefthand value="0"/>
+    </processing>
+
+    <junctions>
+        <no-turnarounds value="true"/>
+        <junctions.corner-detail value="5"/>
+        <junctions.limit-turn-speed value="5.50"/>
+        <rectangular-lane-cut value="0"/>
+    </junctions>
+
+    <pedestrian>
+        <walkingareas value="0"/>
+    </pedestrian>
+
+    <time>
+        <begin value="0"/>
+        <end value="3600"/>
+    </time>
+
+</neteditConfiguration>
 -->
 
 <net version="1.20" junctionCornerDetail="5" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
@@ -117,19 +138,19 @@
     <tlLogic id="6" type="static" programID="0" offset="0">
         <phase duration="8"  state="GGrrrrrrrrrrrrrrrrrrGGGGGGG"/>
         <phase duration="5"  state="rrrrrrrrrrrrrrrrrrrrrrrrrrr"/>
-        <phase duration="8"  state="rrrrrrrGGGGGrrrrrrrrGGGGGrr"/>
+        <phase duration="8"  state="rrrrrrrGGGGrrrrrrrrrGGGrrrr"/>
         <phase duration="5"  state="rrrrrrrrrrrrrrrrrrrrrrrrrrr"/>
-        <phase duration="6"  state="GGrrrrrrrrrrGGGrrrrrrrrrrGG"/>
+        <phase duration="6"  state="GGrrrrrrrrrGGGGrrrrrrrrGGGG"/>
         <phase duration="5"  state="rrrrrrrrrrrrrrrrrrrrrrrrrrr"/>
         <phase duration="8"  state="rrrrrrrGGGGGGGGrrrrrrrrrrrr"/>
         <phase duration="5"  state="rrrrrrrrrrrrrrrrrrrrrrrrrrr"/>
         <phase duration="6"  state="rrrGGGGrrrrrrrrrrGGGrrrrrrr"/>
         <phase duration="5"  state="rrrrrrrrrrrrrrrrrrrrrrrrrrr"/>
-        <phase duration="8"  state="rrrrrrrrrrrrrrrGGGGGrrrrrrr"/>
+        <phase duration="8"  state="rrrrrrrrrrrrrrrGGGGrrrrrrrr"/>
         <phase duration="5"  state="rrrrrrrrrrrrrrrrrrrrrrrrrrr"/>
         <phase duration="8"  state="rrGGGGGrrrrrrrrrrrrrrrrrrrr"/>
         <phase duration="5"  state="rrrrrrrrrrrrrrrrrrrrrrrrrrr"/>
-        <phase duration="8"  state="rrGrrrrrrrrrrrrGGrrrrrrrrrr"/>
+        <phase duration="8"  state="rrGrrrrrrrrrrrrGrrrrrrrrrrr"/>
         <phase duration="5"  state="rrrrrrrrrrrrrrrrrrrrrrrrrrr"/>
     </tlLogic>
 
