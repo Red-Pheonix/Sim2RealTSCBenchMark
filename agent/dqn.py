@@ -63,10 +63,10 @@ class DQNAgent(RLAgent):
         self.learning_rate = Registry.mapping['model_mapping']['setting'].param['learning_rate']
         self.vehicle_max = Registry.mapping['model_mapping']['setting'].param['vehicle_max']
         self.batch_size = Registry.mapping['model_mapping']['setting'].param['batch_size']
-        
+
         # join two together to make filename
         phase_trans_filename = Registry.mapping["world_mapping"]["setting"].param.get("phaseTransitions")
-        
+
         if phase_trans_filename is not None:
             phase_trans_filename = os.path.join(
                 Registry.mapping["world_mapping"]["setting"].param["dir"],
@@ -77,7 +77,7 @@ class DQNAgent(RLAgent):
                 self.phase_transitions = json.load(f)
         else:
             self.phase_transitions = None
-            
+
 
         self.model = self._build_model()
         self.target_model = self._build_model()
@@ -87,15 +87,22 @@ class DQNAgent(RLAgent):
                                        lr=self.learning_rate,
                                        alpha=0.9, centered=False, eps=1e-7)
 
-
         num_phases = self.action_space.n
+
         # allowed transitions mask
         self.allowed_mask = torch.zeros(num_phases, num_phases, dtype=torch.bool)
-
-        # time constraints
         self.min_time = torch.zeros(num_phases, num_phases)
         self.max_time = torch.full((num_phases, num_phases), float('inf'))
 
+        if self.phase_transitions is not None:
+            self.generate_allowed_mask(num_phases)
+        else:
+            self.allowed_mask = torch.ones(num_phases, num_phases, dtype=torch.bool)
+
+    def __repr__(self):
+        return self.model.__repr__()
+
+    def generate_allowed_mask(self , num_phases):
         for from_phase, _ in self.phase_transitions.items():
             for to_phase in self.phase_transitions[from_phase]:
                 t = self.phase_transitions[from_phase][to_phase]
@@ -105,10 +112,6 @@ class DQNAgent(RLAgent):
 
         # Allow phase -> same phase
         self.allowed_mask |= torch.eye(num_phases, dtype=torch.bool)
-
-
-    def __repr__(self):
-        return self.model.__repr__()
 
     def reset(self):
         '''
@@ -207,7 +210,7 @@ class DQNAgent(RLAgent):
         action = np.argmax(actions, axis=1)
 
         return action
-    
+
     def generate_action_mask(self, phase, current_phase_time):
         allowed = self.allowed_mask[phase]
 
@@ -217,7 +220,7 @@ class DQNAgent(RLAgent):
         time_ok = min_ok & max_ok
 
         valid_mask = allowed & time_ok
-        
+
         return valid_mask
 
     def sample(self):
