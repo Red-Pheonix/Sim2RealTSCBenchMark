@@ -28,8 +28,8 @@ from common.gat_utils import (
 )
 
 
-@Registry.register_trainer("tsc")
-class TSCTrainer(BaseTrainer):
+@Registry.register_trainer("tsc5")
+class TSCTrainer5(BaseTrainer):
     """
     Register TSCTrainer for traffic signal control tasks.
     """

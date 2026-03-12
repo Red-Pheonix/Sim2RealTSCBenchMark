@@ -25,8 +25,8 @@ class BaseTask:
                     )
 
 
-@Registry.register_task("tsc")
-class TSCTask(BaseTask):
+@Registry.register_task("tsc5")
+class TSCTask5(BaseTask):
     '''
     Register Traffic Signal Control task.
     '''
@@ -50,8 +50,8 @@ class TSCTask(BaseTask):
             self._process_error(e)
             raise e
 
-@Registry.register_task("tsc2")
-class TSCTask2(BaseTask):
+@Registry.register_task("tsc")
+class TSCTask(BaseTask):
     '''
     Register Traffic Signal Control task.
     '''

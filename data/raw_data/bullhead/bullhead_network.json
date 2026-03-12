@@ -1,0 +1,3127 @@
+{
+    "intersections": [
+        {
+            "id": "31",
+            "point": {
+                "x": 719283.2809033486,
+                "y": 3871928.750384673
+            },
+            "width": 0,
+            "roads": [
+                "87_31",
+                "31_87"
+            ],
+            "roadLinks": [],
+            "trafficLight": {
+                "roadLinkIndices": [],
+                "lightphases": [
+                    {
+                        "time": 5,
+                        "availableRoadLinks": []
+                    }
+                ]
+            },
+            "virtual": true
+        },
+        {
+            "id": "39",
+            "point": {
+                "x": 719132.067436613,
+                "y": 3878569.2936191927
+            },
+            "width": 15,
+            "roads": [
+                "75_39",
+                "106_39",
+                "73_39",
+                "74_39",
+                "39_73",
+                "39_74",
+                "39_75",
+                "39_106"
+            ],
+            "roadLinks": [
+                {
+                    "type": "turn_left",
+                    "startRoad": "75_39",
+                    "endRoad": "39_73",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "75_39",
+                    "endRoad": "39_106",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 0,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 1,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "75_39",
+                    "endRoad": "39_74",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "106_39",
+                    "endRoad": "39_74",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "106_39",
+                    "endRoad": "39_75",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 1,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "106_39",
+                    "endRoad": "39_73",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "73_39",
+                    "endRoad": "39_106",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "73_39",
+                    "endRoad": "39_74",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "73_39",
+                    "endRoad": "39_75",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "74_39",
+                    "endRoad": "39_75",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "74_39",
+                    "endRoad": "39_73",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "74_39",
+                    "endRoad": "39_106",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 1,
+                            "points": []
+                        }
+                    ]
+                }
+            ],
+            "trafficLight": {
+                "roadLinkIndices": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11
+                ],
+                "lightphases": [
+                    {
+                        "time": 3,
+                        "availableRoadLinks": []
+                    },
+                    {
+                        "time": 6,
+                        "availableRoadLinks": [
+                            3,
+                            0
+                        ]
+                    },
+                    {
+                        "time": 20,
+                        "availableRoadLinks": [
+                            3,
+                            4,
+                            5
+                        ]
+                    },
+                    {
+                        "time": 20,
+                        "availableRoadLinks": [
+                            1,
+                            2,
+                            0
+                        ]
+                    },
+                    {
+                        "time": 20,
+                        "availableRoadLinks": [
+                            2,
+                            1,
+                            4,
+                            5
+                        ]
+                    },
+                    {
+                        "time": 6,
+                        "availableRoadLinks": [
+                            6,
+                            9
+                        ]
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            8,
+                            7,
+                            6
+                        ]
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            11,
+                            10,
+                            9
+                        ]
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            11,
+                            8,
+                            7,
+                            10
+                        ]
+                    }
+                ]
+            },
+            "virtual": false
+        },
+        {
+            "id": "73",
+            "point": {
+                "x": 719065.6055407171,
+                "y": 3878568.6083885874
+            },
+            "width": 0,
+            "roads": [
+                "73_39",
+                "39_73"
+            ],
+            "roadLinks": [],
+            "trafficLight": {
+                "roadLinkIndices": [],
+                "lightphases": [
+                    {
+                        "time": 5,
+                        "availableRoadLinks": []
+                    }
+                ]
+            },
+            "virtual": true
+        },
+        {
+            "id": "74",
+            "point": {
+                "x": 719218.041992248,
+                "y": 3878570.143670403
+            },
+            "width": 0,
+            "roads": [
+                "74_39",
+                "39_74"
+            ],
+            "roadLinks": [],
+            "trafficLight": {
+                "roadLinkIndices": [],
+                "lightphases": [
+                    {
+                        "time": 5,
+                        "availableRoadLinks": []
+                    }
+                ]
+            },
+            "virtual": true
+        },
+        {
+            "id": "75",
+            "point": {
+                "x": 719152.748098494,
+                "y": 3877659.5252276934
+            },
+            "width": 15,
+            "roads": [
+                "75_39",
+                "78_75",
+                "39_75",
+                "76_75",
+                "77_75",
+                "75_76",
+                "75_77",
+                "75_78"
+            ],
+            "roadLinks": [
+                {
+                    "type": "turn_left",
+                    "startRoad": "78_75",
+                    "endRoad": "75_76",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "78_75",
+                    "endRoad": "75_39",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 1,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "78_75",
+                    "endRoad": "75_77",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "39_75",
+                    "endRoad": "75_77",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "39_75",
+                    "endRoad": "75_78",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 1,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "39_75",
+                    "endRoad": "75_76",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "76_75",
+                    "endRoad": "75_39",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "76_75",
+                    "endRoad": "75_77",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "76_75",
+                    "endRoad": "75_78",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "77_75",
+                    "endRoad": "75_78",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "77_75",
+                    "endRoad": "75_76",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "77_75",
+                    "endRoad": "75_39",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                }
+            ],
+            "trafficLight": {
+                "roadLinkIndices": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11
+                ],
+                "lightphases": [
+                    {
+                        "time": 3,
+                        "availableRoadLinks": []
+                    },
+                    {
+                        "time": 6,
+                        "availableRoadLinks": [
+                            3,
+                            0
+                        ]
+                    },
+                    {
+                        "time": 20,
+                        "availableRoadLinks": [
+                            3,
+                            4,
+                            5
+                        ]
+                    },
+                    {
+                        "time": 20,
+                        "availableRoadLinks": [
+                            1,
+                            2,
+                            0
+                        ]
+                    },
+                    {
+                        "time": 20,
+                        "availableRoadLinks": [
+                            2,
+                            1,
+                            4,
+                            5
+                        ]
+                    },
+                    {
+                        "time": 6,
+                        "availableRoadLinks": [
+                            6,
+                            9
+                        ]
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            8,
+                            7,
+                            6
+                        ]
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            11,
+                            10,
+                            9
+                        ]
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            11,
+                            8,
+                            7,
+                            10
+                        ]
+                    }
+                ]
+            },
+            "virtual": false
+        },
+        {
+            "id": "76",
+            "point": {
+                "x": 719097.2799241036,
+                "y": 3877658.1901036166
+            },
+            "width": 0,
+            "roads": [
+                "76_75",
+                "75_76"
+            ],
+            "roadLinks": [],
+            "trafficLight": {
+                "roadLinkIndices": [],
+                "lightphases": [
+                    {
+                        "time": 5,
+                        "availableRoadLinks": []
+                    }
+                ]
+            },
+            "virtual": true
+        },
+        {
+            "id": "77",
+            "point": {
+                "x": 719216.7571946671,
+                "y": 3877660.7609861298
+            },
+            "width": 0,
+            "roads": [
+                "77_75",
+                "75_77"
+            ],
+            "roadLinks": [],
+            "trafficLight": {
+                "roadLinkIndices": [],
+                "lightphases": [
+                    {
+                        "time": 5,
+                        "availableRoadLinks": []
+                    }
+                ]
+            },
+            "virtual": true
+        },
+        {
+            "id": "78",
+            "point": {
+                "x": 719168.7562563032,
+                "y": 3876956.3982278802
+            },
+            "width": 15,
+            "roads": [
+                "78_75",
+                "80_78",
+                "75_78",
+                "79_78",
+                "78_79",
+                "78_80"
+            ],
+            "roadLinks": [
+                {
+                    "type": "go_straight",
+                    "startRoad": "80_78",
+                    "endRoad": "78_75",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 1,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "80_78",
+                    "endRoad": "78_79",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "75_78",
+                    "endRoad": "78_79",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "75_78",
+                    "endRoad": "78_80",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 1,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "79_78",
+                    "endRoad": "78_80",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 1,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "79_78",
+                    "endRoad": "78_75",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                }
+            ],
+            "trafficLight": {
+                "roadLinkIndices": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                "lightphases": [
+                    {
+                        "time": 3,
+                        "availableRoadLinks": []
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            2,
+                            3
+                        ]
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            1,
+                            0,
+                            3
+                        ]
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            5,
+                            4
+                        ]
+                    }
+                ]
+            },
+            "virtual": false
+        },
+        {
+            "id": "79",
+            "point": {
+                "x": 719244.3613075006,
+                "y": 3876957.302920955
+            },
+            "width": 0,
+            "roads": [
+                "79_78",
+                "78_79"
+            ],
+            "roadLinks": [],
+            "trafficLight": {
+                "roadLinkIndices": [],
+                "lightphases": [
+                    {
+                        "time": 5,
+                        "availableRoadLinks": []
+                    }
+                ]
+            },
+            "virtual": true
+        },
+        {
+            "id": "80",
+            "point": {
+                "x": 719187.045680911,
+                "y": 3876145.6798397535
+            },
+            "width": 15,
+            "roads": [
+                "80_78",
+                "82_80",
+                "78_80",
+                "81_80",
+                "80_81",
+                "80_82"
+            ],
+            "roadLinks": [
+                {
+                    "type": "go_straight",
+                    "startRoad": "82_80",
+                    "endRoad": "80_78",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 1,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "82_80",
+                    "endRoad": "80_81",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "78_80",
+                    "endRoad": "80_81",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "78_80",
+                    "endRoad": "80_82",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 1,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "81_80",
+                    "endRoad": "80_82",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "81_80",
+                    "endRoad": "80_78",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                }
+            ],
+            "trafficLight": {
+                "roadLinkIndices": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                "lightphases": [
+                    {
+                        "time": 3,
+                        "availableRoadLinks": []
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            2,
+                            1,
+                            0,
+                            3
+                        ]
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            5,
+                            4
+                        ]
+                    }
+                ]
+            },
+            "virtual": false
+        },
+        {
+            "id": "81",
+            "point": {
+                "x": 719273.666481245,
+                "y": 3876145.0195798716
+            },
+            "width": 0,
+            "roads": [
+                "81_80",
+                "80_81"
+            ],
+            "roadLinks": [],
+            "trafficLight": {
+                "roadLinkIndices": [],
+                "lightphases": [
+                    {
+                        "time": 5,
+                        "availableRoadLinks": []
+                    }
+                ]
+            },
+            "virtual": true
+        },
+        {
+            "id": "82",
+            "point": {
+                "x": 719206.5506380175,
+                "y": 3875334.990618748
+            },
+            "width": 15,
+            "roads": [
+                "82_80",
+                "84_82",
+                "80_82",
+                "83_82",
+                "82_83",
+                "82_84"
+            ],
+            "roadLinks": [
+                {
+                    "type": "go_straight",
+                    "startRoad": "84_82",
+                    "endRoad": "82_80",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 1,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "84_82",
+                    "endRoad": "82_83",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "80_82",
+                    "endRoad": "82_83",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "80_82",
+                    "endRoad": "82_84",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 2,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 3,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "83_82",
+                    "endRoad": "82_84",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "83_82",
+                    "endRoad": "82_80",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 1,
+                            "points": []
+                        }
+                    ]
+                }
+            ],
+            "trafficLight": {
+                "roadLinkIndices": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                "lightphases": [
+                    {
+                        "time": 3,
+                        "availableRoadLinks": []
+                    },
+                    {
+                        "time": 36,
+                        "availableRoadLinks": [
+                            2,
+                            3
+                        ]
+                    },
+                    {
+                        "time": 20,
+                        "availableRoadLinks": [
+                            1,
+                            0,
+                            3
+                        ]
+                    },
+                    {
+                        "time": 6,
+                        "availableRoadLinks": [
+                            5,
+                            4
+                        ]
+                    }
+                ]
+            },
+            "virtual": false
+        },
+        {
+            "id": "83",
+            "point": {
+                "x": 719321.441788505,
+                "y": 3875338.059563962
+            },
+            "width": 0,
+            "roads": [
+                "83_82",
+                "82_83"
+            ],
+            "roadLinks": [],
+            "trafficLight": {
+                "roadLinkIndices": [],
+                "lightphases": [
+                    {
+                        "time": 5,
+                        "availableRoadLinks": []
+                    }
+                ]
+            },
+            "virtual": true
+        },
+        {
+            "id": "84",
+            "point": {
+                "x": 719242.935835978,
+                "y": 3873720.8675200026
+            },
+            "width": 15,
+            "roads": [
+                "84_82",
+                "98_84",
+                "82_84",
+                "85_84",
+                "86_84",
+                "84_85",
+                "84_86",
+                "84_98"
+            ],
+            "roadLinks": [
+                {
+                    "type": "turn_left",
+                    "startRoad": "98_84",
+                    "endRoad": "84_85",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "98_84",
+                    "endRoad": "84_82",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 0,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 1,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 3,
+                            "endLaneIndex": 1,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "98_84",
+                    "endRoad": "84_86",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 3,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "82_84",
+                    "endRoad": "84_86",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "82_84",
+                    "endRoad": "84_98",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 0,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 1,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 3,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "82_84",
+                    "endRoad": "84_85",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 3,
+                            "endLaneIndex": 1,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "85_84",
+                    "endRoad": "84_82",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "85_84",
+                    "endRoad": "84_86",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 1,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "85_84",
+                    "endRoad": "84_98",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "86_84",
+                    "endRoad": "84_98",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "86_84",
+                    "endRoad": "84_85",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 1,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "86_84",
+                    "endRoad": "84_82",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 1,
+                            "points": []
+                        }
+                    ]
+                }
+            ],
+            "trafficLight": {
+                "roadLinkIndices": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11
+                ],
+                "lightphases": [
+                    {
+                        "time": 3,
+                        "availableRoadLinks": []
+                    },
+                    {
+                        "time": 6,
+                        "availableRoadLinks": [
+                            3,
+                            0
+                        ]
+                    },
+                    {
+                        "time": 25,
+                        "availableRoadLinks": [
+                            3,
+                            4,
+                            5
+                        ]
+                    },
+                    {
+                        "time": 25,
+                        "availableRoadLinks": [
+                            1,
+                            2,
+                            0
+                        ]
+                    },
+                    {
+                        "time": 25,
+                        "availableRoadLinks": [
+                            2,
+                            1,
+                            4,
+                            5
+                        ]
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            7,
+                            6,
+                            9,
+                            11,
+                            10,
+                            8
+                        ]
+                    }
+                ]
+            },
+            "virtual": false
+        },
+        {
+            "id": "85",
+            "point": {
+                "x": 719164.9145940369,
+                "y": 3873718.9912029086
+            },
+            "width": 0,
+            "roads": [
+                "85_84",
+                "84_85"
+            ],
+            "roadLinks": [],
+            "trafficLight": {
+                "roadLinkIndices": [],
+                "lightphases": [
+                    {
+                        "time": 5,
+                        "availableRoadLinks": []
+                    }
+                ]
+            },
+            "virtual": true
+        },
+        {
+            "id": "86",
+            "point": {
+                "x": 719348.6839143777,
+                "y": 3873723.715582448
+            },
+            "width": 0,
+            "roads": [
+                "86_84",
+                "84_86"
+            ],
+            "roadLinks": [],
+            "trafficLight": {
+                "roadLinkIndices": [],
+                "lightphases": [
+                    {
+                        "time": 5,
+                        "availableRoadLinks": []
+                    }
+                ]
+            },
+            "virtual": true
+        },
+        {
+            "id": "87",
+            "point": {
+                "x": 719279.4095351384,
+                "y": 3872102.4769942435
+            },
+            "width": 15,
+            "roads": [
+                "87_31",
+                "31_87",
+                "98_87",
+                "88_87",
+                "89_87",
+                "87_88",
+                "87_89",
+                "87_98"
+            ],
+            "roadLinks": [
+                {
+                    "type": "turn_left",
+                    "startRoad": "31_87",
+                    "endRoad": "87_88",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "31_87",
+                    "endRoad": "87_98",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 1,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "31_87",
+                    "endRoad": "87_89",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 1,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "98_87",
+                    "endRoad": "87_89",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "98_87",
+                    "endRoad": "87_31",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 0,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 1,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "98_87",
+                    "endRoad": "87_88",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 1,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "88_87",
+                    "endRoad": "87_98",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "88_87",
+                    "endRoad": "87_89",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 0,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 1,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "88_87",
+                    "endRoad": "87_31",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 1,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "89_87",
+                    "endRoad": "87_31",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "89_87",
+                    "endRoad": "87_88",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 0,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 1,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "89_87",
+                    "endRoad": "87_98",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                }
+            ],
+            "trafficLight": {
+                "roadLinkIndices": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11
+                ],
+                "lightphases": [
+                    {
+                        "time": 3,
+                        "availableRoadLinks": []
+                    },
+                    {
+                        "time": 6,
+                        "availableRoadLinks": [
+                            3,
+                            0
+                        ]
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            3,
+                            4,
+                            5
+                        ]
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            1,
+                            2,
+                            0
+                        ]
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            2,
+                            1,
+                            4,
+                            5
+                        ]
+                    },
+                    {
+                        "time": 6,
+                        "availableRoadLinks": [
+                            6,
+                            9
+                        ]
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            8,
+                            7,
+                            6
+                        ]
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            11,
+                            10,
+                            9
+                        ]
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            11,
+                            8,
+                            7,
+                            10
+                        ]
+                    }
+                ]
+            },
+            "virtual": false
+        },
+        {
+            "id": "88",
+            "point": {
+                "x": 719218.4480854182,
+                "y": 3872101.3164248043
+            },
+            "width": 0,
+            "roads": [
+                "88_87",
+                "87_88"
+            ],
+            "roadLinks": [],
+            "trafficLight": {
+                "roadLinkIndices": [],
+                "lightphases": [
+                    {
+                        "time": 5,
+                        "availableRoadLinks": []
+                    }
+                ]
+            },
+            "virtual": true
+        },
+        {
+            "id": "89",
+            "point": {
+                "x": 719388.5394456035,
+                "y": 3872104.1856427426
+            },
+            "width": 0,
+            "roads": [
+                "89_87",
+                "87_89"
+            ],
+            "roadLinks": [],
+            "trafficLight": {
+                "roadLinkIndices": [],
+                "lightphases": [
+                    {
+                        "time": 5,
+                        "availableRoadLinks": []
+                    }
+                ]
+            },
+            "virtual": true
+        },
+        {
+            "id": "97",
+            "point": {
+                "x": 719162.1372972925,
+                "y": 3873314.5651386464
+            },
+            "width": 0,
+            "roads": [
+                "98_97",
+                "97_98"
+            ],
+            "roadLinks": [],
+            "trafficLight": {
+                "roadLinkIndices": [],
+                "lightphases": [
+                    {
+                        "time": 5,
+                        "availableRoadLinks": []
+                    }
+                ]
+            },
+            "virtual": true
+        },
+        {
+            "id": "98",
+            "point": {
+                "x": 719248.9089439737,
+                "y": 3873320.3110643164
+            },
+            "width": 15,
+            "roads": [
+                "98_84",
+                "98_87",
+                "98_97",
+                "87_98",
+                "84_98",
+                "97_98"
+            ],
+            "roadLinks": [
+                {
+                    "type": "turn_left",
+                    "startRoad": "87_98",
+                    "endRoad": "98_97",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "87_98",
+                    "endRoad": "98_84",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 2,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 3,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "go_straight",
+                    "startRoad": "84_98",
+                    "endRoad": "98_87",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 1,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "84_98",
+                    "endRoad": "98_97",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 0,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_left",
+                    "startRoad": "97_98",
+                    "endRoad": "98_84",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 0,
+                            "endLaneIndex": 0,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 1,
+                            "endLaneIndex": 1,
+                            "points": []
+                        },
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                },
+                {
+                    "type": "turn_right",
+                    "startRoad": "97_98",
+                    "endRoad": "98_87",
+                    "direction": 0,
+                    "laneLinks": [
+                        {
+                            "startLaneIndex": 2,
+                            "endLaneIndex": 2,
+                            "points": []
+                        }
+                    ]
+                }
+            ],
+            "trafficLight": {
+                "roadLinkIndices": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                "lightphases": [
+                    {
+                        "time": 3,
+                        "availableRoadLinks": []
+                    },
+                    {
+                        "time": 20,
+                        "availableRoadLinks": [
+                            1,
+                            0
+                        ]
+                    },
+                    {
+                        "time": 20,
+                        "availableRoadLinks": [
+                            1,
+                            2,
+                            3
+                        ]
+                    },
+                    {
+                        "time": 18,
+                        "availableRoadLinks": [
+                            5,
+                            4
+                        ]
+                    }
+                ]
+            },
+            "virtual": false
+        },
+        {
+            "id": "106",
+            "point": {
+                "x": 719129.5124159771,
+                "y": 3878599.421840956
+            },
+            "width": 0,
+            "roads": [
+                "106_39",
+                "39_106"
+            ],
+            "roadLinks": [],
+            "trafficLight": {
+                "roadLinkIndices": [],
+                "lightphases": [
+                    {
+                        "time": 5,
+                        "availableRoadLinks": []
+                    }
+                ]
+            },
+            "virtual": true
+        }
+    ],
+    "roads": [
+        {
+            "id": "87_31",
+            "points": [
+                {
+                    "x": 719279.4095351384,
+                    "y": 3872102.4769942435
+                },
+                {
+                    "x": 719283.2809033486,
+                    "y": 3871928.750384673
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "87",
+            "endIntersection": "31"
+        },
+        {
+            "id": "75_39",
+            "points": [
+                {
+                    "x": 719152.748098494,
+                    "y": 3877659.5252276934
+                },
+                {
+                    "x": 719132.067436613,
+                    "y": 3878569.2936191927
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "75",
+            "endIntersection": "39"
+        },
+        {
+            "id": "106_39",
+            "points": [
+                {
+                    "x": 719129.5124159771,
+                    "y": 3878599.421840956
+                },
+                {
+                    "x": 719132.067436613,
+                    "y": 3878569.2936191927
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "106",
+            "endIntersection": "39"
+        },
+        {
+            "id": "73_39",
+            "points": [
+                {
+                    "x": 719065.6055407171,
+                    "y": 3878568.6083885874
+                },
+                {
+                    "x": 719132.067436613,
+                    "y": 3878569.2936191927
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "73",
+            "endIntersection": "39"
+        },
+        {
+            "id": "74_39",
+            "points": [
+                {
+                    "x": 719218.041992248,
+                    "y": 3878570.143670403
+                },
+                {
+                    "x": 719132.067436613,
+                    "y": 3878569.2936191927
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "74",
+            "endIntersection": "39"
+        },
+        {
+            "id": "39_73",
+            "points": [
+                {
+                    "x": 719132.067436613,
+                    "y": 3878569.2936191927
+                },
+                {
+                    "x": 719065.6055407171,
+                    "y": 3878568.6083885874
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "39",
+            "endIntersection": "73"
+        },
+        {
+            "id": "39_74",
+            "points": [
+                {
+                    "x": 719132.067436613,
+                    "y": 3878569.2936191927
+                },
+                {
+                    "x": 719218.041992248,
+                    "y": 3878570.143670403
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "39",
+            "endIntersection": "74"
+        },
+        {
+            "id": "78_75",
+            "points": [
+                {
+                    "x": 719168.7562563032,
+                    "y": 3876956.3982278802
+                },
+                {
+                    "x": 719152.748098494,
+                    "y": 3877659.5252276934
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "78",
+            "endIntersection": "75"
+        },
+        {
+            "id": "39_75",
+            "points": [
+                {
+                    "x": 719132.067436613,
+                    "y": 3878569.2936191927
+                },
+                {
+                    "x": 719152.748098494,
+                    "y": 3877659.5252276934
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "39",
+            "endIntersection": "75"
+        },
+        {
+            "id": "76_75",
+            "points": [
+                {
+                    "x": 719097.2799241036,
+                    "y": 3877658.1901036166
+                },
+                {
+                    "x": 719152.748098494,
+                    "y": 3877659.5252276934
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "76",
+            "endIntersection": "75"
+        },
+        {
+            "id": "77_75",
+            "points": [
+                {
+                    "x": 719216.7571946671,
+                    "y": 3877660.7609861298
+                },
+                {
+                    "x": 719152.748098494,
+                    "y": 3877659.5252276934
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "77",
+            "endIntersection": "75"
+        },
+        {
+            "id": "75_76",
+            "points": [
+                {
+                    "x": 719152.748098494,
+                    "y": 3877659.5252276934
+                },
+                {
+                    "x": 719097.2799241036,
+                    "y": 3877658.1901036166
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "75",
+            "endIntersection": "76"
+        },
+        {
+            "id": "75_77",
+            "points": [
+                {
+                    "x": 719152.748098494,
+                    "y": 3877659.5252276934
+                },
+                {
+                    "x": 719216.7571946671,
+                    "y": 3877660.7609861298
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "75",
+            "endIntersection": "77"
+        },
+        {
+            "id": "80_78",
+            "points": [
+                {
+                    "x": 719187.045680911,
+                    "y": 3876145.6798397535
+                },
+                {
+                    "x": 719168.7562563032,
+                    "y": 3876956.3982278802
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "80",
+            "endIntersection": "78"
+        },
+        {
+            "id": "75_78",
+            "points": [
+                {
+                    "x": 719152.748098494,
+                    "y": 3877659.5252276934
+                },
+                {
+                    "x": 719168.7562563032,
+                    "y": 3876956.3982278802
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "75",
+            "endIntersection": "78"
+        },
+        {
+            "id": "79_78",
+            "points": [
+                {
+                    "x": 719244.3613075006,
+                    "y": 3876957.302920955
+                },
+                {
+                    "x": 719168.7562563032,
+                    "y": 3876956.3982278802
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "79",
+            "endIntersection": "78"
+        },
+        {
+            "id": "78_79",
+            "points": [
+                {
+                    "x": 719168.7562563032,
+                    "y": 3876956.3982278802
+                },
+                {
+                    "x": 719244.3613075006,
+                    "y": 3876957.302920955
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "78",
+            "endIntersection": "79"
+        },
+        {
+            "id": "82_80",
+            "points": [
+                {
+                    "x": 719206.5506380175,
+                    "y": 3875334.990618748
+                },
+                {
+                    "x": 719187.045680911,
+                    "y": 3876145.6798397535
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "82",
+            "endIntersection": "80"
+        },
+        {
+            "id": "78_80",
+            "points": [
+                {
+                    "x": 719168.7562563032,
+                    "y": 3876956.3982278802
+                },
+                {
+                    "x": 719187.045680911,
+                    "y": 3876145.6798397535
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "78",
+            "endIntersection": "80"
+        },
+        {
+            "id": "81_80",
+            "points": [
+                {
+                    "x": 719273.666481245,
+                    "y": 3876145.0195798716
+                },
+                {
+                    "x": 719187.045680911,
+                    "y": 3876145.6798397535
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "81",
+            "endIntersection": "80"
+        },
+        {
+            "id": "80_81",
+            "points": [
+                {
+                    "x": 719187.045680911,
+                    "y": 3876145.6798397535
+                },
+                {
+                    "x": 719273.666481245,
+                    "y": 3876145.0195798716
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "80",
+            "endIntersection": "81"
+        },
+        {
+            "id": "84_82",
+            "points": [
+                {
+                    "x": 719242.935835978,
+                    "y": 3873720.8675200026
+                },
+                {
+                    "x": 719206.5506380175,
+                    "y": 3875334.990618748
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "84",
+            "endIntersection": "82"
+        },
+        {
+            "id": "80_82",
+            "points": [
+                {
+                    "x": 719187.045680911,
+                    "y": 3876145.6798397535
+                },
+                {
+                    "x": 719206.5506380175,
+                    "y": 3875334.990618748
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "80",
+            "endIntersection": "82"
+        },
+        {
+            "id": "83_82",
+            "points": [
+                {
+                    "x": 719321.441788505,
+                    "y": 3875338.059563962
+                },
+                {
+                    "x": 719206.5506380175,
+                    "y": 3875334.990618748
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "83",
+            "endIntersection": "82"
+        },
+        {
+            "id": "82_83",
+            "points": [
+                {
+                    "x": 719206.5506380175,
+                    "y": 3875334.990618748
+                },
+                {
+                    "x": 719321.441788505,
+                    "y": 3875338.059563962
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "82",
+            "endIntersection": "83"
+        },
+        {
+            "id": "98_84",
+            "points": [
+                {
+                    "x": 719248.9089439737,
+                    "y": 3873320.3110643164
+                },
+                {
+                    "x": 719242.935835978,
+                    "y": 3873720.8675200026
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "98",
+            "endIntersection": "84"
+        },
+        {
+            "id": "82_84",
+            "points": [
+                {
+                    "x": 719206.5506380175,
+                    "y": 3875334.990618748
+                },
+                {
+                    "x": 719242.935835978,
+                    "y": 3873720.8675200026
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "82",
+            "endIntersection": "84"
+        },
+        {
+            "id": "85_84",
+            "points": [
+                {
+                    "x": 719164.9145940369,
+                    "y": 3873718.9912029086
+                },
+                {
+                    "x": 719242.935835978,
+                    "y": 3873720.8675200026
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "85",
+            "endIntersection": "84"
+        },
+        {
+            "id": "86_84",
+            "points": [
+                {
+                    "x": 719348.6839143777,
+                    "y": 3873723.715582448
+                },
+                {
+                    "x": 719242.935835978,
+                    "y": 3873720.8675200026
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "86",
+            "endIntersection": "84"
+        },
+        {
+            "id": "84_85",
+            "points": [
+                {
+                    "x": 719242.935835978,
+                    "y": 3873720.8675200026
+                },
+                {
+                    "x": 719164.9145940369,
+                    "y": 3873718.9912029086
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "84",
+            "endIntersection": "85"
+        },
+        {
+            "id": "84_86",
+            "points": [
+                {
+                    "x": 719242.935835978,
+                    "y": 3873720.8675200026
+                },
+                {
+                    "x": 719348.6839143777,
+                    "y": 3873723.715582448
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "84",
+            "endIntersection": "86"
+        },
+        {
+            "id": "31_87",
+            "points": [
+                {
+                    "x": 719283.2809033486,
+                    "y": 3871928.750384673
+                },
+                {
+                    "x": 719279.4095351384,
+                    "y": 3872102.4769942435
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "31",
+            "endIntersection": "87"
+        },
+        {
+            "id": "98_87",
+            "points": [
+                {
+                    "x": 719248.9089439737,
+                    "y": 3873320.3110643164
+                },
+                {
+                    "x": 719279.4095351384,
+                    "y": 3872102.4769942435
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "98",
+            "endIntersection": "87"
+        },
+        {
+            "id": "88_87",
+            "points": [
+                {
+                    "x": 719218.4480854182,
+                    "y": 3872101.3164248043
+                },
+                {
+                    "x": 719279.4095351384,
+                    "y": 3872102.4769942435
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "88",
+            "endIntersection": "87"
+        },
+        {
+            "id": "89_87",
+            "points": [
+                {
+                    "x": 719388.5394456035,
+                    "y": 3872104.1856427426
+                },
+                {
+                    "x": 719279.4095351384,
+                    "y": 3872102.4769942435
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "89",
+            "endIntersection": "87"
+        },
+        {
+            "id": "87_88",
+            "points": [
+                {
+                    "x": 719279.4095351384,
+                    "y": 3872102.4769942435
+                },
+                {
+                    "x": 719218.4480854182,
+                    "y": 3872101.3164248043
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "87",
+            "endIntersection": "88"
+        },
+        {
+            "id": "87_89",
+            "points": [
+                {
+                    "x": 719279.4095351384,
+                    "y": 3872102.4769942435
+                },
+                {
+                    "x": 719388.5394456035,
+                    "y": 3872104.1856427426
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "87",
+            "endIntersection": "89"
+        },
+        {
+            "id": "98_97",
+            "points": [
+                {
+                    "x": 719248.9089439737,
+                    "y": 3873320.3110643164
+                },
+                {
+                    "x": 719162.1372972925,
+                    "y": 3873314.5651386464
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "98",
+            "endIntersection": "97"
+        },
+        {
+            "id": "87_98",
+            "points": [
+                {
+                    "x": 719279.4095351384,
+                    "y": 3872102.4769942435
+                },
+                {
+                    "x": 719248.9089439737,
+                    "y": 3873320.3110643164
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "87",
+            "endIntersection": "98"
+        },
+        {
+            "id": "84_98",
+            "points": [
+                {
+                    "x": 719242.935835978,
+                    "y": 3873720.8675200026
+                },
+                {
+                    "x": 719248.9089439737,
+                    "y": 3873320.3110643164
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "84",
+            "endIntersection": "98"
+        },
+        {
+            "id": "97_98",
+            "points": [
+                {
+                    "x": 719162.1372972925,
+                    "y": 3873314.5651386464
+                },
+                {
+                    "x": 719248.9089439737,
+                    "y": 3873320.3110643164
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "97",
+            "endIntersection": "98"
+        },
+        {
+            "id": "39_106",
+            "points": [
+                {
+                    "x": 719132.067436613,
+                    "y": 3878569.2936191927
+                },
+                {
+                    "x": 719129.5124159771,
+                    "y": 3878599.421840956
+                }
+            ],
+            "lanes": [
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                },
+                {
+                    "width": 3.2,
+                    "maxSpeed": 20.1168
+                }
+            ],
+            "startIntersection": "39",
+            "endIntersection": "106"
+        }
+    ]
+}

@@ -5,10 +5,11 @@ from environment import TSCEnv
 from common.registry import Registry
 from trainer.base_trainer import BaseTrainer
 from tqdm import tqdm
+import pandas as pd
 
 
-@Registry.register_trainer("tsc2")
-class TSCTrainer2(BaseTrainer):
+@Registry.register_trainer("tsc")
+class TSCTrainer(BaseTrainer):
     '''
     Register TSCTrainer for traffic signal control tasks.
     '''
@@ -17,7 +18,7 @@ class TSCTrainer2(BaseTrainer):
         logger,
         gpu=0,
         cpu=False,
-        name="tsc2"
+        name="tsc"
     ):
         super().__init__(
             logger=logger,
@@ -25,6 +26,8 @@ class TSCTrainer2(BaseTrainer):
             cpu=cpu,
             name=name
         )
+        
+        self.path = os.path.join('configs/sim', Registry.mapping['command_mapping']['setting'].param['world'], Registry.mapping['command_mapping']['setting'].param['network'] + '.cfg') 
         self.episodes = Registry.mapping['trainer_mapping']['setting'].param['episodes']
         self.steps = Registry.mapping['trainer_mapping']['setting'].param['steps']
         self.test_steps = Registry.mapping['trainer_mapping']['setting'].param['test_steps']
@@ -52,6 +55,14 @@ class TSCTrainer2(BaseTrainer):
                                      )
         # add this for sanity
         self.create()
+        
+        self.agent_ids = [ag.id for ag in self.agents]
+        cols = ["mode", "epoch","timestep"] + self.agent_ids
+        self.action_log_file = os.path.join(Registry.mapping['logger_mapping']['path'].path,
+                                    Registry.mapping['logger_mapping']['setting'].param['log_dir'],
+                                    os.path.basename(self.logger.handlers[-1].baseFilename).rstrip('_BRF.log') + '_ACTION.log'
+                                    )
+        self.action_log = pd.DataFrame(columns=cols)  # 0 rows, you can append later        
         
     def create_world(self):
         '''
@@ -161,6 +172,11 @@ class TSCTrainer2(BaseTrainer):
                         for idx, ag in enumerate(self.agents):
                             actions.append(ag.get_action(last_obs[idx], last_phase[idx], test=False))                            
                         actions = np.stack(actions)  # [agent, intersections]
+                        
+                        row = {"epoch": e, "mode": "train", "timestep": i}
+                        row.update(dict(zip(self.agent_ids, actions.ravel())))
+                        self.action_log.loc[len(self.action_log)] = row
+
                     else:
                         actions = np.stack([ag.sample() for ag in self.agents])
 
@@ -213,6 +229,10 @@ class TSCTrainer2(BaseTrainer):
             for j, inter in enumerate(self.world.intersections):
                 self.logger.debug("intersection:{}, mean_episode_reward:{}, mean_queue:{}".format(inter.id, self.metric.lane_rewards()[j],\
                      self.metric.lane_queue()[j]))
+            
+            # save actions
+            self.action_log.to_csv(self.action_log_file, index=False)
+            
             if self.test_when_train:
                 self.train_test(e)
         # self.dataset.flush([ag.replay_buffer for ag in self.agents])

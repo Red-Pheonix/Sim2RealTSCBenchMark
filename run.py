@@ -68,9 +68,9 @@ class Runner:
     def run(self):
         logger = setup_logging(logging_level)
         self.trainer = Registry.mapping['trainer_mapping']\
-            ['tsc2'](logger)
+            ['tsc'](logger)
         self.task = Registry.mapping['task_mapping']\
-            ['tsc2'](self.trainer)
+            ['tsc'](self.trainer)
         start_time = time.time()
         print(f"Trainer: {self.trainer}, task: {self.task}")
         self.task.run()

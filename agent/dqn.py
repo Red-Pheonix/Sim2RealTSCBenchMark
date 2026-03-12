@@ -7,6 +7,7 @@ import json
 import random
 from collections import deque
 import gym
+import pandas as pd
 
 from generator import LaneVehicleGenerator, IntersectionPhaseGenerator, IntersectionVehicleGenerator
 
@@ -45,7 +46,7 @@ class DQNAgent(RLAgent):
         self.reward_generator = LaneVehicleGenerator(self.world,  self.inter, ["lane_waiting_count"],
                                                      in_only=True, average='all', negative=True)
         self.action_space = gym.spaces.Discrete(len(self.world.id2intersection[inter_id].phases))
-        self.action_interval = 10
+        self.action_interval = Registry.mapping["trainer_mapping"]["setting"].param["action_interval"]
 
         if self.phase:
             if self.one_hot:
@@ -73,8 +74,7 @@ class DQNAgent(RLAgent):
                 phase_trans_filename
             )
             # open the file
-            with open(phase_trans_filename, 'r') as f:
-                self.phase_transitions = json.load(f)
+            self.phase_transitions = self.process_phase_transition_table(phase_trans_filename, int(inter_id))
         else:
             self.phase_transitions = None
 
@@ -101,15 +101,40 @@ class DQNAgent(RLAgent):
 
     def __repr__(self):
         return self.model.__repr__()
+    
+    def process_phase_transition_table(self, phase_trans_filename, inter_id):
+        
+        phase_transitions = pd.read_csv(phase_trans_filename)
+        phase_transitions = phase_transitions[phase_transitions["node_id"] == inter_id]
+        
+        out = {}
+        for from_phase, g in phase_transitions.groupby("from_phase", sort=True):
+            out[int(from_phase)] = {
+                int(r["to_phase"]): {
+                    "allowed": int(r["allowed"]),
+                    "min_time_to_transition": float(r["min_time_to_transition"]),
+                    "max_time_to_transition": float(r["max_time_to_transition"]),
+                }
+                for _, r in g.iterrows()
+            }
+        
+        if out is not None:
+            return out
+        else:
+            return None
 
     def generate_allowed_mask(self , num_phases):
         for from_phase, _ in self.phase_transitions.items():
             for to_phase in self.phase_transitions[from_phase]:
                 t = self.phase_transitions[from_phase][to_phase]
-                self.allowed_mask[int(from_phase) - 1, int(to_phase) - 1] = bool(t["allowed"])
-                self.min_time[int(from_phase) - 1, int(to_phase) - 1] = t["min_time_to_transition"]
-                self.max_time[int(from_phase) - 1, int(from_phase) - 1] = t["max_time_to_transition"]
+                self.allowed_mask[from_phase - 1, to_phase - 1] = bool(t["allowed"])
+                self.min_time[from_phase - 1, to_phase - 1] = t["min_time_to_transition"]
+                self.max_time[from_phase - 1, from_phase - 1] = t["max_time_to_transition"]
 
+        # round the times
+        self.min_time = torch.where(torch.isfinite(self.min_time), torch.round(self.min_time), self.min_time)
+        self.max_time = torch.where(torch.isfinite(self.max_time), torch.round(self.max_time), self.max_time)
+        
         # Allow phase -> same phase
         self.allowed_mask |= torch.eye(num_phases, dtype=torch.bool)
 
@@ -220,7 +245,11 @@ class DQNAgent(RLAgent):
         time_ok = min_ok & max_ok
 
         valid_mask = allowed & time_ok
-
+        
+        # special case where no valid actions are available
+        if (~valid_mask).all().item():
+            valid_mask[0][phase] = True
+        
         return valid_mask
 
     def sample(self):
