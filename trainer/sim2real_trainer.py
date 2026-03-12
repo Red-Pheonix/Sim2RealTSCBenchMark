@@ -28,16 +28,21 @@ from common.gat_utils import (
 )
 
 
-@Registry.register_trainer("sim2real")
-class Sim2RealTrainer(BaseTrainer):
+@Registry.register_trainer("sim2real_transitions")
+class Sim2RealTransitionsTrainer(BaseTrainer):
     """
     Register TSCTrainer for traffic signal control tasks.
     """
 
     def __init__(self, logger, gpu=0, cpu=False, name="sim2real"):
         super().__init__(logger=logger, gpu=gpu, cpu=cpu, name=name)
+        
+        network_name = Registry.mapping['command_mapping']['setting'].param['network']
+        self.cityflow_path = os.path.join('configs/sim', "cityflow", network_name + '.cfg')
+        self.sumo_path = os.path.join('configs/sim', "sumo", network_name + '.cfg')
+    
         self.episodes = Registry.mapping["trainer_mapping"]["setting"].param["episodes"]
-        self.training_iterations = Registry.mapping["trainer_mapping"]["setting"].param[
+        self.training_iterations = Registry.mapping["sim2real_mapping"]["setting"].param[
             "training_iterations"
         ]
         self.steps = Registry.mapping["trainer_mapping"]["setting"].param["steps"]
@@ -66,31 +71,31 @@ class Sim2RealTrainer(BaseTrainer):
             "test_when_train"
         ]
 
-        self.gat = Registry.mapping["trainer_mapping"]["setting"].param["gat"]
-        self.gattype = Registry.mapping["trainer_mapping"]["setting"].param["gattype"]
-        self.uncertainty_setting = Registry.mapping["trainer_mapping"]["setting"].param[
+        self.gat = Registry.mapping["sim2real_mapping"]["setting"].param["gat"]
+        self.gattype = Registry.mapping["sim2real_mapping"]["setting"].param["gattype"]
+        self.uncertainty_setting = Registry.mapping["sim2real_mapping"]["setting"].param[
             "uncertainty"
         ]
-        self.delayedgat = Registry.mapping["trainer_mapping"]["setting"].param[
+        self.delayedgat = Registry.mapping["sim2real_mapping"]["setting"].param[
             "delayedgat"
         ]
-        self.ground_original = Registry.mapping["trainer_mapping"]["setting"].param[
+        self.ground_original = Registry.mapping["sim2real_mapping"]["setting"].param[
             "ground_original"
         ]
-        self.last_n_uncertainties = Registry.mapping["trainer_mapping"][
+        self.last_n_uncertainties = Registry.mapping["sim2real_mapping"][
             "setting"
         ].param["last_n_uncertainties"]
-        self.prob_grounding = Registry.mapping["trainer_mapping"]["setting"].param[
-            "prob_grounding"
-        ]
+        self.prob_grounding = Registry.mapping["sim2real_mapping"]["setting"].param.get(
+            "prob_grounding",
+        )
 
         self.net = Registry.mapping["trainer_mapping"]["setting"].param["network"]
-        self.load_pretrained = Registry.mapping["trainer_mapping"]["setting"].param[
+        self.load_pretrained = Registry.mapping["sim2real_mapping"]["setting"].param[
             "load_pretrained"
         ]
-        self.probing_radius = Registry.mapping["trainer_mapping"]["setting"].param[
+        self.probing_radius = Registry.mapping["sim2real_mapping"]["setting"].param.get(
             "probing_radius"
-        ]
+        )
 
         # replay file is only valid in cityflow now.
         # TODO: support SUMO and Openengine later
@@ -156,6 +161,7 @@ class Sim2RealTrainer(BaseTrainer):
         # Dictionary to store the last two uncertainties for each agent
         self.last_two_uncertainties = {idx: [] for idx in range(len(self.agents_sim))}
         self.avg_agent_uncertainties = [0 for i in range(len(self.agents_sim))]
+        self.probing_radius = 10
 
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -342,12 +348,12 @@ class Sim2RealTrainer(BaseTrainer):
         """
         # traffic setting is in the world mapping
         self.world_sim = Registry.mapping["world_mapping"]["cityflow"](
-            self.path,
+            self.cityflow_path,
             Registry.mapping["command_mapping"]["setting"].param["thread_num"],
         )
 
         self.world_real = Registry.mapping["world_mapping"]["sumo"](
-            self.path.replace("cityflow", "sumo_gaus"),
+            self.sumo_path,
             interface=Registry.mapping["command_mapping"]["setting"].param["interface"],
         )
 

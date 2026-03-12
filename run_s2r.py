@@ -21,12 +21,12 @@ parser.add_argument('--debug', type=bool, default=True)
 parser.add_argument('--interface', type=str, default="libsumo", choices=['libsumo','traci'], help="interface type") # libsumo(fast) or traci(slow)
 parser.add_argument('--delay_type', type=str, default="apx", choices=['apx','real'], help="method of calculating delay") # apx(approximate) or real
 
-parser.add_argument('-t', '--task', type=str, default="sim2real", help="task type to run")
+parser.add_argument('-t', '--task', type=str, default="sim2real_transitions", help="task type to run")
 parser.add_argument('-a', '--agent', type=str, default="dqn", help="agent type of agents in RL environment")
 parser.add_argument('-w', '--world', type=str, default="cityflow", choices=['cityflow','sumo'], help="simulator type")
 parser.add_argument('-n', '--network', type=str, default="cityflow1x1", help="network name")
 parser.add_argument('-d', '--dataset', type=str, default='onfly', help='type of dataset in training process')
-parser.add_argument('-gt', '--gattype', type=str, default='centralized', choices=['centralized','decentralized'], help='type of GAT used in training process to improve sim-to-real transfer')
+parser.add_argument('-gt', '--gattype', type=str, default='centralized', choices=['centralized','decentralized' , "jlgat"], help='type of GAT used in training process to improve sim-to-real transfer')
 
 args = parser.parse_args()
 os.environ["CUDA_VISIBLE_DEVICES"] = args.ngpu
@@ -72,6 +72,9 @@ class Runner:
             os.makedirs(Registry.mapping['logger_mapping']['path'].path)
         interface.Trainer_param_Interface(self.config)
         interface.ModelAgent_param_Interface(self.config)
+        
+        # set sim2real
+        interface.Sim2Real_param_Interface(self.config)
 
     def run(self):
         logger = setup_logging(logging_level)

@@ -1,0 +1,12 @@
+includes:
+  - configs/sim2real_transitions/base.yml
+
+sim2real:
+  gattype: "jlgat"
+  uncertainty: False
+  delayedgat: False
+  ground_original: False
+  training_iterations: 1
+  last_n_uncertainties: 2
+  prob_grounding: 0.33
+  probing_radius: 500 # for JL-GAT, in meters

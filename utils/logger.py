@@ -94,8 +94,20 @@ def build_config(args):
     position args:
     -args: command line arguments take in from run.py
     """
-    agent_name = os.path.join('./configs', args.task, f'{args.agent}.yml')
-    config, duplicates_warning = load_config(agent_name)
+    if args.task == 'tsc':
+        agent_name = os.path.join('./configs', args.task, f'{args.agent}.yml')
+        config, duplicates_warning = load_config(agent_name)
+    elif args.task == 'sim2real_transitions':
+        
+        agent_name = os.path.join('./configs', args.task, "models" , f'{args.agent}.yml')
+        config, duplicates_warning = load_config(agent_name)
+        
+        gat_name = os.path.join('./configs', args.task, f'{args.gattype}.yml')
+        gat_config, duplicates_warning = load_config(gat_name)
+        config.update({"sim2real":gat_config["sim2real"]})
+        
+    else:
+        raise ValueError("Unsupported task name: {}".format(args.task))
     config.update({'command': args.__dict__})
     return config, duplicates_warning
 

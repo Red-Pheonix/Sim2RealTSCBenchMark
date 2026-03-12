@@ -39,6 +39,8 @@ class World_param_Interface(Interface):
         
         if config["task"]["task_name"] == "tsc":
             path = os.path.join(os.getcwd(), 'configs/sim', config["command"]["world"] , config['command']['network'] + '.cfg')
+        elif config["task"]["task_name"] == "sim2real_transitions":
+            path = os.path.join(os.getcwd(), 'configs/sim', config["command"]["world"] , config['command']['network'] + '.cfg')
         else:
             raise ValueError("Unsupported task name: {}".format(config["task"]["task_name"]))
         
@@ -87,3 +89,13 @@ class Trainer_param_Interface(Interface):
         super(Trainer_param_Interface, self).__init__()
         param = config['trainer']
         Trainer_param_Interface.param = param
+
+@Registry.register_sim2real('setting')
+class Sim2Real_param_Interface(Interface):
+    """
+    set sim2real parameters
+    """
+    def __init__(self, config):
+        super(Sim2Real_param_Interface, self).__init__()
+        param = config['sim2real']
+        Sim2Real_param_Interface.param = param

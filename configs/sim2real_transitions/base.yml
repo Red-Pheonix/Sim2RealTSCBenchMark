@@ -1,16 +1,16 @@
 task:
   description: use RL methods to optimize traffic signal control problems
-  task_name: sim2real
+  task_name: sim2real_transitions
 
 world:
 # necessary and distinctive parameters for simulators
   interval: 1.0
-  seed: 4444
+  seed: 0
   dir: data/
 
-  saveReplay: False
+  saveReplay: True
   report_log_mode: normal # cbengine
-  report_log_rate: 5
+  report_log_rate: 10
 
   no_warning: True
   gui:  False
@@ -18,41 +18,37 @@ world:
   rlTrafficLight: True
 
 trainer:
-  thread: 8
+  thread: 16
   ngpu: -1
-  history: 4 # added
-  pretrain_n: 1 # n epochs to pretrain before action grounding
   learning_start: 5000
   buffer_size: 5000
   steps: 3600
   test_steps: 3600
   yellow_length: 5
   action_interval: 10
-  episodes: 300 # control the total episode running on x_axis
+  episodes: 50
   update_model_rate: 1
-  update_target_rate: 5
-  alpha: 0.5
-  inverse_type: 'UNCERTAINTY' # or 'NN
-  experiment_mode: 'restart'
-  transfer_metric: False
-  decentralized_GAT: "both"
-  parameter_sharing: True
+  update_target_rate: 10
+  test_when_train: False
+
+sim2real:
+  gat: True
+  load_pretrained: False
 
 model:
   name: "non-rl"
-
-  train_model: False
+  train_model: True
   test_model: True
   load_model: False
   graphic: False
-  vehicle_max: 1 # TODO: what is this for
+  vehicle_max: 1
   learning_rate: 0.001
   batch_size: 64
-  gamma: 0.98
-  epsilon: 0.1 # original:0.1
-  epsilon_decay: 0.9995
-  epsilon_min: 0.1 # original: 0.01
-  grad_clip: 0.5
+  gamma: 0.95
+  epsilon: 0.5
+  epsilon_decay: 0.99
+  epsilon_min: 0.05
+  grad_clip: 5.0
 
   one_hot: False
   phase: False
@@ -63,11 +59,6 @@ logger:
   replay_dir: "replay/"
   model_dir: "model/"
   data_dir: "dataset/"
-  save_model: False
+  save_model: True
   save_rate: 1
   attention: False
-
-
-
-
-
