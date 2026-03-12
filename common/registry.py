@@ -13,6 +13,7 @@ class Registry:
         'task_mapping': {},
         'dataset_mapping': {},
         'model_mapping': {},
+        'sim2real_model_mapping': {},
         'logger_mapping': {},
         'world_mapping': {},
         'trainer_mapping': {},
@@ -44,6 +45,13 @@ class Registry:
     def register_logger(cls, name):
         def wrap(f):
             cls.mapping['logger_mapping'][name] = f
+            return f
+        return wrap
+
+    @classmethod
+    def register_sim2real_model(cls, name):
+        def wrap(f):
+            cls.mapping['sim2real_model_mapping'][name] = f
             return f
         return wrap
 
