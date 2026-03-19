@@ -719,26 +719,26 @@
         <lane id="98_97_2" index="2" speed="45.00" length="70.64" shape="166.91,1392.08 96.43,1387.41" />
     </edge>
 
-    <tlLogic id="39" type="static" programID="0" offset="54"><phase name="(D1,D5)" duration="6.0" maxDur="6.0" minDur="6.0" next="8 9" state="rrrrrrrrrGrrrrrrrrrrGr" />
-		<phase name="(D2,D5)" duration="6.0" maxDur="6.0" minDur="6.0" next="10" state="rrrrrgGGGGgrrrrrrrrrrr" />
-		<phase name="(D1,D6)" duration="6.0" maxDur="6.0" minDur="6.0" next="11" state="rrrrrrrrrrrrrrrrgGGGGg" />
-		<phase name="(D2,D6)" duration="20.0" maxDur="20.0" minDur="20.0" next="12" state="rrrrrgGGGrgrrrrrgGGGrg" />
-		<phase name="(D3,D7)" duration="6.0" maxDur="6.0" minDur="6.0" next="14 15" state="rrrGrrrrrrrrrrGrrrrrrr" />
-		<phase name="(D4,D7)" duration="6.0" maxDur="6.0" minDur="6.0" next="16" state="gGGGgrrrrrrrrrrrrrrrrr" />
-		<phase name="(D3,D8)" duration="6.0" maxDur="6.0" minDur="6.0" next="17" state="rrrrrrrrrrrgGGGgrrrrrr" />
-		<phase name="(D4,D8)" duration="18.0" maxDur="18.0" minDur="6.0" next="18" state="gGGrgrrrrrrgGGrgrrrrrr" />
-		<phase name="(D1,D5)-(D2,D5)-Y" duration="3.0" next="1" state="rrrrrrrrrGrrrrrrrrrryr" />
-		<phase name="(D1,D5)-(D1,D6)-Y" duration="3.0" next="2" state="rrrrrrrrryrrrrrrrrrrGr" />
-		<phase name="(D2,D5)-(D2,D6)-Y" duration="3.0" next="3" state="rrrrrgGGGygrrrrrrrrrrr" />
-		<phase name="(D1,D6)-(D2,D6)-Y" duration="4.3" next="3" state="rrrrrrrrrrrrrrrrgGGGyg" />
-		<phase name="(D2,D6)-(D3,D7)-Y" duration="4.3" next="13" state="rrrrryyyyryrrrrryyyyry" />
-		<phase name="(D2,D6)-(D3,D7)-R" duration="1.0" next="4" state="rrrrrrrrrrrrrrrrrrrrrr" />
-		<phase name="(D3,D7)-(D4,D7)-Y" duration="3.0" next="5" state="rrrGrrrrrrrrrryrrrrrrr" />
-		<phase name="(D3,D7)-(D3,D8)-Y" duration="3.0" next="6" state="rrryrrrrrrrrrrGrrrrrrr" />
-		<phase name="(D4,D7)-(D4,D8)-Y" duration="3.0" next="7" state="gGGygrrrrrrrrrrrrrrrrr" />
-		<phase name="(D3,D8)-(D4,D8)-Y" duration="3.6" next="7" state="rrrrrrrrrrrgGGygrrrrrr" />
-		<phase name="(D4,D8)-(D1,D5)-Y" duration="3.6" next="19" state="yyyryrrrrrryyyryrrrrrr" />
-		<phase name="(D4,D8)-(D1,D5)-R" duration="1.5" next="0" state="rrrrrrrrrrrrrrrrrrrrrr" />
+    <tlLogic id="39" type="static" programID="0" offset="54"><phase name="(D1,D5)" duration="6" maxDur="6" minDur="6" next="8 9" state="rrrrrrrrrGrrrrrrrrrrGr" />
+		<phase name="(D2,D5)" duration="6" maxDur="6" minDur="6" next="10" state="rrrrrgGGGGgrrrrrrrrrrr" />
+		<phase name="(D1,D6)" duration="6" maxDur="6" minDur="6" next="11" state="rrrrrrrrrrrrrrrrgGGGGg" />
+		<phase name="(D2,D6)" duration="20" maxDur="20" minDur="20" next="12" state="rrrrrgGGGrgrrrrrgGGGrg" />
+		<phase name="(D3,D7)" duration="6" maxDur="6" minDur="6" next="14 15" state="rrrGrrrrrrrrrrGrrrrrrr" />
+		<phase name="(D4,D7)" duration="6" maxDur="6" minDur="6" next="16" state="gGGGgrrrrrrrrrrrrrrrrr" />
+		<phase name="(D3,D8)" duration="6" maxDur="6" minDur="6" next="17" state="rrrrrrrrrrrgGGGgrrrrrr" />
+		<phase name="(D4,D8)" duration="18" maxDur="18" minDur="6" next="18" state="gGGrgrrrrrrgGGrgrrrrrr" />
+		<phase name="(D1,D5)-(D2,D5)-Y" duration="3" next="1" state="rrrrrrrrrGrrrrrrrrrryr" />
+		<phase name="(D1,D5)-(D1,D6)-Y" duration="3" next="2" state="rrrrrrrrryrrrrrrrrrrGr" />
+		<phase name="(D2,D5)-(D2,D6)-Y" duration="3" next="3" state="rrrrrgGGGygrrrrrrrrrrr" />
+		<phase name="(D1,D6)-(D2,D6)-Y" duration="4" next="3" state="rrrrrrrrrrrrrrrrgGGGyg" />
+		<phase name="(D2,D6)-(D3,D7)-Y" duration="4" next="13" state="rrrrryyyyryrrrrryyyyry" />
+		<phase name="(D2,D6)-(D3,D7)-R" duration="1" next="4" state="rrrrrrrrrrrrrrrrrrrrrr" />
+		<phase name="(D3,D7)-(D4,D7)-Y" duration="3" next="5" state="rrrGrrrrrrrrrryrrrrrrr" />
+		<phase name="(D3,D7)-(D3,D8)-Y" duration="3" next="6" state="rrryrrrrrrrrrrGrrrrrrr" />
+		<phase name="(D4,D7)-(D4,D8)-Y" duration="3" next="7" state="gGGygrrrrrrrrrrrrrrrrr" />
+		<phase name="(D3,D8)-(D4,D8)-Y" duration="3" next="7" state="rrrrrrrrrrrgGGygrrrrrr" />
+		<phase name="(D4,D8)-(D1,D5)-Y" duration="3" next="19" state="yyyryrrrrrryyyryrrrrrr" />
+		<phase name="(D4,D8)-(D1,D5)-R" duration="1" next="0" state="rrrrrrrrrrrrrrrrrrrrrr" />
 		<param key="linkMinDur:4" value="6.0" />
 		<param key="linkMinDur:4" value="6.0" />
 		<param key="linkMinDur:17" value="20.0" />
@@ -755,26 +755,26 @@
 		<param key="linkMinDur:14" value="6.0" />
 		<param key="linkMinDur:7" value="18.0" />
 		<param key="linkMinDur:7" value="6.0" />
-	</tlLogic><tlLogic id="75" type="static" programID="0" offset="0"><phase name="(D1,D5)" duration="6.5" maxDur="6.5" minDur="6.0" next="8 9" state="rrrrrrrrrGrrrrrrrrrrGr" />
-		<phase name="(D2,D5)" duration="6.5" maxDur="6.5" minDur="6.0" next="10" state="rrrrrgGGGGgrrrrrrrrrrr" />
-		<phase name="(D1,D6)" duration="6.5" maxDur="6.5" minDur="6.0" next="11" state="rrrrrrrrrrrrrrrrgGGGGg" />
-		<phase name="(D2,D6)" duration="20.0" maxDur="20.0" minDur="20.0" next="12" state="rrrrrgGGGrgrrrrrgGGGrg" />
-		<phase name="(D3,D7)" duration="6.5" maxDur="6.5" minDur="6.0" next="14 15" state="rrrGrrrrrrrrrrGrrrrrrr" />
-		<phase name="(D4,D7)" duration="6.5" maxDur="6.5" minDur="6.0" next="16" state="gGGGgrrrrrrrrrrrrrrrrr" />
-		<phase name="(D3,D8)" duration="6.5" maxDur="6.5" minDur="6.0" next="17" state="rrrrrrrrrrrgGGGgrrrrrr" />
-		<phase name="(D4,D8)" duration="18.0" maxDur="18.0" minDur="6.0" next="18" state="gGGrgrrrrrrgGGrgrrrrrr" />
-		<phase name="(D1,D5)-(D2,D5)-Y" duration="3.0" next="1" state="rrrrrrrrrGrrrrrrrrrryr" />
-		<phase name="(D1,D5)-(D1,D6)-Y" duration="3.0" next="2" state="rrrrrrrrryrrrrrrrrrrGr" />
-		<phase name="(D2,D5)-(D2,D6)-Y" duration="3.0" next="3" state="rrrrrgGGGygrrrrrrrrrrr" />
-		<phase name="(D1,D6)-(D2,D6)-Y" duration="4.3" next="3" state="rrrrrrrrrrrrrrrrgGGGyg" />
-		<phase name="(D2,D6)-(D3,D7)-Y" duration="4.3" next="13" state="rrrrryyyyryrrrrryyyyry" />
-		<phase name="(D2,D6)-(D3,D7)-R" duration="1.1" next="4" state="rrrrrrrrrrrrrrrrrrrrrr" />
-		<phase name="(D3,D7)-(D4,D7)-Y" duration="3.0" next="5" state="rrrGrrrrrrrrrryrrrrrrr" />
-		<phase name="(D3,D7)-(D3,D8)-Y" duration="3.0" next="6" state="rrryrrrrrrrrrrGrrrrrrr" />
-		<phase name="(D4,D7)-(D4,D8)-Y" duration="3.0" next="7" state="gGGygrrrrrrrrrrrrrrrrr" />
-		<phase name="(D3,D8)-(D4,D8)-Y" duration="3.0" next="7" state="rrrrrrrrrrrgGGygrrrrrr" />
-		<phase name="(D4,D8)-(D1,D5)-Y" duration="3.0" next="19" state="yyyryrrrrrryyyryrrrrrr" />
-		<phase name="(D4,D8)-(D1,D5)-R" duration="2.8" next="0" state="rrrrrrrrrrrrrrrrrrrrrr" />
+	</tlLogic><tlLogic id="75" type="static" programID="0" offset="0"><phase name="(D1,D5)" duration="6" maxDur="6" minDur="6" next="8 9" state="rrrrrrrrrGrrrrrrrrrrGr" />
+		<phase name="(D2,D5)" duration="6" maxDur="6" minDur="6" next="10" state="rrrrrgGGGGgrrrrrrrrrrr" />
+		<phase name="(D1,D6)" duration="6" maxDur="6" minDur="6" next="11" state="rrrrrrrrrrrrrrrrgGGGGg" />
+		<phase name="(D2,D6)" duration="20" maxDur="20" minDur="20" next="12" state="rrrrrgGGGrgrrrrrgGGGrg" />
+		<phase name="(D3,D7)" duration="6" maxDur="6" minDur="6" next="14 15" state="rrrGrrrrrrrrrrGrrrrrrr" />
+		<phase name="(D4,D7)" duration="6" maxDur="6" minDur="6" next="16" state="gGGGgrrrrrrrrrrrrrrrrr" />
+		<phase name="(D3,D8)" duration="6" maxDur="6" minDur="6" next="17" state="rrrrrrrrrrrgGGGgrrrrrr" />
+		<phase name="(D4,D8)" duration="18" maxDur="18" minDur="6" next="18" state="gGGrgrrrrrrgGGrgrrrrrr" />
+		<phase name="(D1,D5)-(D2,D5)-Y" duration="3" next="1" state="rrrrrrrrrGrrrrrrrrrryr" />
+		<phase name="(D1,D5)-(D1,D6)-Y" duration="3" next="2" state="rrrrrrrrryrrrrrrrrrrGr" />
+		<phase name="(D2,D5)-(D2,D6)-Y" duration="3" next="3" state="rrrrrgGGGygrrrrrrrrrrr" />
+		<phase name="(D1,D6)-(D2,D6)-Y" duration="4" next="3" state="rrrrrrrrrrrrrrrrgGGGyg" />
+		<phase name="(D2,D6)-(D3,D7)-Y" duration="4" next="13" state="rrrrryyyyryrrrrryyyyry" />
+		<phase name="(D2,D6)-(D3,D7)-R" duration="1" next="4" state="rrrrrrrrrrrrrrrrrrrrrr" />
+		<phase name="(D3,D7)-(D4,D7)-Y" duration="3" next="5" state="rrrGrrrrrrrrrryrrrrrrr" />
+		<phase name="(D3,D7)-(D3,D8)-Y" duration="3" next="6" state="rrryrrrrrrrrrrGrrrrrrr" />
+		<phase name="(D4,D7)-(D4,D8)-Y" duration="3" next="7" state="gGGygrrrrrrrrrrrrrrrrr" />
+		<phase name="(D3,D8)-(D4,D8)-Y" duration="3" next="7" state="rrrrrrrrrrrgGGygrrrrrr" />
+		<phase name="(D4,D8)-(D1,D5)-Y" duration="3" next="19" state="yyyryrrrrrryyyryrrrrrr" />
+		<phase name="(D4,D8)-(D1,D5)-R" duration="2" next="0" state="rrrrrrrrrrrrrrrrrrrrrr" />
 		<param key="linkMinDur:4" value="6.5" />
 		<param key="linkMinDur:4" value="6.0" />
 		<param key="linkMinDur:17" value="20.0" />
@@ -791,14 +791,14 @@
 		<param key="linkMinDur:14" value="6.0" />
 		<param key="linkMinDur:7" value="18.0" />
 		<param key="linkMinDur:7" value="6.0" />
-	</tlLogic><tlLogic id="78" type="static" programID="0" offset="0"><phase name="(D1,D6)" duration="6.5" maxDur="6.5" minDur="6.0" next="3" state="rrrrrrrrrGGGGg" />
-		<phase name="(D2,D6)" duration="18.0" maxDur="18.0" minDur="15.0" next="4" state="rrrrgGGGgGGGrg" />
-		<phase name="(D4,D8)" duration="18.0" maxDur="18.0" minDur="5.0" next="6" state="gGGgrrrrrrrrrr" />
-		<phase name="(D1,D6)-(D2,D6)-Y" duration="4.3" next="1" state="rrrrrrrrrGGGyg" />
-		<phase name="(D2,D6)-(D4,D8)-Y" duration="4.3" next="5" state="rrrryyyyyyyyry" />
-		<phase name="(D2,D6)-(D4,D8)-R" duration="1.0" next="2" state="rrrrrrrrrrrrrr" />
-		<phase name="(D4,D8)-(D1,D6)-Y" duration="3.5" next="7" state="yyyyrrrrrrrrrr" />
-		<phase name="(D4,D8)-(D1,D6)-R" duration="1.0" next="0" state="rrrrrrrrrrrrrr" />
+	</tlLogic><tlLogic id="78" type="static" programID="0" offset="0"><phase name="(D1,D6)" duration="6" maxDur="6" minDur="6" next="3" state="rrrrrrrrrGGGGg" />
+		<phase name="(D2,D6)" duration="18" maxDur="18" minDur="15" next="4" state="rrrrgGGGgGGGrg" />
+		<phase name="(D4,D8)" duration="18" maxDur="18" minDur="5" next="6" state="gGGgrrrrrrrrrr" />
+		<phase name="(D1,D6)-(D2,D6)-Y" duration="4" next="1" state="rrrrrrrrrGGGyg" />
+		<phase name="(D2,D6)-(D4,D8)-Y" duration="4" next="5" state="rrrryyyyyyyyry" />
+		<phase name="(D2,D6)-(D4,D8)-R" duration="1" next="2" state="rrrrrrrrrrrrrr" />
+		<phase name="(D4,D8)-(D1,D6)-Y" duration="3" next="7" state="yyyyrrrrrrrrrr" />
+		<phase name="(D4,D8)-(D1,D6)-R" duration="1" next="0" state="rrrrrrrrrrrrrr" />
 		<param key="linkMinDur:3" value="6.5" />
 		<param key="linkMinDur:3" value="6.0" />
 		<param key="linkMinDur:10" value="18.0" />
@@ -807,26 +807,26 @@
 		<param key="linkMinDur:6" value="6.0" />
 		<param key="linkMinDur:0" value="18.0" />
 		<param key="linkMinDur:0" value="15.0" />
-	</tlLogic><tlLogic id="80" type="static" programID="0" offset="0"><phase name="(D2,D6)" duration="18.0" maxDur="18.0" minDur="5.0" next="2" state="rrrgGGGgGGgg" />
-		<phase name="(D8)" duration="18.0" maxDur="18.0" minDur="5.0" next="4" state="gGgrrrrrrrrr" />
-		<phase name="(D2,D6)-(D8)-Y" duration="3.5" next="3" state="rrryyyyyyyyy" />
-		<phase name="(D2,D6)-(D8)-R" duration="1.0" next="1" state="rrrrrrrrrrrr" />
-		<phase name="(D8)-(D2,D6)-Y" duration="3.5" next="5" state="yyyrrrrrrrrr" />
-		<phase name="(D8)-(D2,D6)-R" duration="1.0" next="0" state="rrrrrrrrrrrr" />
+	</tlLogic><tlLogic id="80" type="static" programID="0" offset="0"><phase name="(D2,D6)" duration="18" maxDur="18" minDur="5" next="2" state="rrrgGGGgGGgg" />
+		<phase name="(D8)" duration="18" maxDur="18" minDur="5" next="4" state="gGgrrrrrrrrr" />
+		<phase name="(D2,D6)-(D8)-Y" duration="3" next="3" state="rrryyyyyyyyy" />
+		<phase name="(D2,D6)-(D8)-R" duration="1" next="1" state="rrrrrrrrrrrr" />
+		<phase name="(D8)-(D2,D6)-Y" duration="3" next="5" state="yyyrrrrrrrrr" />
+		<phase name="(D8)-(D2,D6)-R" duration="1" next="0" state="rrrrrrrrrrrr" />
 		<param key="linkMinDur:8" value="18.0" />
 		<param key="linkMinDur:8" value="5.0" />
 		<param key="linkMinDur:0" value="18.0" />
 		<param key="linkMinDur:0" value="5.0" />
 		<param key="linkMinDur:5" value="18.0" />
 		<param key="linkMinDur:5" value="5.0" />
-	</tlLogic><tlLogic id="82" type="static" programID="0" offset="0"><phase name="(D1,D6)" duration="20.0" maxDur="20.0" minDur="6.0" next="3" state="rrrrrrrrGGGg" />
-		<phase name="(D2,D6)" duration="20.0" maxDur="20.0" minDur="20.0" next="4" state="rrrgGGGgGGrg" />
-		<phase name="(D4)" duration="6.0" maxDur="6.0" minDur="6.0" next="6" state="gGgrrrrrrrrr" />
-		<phase name="(D1,D6)-(D2,D6)-Y" duration="4.3" next="1" state="rrrrrrrrGGyg" />
-		<phase name="(D2,D6)-(D4)-Y" duration="4.3" next="5" state="rrryyyyyyyry" />
-		<phase name="(D2,D6)-(D4)-R" duration="1.0" next="2" state="rrrrrrrrrrrr" />
-		<phase name="(D4)-(D1,D6)-Y" duration="3.6" next="7" state="yyyrrrrrrrrr" />
-		<phase name="(D4)-(D1,D6)-R" duration="1.6" next="0" state="rrrrrrrrrrrr" />
+	</tlLogic><tlLogic id="82" type="static" programID="0" offset="0"><phase name="(D1,D6)" duration="20" maxDur="20" minDur="6" next="3" state="rrrrrrrrGGGg" />
+		<phase name="(D2,D6)" duration="20" maxDur="20" minDur="20" next="4" state="rrrgGGGgGGrg" />
+		<phase name="(D4)" duration="6" maxDur="6" minDur="6" next="6" state="gGgrrrrrrrrr" />
+		<phase name="(D1,D6)-(D2,D6)-Y" duration="4" next="1" state="rrrrrrrrGGyg" />
+		<phase name="(D2,D6)-(D4)-Y" duration="4" next="5" state="rrryyyyyyyry" />
+		<phase name="(D2,D6)-(D4)-R" duration="1" next="2" state="rrrrrrrrrrrr" />
+		<phase name="(D4)-(D1,D6)-Y" duration="3" next="7" state="yyyrrrrrrrrr" />
+		<phase name="(D4)-(D1,D6)-R" duration="1" next="0" state="rrrrrrrrrrrr" />
 		<param key="linkMinDur:2" value="36.0" />
 		<param key="linkMinDur:2" value="6.0" />
 		<param key="linkMinDur:8" value="20.0" />
@@ -835,19 +835,19 @@
 		<param key="linkMinDur:5" value="6.0" />
 		<param key="linkMinDur:0" value="20.0" />
 		<param key="linkMinDur:0" value="20.0" />
-	</tlLogic><tlLogic id="84" type="static" programID="0" offset="0"><phase name="(D1,D5)" duration="6.5" maxDur="6.5" minDur="6.0" next="5 6" state="rrrrrrrrrrrGrrrrrrrrrrrGr" />
-		<phase name="(D2,D5)" duration="6.5" maxDur="6.5" minDur="6.0" next="7" state="rrrrrrgGGGGGgrrrrrrrrrrrr" />
-		<phase name="(D1,D6)" duration="6.5" maxDur="6.5" minDur="6.0" next="8" state="rrrrrrrrrrrrrrrrrrgGGGGGg" />
-		<phase name="(D2,D6)" duration="25.0" maxDur="25.0" minDur="25.0" next="9" state="rrrrrrgGGGGrgrrrrrgGGGGrg" />
-		<phase name="(D4,D8)" duration="18.0" maxDur="18.0" minDur="6.0" next="11" state="gGGGggrrrrrrrgGGggrrrrrrr" />
-		<phase name="(D1,D5)-(D2,D5)-Y" duration="3.0" next="1" state="rrrrrrrrrrrGrrrrrrrrrrryr" />
-		<phase name="(D1,D5)-(D1,D6)-Y" duration="3.0" next="2" state="rrrrrrrrrrryrrrrrrrrrrrGr" />
-		<phase name="(D2,D5)-(D2,D6)-Y" duration="3.0" next="3" state="rrrrrrgGGGGygrrrrrrrrrrrr" />
-		<phase name="(D1,D6)-(D2,D6)-Y" duration="5.0" next="3" state="rrrrrrrrrrrrrrrrrrgGGGGyg" />
-		<phase name="(D2,D6)-(D4,D8)-Y" duration="5.0" next="10" state="rrrrrryyyyyryrrrrryyyyyry" />
-		<phase name="(D2,D6)-(D4,D8)-R" duration="1.0" next="4" state="rrrrrrrrrrrrrrrrrrrrrrrrr" />
-		<phase name="(D4,D8)-(D1,D5)-Y" duration="3.6" next="12" state="yyyyyyrrrrrrryyyyyrrrrrrr" />
-		<phase name="(D4,D8)-(D1,D5)-R" duration="2.3" next="0" state="rrrrrrrrrrrrrrrrrrrrrrrrr" />
+	</tlLogic><tlLogic id="84" type="static" programID="0" offset="0"><phase name="(D1,D5)" duration="6" maxDur="6" minDur="6" next="5 6" state="rrrrrrrrrrrGrrrrrrrrrrrGr" />
+		<phase name="(D2,D5)" duration="6" maxDur="6" minDur="6" next="7" state="rrrrrrgGGGGGgrrrrrrrrrrrr" />
+		<phase name="(D1,D6)" duration="6" maxDur="6" minDur="6" next="8" state="rrrrrrrrrrrrrrrrrrgGGGGGg" />
+		<phase name="(D2,D6)" duration="25" maxDur="25" minDur="25" next="9" state="rrrrrrgGGGGrgrrrrrgGGGGrg" />
+		<phase name="(D4,D8)" duration="18" maxDur="18" minDur="6" next="11" state="gGGGggrrrrrrrgGGggrrrrrrr" />
+		<phase name="(D1,D5)-(D2,D5)-Y" duration="3" next="1" state="rrrrrrrrrrrGrrrrrrrrrrryr" />
+		<phase name="(D1,D5)-(D1,D6)-Y" duration="3" next="2" state="rrrrrrrrrrryrrrrrrrrrrrGr" />
+		<phase name="(D2,D5)-(D2,D6)-Y" duration="3" next="3" state="rrrrrrgGGGGygrrrrrrrrrrrr" />
+		<phase name="(D1,D6)-(D2,D6)-Y" duration="5" next="3" state="rrrrrrrrrrrrrrrrrrgGGGGyg" />
+		<phase name="(D2,D6)-(D4,D8)-Y" duration="5" next="10" state="rrrrrryyyyyryrrrrryyyyyry" />
+		<phase name="(D2,D6)-(D4,D8)-R" duration="1" next="4" state="rrrrrrrrrrrrrrrrrrrrrrrrr" />
+		<phase name="(D4,D8)-(D1,D5)-Y" duration="3" next="12" state="yyyyyyrrrrrrryyyyyrrrrrrr" />
+		<phase name="(D4,D8)-(D1,D5)-R" duration="2" next="0" state="rrrrrrrrrrrrrrrrrrrrrrrrr" />
 		<param key="linkMinDur:5" value="6.5" />
 		<param key="linkMinDur:5" value="6.0" />
 		<param key="linkMinDur:19" value="25.0" />
@@ -860,26 +860,26 @@
 		<param key="linkMinDur:1" value="25.0" />
 		<param key="linkMinDur:8" value="18.0" />
 		<param key="linkMinDur:8" value="6.0" />
-	</tlLogic><tlLogic id="87" type="static" programID="0" offset="0"><phase name="(D1,D5)" duration="6.5" maxDur="6.5" minDur="6.0" next="8 9" state="rrrrrrrrrrGrrrrrrrrrrrGr" />
-		<phase name="(D2,D5)" duration="6.5" maxDur="6.5" minDur="6.0" next="10" state="rrrrrrgGGGGgrrrrrrrrrrrr" />
-		<phase name="(D1,D6)" duration="6.5" maxDur="6.5" minDur="6.0" next="11" state="rrrrrrrrrrrrrrrrrrgGGGGg" />
-		<phase name="(D2,D6)" duration="18.0" maxDur="18.0" minDur="15.0" next="12" state="rrrrrrgGGGrgrrrrrrgGGGrg" />
-		<phase name="(D3,D7)" duration="6.5" maxDur="6.5" minDur="6.0" next="14 15" state="rrrrGrrrrrrrrrrrGrrrrrrr" />
-		<phase name="(D4,D7)" duration="6.5" maxDur="6.5" minDur="6.0" next="16" state="gGGGGgrrrrrrrrrrrrrrrrrr" />
-		<phase name="(D3,D8)" duration="6.5" maxDur="6.5" minDur="6.0" next="17" state="rrrrrrrrrrrrgGGGGgrrrrrr" />
-		<phase name="(D4,D8)" duration="18.0" maxDur="18.0" minDur="6.0" next="18" state="gGGGrgrrrrrrgGGGrgrrrrrr" />
-		<phase name="(D1,D5)-(D2,D5)-Y" duration="3.0" next="1" state="rrrrrrrrrrGrrrrrrrrrrryr" />
-		<phase name="(D1,D5)-(D1,D6)-Y" duration="3.0" next="2" state="rrrrrrrrrryrrrrrrrrrrrGr" />
-		<phase name="(D2,D5)-(D2,D6)-Y" duration="3.0" next="3" state="rrrrrrgGGGygrrrrrrrrrrrr" />
-		<phase name="(D1,D6)-(D2,D6)-Y" duration="4.7" next="3" state="rrrrrrrrrrrrrrrrrrgGGGyg" />
-		<phase name="(D2,D6)-(D3,D7)-Y" duration="4.7" next="13" state="rrrrrryyyyryrrrrrryyyyry" />
-		<phase name="(D2,D6)-(D3,D7)-R" duration="1.0" next="4" state="rrrrrrrrrrrrrrrrrrrrrrrr" />
-		<phase name="(D3,D7)-(D4,D7)-Y" duration="3.0" next="5" state="rrrrGrrrrrrrrrrryrrrrrrr" />
-		<phase name="(D3,D7)-(D3,D8)-Y" duration="3.0" next="6" state="rrrryrrrrrrrrrrrGrrrrrrr" />
-		<phase name="(D4,D7)-(D4,D8)-Y" duration="3.0" next="7" state="gGGGygrrrrrrrrrrrrrrrrrr" />
-		<phase name="(D3,D8)-(D4,D8)-Y" duration="4.3" next="7" state="rrrrrrrrrrrrgGGGygrrrrrr" />
-		<phase name="(D4,D8)-(D1,D5)-Y" duration="4.3" next="19" state="yyyyryrrrrrryyyyryrrrrrr" />
-		<phase name="(D4,D8)-(D1,D5)-R" duration="1.2" next="0" state="rrrrrrrrrrrrrrrrrrrrrrrr" />
+	</tlLogic><tlLogic id="87" type="static" programID="0" offset="0"><phase name="(D1,D5)" duration="6" maxDur="6" minDur="6" next="8 9" state="rrrrrrrrrrGrrrrrrrrrrrGr" />
+		<phase name="(D2,D5)" duration="6" maxDur="6" minDur="6" next="10" state="rrrrrrgGGGGgrrrrrrrrrrrr" />
+		<phase name="(D1,D6)" duration="6" maxDur="6" minDur="6" next="11" state="rrrrrrrrrrrrrrrrrrgGGGGg" />
+		<phase name="(D2,D6)" duration="18" maxDur="18" minDur="15" next="12" state="rrrrrrgGGGrgrrrrrrgGGGrg" />
+		<phase name="(D3,D7)" duration="6" maxDur="6" minDur="6" next="14 15" state="rrrrGrrrrrrrrrrrGrrrrrrr" />
+		<phase name="(D4,D7)" duration="6" maxDur="6" minDur="6" next="16" state="gGGGGgrrrrrrrrrrrrrrrrrr" />
+		<phase name="(D3,D8)" duration="6" maxDur="6" minDur="6" next="17" state="rrrrrrrrrrrrgGGGGgrrrrrr" />
+		<phase name="(D4,D8)" duration="18" maxDur="18" minDur="6" next="18" state="gGGGrgrrrrrrgGGGrgrrrrrr" />
+		<phase name="(D1,D5)-(D2,D5)-Y" duration="3" next="1" state="rrrrrrrrrrGrrrrrrrrrrryr" />
+		<phase name="(D1,D5)-(D1,D6)-Y" duration="3" next="2" state="rrrrrrrrrryrrrrrrrrrrrGr" />
+		<phase name="(D2,D5)-(D2,D6)-Y" duration="3" next="3" state="rrrrrrgGGGygrrrrrrrrrrrr" />
+		<phase name="(D1,D6)-(D2,D6)-Y" duration="4" next="3" state="rrrrrrrrrrrrrrrrrrgGGGyg" />
+		<phase name="(D2,D6)-(D3,D7)-Y" duration="4" next="13" state="rrrrrryyyyryrrrrrryyyyry" />
+		<phase name="(D2,D6)-(D3,D7)-R" duration="1" next="4" state="rrrrrrrrrrrrrrrrrrrrrrrr" />
+		<phase name="(D3,D7)-(D4,D7)-Y" duration="3" next="5" state="rrrrGrrrrrrrrrrryrrrrrrr" />
+		<phase name="(D3,D7)-(D3,D8)-Y" duration="3" next="6" state="rrrryrrrrrrrrrrrGrrrrrrr" />
+		<phase name="(D4,D7)-(D4,D8)-Y" duration="3" next="7" state="gGGGygrrrrrrrrrrrrrrrrrr" />
+		<phase name="(D3,D8)-(D4,D8)-Y" duration="4" next="7" state="rrrrrrrrrrrrgGGGygrrrrrr" />
+		<phase name="(D4,D8)-(D1,D5)-Y" duration="4" next="19" state="yyyyryrrrrrryyyyryrrrrrr" />
+		<phase name="(D4,D8)-(D1,D5)-R" duration="1" next="0" state="rrrrrrrrrrrrrrrrrrrrrrrr" />
 		<param key="linkMinDur:22" value="6.5" />
 		<param key="linkMinDur:22" value="6.0" />
 		<param key="linkMinDur:1" value="18.0" />
@@ -896,14 +896,14 @@
 		<param key="linkMinDur:16" value="6.0" />
 		<param key="linkMinDur:7" value="18.0" />
 		<param key="linkMinDur:7" value="6.0" />
-	</tlLogic><tlLogic id="98" type="static" programID="0" offset="0"><phase name="(D2,D5)" duration="6.5" maxDur="6.5" minDur="6.0" next="3" state="GGGGGgrrrrrrrrr" />
-		<phase name="(D2,D6)" duration="20.0" maxDur="20.0" minDur="20.0" next="4" state="GGGrrgrrrrgGGGg" />
-		<phase name="(D4)" duration="18.0" maxDur="18.0" minDur="6.0" next="6" state="rrrrrrgGGgrrrrr" />
-		<phase name="(D2,D5)-(D2,D6)-Y" duration="3.0" next="1" state="GGGyygrrrrrrrrr" />
-		<phase name="(D2,D6)-(D4)-Y" duration="5.0" next="5" state="yyyrryrrrryyyyy" />
-		<phase name="(D2,D6)-(D4)-R" duration="1.2" next="2" state="rrrrrrrrrrrrrrr" />
-		<phase name="(D4)-(D2,D5)-Y" duration="3.0" next="7" state="rrrrrryyyyrrrrr" />
-		<phase name="(D4)-(D2,D5)-R" duration="2.8" next="0" state="rrrrrrrrrrrrrrr" />
+	</tlLogic><tlLogic id="98" type="static" programID="0" offset="0"><phase name="(D2,D5)" duration="6" maxDur="6" minDur="6" next="3" state="GGGGGgrrrrrrrrr" />
+		<phase name="(D2,D6)" duration="20" maxDur="20" minDur="20" next="4" state="GGGrrgrrrrgGGGg" />
+		<phase name="(D4)" duration="18" maxDur="18" minDur="6" next="6" state="rrrrrrgGGgrrrrr" />
+		<phase name="(D2,D5)-(D2,D6)-Y" duration="3" next="1" state="GGGyygrrrrrrrrr" />
+		<phase name="(D2,D6)-(D4)-Y" duration="5" next="5" state="yyyrryrrrryyyyy" />
+		<phase name="(D2,D6)-(D4)-R" duration="1" next="2" state="rrrrrrrrrrrrrrr" />
+		<phase name="(D4)-(D2,D5)-Y" duration="3" next="7" state="rrrrrryyyyrrrrr" />
+		<phase name="(D4)-(D2,D5)-R" duration="2" next="0" state="rrrrrrrrrrrrrrr" />
 		<param key="linkMinDur:5" value="20.0" />
 		<param key="linkMinDur:5" value="20.0" />
 		<param key="linkMinDur:12" value="18.0" />
