@@ -117,9 +117,7 @@ class TSCTrainer(BaseTrainer):
         # load_model_episode = Registry.mapping['model_mapping']['setting'].param['load_model_episode']
         is_load_model = Registry.mapping['model_mapping']['setting'].param['load_model']
         if is_load_model:
-            is_pretrained = Registry.mapping["trainer_mapping"]["setting"].param["load_pretrained"]
-            network_name = Registry.mapping["command_mapping"]["setting"].param["network"]
-            [ag.load_model(100, pretrained=is_pretrained, network=network_name) for ag in self.agents]
+            [ag.load_model() for ag in self.agents]
 
         
         

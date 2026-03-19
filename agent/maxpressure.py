@@ -18,6 +18,7 @@ class MaxPressureAgent(BaseAgent):
 
         # get generator for each MaxPressure
         inter_id = self.world.intersection_ids[self.rank]
+        self.id = inter_id
         self.inter_obj = self.world.id2intersection[inter_id]
         self.ob_generator = self.ob_generator = LaneVehicleGenerator(self.world, self.inter_obj, ['lane_count'], in_only=True, average=None)
         self.phase_generator = IntersectionPhaseGenerator(world, self.inter_obj, ["phase"],

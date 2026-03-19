@@ -4,7 +4,8 @@ includes:
 
 model:
   name: presslight
-  train_model: True
+  train_model: False
+  load_model: True
   d_dense: 20
   epsilon: 0.1
   epsilon_decay: 0.995

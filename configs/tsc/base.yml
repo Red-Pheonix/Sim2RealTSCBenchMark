@@ -18,7 +18,7 @@ world:
   rlTrafficLight: True
 
 trainer:
-  thread: 4
+  thread: 24
   ngpu: -1
   learning_start: 5000
   buffer_size: 5000
@@ -26,24 +26,14 @@ trainer:
   test_steps: 3600
   yellow_length: 5
   action_interval: 10
-  episodes: 300
+  episodes: 100
   update_model_rate: 1
   update_target_rate: 10
   test_when_train: False
-  gat: True
-  gattype: "jlgat"
-  uncertainty: False
-  delayedgat: False
-  ground_original: False
-  training_iterations: 1
-  last_n_uncertainties: 2
-  prob_grounding: 0.33
-  load_pretrained: False
-  probing_radius: 500 # for JL-GAT, in meters
 
 model:
   name: "non-rl"
-  train_model: True
+  train_model: False
   test_model: True
   load_model: False
   graphic: False
