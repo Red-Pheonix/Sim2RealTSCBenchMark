@@ -12,7 +12,7 @@
 -->
 
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
-<vType id="car" accel="2.6" decel="4.5" maxSpeed="13.39" minGap="2.5" tau="1.5"/>
+<vType id="car" accel="2.6" decel="4.5" maxSpeed="13.39" minGap="2.5" tau="0.9"/>
     <vehicle id="39_76.0" type="car" depart="32400.00">
         <route edges="39_75 75_76"/>
     </vehicle>
