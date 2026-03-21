@@ -1190,7 +1190,7 @@ def cityflow2sumo_cfg(args):
     '''
     # parent dir of current dir
     f_cwd = os.path.abspath(os.path.dirname(os.getcwd()) + os.path.sep + ".")
-    sumofile = os.path.join(f_cwd, 'data/raw_data', args.sumonet)
+    sumofile = os.path.join(f_cwd, 'data/raw_data', args.or_sumonet)
     sumo_cfg = get_filename(sumofile, typ='sumocfg')
     sumo_net = get_filename(sumofile, typ='net', need_path=False)
     sumo_route = get_filename(sumofile, typ='rou', need_path=False)
