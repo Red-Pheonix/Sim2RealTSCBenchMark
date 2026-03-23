@@ -16,7 +16,7 @@
 -->
 
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
-    <vType id="default_016" minGap="2.5" maxSpeed="13.39" vClass="passenger" accel="2.6" decel="4.5" tau="0.8"/>
+    <!-- <vType id="default_016" minGap="2.5" maxSpeed="13.39" vClass="passenger" accel="2.6" decel="4.5" tau="0.8"/> -->
     <vehicle id="carIn105842:1" type="default_016" depart="57600.20">
         <route edges="653473569#5 164051413 124812857#0 201956811#0"/>
     </vehicle>
