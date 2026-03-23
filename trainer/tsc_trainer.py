@@ -73,8 +73,13 @@ class TSCTrainer(BaseTrainer):
         :return: None
         '''
         # traffic setting is in the world mapping
+        world_kwargs = {
+            "interface": Registry.mapping['command_mapping']['setting'].param['interface']
+        }
+        if Registry.mapping['command_mapping']['setting'].param['world'] == 'sumo':
+            world_kwargs["sumo_add"] = Registry.mapping['command_mapping']['setting'].param.get('sumo_add')
         self.world = Registry.mapping['world_mapping'][Registry.mapping['command_mapping']['setting'].param['world']](
-            self.path, Registry.mapping['command_mapping']['setting'].param['thread_num'],interface=Registry.mapping['command_mapping']['setting'].param['interface'])
+            self.path, Registry.mapping['command_mapping']['setting'].param['thread_num'], **world_kwargs)
 
     def create_metrics(self):
         '''
@@ -343,4 +348,3 @@ class TSCTrainer(BaseTrainer):
         log_handle = open(self.log_file, "a")
         log_handle.write(res + "\n")
         log_handle.close()
-

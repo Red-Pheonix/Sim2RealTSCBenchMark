@@ -26,6 +26,35 @@ import sumolib
 import libsumo
 import traci
 
+
+def resolve_sumo_additional_files(base_dir, combined_file, sumo_add):
+    if not sumo_add:
+        return None
+
+    combined_dir = base_dir
+    if combined_file:
+        combined_dir = os.path.dirname(os.path.join(base_dir, combined_file))
+
+    resolved_files = []
+    for raw_path in sumo_add.split(','):
+        candidate = raw_path.strip()
+        if not candidate:
+            continue
+        if os.path.isabs(candidate):
+            resolved_files.append(candidate)
+            continue
+
+        combined_candidate = os.path.join(combined_dir, candidate)
+        if os.path.exists(combined_candidate):
+            resolved_files.append(combined_candidate)
+            continue
+
+        base_candidate = os.path.join(base_dir, candidate)
+        resolved_files.append(base_candidate)
+
+    return ','.join(resolved_files) if resolved_files else None
+
+
 class Intersection(object):
     '''
     Intersection Class is mainly used for describing crossing information and defining acting methods.
@@ -411,6 +440,11 @@ class World(object):
             sumo_cmd = [sumolib.checkBinary('sumo-gui')]
         else:
             sumo_cmd = [sumolib.checkBinary('sumo')]
+        sumo_add = resolve_sumo_additional_files(
+            sumo_dict['dir'],
+            sumo_dict.get('combined_file'),
+            kwargs.get('sumo_add')
+        )
         if not sumo_dict.get('combined_file'):
             sumo_cmd += ['-n', os.path.join(sumo_dict['dir'], sumo_dict['roadnetFile']),
                          '-r', os.path.join(sumo_dict['dir'], sumo_dict['flowFile']),
@@ -418,6 +452,8 @@ class World(object):
         else:
             sumo_cmd += ['-c', os.path.join(sumo_dict['dir'], sumo_dict['combined_file']),
                          '--no-warnings', str(sumo_dict['no_warning'])]
+        if sumo_add:
+            sumo_cmd += ['-a', sumo_add]
         self.net = os.path.join(sumo_dict['dir'], sumo_dict['roadnetFile'])
         self.route = os.path.join(sumo_dict['dir'], sumo_dict['flowFile'])
         self.sumo_cmd = sumo_cmd
@@ -1049,5 +1085,4 @@ class World(object):
                 pressures[start] += lvc[start]
                 pressures[start] -= lvc[end]
         return pressures
-
 
