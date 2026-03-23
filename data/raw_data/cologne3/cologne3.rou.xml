@@ -4,7 +4,8 @@
 -->
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
 	<!-- <vType id="pkw" vClass="passenger" speedDev="0.1" length="4.3" minGap="1.5"/> -->
-    <vType id="pkw" accel="2.6" decel="4.5" maxSpeed="13.39" minGap="2.5" tau="0.95"/>
+    <!-- <vType id="pkw" accel="2.6" decel="4.5" maxSpeed="13.39" minGap="2.5" tau="0.9"/> -->
+
     <vehicle arrival="28133.00" depart="25200.00" id="132705_410_0" type="pkw">
         <route edges="-5229966#3 319261593#15 319261593#16 241660955#0 241660955#4 241660955#6 4045332#0"/>
     </vehicle>
