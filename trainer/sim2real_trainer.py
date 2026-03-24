@@ -161,9 +161,16 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
             Registry.mapping["command_mapping"]["setting"].param["thread_num"],
         )
 
+        sumo_add = Registry.mapping["command_mapping"]["setting"].param.get(
+                "real_setting"
+            )
+        if sumo_add is not None:
+            sumo_add = sumo_add + ".add.xml"
+            
         self.world_real = Registry.mapping["world_mapping"]["sumo"](
             self.sumo_path,
             interface=Registry.mapping["command_mapping"]["setting"].param["interface"],
+            sumo_add=sumo_add,
         )
 
     def create_metrics(self):
@@ -278,7 +285,7 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
 
             if self.load_pretrained:
                 for ag in self.agents_sim:
-                    ag.load_model(0, True, self.net)
+                    ag.load_model()
                     ag.optimizer = optim.RMSprop(
                         ag.model.parameters(),
                         lr=ag.learning_rate,

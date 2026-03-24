@@ -21,6 +21,7 @@ parser.add_argument('--seed', type=int, default=None, help="seed for pytorch bac
 parser.add_argument('--debug', type=bool, default=True)
 parser.add_argument('--interface', type=str, default="libsumo", choices=['libsumo','traci'], help="interface type") # libsumo(fast) or traci(slow)
 parser.add_argument('--delay_type', type=str, default="apx", choices=['apx','real'], help="method of calculating delay") # apx(approximate) or real
+parser.add_argument('--real_setting', type=str, default=None, help="SUMO additional-files override for the real sim2real environment")
 
 parser.add_argument('-t', '--task', type=str, default="sim2real_transitions", help="task type to run")
 parser.add_argument('-a', '--agent', type=str, default="dqn", help="agent type of agents in RL environment")
@@ -51,6 +52,7 @@ class Runner:
         """
 
         self.config['command']['network'] = args.network
+        self.config['command']['real_setting'] = args.real_setting
 
         interface.Command_Setting_Interface(self.config)
         interface.Logger_param_Interface(self.config)  # register logger path
