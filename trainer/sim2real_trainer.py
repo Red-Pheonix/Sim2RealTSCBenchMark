@@ -683,6 +683,17 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         with open(file_path, "wb") as f:
             pkl.dump(state_action_next_state, f)
 
+            self.writeLog(
+                "Sim Rollout",
+                e,
+                self.metric_sim.real_average_travel_time(),
+                100,
+                self.metric_sim.rewards(),
+                self.metric_sim.queue(),
+                self.metric_sim.delay(),
+                self.metric_sim.throughput(),
+            )
+            
             self.logger.info(
                 "Sim Rollout episode:{}/{}, sim avg travel time:{}, rewards:{}, queue:{}, delay:{}, throughput:{}".format(
                     e,
