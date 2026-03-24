@@ -20,7 +20,7 @@ class Sim2RealTransitionsTask(BaseTask):
         try:
             if Registry.mapping['model_mapping']['setting'].param['train_model']:
                 print("-----conducting training--------")
-                self.trainer.train_flow()
+                self.trainer.train()
 
             if Registry.mapping['model_mapping']['setting'].param['test_model']:
                 print("-----conducting testing--------")
