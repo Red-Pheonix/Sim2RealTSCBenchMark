@@ -352,7 +352,7 @@ class PressLightAgent(RLAgent):
         self.target_model.load_state_dict(weights)
 
     def load_model(self, e=None):
-        if e:
+        if e is not None:
             model_name = os.path.join(
                 Registry.mapping["logger_mapping"]["path"].path,
                 "model",

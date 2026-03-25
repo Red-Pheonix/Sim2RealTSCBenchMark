@@ -107,9 +107,9 @@ def load_and_split_forward_data(
     
             # Append the data as a tuple of arrays
             agent_data.append((
-                np.array(states).squeeze(1),  # (3, 24)
+                states,  # (3, 24)
                 one_hot_actions,  # (3, 8)
-                np.array(next_states).squeeze(1)  # (3, 24)
+                next_states  # (3, 24)
             ))
     
         # Instead of converting to a NumPy array, just work with the list directly
@@ -283,8 +283,8 @@ def load_and_split_inverse_data(pkl_file_path, train_pkl_file, test_pkl_file, ac
     
             # Append the data as a tuple of arrays
             agent_data.append((
-                np.array(states).squeeze(1),  # (3, 24)
-                np.array(next_states).squeeze(1),  # (3, 24)
+                states,  # (3, 24)
+                next_states,  # (3, 24)
                 actions # (3, 8)
             ))
     

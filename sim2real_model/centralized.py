@@ -10,7 +10,7 @@ from common.gat_utils import (
     UNCERTAINTY_predictor,
 )
 from common.registry import Registry
-from .base import BaseSim2RealTransitionModel
+from .base import BaseSim2RealTransitionModel, pad_and_concat
 
 
 @Registry.register_sim2real_model("centralized")
@@ -20,16 +20,25 @@ class CentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
         sim2real_params = Registry.mapping["sim2real_mapping"]["setting"].param
         self.uncertainty_setting = sim2real_params["uncertainty"]
         self.last_n_uncertainties = sim2real_params["last_n_uncertainties"]
+        self.setting = Registry.mapping["command_mapping"]["setting"].param.get("real_setting")
         self.gat_path = os.path.join(
-            Registry.mapping["logger_mapping"]["path"].path, "model"
+            Registry.mapping["logger_mapping"]["path"].path,
+            "model",
+            sim2real_params["gattype"],
+            self.setting,
         )
         self.last_two_central_uncertainties = []
         self.mean_uncertainty = 0
 
         num_agents = len(self.agents_real)
-        ob_length = self.agents_real[0].ob_generator.ob_length
-        action_dim = self.agents_real[0].action_space.n
+        # ob_length = self.agents_real[0].ob_generator.ob_length
+        # action_dim = self.agents_real[0].action_space.n
+        
+        ob_length = max([ag.ob_generator.ob_length for ag in self.agents_real])
+        action_dim = max([ag.action_space.n for ag in self.agents_real])
+        
         self.forward_model = NN_predictor(
+            0,
             self.logger,
             (num_agents, ob_length),
             (num_agents, action_dim),
@@ -42,6 +51,7 @@ class CentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
             "central",
         )
         self.inverse_model = UNCERTAINTY_predictor(
+            0,
             self.logger,
             (num_agents, ob_length),
             0,
@@ -60,13 +70,29 @@ class CentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
         self.action_dims = [action_dim for _ in range(num_agents)]
         self.action_dim = action_dim
 
+    def collect_sim_transition(self, last_obs, actions, obs):
+        transitions = []
+        for idx in range(len(self.agents_real)):
+            transitions.append(
+                (
+                    pad_and_concat(last_obs),
+                    np.asarray(actions).reshape(-1, 1),
+                    pad_and_concat(obs),
+                    actions[idx],
+                )
+            )
+        
+        return transitions
+
+    collect_real_transition = collect_sim_transition
+
     def ground_actions(self, last_obs, actions, stats):
         one_hot_actions = np.concatenate(
             [idx2onehot(np.array([action]), self.action_dim) for action in actions],
             axis=0,
         )
         state_tensor = (
-            torch.tensor(np.array(last_obs)).squeeze(1).unsqueeze(0).float().to(self.device)
+            torch.tensor(np.array(pad_and_concat(last_obs))).squeeze(1).unsqueeze(0).float().to(self.device)
         )
         action_tensor = torch.tensor(one_hot_actions).unsqueeze(0).float().to(self.device)
         pred_next_state = self.forward_model.model(state_tensor, action_tensor)
@@ -129,3 +155,15 @@ class CentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
         self.inverse_model.train(
             100, "inverse", len(self.agents_sim), 5000 * len(self.agents_real)
         )
+
+    def save_models(self, e):
+        for model in self.forward_models:
+            model.save_model(e)
+        for model in self.inverse_models:
+            model.save_model(e)
+
+    def load_models(self):
+        for model in self.forward_models:
+            model.load_model()
+        for model in self.inverse_models:
+            model.load_model()
