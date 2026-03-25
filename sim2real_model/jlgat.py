@@ -1,6 +1,7 @@
 import os
 import json
 import random
+from pathlib import Path
 import numpy as np
 import torch
 
@@ -53,7 +54,9 @@ class JLGATSim2RealTransitionModel(DecentralizedSim2RealTransitionModel):
                 i for i, dist in enumerate(distances) if dist < self.probing_radius
             ]
 
-        neighbors_file = os.path.join("neighbors", f"{self.net}.json")
+        world_param = Registry.mapping["world_mapping"]["setting"].param
+        roadnet_path = Path(world_param["dir"]) / world_param["roadnetFile"]
+        neighbors_file = roadnet_path.parent / f"{self.net}_neighbour_overrides.json"
         if os.path.exists(neighbors_file):
             with open(neighbors_file, "r") as file_obj:
                 neighbor_overrides = json.load(file_obj)
