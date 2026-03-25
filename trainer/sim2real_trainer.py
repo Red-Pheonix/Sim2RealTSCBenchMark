@@ -257,6 +257,20 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         """
         Main training flow
         """
+        
+        if self.load_pretrained:
+                for ag in self.agents_sim:
+                    ag.load_model()
+                    ag.optimizer = optim.RMSprop(
+                        ag.model.parameters(),
+                        lr=ag.learning_rate,
+                        alpha=0.9,
+                        centered=False,
+                        eps=1e-7,
+                    )
+                
+                self.transition_model.load_models()
+        
         if self.delayedgat == True:
             # Run for a set number of episodes
             for e in range(self.episodes):
@@ -273,28 +287,12 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
                 # Delay GAT training until episode 150
                 if e < 200:
                     # Run regular policy training for some number of iterations
-                    self.gat = False
-                    self.policy_training(e)
-                    self.gat = True
+                    self.policy_training(e, is_gat=False)
                 else:
                     # Run GAT policy training for some number of iterations
-                    self.gat = True
-                    self.policy_training(e)
+                    self.policy_training(e, is_gat=True)
 
         else:
-
-            if self.load_pretrained:
-                for ag in self.agents_sim:
-                    ag.load_model()
-                    ag.optimizer = optim.RMSprop(
-                        ag.model.parameters(),
-                        lr=ag.learning_rate,
-                        alpha=0.9,
-                        centered=False,
-                        eps=1e-7,
-                    )
-                
-                self.transition_model.load_models()
 
             # Run for a set number of episodes
             for e in range(self.episodes):
@@ -309,9 +307,9 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
                 self.gat_training(e)
 
                 # Run policy training for some number of iterations
-                self.policy_training(e)
+                self.policy_training(e, is_gat=self.gat)
 
-    def policy_training(self, episode):
+    def policy_training(self, episode, is_gat=False):
         """
         Train the agent(s) without saving data or collecting it, and log the iteration number.
 
@@ -358,7 +356,7 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
                     original_actions = actions.copy()
                     grounded_actions = [9 for i in range(len(self.agents_sim))]
 
-                    if self.gat:
+                    if is_gat:
                         actions, grounded_actions = self.transition_model.ground_actions(
                             last_obs, actions, policy_stats
                         )

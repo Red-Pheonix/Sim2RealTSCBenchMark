@@ -4,11 +4,57 @@ import torch
 
 from agent.utils import idx2onehot
 from common.gat_utils import (
-    NN_predictor,
-    UNCERTAINTY_predictor,
+    BaseNNPredictor,
+    BaseUncertaintyPredictor,
+    Central_Inverse_N_net,
+    Central_N_net,
+    PKLDataset,
 )
 from common.registry import Registry
 from .base import BaseSim2RealTransitionModel, pad_and_concat
+
+
+class CentralizedNNPredictor(BaseNNPredictor):
+    def make_model(self):
+        return Central_N_net(self.state_dim, self.action_dim, self.out_dim, self.backward).float()
+
+    def get_train_dataset_path(self, agent_num=None):
+        return "collected/ereal_train_full.pkl"
+
+    def get_test_dataset_path(self, agent_num=None):
+        return "collected/ereal_test_full.pkl"
+
+    def compute_loss(self, y_pred, y_true):
+        return self.criterion(y_pred, y_true)
+
+
+class CentralizedUncertaintyPredictor(BaseUncertaintyPredictor):
+    def make_model(self):
+        return Central_Inverse_N_net(
+            self.ind_state_dim, self.pred_state_dim, self.out_dim, self.backward
+        ).float()
+
+    def get_train_dataset_path(self, agent_num=None):
+        return "collected/esim_train_full.pkl"
+
+    def get_test_dataset_path(self, agent_num=None):
+        return "collected/esim_test_full.pkl"
+
+    def build_dataset(self, dataset_path):
+        return PKLDataset(dataset_path, "central")
+
+    def unpack_batch(self, data):
+        state, pred_state, y_true = data
+        return (
+            (
+                state.to(self.DEVICE, non_blocking=True),
+                pred_state.to(self.DEVICE, non_blocking=True),
+            ),
+            y_true.to(self.DEVICE, non_blocking=True),
+        )
+
+    def compute_loss(self, y_pred, y_true):
+        return self.criterion(y_pred.permute(0, 2, 1), y_true.squeeze(-1).long())
 
 
 @Registry.register_sim2real_model("centralized")
@@ -35,7 +81,7 @@ class CentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
         ob_length = max([ag.ob_generator.ob_length for ag in self.agents_real])
         action_dim = max([ag.action_space.n for ag in self.agents_real])
         
-        self.forward_model = NN_predictor(
+        self.forward_model = CentralizedNNPredictor(
             0,
             self.logger,
             (num_agents, ob_length),
@@ -46,9 +92,8 @@ class CentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
             "collected/ereal_train_full.pkl",
             False,
             1,
-            "central",
         )
-        self.inverse_model = UNCERTAINTY_predictor(
+        self.inverse_model = CentralizedUncertaintyPredictor(
             0,
             self.logger,
             (num_agents, ob_length),
@@ -61,7 +106,6 @@ class CentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
             "collected/esim_train_full.pkl",
             backward=True,
             history=1,
-            mode="central",
         )
         self.forward_models = [self.forward_model]
         self.inverse_models = [self.inverse_model]

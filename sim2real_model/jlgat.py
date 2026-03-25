@@ -7,12 +7,97 @@ import torch
 
 from agent.utils import idx2onehot
 from common.gat_utils import (
-    NN_predictor,
-    UNCERTAINTY_predictor,
+    BaseNNPredictor,
+    BaseUncertaintyPredictor,
+    Inverse_N_Net_No_State,
+    Inverse_N_net,
+    N_net,
+    N_net_noAction,
+    N_net_noState,
+    PKLDataset,
 )
 from common.registry import Registry
 from .base import BaseSim2RealTransitionModel, pad_and_concat
 from .decentralized import DecentralizedSim2RealTransitionModel
+
+
+class JLGATNNPredictor(BaseNNPredictor):
+    def make_model(self):
+        return N_net(self.state_dim, self.action_dim, self.out_dim, self.backward).float()
+
+    def get_train_dataset_path(self, agent_num=None):
+        if agent_num is None:
+            raise ValueError("agent_num is required for JL-GAT forward training.")
+        return f"collected/ereal_train_full_agent_{agent_num}.pkl"
+
+    def get_test_dataset_path(self, agent_num=None):
+        if agent_num is None:
+            raise ValueError("agent_num is required for JL-GAT forward evaluation.")
+        return f"collected/ereal_test_full_agent_{agent_num}.pkl"
+
+    def compute_loss(self, y_pred, y_true):
+        return self.criterion(y_pred, y_true.squeeze(1))
+
+
+class JLGATNoActionNNPredictor(JLGATNNPredictor):
+    def make_model(self):
+        return N_net_noAction(self.state_dim, self.action_dim, self.out_dim, self.backward).float()
+
+
+class JLGATNoStateNNPredictor(JLGATNNPredictor):
+    def make_model(self):
+        return N_net_noState(self.state_dim, self.action_dim, self.out_dim, self.backward).float()
+
+
+class JLGATUncertaintyPredictor(BaseUncertaintyPredictor):
+    def make_model(self):
+        return Inverse_N_net(
+            self.ind_state_dim,
+            self.n_state_dim,
+            self.action_dim,
+            self.pred_state_dim,
+            self.out_dim,
+            self.backward,
+        ).float()
+
+    def get_train_dataset_path(self, agent_num=None):
+        if agent_num is None:
+            raise ValueError("agent_num is required for JL-GAT inverse training.")
+        return f"collected/esim_train_full_agent_{agent_num}.pkl"
+
+    def get_test_dataset_path(self, agent_num=None):
+        if agent_num is None:
+            raise ValueError("agent_num is required for JL-GAT inverse evaluation.")
+        return f"collected/esim_test_full_agent_{agent_num}.pkl"
+
+    def build_dataset(self, dataset_path):
+        return PKLDataset(dataset_path, "jlg")
+
+    def unpack_batch(self, data):
+        state, n_state, n_action, pred_state, y_true = data
+        return (
+            (
+                state.to(self.DEVICE, non_blocking=True),
+                n_state.to(self.DEVICE, non_blocking=True),
+                n_action.to(self.DEVICE, non_blocking=True),
+                pred_state.to(self.DEVICE, non_blocking=True),
+            ),
+            y_true.to(self.DEVICE, non_blocking=True),
+        )
+
+    def compute_loss(self, y_pred, y_true):
+        return self.criterion(y_pred, y_true.squeeze().long())
+
+
+class JLGATNoStateUncertaintyPredictor(JLGATUncertaintyPredictor):
+    def make_model(self):
+        return Inverse_N_Net_No_State(
+            self.ind_state_dim,
+            self.action_dim,
+            self.pred_state_dim,
+            self.out_dim,
+            self.backward,
+        ).float()
 
 
 @Registry.register_sim2real_model("jlgat")
@@ -81,7 +166,7 @@ class JLGATSim2RealTransitionModel(DecentralizedSim2RealTransitionModel):
                     for inter in self.neighbour_infos[idx]
                 ]
             )
-            forward_model = NN_predictor(
+            forward_model = JLGATNNPredictor(
                 idx,
                 self.logger,
                 (agent.neighbors, ob_length),
@@ -98,7 +183,7 @@ class JLGATSim2RealTransitionModel(DecentralizedSim2RealTransitionModel):
                     for inter in only_neighbors
                 ]
             )
-            inverse_model = UNCERTAINTY_predictor(
+            inverse_model = JLGATUncertaintyPredictor(
                 idx,
                 self.logger,
                 (1, self.agents_real[idx].ob_generator.ob_length),

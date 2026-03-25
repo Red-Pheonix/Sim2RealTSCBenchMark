@@ -4,11 +4,65 @@ import torch
 
 from agent.utils import idx2onehot
 from common.gat_utils import (
-    NN_predictor,
-    UNCERTAINTY_predictor,
+    BaseNNPredictor,
+    BaseUncertaintyPredictor,
+    Dec_Inverse_N_net,
+    N_net,
+    PKLDataset,
 )
 from common.registry import Registry
 from .base import BaseSim2RealTransitionModel
+
+
+class DecentralizedNNPredictor(BaseNNPredictor):
+    def make_model(self):
+        return N_net(self.state_dim, self.action_dim, self.out_dim, self.backward).float()
+
+    def get_train_dataset_path(self, agent_num=None):
+        if agent_num is None:
+            raise ValueError("agent_num is required for decentralized forward training.")
+        return f"collected/ereal_train_full_agent_{agent_num}.pkl"
+
+    def get_test_dataset_path(self, agent_num=None):
+        if agent_num is None:
+            raise ValueError("agent_num is required for decentralized forward evaluation.")
+        return f"collected/ereal_test_full_agent_{agent_num}.pkl"
+
+    def compute_loss(self, y_pred, y_true):
+        return self.criterion(y_pred.squeeze(1), y_true.squeeze(1))
+
+
+class DecentralizedUncertaintyPredictor(BaseUncertaintyPredictor):
+    def make_model(self):
+        return Dec_Inverse_N_net(
+            self.ind_state_dim, self.pred_state_dim, self.out_dim, self.backward
+        ).float()
+
+    def get_train_dataset_path(self, agent_num=None):
+        if agent_num is None:
+            raise ValueError("agent_num is required for decentralized inverse training.")
+        return f"collected/esim_train_full_agent_{agent_num}.pkl"
+
+    def get_test_dataset_path(self, agent_num=None):
+        if agent_num is None:
+            raise ValueError("agent_num is required for decentralized inverse evaluation.")
+        return f"collected/esim_test_full_agent_{agent_num}.pkl"
+
+    def build_dataset(self, dataset_path):
+        return PKLDataset(dataset_path)
+
+    def unpack_batch(self, data):
+        state, pred_state, y_true = data
+        return (
+            (
+                state.to(self.DEVICE, non_blocking=True),
+                pred_state.to(self.DEVICE, non_blocking=True),
+            ),
+            y_true.to(self.DEVICE, non_blocking=True),
+        )
+
+    def compute_loss(self, y_pred, y_true):
+        return self.criterion(y_pred.squeeze(1), y_true.squeeze().long())
 
 
 @Registry.register_sim2real_model("decentralized")
@@ -26,7 +80,7 @@ class DecentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
         self.avg_agent_uncertainties = [0 for _ in range(len(self.agents_sim))]
 
         for i, agent in enumerate(self.agents_real):
-            forward_model = NN_predictor(
+            forward_model = DecentralizedNNPredictor(
                 i,
                 self.logger,
                 (1, agent.ob_generator.ob_length),
@@ -36,7 +90,7 @@ class DecentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
                 self.gat_path,
                 "collected/ereal_train_full.pkl",
             )
-            inverse_model = UNCERTAINTY_predictor(
+            inverse_model = DecentralizedUncertaintyPredictor(
                 i,
                 self.logger,
                 (1, agent.ob_generator.ob_length),
@@ -49,7 +103,6 @@ class DecentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
                 "collected/esim_train_full.pkl",
                 backward=True,
                 history=1,
-                mode="dec",
             )
             self.forward_models.append(forward_model)
             self.inverse_models.append(inverse_model)
