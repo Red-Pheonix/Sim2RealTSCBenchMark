@@ -361,6 +361,7 @@ class PressLightAgent(RLAgent):
         else:
             model_name = os.path.join(
                 "pretrained",
+                Registry.mapping["command_mapping"]["setting"].param["task"],
                 Registry.mapping["command_mapping"]["setting"].param["agent"],
                 Registry.mapping["command_mapping"]["setting"].param["network"],
                 f"{self.rank}.pt",

@@ -20,14 +20,16 @@ class DecentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
         sim2real_params = Registry.mapping["sim2real_mapping"]["setting"].param
         self.uncertainty_setting = sim2real_params["uncertainty"]
         self.last_n_uncertainties = sim2real_params["last_n_uncertainties"]
+        self.setting = Registry.mapping["command_mapping"]["setting"].param.get("real_setting")
         self.gat_path = os.path.join(
-            Registry.mapping["logger_mapping"]["path"].path, "model"
+            Registry.mapping["logger_mapping"]["path"].path, "model", sim2real_params["gattype"] , self.setting
         )
         self.last_two_uncertainties = {idx: [] for idx in range(len(self.agents_sim))}
         self.avg_agent_uncertainties = [0 for _ in range(len(self.agents_sim))]
 
-        for agent in self.agents_real:
+        for i, agent in enumerate(self.agents_real):
             forward_model = NN_predictor(
+                i,
                 self.logger,
                 (1, agent.ob_generator.ob_length),
                 (1, agent.action_space.n),
@@ -37,6 +39,7 @@ class DecentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
                 "collected/ereal_train_full.pkl",
             )
             inverse_model = UNCERTAINTY_predictor(
+                i,
                 self.logger,
                 (1, agent.ob_generator.ob_length),
                 0,
@@ -136,3 +139,15 @@ class DecentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
         for idx in range(len(self.agents_sim)):
             self.forward_models[idx].train(100, "forward", idx, 5000, "decentralized")
             self.inverse_models[idx].train(100, "inverse", idx, 5000, "decentralized")
+    
+    def save_models(self, e):
+        for model in self.forward_models:
+            model.save_model(e=e)
+        for model in self.inverse_models:
+            model.save_model(e)
+    
+    def load_models(self):
+        for model in self.forward_models:
+            model.load_model()
+        for model in self.inverse_models:
+            model.load_model()

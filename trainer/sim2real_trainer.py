@@ -72,9 +72,7 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         )
 
         self.net = Registry.mapping["trainer_mapping"]["setting"].param["network"]
-        self.load_pretrained = Registry.mapping["sim2real_mapping"]["setting"].param[
-            "load_pretrained"
-        ]
+        self.load_pretrained = Registry.mapping["model_mapping"]["setting"].param["load_model"]
         self.probing_radius = Registry.mapping["sim2real_mapping"]["setting"].param.get(
             "probing_radius"
         )
@@ -164,8 +162,10 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         sumo_add = Registry.mapping["command_mapping"]["setting"].param.get(
                 "real_setting"
             )
-        if sumo_add is not None:
+        if sumo_add != "default":
             sumo_add = sumo_add + ".add.xml"
+        else:
+            sumo_add = None
             
         self.world_real = Registry.mapping["world_mapping"]["sumo"](
             self.sumo_path,
@@ -262,10 +262,10 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
             for e in range(self.episodes):
 
                 # Sim rollout + collect data
-                self.sim_rollout(e, self.gattype)
+                self.sim_rollout(e)
 
                 # Real rollout + collect data
-                self.train_test(e, self.gattype)
+                self.train_test(e)
 
                 # Update GAT models
                 self.gat_training(e)
@@ -293,15 +293,17 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
                         centered=False,
                         eps=1e-7,
                     )
+                
+                self.transition_model.load_models()
 
             # Run for a set number of episodes
             for e in range(self.episodes):
 
                 # Sim rollout + collect data
-                self.sim_rollout(e, self.gattype)
+                self.sim_rollout(e)
 
                 # Real rollout + collect data
-                self.train_test(e, self.gattype)
+                self.train_test(e)
 
                 # Update GAT models
                 self.gat_training(e)
@@ -452,8 +454,9 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
     def gat_training(self, e):
         if self.gat == True:
             self.transition_model.train_transition_models()
+            self.transition_model.save_models(e)
 
-    def sim_rollout(self, e, mode="centralized"):
+    def sim_rollout(self, e):
         """
         single_rollout
         Perform a single rollout in the simulated environment and save data.
@@ -549,7 +552,7 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         # for j in range(len(self.world_sim.intersections)):
         # self.logger.debug("intersection:{}, individual reward:{}, individual queue:{}, individual delay:{}, individual throughput:{}".format(j, self.metric_sim.lane_rewards()[j], self.metric_sim.queue()[j], self.metric_sim.delay()[j], int(self.metric_sim.throughput()[j])))
 
-    def train_test(self, e, mode="centralized"):
+    def train_test(self, e):
         """
         train_test
         Evaluate model performance after each episode training process.
@@ -695,8 +698,107 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         log_handle.write(res + "\n")
         log_handle.close()
 
-    def test(self):
-        self.logger.info("Test function not implemented")
+    def test(self):        
+        # sim environment
+        last_obs = self.env_sim.reset()
+        self.metric_sim.clear()
+        
+        for a in self.agents_sim:
+            a.load_model()
+            a.reset()
+        
+        for i in range(self.test_steps):
+            if i % self.action_interval == 0:
+                phases = np.stack([ag.get_phase() for ag in self.agents_sim])
+                actions = []
+                for idx, ag in enumerate(self.agents_sim):
+                    actions.append(ag.get_action(last_obs[idx], phases[idx], test=True))
+                actions = np.stack(actions)
+                rewards_list = []
+                for _ in range(self.action_interval):
+                    obs, rewards, dones, _ = self.env_sim.step(
+                        actions.flatten()
+                    )  # make sure action is [intersection]
+                    i += 1
+                    rewards_list.append(np.stack(rewards))
+                rewards = np.mean(rewards_list, axis=0)  # [agent, intersection]
+                self.metric_sim.update(rewards)
+
+                last_obs = obs
+
+            if all(dones):
+                break
+        
+        self.logger.info(
+            "Test - Sim rollout: travel time:{}, rewards:{}, queue:{}, delay:{}, throughput:{}".format(
+                self.metric_sim.real_average_travel_time(),
+                self.metric_sim.rewards(),
+                self.metric_sim.queue(),
+                self.metric_sim.delay(),
+                int(self.metric_sim.throughput()),
+            )
+        )
+        self.writeLog(
+            "Test_Sim_rollout",
+            1,
+            self.metric_sim.real_average_travel_time(),
+            1,
+            self.metric_sim.rewards(),
+            self.metric_sim.queue(),
+            self.metric_sim.delay(),
+            self.metric_sim.throughput(),
+        )
+        
+        # real environment
+        last_obs = self.env_real.reset()
+        self.metric_real.clear()
+        
+        for a in self.agents_real:
+            a.load_model()
+            a.reset()
+        for i in range(self.test_steps):
+            if i % self.action_interval == 0:
+                phases = np.stack([ag.get_phase() for ag in self.agents_real])
+                actions = []
+                for idx, ag in enumerate(self.agents_real):
+                    actions.append(ag.get_action(last_obs[idx], phases[idx], test=True))
+                actions = np.stack(actions)
+                rewards_list = []
+                for _ in range(self.action_interval):
+                    obs, rewards, dones, _ = self.env_real.step(
+                        actions.flatten()
+                    )  # make sure action is [intersection]
+                    i += 1
+                    rewards_list.append(np.stack(rewards))
+                rewards = np.mean(rewards_list, axis=0)  # [agent, intersection]
+                self.metric_real.update(rewards)
+
+                last_obs = obs
+
+            if all(dones):
+                break
+        
+        self.logger.info(
+            "Test - Real rollout step: travel time:{}, rewards:{}, queue:{}, delay:{}, throughput:{}".format(
+                self.metric_real.real_average_travel_time(),
+                self.metric_real.rewards(),
+                self.metric_real.queue(),
+                self.metric_real.delay(),
+                int(self.metric_real.throughput()),
+            )
+        )
+        self.writeLog(
+            "Test_Real_rollout",
+            1,
+            self.metric_real.real_average_travel_time(),
+            1,
+            self.metric_real.rewards(),
+            self.metric_real.queue(),
+            self.metric_real.delay(),
+            self.metric_real.throughput(),
+        )
+        
+        
 
     def calc_dist(self, p1, p2):
         return np.sqrt((p1["x"] - p2["x"]) ** 2 + (p1["y"] - p2["y"]) ** 2)

@@ -9,6 +9,19 @@ import numpy as np
 import os
 from torch.utils.data import Subset
 import random
+from pathlib import Path
+
+def convert_to_pretrained_path(old_path: str) -> str:
+    parts = Path(old_path).parts
+
+    task = parts[2]
+    model_name = parts[3].replace("cityflow_", "")
+    map_name = parts[4]
+    gat_model = parts[7]
+    setting = parts[8]
+
+    new_path = Path("pretrained") / task / model_name / map_name / gat_model / setting
+    return new_path.as_posix()
 
 def save_data_to_pkl(data, file_path):
     """
@@ -292,8 +305,9 @@ def load_and_split_inverse_data(pkl_file_path, train_pkl_file, test_pkl_file, ac
 
 
 class NN_predictor(object):
-    def __init__(self, logger, state_dim, action_dim, out_dim, DEVICE, model_dir, data_dir, backward=False, history=1, mode=''):
+    def __init__(self, rank, logger, state_dim, action_dim, out_dim, DEVICE, model_dir, data_dir, backward=False, history=1, mode=''):
         super(NN_predictor, self).__init__()
+        self.rank = rank
         self.epo = 0
         self.state_dim = state_dim
         self.action_dim = action_dim
@@ -340,25 +354,30 @@ class NN_predictor(object):
         else:
             self.model = N_net(self.state_dim, self.action_dim, self.out_dim, self.backward).float()
 
-    def load_model(self):
+    def load_model(self, e=""):
         if self.backward:
             txt = 'inverse'
         else:
             txt = 'forward'
-        name = f"NN_inference_{txt}.pt"
-        model_name = os.path.join(self.model_dir, name)
-        self.model = N_net(self.in_dim, self.out_dim, self.backward)
+        if e:
+            name = f"{e}_NN_inference_{txt}_{self.rank}.pt"
+            model_name = os.path.join(self.model_dir, name)
+        else:
+            name = f"NN_inference_{txt}_{self.rank}.pt"
+            model_name = os.path.join(convert_to_pretrained_path(self.model_dir), name)
+
+        self.make_model()
         self.model.load_state_dict(torch.load(model_name))
         self.model = self.model.float().to(self.DEVICE)
 
-    def save_model(self):
+    def save_model(self, e=""):
         if not os.path.exists(self.model_dir):
             os.makedirs(self.model_dir)
         if self.backward:
             txt = 'inverse'
         else:
             txt = 'forward'
-        name = f"NN_inference_{txt}.pt"
+        name = f"{e}_NN_inference_{txt}_{self.rank}.pt"
         model_name = os.path.join(self.model_dir, name)
         torch.save(self.model.state_dict(), model_name)
     
@@ -757,8 +776,9 @@ class Central_N_net(nn.Module):
 
 
 class UNCERTAINTY_predictor(object):
-    def __init__(self, logger, ind_state_dim, n_state_dim, action_dim, pred_state_dim, out_dim, DEVICE, model_dir, data_dir, backward=False, history=1, mode=''):
+    def __init__(self, rank, logger, ind_state_dim, n_state_dim, action_dim, pred_state_dim, out_dim, DEVICE, model_dir, data_dir, backward=False, history=1, mode=''):
         super(UNCERTAINTY_predictor, self).__init__()
+        self.rank = rank
         self.epo = 0
         self.ind_state_dim = ind_state_dim
         self.n_state_dim = n_state_dim
@@ -766,6 +786,7 @@ class UNCERTAINTY_predictor(object):
         self.action_dim = action_dim
         self.out_dim = out_dim
         self.model =None
+        self.mode = mode
         self.backward = backward
         self.make_model(mode)
         self.DEVICE = DEVICE
@@ -998,6 +1019,33 @@ class UNCERTAINTY_predictor(object):
                 output = self.model.forward(x)
                 result, uncertainty = output[0], output[1]
             return result, uncertainty
+
+    def load_model(self, e=""):
+        if self.backward:
+            txt = 'inverse'
+        else:
+            txt = 'forward'
+        if e:
+            name = f"{e}_UNCERTAINTY_inference_{txt}_{self.rank}.pt"
+            model_name = os.path.join(self.model_dir, name)
+        else:
+            name = f"UNCERTAINTY_inference_{txt}_{self.rank}.pt"
+            model_name = os.path.join(convert_to_pretrained_path(self.model_dir), name)
+            
+        self.make_model(self.mode)
+        self.model.load_state_dict(torch.load(model_name))
+        self.model = self.model.float().to(self.DEVICE)
+
+    def save_model(self, e=""):
+        if not os.path.exists(self.model_dir):
+            os.makedirs(self.model_dir)
+        if self.backward:
+            txt = 'inverse'
+        else:
+            txt = 'forward'
+        name = f"{e}_UNCERTAINTY_inference_{txt}_{self.rank}.pt"
+        model_name = os.path.join(self.model_dir, name)
+        torch.save(self.model.state_dict(), model_name)
 
     def make_model(self, mode):
         if mode == 'dec' or mode == 'wo_action':

@@ -50,6 +50,12 @@ class BaseSim2RealTransitionModel:
 
     def train_transition_models(self):
         return
+    
+    def save_models(self, e):
+        return
+
+    def load_models(self):
+        return
 
     @staticmethod
     def calc_dist(p1, p2):
