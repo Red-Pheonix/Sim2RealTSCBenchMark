@@ -4,8 +4,6 @@ import torch
 
 from agent.utils import idx2onehot
 from common.gat_utils import (
-    load_and_split_forward_data,
-    load_and_split_inverse_data,
     NN_predictor,
     UNCERTAINTY_predictor,
 )
@@ -115,27 +113,61 @@ class DecentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
             )
         )
 
-    def train_transition_models(self):
-        load_and_split_forward_data(
-            "collected/ereal_train.pkl",
+    def prepare_forward_data(self, test_size=0.2, random_seed=42):
+        data = self._load_pickle("collected/ereal_train.pkl")
+        agent_records = {agent_idx: [] for agent_idx in range(len(self.agents_real))}
+
+        for record in data:
+            agent_idx, states, actions, next_states = record
+            action_dim = self.action_dims[agent_idx]
+            one_hot_actions = torch.tensor(
+                np.concatenate(
+                    [idx2onehot(np.array([action]), action_dim) for action in actions],
+                    axis=0,
+                ),
+                dtype=torch.float32,
+            )
+            agent_records[agent_idx].append(
+                (
+                    torch.tensor(states, dtype=torch.float32),
+                    one_hot_actions,
+                    torch.tensor(next_states, dtype=torch.float32),
+                )
+            )
+
+        self._split_agent_records(
+            agent_records,
             "collected/ereal_train_full",
             "collected/ereal_test_full",
-            self.action_dims,
-            0.2,
-            42,
-            "decentralized",
-            len(self.agents_real),
+            test_size=test_size,
+            random_seed=random_seed,
         )
-        load_and_split_inverse_data(
-            "collected/esim_train.pkl",
+
+    def prepare_inverse_data(self, test_size=0.2, random_seed=42):
+        data = self._load_pickle("collected/esim_train.pkl")
+        agent_records = {agent_idx: [] for agent_idx in range(len(self.agents_sim))}
+
+        for record in data:
+            agent_idx, states, actions, next_states = record
+            agent_records[agent_idx].append(
+                (
+                    torch.tensor(states, dtype=torch.float32),
+                    torch.tensor(next_states, dtype=torch.float32),
+                    torch.tensor(actions, dtype=torch.long),
+                )
+            )
+
+        self._split_agent_records(
+            agent_records,
             "collected/esim_train_full",
             "collected/esim_test_full",
-            self.action_dims,
-            0.2,
-            42,
-            "decentralized",
-            len(self.agents_sim),
+            test_size=test_size,
+            random_seed=random_seed,
         )
+
+    def train_transition_models(self):
+        self.prepare_forward_data()
+        self.prepare_inverse_data()
         for idx in range(len(self.agents_sim)):
             self.forward_models[idx].train(100, "forward", idx, 5000, "decentralized")
             self.inverse_models[idx].train(100, "inverse", idx, 5000, "decentralized")

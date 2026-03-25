@@ -1,4 +1,7 @@
+import pickle
+
 import numpy as np
+from sklearn.model_selection import train_test_split
 
 
 def pad_and_concat(arrays, pad_value=0):
@@ -48,6 +51,12 @@ class BaseSim2RealTransitionModel:
     def finalize_policy_stats(self, episode, stats):
         return
 
+    def prepare_forward_data(self):
+        return
+
+    def prepare_inverse_data(self):
+        return
+
     def train_transition_models(self):
         return
     
@@ -56,6 +65,39 @@ class BaseSim2RealTransitionModel:
 
     def load_models(self):
         return
+
+    @staticmethod
+    def _load_pickle(file_path):
+        with open(file_path, "rb") as file_obj:
+            return pickle.load(file_obj)
+
+    @staticmethod
+    def _write_pickle(file_path, data):
+        with open(file_path, "wb") as file_obj:
+            pickle.dump(data, file_obj)
+
+    def _split_joint_records(
+        self, records, train_file, test_file, test_size=0.2, random_seed=42
+    ):
+        train_idx, test_idx = train_test_split(
+            np.arange(len(records)), test_size=test_size, random_state=random_seed
+        )
+        train_data = [records[i] for i in train_idx]
+        test_data = [records[i] for i in test_idx]
+        self._write_pickle(train_file, train_data)
+        self._write_pickle(test_file, test_data)
+
+    def _split_agent_records(
+        self, agent_records, train_prefix, test_prefix, test_size=0.2, random_seed=42
+    ):
+        for agent_idx, records in agent_records.items():
+            train_idx, test_idx = train_test_split(
+                np.arange(len(records)), test_size=test_size, random_state=random_seed
+            )
+            train_data = [records[i] for i in train_idx]
+            test_data = [records[i] for i in test_idx]
+            self._write_pickle(f"{train_prefix}_agent_{agent_idx}.pkl", train_data)
+            self._write_pickle(f"{test_prefix}_agent_{agent_idx}.pkl", test_data)
 
     @staticmethod
     def calc_dist(p1, p2):

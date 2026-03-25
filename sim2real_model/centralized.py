@@ -4,8 +4,6 @@ import torch
 
 from agent.utils import idx2onehot
 from common.gat_utils import (
-    load_and_split_forward_data,
-    load_and_split_inverse_data,
     NN_predictor,
     UNCERTAINTY_predictor,
 )
@@ -128,27 +126,45 @@ class CentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
             )
         )
 
-    def train_transition_models(self):
-        load_and_split_forward_data(
-            "collected/ereal_train.pkl",
+    def prepare_forward_data(self, test_size=0.2, random_seed=42):
+        data = self._load_pickle("collected/ereal_train.pkl")
+        records = []
+
+        for record in data:
+            states, actions, next_states = record[:3]
+            one_hot_actions = np.concatenate(
+                [idx2onehot(np.array([action]), self.action_dim) for action in actions],
+                axis=0,
+            )
+            records.append((states, one_hot_actions, next_states))
+
+        self._split_joint_records(
+            records,
             "collected/ereal_train_full.pkl",
             "collected/ereal_test_full.pkl",
-            self.action_dim,
-            0.2,
-            42,
-            "centralized",
-            len(self.agents_real),
+            test_size=test_size,
+            random_seed=random_seed,
         )
-        load_and_split_inverse_data(
-            "collected/esim_train.pkl",
+
+    def prepare_inverse_data(self, test_size=0.2, random_seed=42):
+        data = self._load_pickle("collected/esim_train.pkl")
+        records = []
+
+        for record in data:
+            states, actions, next_states = record[:3]
+            records.append((states, next_states, actions))
+
+        self._split_joint_records(
+            records,
             "collected/esim_train_full.pkl",
             "collected/esim_test_full.pkl",
-            self.action_dim,
-            0.2,
-            42,
-            "centralized",
-            len(self.agents_sim),
+            test_size=test_size,
+            random_seed=random_seed,
         )
+
+    def train_transition_models(self):
+        self.prepare_forward_data()
+        self.prepare_inverse_data()
         self.forward_model.train(
             100, "forward", len(self.agents_real), 5000 * len(self.agents_real)
         )
