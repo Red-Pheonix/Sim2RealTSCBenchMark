@@ -28,8 +28,12 @@ class JLGATSim2RealTransitionModel(DecentralizedSim2RealTransitionModel):
         self.prob_grounding = sim2real_params.get("prob_grounding", 0)
         self.probing_radius = sim2real_params.get("probing_radius")
         self.net = Registry.mapping["trainer_mapping"]["setting"].param["network"]
+        self.setting = Registry.mapping["command_mapping"]["setting"].param.get("real_setting")
         self.gat_path = os.path.join(
-            Registry.mapping["logger_mapping"]["path"].path, "model"
+            Registry.mapping["logger_mapping"]["path"].path,
+            "model",
+            sim2real_params["gattype"],
+            self.setting,
         )
         self.last_two_uncertainties = {idx: [] for idx in range(len(self.agents_sim))}
         self.avg_agent_uncertainties = [0 for _ in range(len(self.agents_sim))]
@@ -77,6 +81,7 @@ class JLGATSim2RealTransitionModel(DecentralizedSim2RealTransitionModel):
                 ]
             )
             forward_model = NN_predictor(
+                idx,
                 self.logger,
                 (agent.neighbors, ob_length),
                 (agent.neighbors, action_length),
@@ -93,6 +98,7 @@ class JLGATSim2RealTransitionModel(DecentralizedSim2RealTransitionModel):
                 ]
             )
             inverse_model = UNCERTAINTY_predictor(
+                idx,
                 self.logger,
                 (1, self.agents_real[idx].ob_generator.ob_length),
                 (agent.neighbors - 1, neighbor_ob_length),
@@ -213,3 +219,15 @@ class JLGATSim2RealTransitionModel(DecentralizedSim2RealTransitionModel):
         for idx in range(len(self.agents_sim)):
             self.forward_models[idx].train(100, "forward", idx, 5000, "jlgat")
             self.inverse_models[idx].train(100, "inverse", idx, 5000, "jlgat")
+
+    def save_models(self, e):
+        for model in self.forward_models:
+            model.save_model(e)
+        for model in self.inverse_models:
+            model.save_model(e)
+
+    def load_models(self):
+        for model in self.forward_models:
+            model.load_model()
+        for model in self.inverse_models:
+            model.load_model()
