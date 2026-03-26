@@ -1,39 +1,52 @@
-# Joint-Local Grounded Action Transformation for Sim-to-Real Transfer in Multi-Agent Traffic Control
+# Sim2Real Benchmark
 
-## 🚦 Overview
+# Installation
 
-This repository builds upon the UGAT codebase (forked from [UGAT](https://github.com/DaRL-LibSignal/UGAT)) to support our proposed **Joint-Local Grounded Action Transformation (JL-GAT)** framework. Our approach focuses on improving sim-to-real transfer in multi-agent traffic signal control by allowing flexible control over centralized, decentralized, and hybrid grounding configurations.
+## Simulator environment configuration
 
-## 🔧 How to Run JL-GAT
+Though CityFlow and SUMO are stable on Windows and Linux systems, we recommend using Linux. This repo is tested to work on Linux. It currently does not work on Windows.
 
-To run the JL-GAT experiment, first follow the instructions section in [UGAT](https://github.com/DaRL-LibSignal/UGAT) to download the necessary resources (CityFlow & SUMO), then use the following command:
+### CityFlow Environment
 
-```bash
-python run_s2r.py --network cityflow1x3 --agent presslight
+CityFlow version 0.1 is used for the experiments. To install the CityFlow simulator, please follow the instructions in the [CityFlow Doc](https://cityflow.readthedocs.io/en/latest/install.html#).
+
+```
+sudo apt update && sudo apt install -y build-essential cmake
+
+git clone https://github.com/cityflow-project/CityFlow.git
+cd CityFlow
+pip install .
 ```
 
-You can swap out the network name with:
+To test configuration:
 
-- `cityflow1x3` for the 1×3 network  
-- `cityflow4x4` for the 4×4 network
-
-This will initiate training and evaluation under the specified environment.
-
-## ⚙️ Configuring JL-GAT
-
-To customize the GAT configuration:
-
-Open the config file:
-
-```bash
-JL-GAT/configs/tsc/base.yml
+```
+import cityflow
+env = cityflow.Engine
 ```
 
-Modify the following parameters:
+### SUMO Environment
 
-- `gattype`: Choose from:
-  - `"centralized"`
-  - `"decentralized"`
-  - `"jlgat"`
-- `gat`: Set to `false` to run without GAT.
-- `prob_grounding`: Set a value (e.g., `0.2`) to control the probability of applying grounding during training.
+SUMO version 1.26.0 is used for the experiments. To install the SUMO environment, please follow the instructions in the [SUMO Doc](https://epics-sumo.sourceforge.io/sumo-install.html#).
+
+The following instructions should work for Ubuntu 24.04.
+
+```
+sudo add-apt-repository ppa:sumo/stable
+sudo apt-get update
+sudo apt-get install sumo sumo-tools sumo-doc
+```
+
+You also need to install libsumo as Python modules to integrate SUMO with Python.
+
+```
+pip install libsumo==1.26.0
+```
+
+To test configuration:
+
+```
+import libsumo
+import traci
+```
+
