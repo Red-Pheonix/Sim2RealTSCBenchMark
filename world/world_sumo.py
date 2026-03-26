@@ -28,8 +28,9 @@ import traci
 
 
 def resolve_sumo_additional_files(base_dir, combined_file, sumo_add):
+    use_default_add = not sumo_add
     if not sumo_add:
-        return None
+        sumo_add = "default.add.xml"
 
     combined_dir = base_dir
     if combined_file:
@@ -50,7 +51,12 @@ def resolve_sumo_additional_files(base_dir, combined_file, sumo_add):
             continue
 
         base_candidate = os.path.join(base_dir, candidate)
-        resolved_files.append(base_candidate)
+        if os.path.exists(base_candidate):
+            resolved_files.append(base_candidate)
+            continue
+
+        if use_default_add and candidate == "default.add.xml":
+            return None
 
     return ','.join(resolved_files) if resolved_files else None
 
@@ -1085,4 +1091,3 @@ class World(object):
                 pressures[start] += lvc[start]
                 pressures[start] -= lvc[end]
         return pressures
-
