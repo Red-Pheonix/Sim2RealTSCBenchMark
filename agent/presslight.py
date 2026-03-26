@@ -351,23 +351,12 @@ class PressLightAgent(RLAgent):
         weights = self.model.state_dict()
         self.target_model.load_state_dict(weights)
 
-    def load_model(self, e=None):
+    def load_model(self, model_dir, e=None):
         if e is not None:
-            model_name = os.path.join(
-                Registry.mapping["logger_mapping"]["path"].path,
-                "model",
-                f"{e}_{self.rank}.pt",
-            )
+            model_name = os.path.join(model_dir, f"{e}_{self.rank}.pt")
         else:
-            model_name = os.path.join(
-                "pretrained",
-                Registry.mapping["command_mapping"]["setting"].param["task"],
-                Registry.mapping["command_mapping"]["setting"].param["agent"],
-                Registry.mapping["command_mapping"]["setting"].param["network"],
-                f"{self.rank}.pt",
-            )
+            model_name = os.path.join(model_dir, f"{self.rank}.pt")
             
-
         self.model = self._build_model()
         self.model.load_state_dict(torch.load(model_name, weights_only=True))
         self.target_model = self._build_model()

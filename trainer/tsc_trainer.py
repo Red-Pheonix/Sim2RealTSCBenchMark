@@ -121,8 +121,14 @@ class TSCTrainer(BaseTrainer):
         # load models from checkpoint if enabled
         # load_model_episode = Registry.mapping['model_mapping']['setting'].param['load_model_episode']
         is_load_model = Registry.mapping['model_mapping']['setting'].param['load_model']
+        model_dir = os.path.join(
+                "pretrained",
+                Registry.mapping["command_mapping"]["setting"].param["task"],
+                Registry.mapping["command_mapping"]["setting"].param["agent"],
+                Registry.mapping["command_mapping"]["setting"].param["network"],
+        )
         if is_load_model:
-            [ag.load_model() for ag in self.agents]
+            [ag.load_model(model_dir) for ag in self.agents]
 
         
         
@@ -296,7 +302,11 @@ class TSCTrainer(BaseTrainer):
                 self.env.eng.set_save_replay(False)
         self.metric.clear()
         if not drop_load:
-            [ag.load_model(self.episodes) for ag in self.agents]
+            model_dir = os.path.join(
+                Registry.mapping["logger_mapping"]["path"].path,
+                "model",
+            )
+            [ag.load_model(model_dir, self.episodes) for ag in self.agents]
         attention_mat_list = []
         obs = self.env.reset()
         for a in self.agents:

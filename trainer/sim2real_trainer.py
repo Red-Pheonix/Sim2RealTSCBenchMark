@@ -67,16 +67,11 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         self.last_n_uncertainties = Registry.mapping["sim2real_mapping"][
             "setting"
         ].param["last_n_uncertainties"]
-        self.prob_grounding = Registry.mapping["sim2real_mapping"]["setting"].param.get(
-            "prob_grounding",
-        )
 
         self.net = Registry.mapping["trainer_mapping"]["setting"].param["network"]
-        self.load_pretrained = Registry.mapping["model_mapping"]["setting"].param["load_model"]
-        self.probing_radius = Registry.mapping["sim2real_mapping"]["setting"].param.get(
-            "probing_radius"
+        self.load_pretrained = Registry.mapping["sim2real_mapping"]["setting"].param.get(
+            "load_pretrained"
         )
-
         # replay file is only valid in cityflow now.
         # TODO: support SUMO and Openengine later
 
@@ -260,7 +255,13 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         
         if self.load_pretrained:
                 for ag in self.agents_sim:
-                    ag.load_model()
+                    model_dir = os.path.join(
+                        "pretrained",
+                        "tsc",
+                        Registry.mapping["command_mapping"]["setting"].param["agent"],
+                        Registry.mapping["command_mapping"]["setting"].param["network"],
+                    )
+                    ag.load_model(model_dir)
                     ag.optimizer = optim.RMSprop(
                         ag.model.parameters(),
                         lr=ag.learning_rate,
@@ -269,7 +270,7 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
                         eps=1e-7,
                     )
                 
-                self.transition_model.load_models()
+                # self.transition_model.load_models()
         
         if self.delayedgat == True:
             # Run for a set number of episodes
@@ -561,9 +562,14 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         last_obs = self.env_real.reset()
         self.metric_real.clear()
         state_action_next_state = []
+        
+        model_dir = os.path.join(
+                Registry.mapping["logger_mapping"]["path"].path,
+                "model",
+        )
 
         for a in self.agents_real:
-            a.load_model(e)
+            a.load_model(model_dir, e)
             a.reset()
 
         for i in range(self.test_steps):
@@ -701,8 +707,15 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         last_obs = self.env_sim.reset()
         self.metric_sim.clear()
         
+        model_dir = os.path.join(
+                "pretrained",
+                Registry.mapping["command_mapping"]["setting"].param["task"],
+                Registry.mapping["command_mapping"]["setting"].param["agent"],
+                Registry.mapping["command_mapping"]["setting"].param["network"],
+        )
+        
         for a in self.agents_sim:
-            a.load_model()
+            a.load_model(model_dir)
             a.reset()
         
         for i in range(self.test_steps):
@@ -752,8 +765,9 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         self.metric_real.clear()
         
         for a in self.agents_real:
-            a.load_model()
+            a.load_model(model_dir)
             a.reset()
+            
         for i in range(self.test_steps):
             if i % self.action_interval == 0:
                 phases = np.stack([ag.get_phase() for ag in self.agents_real])
