@@ -354,16 +354,19 @@ class DQNAgent(RLAgent):
         weights = self.model.state_dict()
         self.target_model.load_state_dict(weights)
 
-    def load_model(self, e):
+    def load_model(self, model_dir, e=None):
         '''
         load_model
         Load model params of an episode.
 
+        :param model_dir: directory containing pretrained checkpoints
         :param e: specified episode
         :return: None
         '''
-        model_name = os.path.join(Registry.mapping['logger_mapping']['path'].path,
-                                  'model', f'{e}_{self.rank}.pt')
+        if e is not None:
+            model_name = os.path.join(model_dir, f'{e}_{self.rank}.pt')
+        else:
+            model_name = os.path.join(model_dir, f'{self.rank}.pt')
         self.model = self._build_model()
         self.model.load_state_dict(torch.load(model_name))
         self.target_model = self._build_model()

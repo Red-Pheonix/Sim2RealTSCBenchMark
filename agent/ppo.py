@@ -167,9 +167,11 @@ class PPOAgent(RLAgent):
     def update_target_network(self):
         pass
 
-    def load_model(self, e):
-        model_name = os.path.join(Registry.mapping['logger_mapping']['output_path'].path,
-                                  'model', f'{e}_{self.rank}.pt')
+    def load_model(self, model_dir, e=None):
+        if e is not None:
+            model_name = os.path.join(model_dir, f'{e}_{self.rank}.pt')
+        else:
+            model_name = os.path.join(model_dir, f'{self.rank}.pt')
         self.model = self._build_model()
         self.model.load_state_dict(torch.load(model_name))
         self.target_model = self._build_model()
@@ -247,4 +249,3 @@ class PPO_CrtDQN(nn.Module):
         else:
             with torch.no_grad():
                 return self._forward(x)
-

@@ -316,11 +316,13 @@ class MADDPGAgent(RLAgent):
         q_weights = self.q_model.state_dict()
         self.target_q_model.load_state_dict(q_weights)
 
-    def load_model(self, e):
-        model_p_name = os.path.join(Registry.mapping['logger_mapping']['output_path'].path,
-                                    'model_p', f'{e}_{self.rank}.pt')
-        model_q_name = os.path.join(Registry.mapping['logger_mapping']['output_path'].path,
-                                    'model_q', f'{e}_{self.rank}.pt')
+    def load_model(self, model_dir, e=None):
+        if e is not None:
+            model_p_name = os.path.join(model_dir, 'model_p', f'{e}_{self.rank}.pt')
+            model_q_name = os.path.join(model_dir, 'model_q', f'{e}_{self.rank}.pt')
+        else:
+            model_p_name = os.path.join(model_dir, 'model_p', f'{self.rank}.pt')
+            model_q_name = os.path.join(model_dir, 'model_q', f'{self.rank}.pt')
         self.model_q = self._build_model(self.q_length, 1)
         self.model_p = self._build_model(self.ob_length, self.action_space.n)
         self.model_q.load_state_dict(torch.load(model_q_name))

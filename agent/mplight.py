@@ -465,20 +465,23 @@ class MPLightAgent(RLAgent):
         return result[1][1]
 
 
-    def load_model(self, e):
+    def load_model(self, model_dir, e=None):
         '''
         load_model
         Load model params of an episode.
 
+        :param model_dir: directory containing pretrained checkpoints
         :param e: specified episode
         :return: None
         '''
-        model_name = os.path.join(Registry.mapping['logger_mapping']['path'].path,
-                                  'model', f'{e}_{self.rank}.pt')
+        if e is not None:
+            model_name = os.path.join(model_dir, f'{e}_{self.rank}.pt')
+        else:
+            model_name = os.path.join(model_dir, f'{self.rank}.pt')
         self.agents_iner = self._build_model()
-        # self.agents_iner.load_state_dict(torch.load(model_name))
-        tmp_dict = {}
-        tmp_dict.load_state_dict(torch.load(model_name))
+        checkpoint = torch.load(model_name)
+        self.model.load_state_dict(checkpoint['model_state_dict'])
+        self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
 
     def save_model(self, e):
         '''

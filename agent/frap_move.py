@@ -408,16 +408,19 @@ class FRAP_MOVE_DQNAgent(RLAgent):
             self.epsilon *= self.epsilon_decay
         return loss.clone().detach().numpy()
 
-    def load_model(self, e):
+    def load_model(self, model_dir, e=None):
         '''
         load_model
         Load model params of an episode.
 
+        :param model_dir: directory containing pretrained checkpoints
         :param e: specified episode
         :return: None
         '''
-        model_name = os.path.join(
-            Registry.mapping['logger_mapping']['output_path'].path, 'model', f'{e}_{self.rank}.pt')
+        if e is not None:
+            model_name = os.path.join(model_dir, f'{e}_{self.rank}.pt')
+        else:
+            model_name = os.path.join(model_dir, f'{self.rank}.pt')
         self.model = FRAP_move(self.dic_agent_conf, self.num_actions, self.num_actions, self.phase2movements, self.comp_mask)
         self.model.load_state_dict(torch.load(model_name))
         self.target_model = FRAP_move(self.dic_agent_conf, self.num_actions, self.num_actions, self.phase2movements, self.comp_mask)
