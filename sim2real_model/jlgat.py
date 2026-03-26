@@ -116,7 +116,7 @@ class JLGATSim2RealTransitionModel(DecentralizedSim2RealTransitionModel):
         self.gat_path = os.path.join(
             Registry.mapping["logger_mapping"]["path"].path,
             "model",
-            sim2real_params["gattype"],
+            Registry.mapping["command_mapping"]["setting"].param["gat_model"],
             self.setting,
         )
         self.last_two_uncertainties = {idx: [] for idx in range(len(self.agents_sim))}

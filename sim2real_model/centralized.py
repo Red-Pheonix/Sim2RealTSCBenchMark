@@ -68,7 +68,7 @@ class CentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
         self.gat_path = os.path.join(
             Registry.mapping["logger_mapping"]["path"].path,
             "model",
-            sim2real_params["gattype"],
+            Registry.mapping["command_mapping"]["setting"].param["gat_model"],
             self.setting,
         )
         self.last_two_central_uncertainties = []

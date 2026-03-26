@@ -1,0 +1,10 @@
+includes:
+  - configs/sim2real_transitions/base.yml
+
+sim2real:
+  gattype: "decentralized"
+  uncertainty: True
+  delayedgat: False
+  ground_original: False
+  training_iterations: 1
+  last_n_uncertainties: 2

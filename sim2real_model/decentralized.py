@@ -74,7 +74,7 @@ class DecentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
         self.last_n_uncertainties = sim2real_params["last_n_uncertainties"]
         self.setting = Registry.mapping["command_mapping"]["setting"].param.get("real_setting")
         self.gat_path = os.path.join(
-            Registry.mapping["logger_mapping"]["path"].path, "model", sim2real_params["gattype"] , self.setting
+            Registry.mapping["logger_mapping"]["path"].path, "model", Registry.mapping["command_mapping"]["setting"].param["gat_model"] , self.setting
         )
         self.last_two_uncertainties = {idx: [] for idx in range(len(self.agents_sim))}
         self.avg_agent_uncertainties = [0 for _ in range(len(self.agents_sim))]

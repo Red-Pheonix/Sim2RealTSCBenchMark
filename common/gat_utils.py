@@ -645,7 +645,7 @@ class Dec_Inverse_N_net(nn.Module):
         K = 8
         alpha = evidence + 1
         
-        u = K / torch.sum(alpha, dim=1, keepdim=True)  # uncertainty
+        u = K / torch.sum(alpha.squeeze(1), dim=1, keepdim=True)  # uncertainty
 
         return logits, u
 
