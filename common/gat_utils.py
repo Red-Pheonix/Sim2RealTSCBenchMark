@@ -35,7 +35,7 @@ class BasePredictor(object):
         self.logger = logger
         self.DEVICE = DEVICE
         self.model_dir = model_dir
-        self.data_dir = data_dir
+        self.data_dir = self._normalize_data_dir(data_dir)
         self.backward = backward
         self.history = history
         self.batch_size = 64
@@ -56,6 +56,23 @@ class BasePredictor(object):
         self.y_train = None
         self.x_val = None
         self.y_val = None
+
+    @staticmethod
+    def _normalize_data_dir(data_dir):
+        data_path = Path(data_dir)
+        if data_path.suffix:
+            return data_path.parent
+        return data_path
+
+    def _dataset_path(self, *, train, agent_num=None, full=True):
+        prefix = "esim" if self.backward else "ereal"
+        split = "train" if train else "test"
+        name = f"{prefix}_{split}"
+        if full:
+            name += "_full"
+        if agent_num is not None:
+            name += f"_agent_{agent_num}"
+        return (self.data_dir / f"{name}.pkl").as_posix()
 
     def _direction_text(self):
         return "inverse" if self.backward else "forward"
@@ -182,12 +199,12 @@ class NN_predictor(BaseNNPredictor):
     def get_train_dataset_path(self, agent_num=None):
         if agent_num is None:
             raise ValueError("agent_num is required for NN_predictor training.")
-        return f"collected/ereal_train_full_agent_{agent_num}.pkl"
+        return self._dataset_path(train=True, agent_num=agent_num)
 
     def get_test_dataset_path(self, agent_num=None):
         if agent_num is None:
             raise ValueError("agent_num is required for NN_predictor evaluation.")
-        return f"collected/ereal_test_full_agent_{agent_num}.pkl"
+        return self._dataset_path(train=False, agent_num=agent_num)
 
     def compute_loss(self, y_pred, y_true):
         return self.criterion(y_pred, y_true.squeeze(1))
@@ -516,12 +533,12 @@ class UNCERTAINTY_predictor(BaseUncertaintyPredictor):
     def get_train_dataset_path(self, agent_num=None):
         if agent_num is None:
             raise ValueError("agent_num is required for UNCERTAINTY_predictor training.")
-        return f"collected/esim_train_full_agent_{agent_num}.pkl"
+        return self._dataset_path(train=True, agent_num=agent_num)
 
     def get_test_dataset_path(self, agent_num=None):
         if agent_num is None:
             raise ValueError("agent_num is required for UNCERTAINTY_predictor evaluation.")
-        return f"collected/esim_test_full_agent_{agent_num}.pkl"
+        return self._dataset_path(train=False, agent_num=agent_num)
 
     def build_dataset(self, dataset_path):
         return PKLDataset(dataset_path, "jlg")

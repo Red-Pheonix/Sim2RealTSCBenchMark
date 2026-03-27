@@ -1,5 +1,6 @@
 import os
 import pickle as pkl
+from pathlib import Path
 import numpy as np
 from common.metrics import Metrics
 from environment import TSCEnv
@@ -75,6 +76,7 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         
         cmd_args = Registry.mapping['command_mapping']['setting'].param
         self.exp_name = f'{cmd_args["network"]}_{cmd_args["real_setting"]}_{cmd_args["agent"]}_{cmd_args["gat_model"]}'
+        self.dataset_dir = Path("collected") / self.exp_name
         
         # replay file is only valid in cityflow now.
         # TODO: support SUMO and Openengine later
@@ -114,21 +116,15 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
             + "_ACT.log",
         )
 
-        # Path to the folder
-        path = "collected"
-
         # Check if the folder exists
-        if os.path.exists(path):
-            # Iterate through all files in the folder
-            for filename in os.listdir(path):
-                file_path = os.path.join(path, filename)
-                # Remove each file if it exists and is a file
-                if os.path.isfile(file_path):
-                    os.remove(file_path)
+        if self.dataset_dir.exists():
+            for file_path in self.dataset_dir.iterdir():
+                if file_path.is_file():
+                    file_path.unlink()
                     print(f"{file_path} has been deleted")
-            print("All files in the 'collected' folder have been deleted.")
+            print(f"All files in the '{self.dataset_dir}' folder have been deleted.")
         else:
-            print(f"The folder '{path}' does not exist.")
+            print(f"The folder '{self.dataset_dir}' does not exist.")
 
         self.total_decision_num = 0
 
@@ -142,7 +138,13 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
             agents_sim=self.agents_sim,
             world_real=self.world_real,
             agents_real=self.agents_real,
+            dataset_dir=self.dataset_dir,
         )
+
+    def _dataset_file(self, *, forward, train):
+        prefix = "ereal" if forward else "esim"
+        split = "train" if train else "test"
+        return self.dataset_dir / f"{prefix}_{split}.pkl"
 
     def create_world(self):
         """
@@ -468,9 +470,7 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         :return: None
         """
 
-        path = "collected"
-        output_file = "esim_train.pkl"
-        file_path = os.path.join(path, output_file)
+        file_path = self._dataset_file(forward=False, train=True)
 
         # Initialize metrics and reset the environment
         self.metric_sim.clear()
@@ -526,7 +526,7 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
             [ag.save_model(e=e) for ag in self.agents_sim]
 
         # Save the collected rollout data
-        os.makedirs(path, exist_ok=True)
+        self.dataset_dir.mkdir(parents=True, exist_ok=True)
         with open(file_path, "wb") as f:
             pkl.dump(state_action_next_state, f)
 
@@ -625,7 +625,7 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         )
 
         # Save the data for the current episode
-        file_path = "collected/ereal_train.pkl"
+        file_path = self._dataset_file(forward=True, train=True)
 
         # Save new data directly to the file
         with open(file_path, "wb") as f:

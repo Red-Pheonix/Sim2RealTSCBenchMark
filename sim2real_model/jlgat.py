@@ -28,12 +28,12 @@ class JLGATNNPredictor(BaseNNPredictor):
     def get_train_dataset_path(self, agent_num=None):
         if agent_num is None:
             raise ValueError("agent_num is required for JL-GAT forward training.")
-        return f"collected/ereal_train_full_agent_{agent_num}.pkl"
+        return self._dataset_path(train=True, agent_num=agent_num)
 
     def get_test_dataset_path(self, agent_num=None):
         if agent_num is None:
             raise ValueError("agent_num is required for JL-GAT forward evaluation.")
-        return f"collected/ereal_test_full_agent_{agent_num}.pkl"
+        return self._dataset_path(train=False, agent_num=agent_num)
 
     def compute_loss(self, y_pred, y_true):
         return self.criterion(y_pred, y_true.squeeze(1))
@@ -63,12 +63,12 @@ class JLGATUncertaintyPredictor(BaseUncertaintyPredictor):
     def get_train_dataset_path(self, agent_num=None):
         if agent_num is None:
             raise ValueError("agent_num is required for JL-GAT inverse training.")
-        return f"collected/esim_train_full_agent_{agent_num}.pkl"
+        return self._dataset_path(train=True, agent_num=agent_num)
 
     def get_test_dataset_path(self, agent_num=None):
         if agent_num is None:
             raise ValueError("agent_num is required for JL-GAT inverse evaluation.")
-        return f"collected/esim_test_full_agent_{agent_num}.pkl"
+        return self._dataset_path(train=False, agent_num=agent_num)
 
     def build_dataset(self, dataset_path):
         return PKLDataset(dataset_path, "jlg")
@@ -102,9 +102,25 @@ class JLGATNoStateUncertaintyPredictor(JLGATUncertaintyPredictor):
 
 @Registry.register_sim2real_model("jlgat")
 class JLGATSim2RealTransitionModel(DecentralizedSim2RealTransitionModel):
-    def __init__(self, logger, device, world_sim, agents_sim, world_real, agents_real):
+    def __init__(
+        self,
+        logger,
+        device,
+        world_sim,
+        agents_sim,
+        world_real,
+        agents_real,
+        dataset_dir="collected",
+    ):
         BaseSim2RealTransitionModel.__init__(
-            self, logger, device, world_sim, agents_sim, world_real, agents_real
+            self,
+            logger,
+            device,
+            world_sim,
+            agents_sim,
+            world_real,
+            agents_real,
+            dataset_dir=dataset_dir,
         )
         sim2real_params = Registry.mapping["sim2real_mapping"]["setting"].param
         self.uncertainty_setting = sim2real_params["uncertainty"]
@@ -174,7 +190,7 @@ class JLGATSim2RealTransitionModel(DecentralizedSim2RealTransitionModel):
                 self.agents_real[idx].ob_generator.ob_length,
                 self.device,
                 self.gat_path,
-                "collected/ereal_train_full.pkl",
+                self.dataset_dir,
             )
             only_neighbors = [inter for inter in self.neighbour_infos[idx] if inter != idx]
             neighbor_ob_length = max(
@@ -193,7 +209,7 @@ class JLGATSim2RealTransitionModel(DecentralizedSim2RealTransitionModel):
                 self.agents_real[idx].action_space.n,
                 self.device,
                 self.gat_path,
-                "collected/esim_train_full.pkl",
+                self.dataset_dir,
                 backward=True,
             )
             self.forward_models.append(forward_model)
@@ -282,7 +298,7 @@ class JLGATSim2RealTransitionModel(DecentralizedSim2RealTransitionModel):
         return updated_actions, grounded_actions
 
     def prepare_forward_data(self, test_size=0.2, random_seed=42):
-        data = self._load_pickle("collected/ereal_train.pkl")
+        data = self._load_pickle(self._dataset_file(forward=True, train=True))
         agent_records = {agent_idx: [] for agent_idx in range(len(self.agents_real))}
 
         for record in data:
@@ -305,14 +321,14 @@ class JLGATSim2RealTransitionModel(DecentralizedSim2RealTransitionModel):
 
         self._split_agent_records(
             agent_records,
-            "collected/ereal_train_full",
-            "collected/ereal_test_full",
+            self._dataset_prefix(forward=True, train=True),
+            self._dataset_prefix(forward=True, train=False),
             test_size=test_size,
             random_seed=random_seed,
         )
 
     def prepare_inverse_data(self, test_size=0.2, random_seed=42):
-        data = self._load_pickle("collected/esim_train.pkl")
+        data = self._load_pickle(self._dataset_file(forward=False, train=True))
         agent_records = {agent_idx: [] for agent_idx in range(len(self.agents_sim))}
 
         for record in data:
@@ -337,8 +353,8 @@ class JLGATSim2RealTransitionModel(DecentralizedSim2RealTransitionModel):
 
         self._split_agent_records(
             agent_records,
-            "collected/esim_train_full",
-            "collected/esim_test_full",
+            self._dataset_prefix(forward=False, train=True),
+            self._dataset_prefix(forward=False, train=False),
             test_size=test_size,
             random_seed=random_seed,
         )

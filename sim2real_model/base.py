@@ -1,4 +1,5 @@
 import pickle
+from pathlib import Path
 
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -19,7 +20,16 @@ def pad_and_concat(arrays, pad_value=0):
 
 
 class BaseSim2RealTransitionModel:
-    def __init__(self, logger, device, world_sim, agents_sim, world_real, agents_real):
+    def __init__(
+        self,
+        logger,
+        device,
+        world_sim,
+        agents_sim,
+        world_real,
+        agents_real,
+        dataset_dir="collected",
+    ):
         self.logger = logger
         self.device = device
         self.world_sim = world_sim
@@ -30,6 +40,7 @@ class BaseSim2RealTransitionModel:
         self.forward_models = []
         self.inverse_models = []
         self.action_dims = []
+        self.dataset_dir = Path(dataset_dir)
 
     def collect_sim_transition(self, last_obs, actions, obs):
         return [(last_obs, actions, obs)]
@@ -73,8 +84,24 @@ class BaseSim2RealTransitionModel:
 
     @staticmethod
     def _write_pickle(file_path, data):
+        Path(file_path).parent.mkdir(parents=True, exist_ok=True)
         with open(file_path, "wb") as file_obj:
             pickle.dump(data, file_obj)
+
+    def _dataset_file(self, *, forward, train, full=False, agent_idx=None):
+        prefix = "ereal" if forward else "esim"
+        split = "train" if train else "test"
+        name = f"{prefix}_{split}"
+        if full:
+            name += "_full"
+        if agent_idx is not None:
+            name += f"_agent_{agent_idx}"
+        return (self.dataset_dir / f"{name}.pkl").as_posix()
+
+    def _dataset_prefix(self, *, forward, train):
+        prefix = "ereal" if forward else "esim"
+        split = "train" if train else "test"
+        return (self.dataset_dir / f"{prefix}_{split}_full").as_posix()
 
     def _split_joint_records(
         self, records, train_file, test_file, test_size=0.2, random_seed=42

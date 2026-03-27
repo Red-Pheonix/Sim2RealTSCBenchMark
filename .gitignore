@@ -5,7 +5,6 @@ __pycache__/
 data/output_data/*
 !data/output_data/tsc/cityflow_dqn/cityflow1x1/test/model/*
 .ipynb
-*.sh
 data/raw_data/grid4x4/*.xml
 data/raw_data/grid4x4/*.pdf
 *.ipynb
@@ -15,5 +14,11 @@ collected/
 .zshrc.venv/
 CityFlow
 data/raw_data/tempe/tempe_flow_tuned_v3.json
+data/raw_data/pb*
 logs
-pretrained
+*.csv
+*.txt
+ACTION.log
+rename.sh
+convert.sh
+

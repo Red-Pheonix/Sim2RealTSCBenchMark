@@ -19,10 +19,10 @@ class CentralizedNNPredictor(BaseNNPredictor):
         return Central_N_net(self.state_dim, self.action_dim, self.out_dim, self.backward).float()
 
     def get_train_dataset_path(self, agent_num=None):
-        return "collected/ereal_train_full.pkl"
+        return self._dataset_path(train=True)
 
     def get_test_dataset_path(self, agent_num=None):
-        return "collected/ereal_test_full.pkl"
+        return self._dataset_path(train=False)
 
     def compute_loss(self, y_pred, y_true):
         return self.criterion(y_pred, y_true)
@@ -35,10 +35,10 @@ class CentralizedUncertaintyPredictor(BaseUncertaintyPredictor):
         ).float()
 
     def get_train_dataset_path(self, agent_num=None):
-        return "collected/esim_train_full.pkl"
+        return self._dataset_path(train=True)
 
     def get_test_dataset_path(self, agent_num=None):
-        return "collected/esim_test_full.pkl"
+        return self._dataset_path(train=False)
 
     def build_dataset(self, dataset_path):
         return PKLDataset(dataset_path, "central")
@@ -59,8 +59,25 @@ class CentralizedUncertaintyPredictor(BaseUncertaintyPredictor):
 
 @Registry.register_sim2real_model("centralized")
 class CentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
-    def __init__(self, logger, device, world_sim, agents_sim, world_real, agents_real):
-        super().__init__(logger, device, world_sim, agents_sim, world_real, agents_real)
+    def __init__(
+        self,
+        logger,
+        device,
+        world_sim,
+        agents_sim,
+        world_real,
+        agents_real,
+        dataset_dir="collected",
+    ):
+        super().__init__(
+            logger,
+            device,
+            world_sim,
+            agents_sim,
+            world_real,
+            agents_real,
+            dataset_dir=dataset_dir,
+        )
         sim2real_params = Registry.mapping["sim2real_mapping"]["setting"].param
         self.uncertainty_setting = sim2real_params["uncertainty"]
         self.last_n_uncertainties = sim2real_params["last_n_uncertainties"]
@@ -89,7 +106,7 @@ class CentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
             ob_length,
             self.device,
             self.gat_path,
-            "collected/ereal_train_full.pkl",
+            self.dataset_dir,
             False,
             1,
         )
@@ -103,7 +120,7 @@ class CentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
             action_dim,
             self.device,
             self.gat_path,
-            "collected/esim_train_full.pkl",
+            self.dataset_dir,
             backward=True,
             history=1,
         )
@@ -171,7 +188,7 @@ class CentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
         )
 
     def prepare_forward_data(self, test_size=0.2, random_seed=42):
-        data = self._load_pickle("collected/ereal_train.pkl")
+        data = self._load_pickle(self._dataset_file(forward=True, train=True))
         records = []
 
         for record in data:
@@ -184,14 +201,14 @@ class CentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
 
         self._split_joint_records(
             records,
-            "collected/ereal_train_full.pkl",
-            "collected/ereal_test_full.pkl",
+            self._dataset_file(forward=True, train=True, full=True),
+            self._dataset_file(forward=True, train=False, full=True),
             test_size=test_size,
             random_seed=random_seed,
         )
 
     def prepare_inverse_data(self, test_size=0.2, random_seed=42):
-        data = self._load_pickle("collected/esim_train.pkl")
+        data = self._load_pickle(self._dataset_file(forward=False, train=True))
         records = []
 
         for record in data:
@@ -200,8 +217,8 @@ class CentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
 
         self._split_joint_records(
             records,
-            "collected/esim_train_full.pkl",
-            "collected/esim_test_full.pkl",
+            self._dataset_file(forward=False, train=True, full=True),
+            self._dataset_file(forward=False, train=False, full=True),
             test_size=test_size,
             random_seed=random_seed,
         )
