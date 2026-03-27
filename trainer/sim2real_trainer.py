@@ -72,6 +72,10 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         self.load_pretrained = Registry.mapping["sim2real_mapping"]["setting"].param.get(
             "load_pretrained"
         )
+        
+        cmd_args = Registry.mapping['command_mapping']['setting'].param
+        self.exp_name = f'{cmd_args["network"]}_{cmd_args["real_setting"]}_{cmd_args["agent"]}_{cmd_args["gat_model"]}'
+        
         # replay file is only valid in cityflow now.
         # TODO: support SUMO and Openengine later
 
@@ -654,8 +658,9 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         :param cur_throughput: current throughput
         :return: None
         """
+        
         res = (
-            Registry.mapping["model_mapping"]["setting"].param["name"]
+            self.exp_name
             + "\t"
             + mode
             + "\t"
