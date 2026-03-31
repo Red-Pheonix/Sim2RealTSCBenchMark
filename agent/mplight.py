@@ -483,7 +483,7 @@ class MPLightAgent(RLAgent):
         self.model.load_state_dict(checkpoint['model_state_dict'])
         self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
 
-    def save_model(self, e):
+    def save_model(self, model_dir="", e=None):
         '''
         save_model
         Save model params of an episode.
@@ -491,10 +491,16 @@ class MPLightAgent(RLAgent):
         :param e: specified episode, used for file name
         :return: None
         '''
-        path = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model')
+        if model_dir:
+            path = model_dir
+        else:
+            path = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model')
         if not os.path.exists(path):
             os.makedirs(path)
-        model_name = os.path.join(path, f'{e}_{self.rank}.pt')
+        if e is not None:
+            model_name = os.path.join(path, f'{e}_{self.rank}.pt')
+        else:
+            model_name = os.path.join(path, f'{self.rank}.pt')
         # torch.save(self.target_model.state_dict(), model_name)
         torch.save({
             'model_state_dict': self.model.state_dict(),

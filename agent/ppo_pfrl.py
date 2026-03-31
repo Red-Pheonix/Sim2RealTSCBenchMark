@@ -203,9 +203,15 @@ class IPPO_pfrl(RLAgent):
         self._build_model()
         self.model.load_state_dict(torch.load(model_name))
 
-    def save_model(self, e):
-        path = os.path.join(Registry.mapping['logger_mapping']['output_path'].path, 'model')
+    def save_model(self, model_dir="", e=None):
+        if model_dir:
+            path = model_dir
+        else:
+            path = os.path.join(Registry.mapping['logger_mapping']['output_path'].path, 'model')
         if not os.path.exists(path):
             os.makedirs(path)
-        model_name = os.path.join(path, f'{e}_{self.rank}.pt')
+        if e is not None:
+            model_name = os.path.join(path, f'{e}_{self.rank}.pt')
+        else:
+            model_name = os.path.join(path, f'{self.rank}.pt')
         torch.save(self.model.state_dict(), model_name)

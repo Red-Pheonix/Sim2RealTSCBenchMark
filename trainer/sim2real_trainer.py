@@ -523,7 +523,12 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
                 break
 
         if e % self.save_rate == 0:
-            [ag.save_model(e=e) for ag in self.agents_sim]
+            model_dir = os.path.join(Registry.mapping["logger_mapping"]["path"].path, 
+                                    "model",
+                                    Registry.mapping["command_mapping"]["setting"].param["gat_model"], 
+                                    Registry.mapping["command_mapping"]["setting"].param.get("real_setting")
+            )
+            [ag.save_model(model_dir=model_dir, e=e) for ag in self.agents_sim]
 
         # Save the collected rollout data
         self.dataset_dir.mkdir(parents=True, exist_ok=True)
@@ -567,9 +572,10 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         self.metric_real.clear()
         state_action_next_state = []
         
-        model_dir = os.path.join(
-                Registry.mapping["logger_mapping"]["path"].path,
-                "model",
+        model_dir = os.path.join(Registry.mapping["logger_mapping"]["path"].path, 
+                            "model",
+                            Registry.mapping["command_mapping"]["setting"].param["gat_model"], 
+                            Registry.mapping["command_mapping"]["setting"].param.get("real_setting")
         )
 
         for a in self.agents_real:
@@ -717,6 +723,8 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
                 Registry.mapping["command_mapping"]["setting"].param["task"],
                 Registry.mapping["command_mapping"]["setting"].param["agent"],
                 Registry.mapping["command_mapping"]["setting"].param["network"],
+                Registry.mapping["command_mapping"]["setting"].param["gat_model"], 
+                Registry.mapping["command_mapping"]["setting"].param.get("real_setting")
         )
         
         for a in self.agents_sim:

@@ -426,7 +426,7 @@ class FRAP_MOVE_DQNAgent(RLAgent):
         self.target_model = FRAP_move(self.dic_agent_conf, self.num_actions, self.num_actions, self.phase2movements, self.comp_mask)
         self.target_model.load_state_dict(torch.load(model_name))
 
-    def save_model(self, e):
+    def save_model(self, model_dir="", e=None):
         '''
         save_model
         Save model params of an episode.
@@ -434,11 +434,17 @@ class FRAP_MOVE_DQNAgent(RLAgent):
         :param e: specified episode, used for file name
         :return: None
         '''
-        path = os.path.join(
-            Registry.mapping['logger_mapping']['path'].path, 'model')
+        if model_dir:
+            path = model_dir
+        else:
+            path = os.path.join(
+                Registry.mapping['logger_mapping']['path'].path, 'model')
         if not os.path.exists(path):
             os.makedirs(path)
-        model_name = os.path.join(path, f'{e}_{self.rank}.pt')
+        if e is not None:
+            model_name = os.path.join(path, f'{e}_{self.rank}.pt')
+        else:
+            model_name = os.path.join(path, f'{self.rank}.pt')
         torch.save(self.model.state_dict(), model_name)
 
 

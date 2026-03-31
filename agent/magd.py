@@ -316,15 +316,23 @@ class MAGDAgent(RLAgent):
         self.model_p.load_state_dict(torch.load(model_p_name))
         self.sync_network()
 
-    def save_model(self, e):
-        path_p = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model_p')
-        path_q = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model_q')
+    def save_model(self, model_dir="", e=None):
+        if model_dir:
+            path_p = os.path.join(model_dir, 'model_p')
+            path_q = os.path.join(model_dir, 'model_q')
+        else:
+            path_p = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model_p')
+            path_q = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model_q')
         if not os.path.exists(path_p):
             os.makedirs(path_p)
         if not os.path.exists(path_q):
             os.makedirs(path_q)
-        model_p_name = os.path.join(path_p, f'{e}_{self.rank}.pt')
-        model_q_name = os.path.join(path_q, f'{e}_{self.rank}.pt')
+        if e is not None:
+            model_p_name = os.path.join(path_p, f'{e}_{self.rank}.pt')
+            model_q_name = os.path.join(path_q, f'{e}_{self.rank}.pt')
+        else:
+            model_p_name = os.path.join(path_p, f'{self.rank}.pt')
+            model_q_name = os.path.join(path_q, f'{self.rank}.pt')
         torch.save(self.p_model.state_dict(), model_p_name)
         torch.save(self.q_model.state_dict(), model_q_name)
 
