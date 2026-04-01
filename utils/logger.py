@@ -105,6 +105,10 @@ def build_config(args):
         gat_name = os.path.join('./configs', args.task, f'{args.gat_model}.yml')
         gat_config, duplicates_warning = load_config(gat_name)
         config.update({"sim2real":gat_config["sim2real"]})
+    elif args.task == 'sim2real_observations':
+        agent_name = os.path.join('./configs', args.task, "models", f'{args.agent}.yml')
+        config, duplicates_warning = load_config(agent_name)
+        config.setdefault('sim2real', {})
         
     else:
         raise ValueError("Unsupported task name: {}".format(args.task))

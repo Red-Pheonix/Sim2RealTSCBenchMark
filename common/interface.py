@@ -37,9 +37,12 @@ class World_param_Interface(Interface):
     def __init__(self, config):
         super(World_param_Interface, self).__init__()
         
-        if config["task"]["task_name"] == "tsc":
-            path = os.path.join(os.getcwd(), 'configs/sim', config["command"]["world"] , config['command']['network'] + '.cfg')
-        elif config["task"]["task_name"] == "sim2real_transitions":
+        supported_tasks = {
+            "tsc",
+            "sim2real_transitions",
+            "sim2real_observations",
+        }
+        if config["task"]["task_name"] in supported_tasks:
             path = os.path.join(os.getcwd(), 'configs/sim', config["command"]["world"] , config['command']['network'] + '.cfg')
         else:
             raise ValueError("Unsupported task name: {}".format(config["task"]["task_name"]))
