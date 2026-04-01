@@ -126,7 +126,15 @@ class JLGATSim2RealTransitionModel(DecentralizedSim2RealTransitionModel):
         self.uncertainty_setting = sim2real_params["uncertainty"]
         self.last_n_uncertainties = sim2real_params["last_n_uncertainties"]
         self.prob_grounding = sim2real_params.get("prob_grounding", 0)
-        self.probing_radius = sim2real_params.get("probing_radius")
+        
+        probing_radius = Registry.mapping["world_mapping"]["setting"].param.get("probing_radius")
+        if probing_radius:
+            self.probing_radius = probing_radius
+        else:         
+            self.probing_radius = sim2real_params.get("probing_radius")
+        
+        Registry.mapping["world_mapping"]["setting"].param.get("probing_radius")
+        
         self.net = Registry.mapping["trainer_mapping"]["setting"].param["network"]
         self.setting = Registry.mapping["command_mapping"]["setting"].param.get("real_setting")
         self.gat_path = os.path.join(
@@ -170,6 +178,7 @@ class JLGATSim2RealTransitionModel(DecentralizedSim2RealTransitionModel):
                 raise Exception(
                     f"At least one neighbor required for JL-GAT for intersection: {rank2inter[rank]}. Try adjusting the probing radius."
                 )
+            print(f"JLGAT Neighbors: {self.neighbour_infos}")
             self.agents_real[rank].neighbors = n_neighbors
 
         action_length = max(
