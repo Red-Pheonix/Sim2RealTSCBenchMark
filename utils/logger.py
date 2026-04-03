@@ -109,6 +109,13 @@ def build_config(args):
         agent_name = os.path.join('./configs', args.task, "models", f'{args.agent}.yml')
         config, duplicates_warning = load_config(agent_name)
         config.setdefault('sim2real', {})
+
+        real_setting_name = os.path.join(
+            './configs', args.task, 'settings', f'{args.real_setting}.yml'
+        )
+        real_setting_config, duplicates_warning = load_config(real_setting_name)
+        config.setdefault('sim2real', {})
+        config['sim2real'].update(real_setting_config.get('sim2real', {}))
         
     else:
         raise ValueError("Unsupported task name: {}".format(args.task))

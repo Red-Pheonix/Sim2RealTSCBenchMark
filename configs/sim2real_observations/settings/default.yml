@@ -1,0 +1,23 @@
+sim2real:
+  transform_seed: 0
+  noise:
+    enabled: False
+    seed: 0
+    features: ["lane_count", "lane_waiting_count", "lane_waiting_time_count", "lane_delay"]
+    probability: 1.0
+    mean: 0.0
+    std: 1.0
+    relative: False
+    bias: 0.0
+    scale: 1.0
+    clip_min: 0.0
+    clip_max:
+    round: False
+    cast_int: False
+  disable_sensor:
+    enabled: False
+    seed: 0
+    features: ["lane_count", "lane_waiting_count", "lane_waiting_time_count", "lane_delay"]
+    probability: 0.2
+    mask_mode: episode # run, episode, step
+    fill_value: 0.0

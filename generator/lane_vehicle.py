@@ -148,8 +148,22 @@ class LaneVehicleGenerator(BaseGenerator):
         #need modification here
 
         ret = np.array([])
-        for i in range(len(self.fns)):
+        for i, fn in enumerate(self.fns):
             result = results[i]
+
+            if hasattr(self.world, "transform_observation"):
+                result = self.world.transform_observation(
+                    self.fns[i],
+                    result,
+                    intersection=self.I,
+                    lanes=self.lanes,
+                    meta={
+                        "average": self.average,
+                        "negative": self.negative,
+                        "roads": self.roads,
+                        "directions": self.directions,
+                    },
+                )
 
             # pressure returns result of each intersections, so return directly
             if self.I.id in result:
@@ -226,4 +240,3 @@ if __name__ == "__main__":
     for _ in range(100):
         world.step()
     print(laneVehicle.generate())
-

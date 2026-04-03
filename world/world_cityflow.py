@@ -24,17 +24,6 @@ class Intersection(object):
         self.out_roads = None
         self.in_roads = None
 
-        # map_name = Registry.mapping['world_mapping']['setting'].param['network']
-        # self.lane_order_cf = None
-        # self.lane_order_sumo = None
-        # if 'signal_config' in Registry.mapping['world_mapping']['setting'].param.keys():
-        #     if 'N' in Registry.mapping['world_mapping']['setting'].param['signal_config'][map_name]['cf_order'].keys():
-        #         self.lane_order_cf = Registry.mapping['world_mapping']['setting'].param['signal_config'][map_name]['cf_order']
-        #         self.lane_order_sumo = Registry.mapping['world_mapping']['setting'].param['signal_config'][map_name]['sumo_order']
-        #     else:
-        #         self.lane_order_cf = Registry.mapping['world_mapping']['setting'].param['signal_config'][map_name]['cf_order'][self.id]
-        #         self.lane_order_sumo = Registry.mapping['world_mapping']['setting'].param['signal_config'][map_name]['sumo_order'][self.id]
-
         # links and phase information of each intersection
         self.current_phase = 0
         self.roadlinks = []
@@ -317,6 +306,7 @@ class World(object):
         self.vehicle_trajectory = {}  # key: vehicle_id, value: [[lane_id_1, enter_time, time_spent_on_lane_1], ... , [lane_id_n, enter_time, time_spent_on_lane_n]]
         self.history_vehicles = set()
         self.real_delay= {}
+        self.observation_transforms = list(kwargs.get("observation_transforms") or [])
 
         # # get in_lanes and out_lanes
         # self.in_lanes, self.out_lanes = self.get_in_out_lanes()
@@ -823,6 +813,28 @@ class World(object):
         '''
         _info = self.info[info]
         return _info
+
+    def transform_observation(self, fn_name, values, intersection=None, lanes=None, meta=None):
+        '''
+        Transform observation values before they are returned to agents.
+
+        :param fn_name: subscribed feature name, e.g. "lane_count"
+        :param values: dict of lane -> value for the current feature
+        :return: transformed mapping with the same keys as values
+        '''
+        if not self.observation_transforms:
+            return values
+
+        transformed = values
+        for transform in self.observation_transforms:
+            transformed = transform(
+                fn_name,
+                transformed,
+                intersection=intersection,
+                lanes=lanes,
+                meta=meta,
+            )
+        return transformed
 
     def get_average_travel_time(self):
         '''
