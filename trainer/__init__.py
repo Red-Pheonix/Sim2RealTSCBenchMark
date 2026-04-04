@@ -3,3 +3,4 @@ from .tsc_trainer import TSCTrainer
 from .sim2real_trainer import Sim2RealTransitionsTrainer
 from .sim2real_observations_trainer import Sim2RealObservationsTrainer
 from .sim2real_actions_trainer import Sim2RealActionsTrainer
+from .sim2real_rewards_trainer import Sim2RealRewardsTrainer

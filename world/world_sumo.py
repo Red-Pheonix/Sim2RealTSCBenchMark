@@ -484,6 +484,7 @@ class World(object):
         self.step_ratio = 1  # TODO: register in Registry later
         self.step_length = 1  # should be 1 in our setting
         self.max_distance = 10000 # TODO: set in registry
+        self.reward_detection_zone_m = float(kwargs.get("reward_detection_zone_m", 0.0))
         # get all intersections (dict here)
         self.intersection_ids = self.eng.trafficlight.getIDList()
         # prepare phase information for each intersections
@@ -534,10 +535,13 @@ class World(object):
             "vehicles": self.get_vehicles, # TODO check this func
             "lane_count": self.get_lane_vehicle_count,
             "lane_waiting_count": self.get_lane_waiting_vehicle_count,
+            "detected_lane_count": self.get_detected_lane_count,
+            "detected_lane_waiting_count": self.get_detected_lane_waiting_vehicle_count,
             "lane_vehicles": self.get_lane_vehicles,
             "time": self.get_current_time,
             "vehicle_distance": None,
             "pressure": self.get_pressure,
+            "detected_pressure": self.get_detected_pressure,
             "lane_pressure": self.get_lane_pressure,
             "lane_waiting_time_count": self.get_lane_waiting_time_count,
             "lane_delay": self.get_lane_delay,
@@ -801,6 +805,64 @@ class World(object):
             pressures[i.id] = pressure
         return pressures
         # pass
+
+    def get_detected_lane_vehicle_sets(self):
+        detected_incoming = {}
+        detected_outgoing = {}
+
+        for inter in self.intersections:
+            for road in inter.in_roads:
+                for lane in inter.road_lane_mapping[road]:
+                    lane_length = self.eng.lane.getLength(lane)
+                    vehicles = inter.full_observation[lane]["vehicles"]
+                    detected_incoming[(inter.id, lane)] = [
+                        vehicle["name"]
+                        for vehicle in vehicles
+                        if lane_length - vehicle["position"] < self.reward_detection_zone_m
+                    ]
+                    if len(detected_incoming[(inter.id, lane)]) > 0:
+                        pass
+
+            for road in inter.out_roads:
+                for lane in inter.road_lane_mapping[road]:
+                    vehicles = inter.full_observation[lane]["vehicles"]
+                    detected_outgoing[(inter.id, lane)] = [
+                        vehicle["name"]
+                        for vehicle in vehicles
+                        if vehicle["position"] < self.reward_detection_zone_m
+                    ]
+
+        return detected_incoming, detected_outgoing
+
+    def get_detected_lane_count(self):
+        result = {lane: 0 for lane in self.all_lanes}
+        detected_incoming, _ = self.get_detected_lane_vehicle_sets()
+        for (_, lane), vehicles in detected_incoming.items():
+            result[lane] = len(vehicles)
+        return result
+
+    def get_detected_lane_waiting_vehicle_count(self):
+        result = {lane: 0 for lane in self.all_lanes}
+        detected_incoming, _ = self.get_detected_lane_vehicle_sets()
+        for (_, lane), vehicles in detected_incoming.items():
+            result[lane] = sum(
+                1 for vehicle in vehicles if self.eng.vehicle.getSpeed(vehicle) < 0.1
+            )
+        return result
+
+    def get_detected_pressure(self):
+        pressures = dict()
+        detected_incoming, detected_outgoing = self.get_detected_lane_vehicle_sets()
+        for inter in self.intersections:
+            pressure = 0
+            for road in inter.in_roads:
+                for lane in inter.road_lane_mapping[road]:
+                    pressure += len(detected_incoming.get((inter.id, lane), []))
+            for road in inter.out_roads:
+                for lane in inter.road_lane_mapping[road]:
+                    pressure -= len(detected_outgoing.get((inter.id, lane), []))
+            pressures[inter.id] = pressure
+        return pressures
         
     def get_segmented_lane_count(self):
         segmented_lane_counts = OrderedDict()

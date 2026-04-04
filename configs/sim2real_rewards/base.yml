@@ -1,6 +1,6 @@
 task:
   description: use RL methods to optimize traffic signal control problems
-  task_name: sim2real_observations
+  task_name: sim2real_rewards
 
 world:
 # necessary and distinctive parameters for simulators
@@ -32,7 +32,7 @@ trainer:
   test_when_train: False
 
 sim2real:
-  load_pretrained: False
+  load_pretrained: True
 
 model:
   name: "non-rl"
