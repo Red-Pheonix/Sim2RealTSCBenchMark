@@ -23,6 +23,8 @@ class Intersection(object):
         self.directions = []
         self.out_roads = None
         self.in_roads = None
+        self.out_lanes = None
+        self.in_lanes = None
 
         # links and phase information of each intersection
         self.current_phase = 0
@@ -108,6 +110,23 @@ class Intersection(object):
         self.outs = [self.outs[i] for i in order]
         self.out_roads = [self.roads[i] for i, x in enumerate(self.outs) if x]
         self.in_roads = [self.roads[i] for i, x in enumerate(self.outs) if not x]
+        self.out_lanes = self.get_lanes_for_roads(self.out_roads, outgoing=True)
+        self.in_lanes = self.get_lanes_for_roads(self.in_roads, outgoing=False)
+
+    def get_lanes_for_roads(self, roads, outgoing):
+        lanes = []
+        for road in roads:
+            if outgoing:
+                from_zero = (road["endIntersection"] == self.id) if self.world.RIGHT else (
+                    road["startIntersection"] == self.id
+                )
+            else:
+                from_zero = (road["startIntersection"] == self.id) if self.world.RIGHT else (
+                    road["endIntersection"] == self.id
+                )
+            for n in range(len(road["lanes"]))[::(1 if from_zero else -1)]:
+                lanes.append(road["id"] + "_" + str(n))
+        return lanes
 
     def _change_phase(self, phase, interval, typ='init'):
         '''
@@ -308,8 +327,8 @@ class World(object):
         self.real_delay= {}
         self.observation_transforms = list(kwargs.get("observation_transforms") or [])
 
-        # # get in_lanes and out_lanes
-        # self.in_lanes, self.out_lanes = self.get_in_out_lanes()
+        # get in_lanes and out_lanes
+        self.in_lanes, self.out_lanes = self.get_in_out_lanes()
 
         # record lanes' vehicles to calculate arrive_leave_time
         self.dic_lane_vehicle_previous_step = {key: None for key in self.all_lanes}
@@ -460,27 +479,15 @@ class World(object):
         pressures = {}
         for i in self.intersections:
             pressure = 0
-            in_lanes = []
-            for road in i.in_roads:
-                from_zero = (road["startIntersection"] == i.id) if self.RIGHT else (
-                        road["endIntersection"] == i.id)
-                for n in range(len(road["lanes"]))[::(1 if from_zero else -1)]:
-                    in_lanes.append(road["id"] + "_" + str(n))
-            out_lanes = []
-            for road in i.out_roads:
-                from_zero = (road["endIntersection"] == i.id) if self.RIGHT else (
-                        road["startIntersection"] == i.id)
-                for n in range(len(road["lanes"]))[::(1 if from_zero else -1)]:
-                    out_lanes.append(road["id"] + "_" + str(n))
             for lane in vehicles.keys():
-                if lane in in_lanes:
+                if lane in i.in_lanes:
                     pressure += vehicles[lane]
-                if lane in out_lanes:
+                if lane in i.out_lanes:
                     pressure -= vehicles[lane]
             pressures[i.id] = pressure
         # self.get_segmented_lane_count()
         return pressures
-    
+
     def get_segmented_lane_count(self):
         lane_vehicles = self.dic_lane_vehicle_current_step
         segmented_lane_counts = OrderedDict()
@@ -491,24 +498,8 @@ class World(object):
         for i in self.intersections:
             segmented_lane_counts[i.id] = OrderedDict()
             
-            # get the in_lanes and out_lanes first
-            in_lanes = []
-            for road in i.in_roads:
-                from_zero = (road["startIntersection"] == i.id) if self.RIGHT else (
-                        road["endIntersection"] == i.id)
-                for n in range(len(road["lanes"]))[::(1 if from_zero else -1)]:
-                    in_lanes.append(road["id"] + "_" + str(n))
-
-            out_lanes = []
-            for road in i.out_roads:
-                from_zero = (road["endIntersection"] == i.id) if self.RIGHT else (
-                        road["startIntersection"] == i.id)
-                for n in range(len(road["lanes"]))[::(1 if from_zero else -1)]:
-                    out_lanes.append(road["id"] + "_" + str(n))
-            
-            # make sure lanes match with SUMO
-            in_lanes.sort()        
-            out_lanes.sort()
+            in_lanes = sorted(i.in_lanes)
+            out_lanes = sorted(i.out_lanes)
 
             for lane in in_lanes:
                 vehicles = lane_vehicles[lane] if lane_vehicles[lane] else []
