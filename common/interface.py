@@ -41,6 +41,7 @@ class World_param_Interface(Interface):
             "tsc",
             "sim2real_transitions",
             "sim2real_observations",
+            "sim2real_actions",
         }
         if config["task"]["task_name"] in supported_tasks:
             path = os.path.join(os.getcwd(), 'configs/sim', config["command"]["world"] , config['command']['network'] + '.cfg')
