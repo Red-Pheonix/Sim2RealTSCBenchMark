@@ -9,6 +9,45 @@ from environment import TSCEnv
 from trainer.base_trainer import BaseTrainer
 
 
+class ObservationNoiseGenerator:
+    def sample(self, rng, base_value):
+        raise NotImplementedError
+
+
+class GaussianNoiseGenerator(ObservationNoiseGenerator):
+    def __init__(self, config):
+        self.mean = config.get("mean", 0.0)
+        self.std = config.get("std", 0.0)
+        self.relative = config.get("relative", False)
+
+    def sample(self, rng, base_value):
+        sampled_noise = rng.normal(self.mean, self.std)
+        if self.relative:
+            sampled_noise *= abs(base_value)
+        return sampled_noise
+
+
+class PoissonNoiseGenerator(ObservationNoiseGenerator):
+    def __init__(self, config):
+        self.poisson_lambda = config.get("lambda")
+        self.rate = config.get("rate", 1.0)
+        self.centered = config.get("centered", True)
+        self.relative = config.get("relative", False)
+
+    def sample(self, rng, base_value):
+        if self.poisson_lambda is None:
+            lam = max(abs(base_value) * self.rate, 0.0)
+        else:
+            lam = max(self.poisson_lambda, 0.0)
+            if self.relative:
+                lam *= abs(base_value)
+
+        sampled_noise = rng.poisson(lam)
+        if self.centered:
+            sampled_noise -= lam
+        return sampled_noise
+
+
 @Registry.register_trainer("sim2real_observations")
 class Sim2RealObservationsTrainer(BaseTrainer):
     """
@@ -125,6 +164,7 @@ class Sim2RealObservationsTrainer(BaseTrainer):
     def make_noise_transform(self, noise_config, base_seed):
         rng = np.random.default_rng(noise_config.get("seed", base_seed))
         feature_names = set(noise_config.get("features", []))
+        noise_generator = self.build_noise_generator(noise_config)
 
         def transform(fn_name, values, intersection=None, lanes=None, meta=None):
             if not self.lane_feature_enabled(fn_name, feature_names):
@@ -132,9 +172,6 @@ class Sim2RealObservationsTrainer(BaseTrainer):
 
             transformed = dict(values)
             probability = noise_config.get("probability", 1.0)
-            mean = noise_config.get("mean", 0.0)
-            std = noise_config.get("std", 0.0)
-            relative = noise_config.get("relative", False)
             bias = noise_config.get("bias", 0.0)
             scale = noise_config.get("scale", 1.0)
             clip_min = noise_config.get("clip_min")
@@ -148,10 +185,7 @@ class Sim2RealObservationsTrainer(BaseTrainer):
                         continue
 
                     base_value = transformed[lane_id]
-                    sampled_noise = rng.normal(mean, std)
-
-                    if relative:
-                        sampled_noise *= abs(base_value)
+                    sampled_noise = noise_generator.sample(rng, base_value)
 
                     noisy_value = (base_value + sampled_noise + bias) * scale
 
@@ -169,6 +203,17 @@ class Sim2RealObservationsTrainer(BaseTrainer):
             return transformed
 
         return transform
+
+    def build_noise_generator(self, noise_config):
+        distribution = noise_config.get("distribution", "poisson")
+        distribution_config = noise_config.get(f"{distribution}_config", {})
+
+        if distribution == "gaussian":
+            return GaussianNoiseGenerator(distribution_config)
+        if distribution == "poisson":
+            return PoissonNoiseGenerator(distribution_config)
+
+        raise ValueError(f"Unsupported noise distribution: {distribution}")
 
     def make_disable_sensor_transform(self, disable_sensor_config, base_seed):
         rng = np.random.default_rng(disable_sensor_config.get("seed", base_seed))
@@ -222,11 +267,12 @@ class Sim2RealObservationsTrainer(BaseTrainer):
             thread_num,
         )
 
-        self.world_real = Registry.mapping["world_mapping"]["sumo"](
-            self.sumo_path,
+        self.world_real = Registry.mapping["world_mapping"]["cityflow"](
+            self.cityflow_path,
+            thread_num,
             **self._build_world_kwargs(
                 observation_transforms=self.build_observation_transforms(),
-                include_interface=True,
+                include_interface=False,
             ),
         )
 

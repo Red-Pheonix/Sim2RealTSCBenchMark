@@ -560,6 +560,7 @@ class World(object):
         self.vehicle_maxspeed = {}
         self.real_delay = {}
         self.vehicle_blocked = ()
+        self.observation_transforms = list(kwargs.get("observation_transforms") or [])
 
     def get_adjacent_intersections(self):
         """
@@ -769,6 +770,31 @@ class World(object):
         for fn in self.fns:
             self.info[fn] = self.info_functions[fn]()
 
+    def transform_observation(self, fn_name, values, intersection=None, lanes=None, meta=None):
+        '''
+        Transform observation values before they are returned to agents.
+
+        :param fn_name: subscribed feature name, e.g. "lane_count"
+        :param values: dict of lane -> value for the current feature
+        :return: transformed mapping with the same keys as values
+        '''
+        if not self.observation_transforms:
+            return values
+
+        transformed = values
+        for transform in self.observation_transforms:
+            transformed = transform(
+                fn_name,
+                transformed,
+                intersection=intersection,
+                lanes=lanes,
+                meta=meta,
+            )
+        return transformed
+
+    def get_lane_groups(self):
+        return [intsec.lanes for intsec in self.intersections]
+
     def get_lane_vehicle_count(self):
         '''
         get_lane_vehicle_count
@@ -781,7 +807,11 @@ class World(object):
         for intsec in self.intersections:
             for lane in intsec.lanes:
                 result.update({lane: intsec.full_observation[lane]['lane_count']})
-        return result
+        return self.transform_observation(
+            "lane_count",
+            result,
+            lanes=self.get_lane_groups(),
+        )
 
     def get_pressure(self):
         '''
@@ -907,7 +937,11 @@ class World(object):
         for intsec in self.intersections:
             for lane in intsec.lanes:
                 result.update({lane: intsec.full_observation[lane]['lane_waiting_time_count']})
-        return result
+        return self.transform_observation(
+            "lane_waiting_time_count",
+            result,
+            lanes=self.get_lane_groups(),
+        )
 
     def get_lane_waiting_vehicle_count(self):
         '''
@@ -921,7 +955,11 @@ class World(object):
         for intsec in self.intersections:
             for lane in intsec.lanes:
                 result.update({lane: intsec.full_observation[lane]['lane_waiting_count']})
-        return result
+        return self.transform_observation(
+            "lane_waiting_count",
+            result,
+            lanes=self.get_lane_groups(),
+        )
 
     def get_cur_phase(self):
         '''
@@ -1029,7 +1067,11 @@ class World(object):
             else:
                 lane_avg_speed /= lane_vehicle_count
             lane_delay[key] = 1 - lane_avg_speed / speed_limit
-        return lane_delay
+        return self.transform_observation(
+            "lane_delay",
+            lane_delay,
+            lanes=self.get_lane_groups(),
+        )
 
     # def get_plan_depart_time(self):
     #     """
