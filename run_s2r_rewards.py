@@ -51,8 +51,8 @@ parser.add_argument(
     "-w",
     "--world",
     type=str,
-    default="sumo",
-    choices=["sumo"],
+    default="cityflow",
+    choices=["cityflow"],
     help="simulator type",
 )
 parser.add_argument("-n", "--network", type=str, default="cityflow1x1", help="network name")

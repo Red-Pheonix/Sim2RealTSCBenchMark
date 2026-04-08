@@ -22,8 +22,11 @@ class Sim2RealObservationsTrainer(BaseTrainer):
         trainer_args = Registry.mapping["trainer_mapping"]["setting"].param
         logger_args = Registry.mapping["logger_mapping"]["setting"].param
 
-        self.path = os.path.join(
-            "configs/sim", cmd_args["world"], cmd_args["network"] + ".cfg"
+        self.cityflow_path = os.path.join(
+            "configs/sim", "cityflow", cmd_args["network"] + ".cfg"
+        )
+        self.sumo_path = os.path.join(
+            "configs/sim", "sumo", cmd_args["network"] + ".cfg"
         )
         self.episodes = trainer_args["episodes"]
         self.steps = trainer_args["steps"]
@@ -201,29 +204,29 @@ class Sim2RealObservationsTrainer(BaseTrainer):
         transform.reset = reset
         return transform
 
-    def _build_world_kwargs(self, observation_transforms=None):
-        world_kwargs = {
-            "interface": Registry.mapping["command_mapping"]["setting"].param["interface"]
-        }
+    def _build_world_kwargs(self, observation_transforms=None, include_interface=True):
+        world_kwargs = {}
+        if include_interface:
+            world_kwargs["interface"] = Registry.mapping["command_mapping"]["setting"].param[
+                "interface"
+            ]
         if observation_transforms is not None:
             world_kwargs["observation_transforms"] = observation_transforms
         return world_kwargs
 
     def create_world(self):
-        world_type = Registry.mapping["command_mapping"]["setting"].param["world"]
-        world_cls = Registry.mapping["world_mapping"][world_type]
         thread_num = Registry.mapping["command_mapping"]["setting"].param["thread_num"]
 
-        self.world_sim = world_cls(
-            self.path,
+        self.world_sim = Registry.mapping["world_mapping"]["cityflow"](
+            self.cityflow_path,
             thread_num,
-            **self._build_world_kwargs(observation_transforms=[]),
         )
-        self.world_real = world_cls(
-            self.path,
-            thread_num,
+
+        self.world_real = Registry.mapping["world_mapping"]["sumo"](
+            self.sumo_path,
             **self._build_world_kwargs(
-                observation_transforms=self.build_observation_transforms()
+                observation_transforms=self.build_observation_transforms(),
+                include_interface=True,
             ),
         )
 
@@ -291,9 +294,7 @@ class Sim2RealObservationsTrainer(BaseTrainer):
             ag.save_model(model_dir, e)
 
     def set_replay(self, env, suffix, enabled):
-        if Registry.mapping["command_mapping"]["setting"].param["world"] != "cityflow":
-            return
-        if not self.save_replay:
+        if not self.save_replay or env is not self.env_sim:
             return
         env.eng.set_save_replay(enabled)
         if enabled:

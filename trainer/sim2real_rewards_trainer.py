@@ -12,7 +12,7 @@ from trainer.base_trainer import BaseTrainer
 @Registry.register_trainer("sim2real_rewards")
 class Sim2RealRewardsTrainer(BaseTrainer):
     """
-    Trainer for reward-based sim2real experiments with identical SUMO sim and real rollouts.
+    Trainer for reward-based sim2real experiments with CityFlow sim rollouts and SUMO real rollouts.
     """
 
     def __init__(self, logger, gpu=0, cpu=False, name="sim2real_rewards"):
@@ -22,7 +22,12 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         trainer_args = Registry.mapping["trainer_mapping"]["setting"].param
         logger_args = Registry.mapping["logger_mapping"]["setting"].param
 
-        self.path = os.path.join("configs/sim", "sumo", cmd_args["network"] + ".cfg")
+        self.cityflow_path = os.path.join(
+            "configs/sim", "cityflow", cmd_args["network"] + ".cfg"
+        )
+        self.sumo_path = os.path.join(
+            "configs/sim", "sumo", cmd_args["network"] + ".cfg"
+        )
         self.episodes = trainer_args["episodes"]
         self.steps = trainer_args["steps"]
         self.test_steps = trainer_args["test_steps"]
@@ -98,16 +103,18 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         }
 
     def create_world(self):
-        world_cls = Registry.mapping["world_mapping"]["sumo"]
+        thread_num = Registry.mapping["command_mapping"]["setting"].param["thread_num"]
+        interface = Registry.mapping["command_mapping"]["setting"].param["interface"]
 
-        self.world_sim = world_cls(
-            self.path,
-            **self._build_world_kwargs(),
+        self.world_sim = Registry.mapping["world_mapping"]["cityflow"](
+            self.cityflow_path,
+            thread_num,
         )
-        self.world_real = world_cls(
-            self.path,
+
+        self.world_real = Registry.mapping["world_mapping"]["sumo"](
+            self.sumo_path,
             **{
-                **self._build_world_kwargs(),
+                "interface": interface,
                 "reward_detection_zone_m": self.reward_detection_zone_m,
             },
         )
