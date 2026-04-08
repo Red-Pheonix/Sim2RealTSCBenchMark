@@ -6,6 +6,7 @@ from tqdm import tqdm
 from common.metrics import Metrics
 from common.registry import Registry
 from environment import TSCEnv
+from generator import LaneVehicleGenerator
 from trainer.base_trainer import BaseTrainer
 
 
@@ -249,7 +250,7 @@ class Sim2RealObservationsTrainer(BaseTrainer):
         transform.reset = reset
         return transform
 
-    def _build_world_kwargs(self, observation_transforms=None, include_interface=True):
+    def build_world_kwargs(self, observation_transforms=None, include_interface=True):
         world_kwargs = {}
         if include_interface:
             world_kwargs["interface"] = Registry.mapping["command_mapping"]["setting"].param[
@@ -261,6 +262,10 @@ class Sim2RealObservationsTrainer(BaseTrainer):
 
     def create_world(self):
         thread_num = Registry.mapping["command_mapping"]["setting"].param["thread_num"]
+        detection_zone_config = self.get_sim2real_config().get("detection_zone", {})
+        detection_zone_m = 0.0
+        if detection_zone_config.get("enabled", False):
+            detection_zone_m = float(detection_zone_config.get("distance_m", 0.0))
 
         self.world_sim = Registry.mapping["world_mapping"]["cityflow"](
             self.cityflow_path,
@@ -270,10 +275,11 @@ class Sim2RealObservationsTrainer(BaseTrainer):
         self.world_real = Registry.mapping["world_mapping"]["cityflow"](
             self.cityflow_path,
             thread_num,
-            **self._build_world_kwargs(
+            **self.build_world_kwargs(
                 observation_transforms=self.build_observation_transforms(),
                 include_interface=False,
             ),
+            detection_zone_m=detection_zone_m,
         )
 
     def create_agent_world(self, world):
@@ -307,10 +313,31 @@ class Sim2RealObservationsTrainer(BaseTrainer):
     def create_agents(self):
         self.agents_sim = self.create_agent_world(self.world_sim)
         self.agents_real = self.create_agent_world(self.world_real)
+        for ag in self.agents_real:
+            self.configure_real_observation_generator(ag)
 
         if Registry.mapping["model_mapping"]["setting"].param["load_model"]:
             self.load_agents(self.agents_sim, self.model_dir)
             self.load_agents(self.agents_real, self.model_dir)
+
+    def configure_real_observation_generator(self, agent):
+        detection_zone_config = self.get_sim2real_config().get("detection_zone", {})
+        if not detection_zone_config.get("enabled", False):
+            return
+
+        ob_generator = getattr(agent, "ob_generator", None)
+        if not isinstance(ob_generator, LaneVehicleGenerator):
+            return
+
+        agent.ob_generator = LaneVehicleGenerator(
+            agent.world,
+            ob_generator.I,
+            ob_generator.fns,
+            in_only=ob_generator.in_only,
+            average=ob_generator.average,
+            negative=ob_generator.negative,
+            detection_zone_m=float(detection_zone_config.get("distance_m", 1000.0)),
+        )
 
     def create_metrics(self):
         if Registry.mapping["command_mapping"]["setting"].param["delay_type"] == "apx":
@@ -362,6 +389,8 @@ class Sim2RealObservationsTrainer(BaseTrainer):
         last_obs = env.reset()
         for agent in agents:
             agent.reset()
+            if env is self.env_real:
+                self.configure_real_observation_generator(agent)
 
         episode_loss = []
         flush = 0
@@ -447,6 +476,8 @@ class Sim2RealObservationsTrainer(BaseTrainer):
         obs = env.reset()
         for agent in agents:
             agent.reset()
+            if env is self.env_real:
+                self.configure_real_observation_generator(agent)
 
         i = 0
         dones = [False] * len(agents)

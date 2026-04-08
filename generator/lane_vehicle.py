@@ -20,9 +20,20 @@ class LaneVehicleGenerator(BaseGenerator):
         "all" means take average of all lanes.
     :param negative: boolean, whether return negative values (mostly for Reward).
     '''
-    def __init__(self, world, I, fns, in_only=False, average=None, negative=False):
+    def __init__(
+        self,
+        world,
+        I,
+        fns,
+        in_only=False,
+        average=None,
+        negative=False,
+        detection_zone_m=None,
+    ):
         self.world = world
         self.I = I
+        self.in_only = in_only
+        self.detection_zone_m = detection_zone_m
 
         # get lanes of intersections
         self.lanes = []
@@ -118,9 +129,11 @@ class LaneVehicleGenerator(BaseGenerator):
         else:
             raise Exception('NOT IMPLEMENTED YET')
 
-        # subscribe functions
-        self.world.subscribe(fns)
         self.fns = fns
+        self.subscribed_fns = [
+            self.get_subscribed_fn(fn) for fn in self.fns
+        ]
+        self.world.subscribe(self.subscribed_fns)
 
         # calculate result dimensions
         size = sum(len(x) for x in self.lanes)
@@ -135,6 +148,18 @@ class LaneVehicleGenerator(BaseGenerator):
         self.average = average
         self.negative = negative
 
+    def get_subscribed_fn(self, fn):
+        if self.detection_zone_m is None or self.detection_zone_m <= 0.0:
+            return fn
+        detected_fn_map = {
+            "lane_count": "detected_lane_count",
+            "lane_waiting_count": "detected_lane_waiting_count",
+            "lane_waiting_time_count": "detected_lane_waiting_time_count",
+            "lane_delay": "detected_lane_delay",
+            "pressure": "detected_pressure",
+        }
+        return detected_fn_map.get(fn, fn)
+
     def generate(self):
         '''
         generate
@@ -143,7 +168,7 @@ class LaneVehicleGenerator(BaseGenerator):
         :param: None
         :return ret: state or reward
         '''
-        results = [self.world.get_info(fn) for fn in self.fns]
+        results = [self.world.get_info(fn) for fn in self.subscribed_fns]
 
         #need modification here
 

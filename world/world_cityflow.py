@@ -232,6 +232,9 @@ class World(object):
         self.roadnet = self._get_roadnet(cityflow_config)
         self.RIGHT = True  # vehicles moves on the right side, currently always set to true due to CityFlow's mechanism
         self.interval = cityflow_config["interval"]
+        self.detection_zone_m = float(
+            kwargs.get("detection_zone_m", 0.0)
+        )
 
         # get all non virtual intersections
         # judge whether the file is convert from sumo file,
@@ -303,13 +306,18 @@ class World(object):
             "vehicles": (lambda: self.eng.get_vehicles(include_waiting=True)),
             "lane_count": self.eng.get_lane_vehicle_count,
             "lane_waiting_count": self.eng.get_lane_waiting_vehicle_count,
+            "detected_lane_count": self.get_detected_lane_count,
+            "detected_lane_waiting_count": self.get_detected_lane_waiting_vehicle_count,
+            "detected_lane_waiting_time_count": self.get_detected_lane_waiting_time_count,
             "lane_vehicles": self.eng.get_lane_vehicles,
             "time": self.eng.get_current_time,
             "vehicle_distance": self.eng.get_vehicle_distance,
             "pressure": self.get_pressure,
+            "detected_pressure": self.get_detected_pressure,
             # "lane_pressure": self.get_lane_pressure,
             "lane_waiting_time_count": self.get_lane_waiting_time_count,
             "lane_delay": self.get_lane_delay,
+            "detected_lane_delay": self.get_detected_lane_delay,
             "real_delay": self.get_real_delay,
             "vehicle_trajectory": self.get_vehicle_trajectory,
             "history_vehicles": self.get_history_vehicles,
@@ -486,6 +494,109 @@ class World(object):
                     pressure -= vehicles[lane]
             pressures[i.id] = pressure
         # self.get_segmented_lane_count()
+        return pressures
+
+    def get_detected_lane_vehicle_sets(self):
+        lane_vehicles = self.dic_lane_vehicle_current_step
+        vehicle_distances = self.dic_lane_vehicle_distance
+
+        detected_incoming = {}
+        detected_outgoing = {}
+
+        for inter in self.intersections:
+            for lane in inter.in_lanes:
+                lane_length = self.lane_length[lane]
+                vehicles = lane_vehicles.get(lane) or []
+                detected_incoming[(inter.id, lane)] = [
+                    vehicle
+                    for vehicle in vehicles
+                    if 0.0
+                    < lane_length - vehicle_distances.get(vehicle, 0.0)
+                    < self.detection_zone_m
+                ]
+                pass
+
+            for lane in inter.out_lanes:
+                vehicles = lane_vehicles.get(lane) or []
+                detected_outgoing[(inter.id, lane)] = [
+                    vehicle
+                    for vehicle in vehicles
+                    if vehicle_distances.get(vehicle, 0.0) < self.detection_zone_m
+                ]
+                pass
+
+        return detected_incoming, detected_outgoing
+
+    def get_detected_lane_count(self):
+        result = {lane: 0 for lane in self.all_lanes}
+        detected_incoming, detected_outgoing = self.get_detected_lane_vehicle_sets()
+        for (_, lane), vehicles in detected_incoming.items():
+            result[lane] = len(vehicles)
+        for (_, lane), vehicles in detected_outgoing.items():
+            result[lane] = len(vehicles)
+        return result
+
+    def get_detected_lane_waiting_vehicle_count(self):
+        result = {lane: 0 for lane in self.all_lanes}
+        vehicle_speed = self.eng.get_vehicle_speed()
+        detected_incoming, detected_outgoing = self.get_detected_lane_vehicle_sets()
+        for (_, lane), vehicles in detected_incoming.items():
+            result[lane] = sum(
+                1 for vehicle in vehicles if vehicle_speed.get(vehicle, 0.0) < 0.1
+            )
+        for (_, lane), vehicles in detected_outgoing.items():
+            result[lane] = sum(
+                1 for vehicle in vehicles if vehicle_speed.get(vehicle, 0.0) < 0.1
+            )
+        return result
+
+    def get_detected_lane_waiting_time_count(self):
+        result = {lane: 0 for lane in self.all_lanes}
+        vehicle_waiting_time = self.get_vehicle_waiting_time()
+        detected_incoming, detected_outgoing = self.get_detected_lane_vehicle_sets()
+        for (_, lane), vehicles in detected_incoming.items():
+            result[lane] = sum(
+                vehicle_waiting_time.get(vehicle, 0.0) for vehicle in vehicles
+            )
+        for (_, lane), vehicles in detected_outgoing.items():
+            result[lane] = sum(
+                vehicle_waiting_time.get(vehicle, 0.0) for vehicle in vehicles
+            )
+        return result
+
+    def get_detected_lane_delay(self):
+        lane_delay = {lane: 0.0 for lane in self.all_lanes}
+        vehicle_speed = self.eng.get_vehicle_speed()
+        detected_incoming, detected_outgoing = self.get_detected_lane_vehicle_sets()
+        detected_by_lane = {}
+        for (_, lane), vehicles in detected_incoming.items():
+            detected_by_lane[lane] = vehicles
+        for (_, lane), vehicles in detected_outgoing.items():
+            detected_by_lane[lane] = vehicles
+
+        for lane in self.all_lanes:
+            vehicles = detected_by_lane.get(lane, [])
+            lane_vehicle_count = len(vehicles)
+            lane_avg_speed = 0.0
+            for vehicle in vehicles:
+                lane_avg_speed += vehicle_speed.get(vehicle, 0.0)
+            if lane_vehicle_count == 0:
+                lane_avg_speed = self.all_lanes_speed[lane]
+            else:
+                lane_avg_speed /= lane_vehicle_count
+            lane_delay[lane] = 1 - lane_avg_speed / self.all_lanes_speed[lane]
+        return lane_delay
+
+    def get_detected_pressure(self):
+        pressures = {}
+        detected_incoming, detected_outgoing = self.get_detected_lane_vehicle_sets()
+        for inter in self.intersections:
+            pressure = 0
+            for lane in inter.in_lanes:
+                pressure += len(detected_incoming.get((inter.id, lane), []))
+            for lane in inter.out_lanes:
+                pressure -= len(detected_outgoing.get((inter.id, lane), []))
+            pressures[inter.id] = pressure
         return pressures
 
     def get_segmented_lane_count(self):

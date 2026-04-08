@@ -484,7 +484,7 @@ class World(object):
         self.step_ratio = 1  # TODO: register in Registry later
         self.step_length = 1  # should be 1 in our setting
         self.max_distance = 10000 # TODO: set in registry
-        self.reward_detection_zone_m = float(kwargs.get("reward_detection_zone_m", 0.0))
+        self.detection_zone_m = float(kwargs.get("detection_zone_m", 0.0))
         # get all intersections (dict here)
         self.intersection_ids = self.eng.trafficlight.getIDList()
         # prepare phase information for each intersections
@@ -537,6 +537,7 @@ class World(object):
             "lane_waiting_count": self.get_lane_waiting_vehicle_count,
             "detected_lane_count": self.get_detected_lane_count,
             "detected_lane_waiting_count": self.get_detected_lane_waiting_vehicle_count,
+            "detected_lane_waiting_time_count": self.get_detected_lane_waiting_time_count,
             "lane_vehicles": self.get_lane_vehicles,
             "time": self.get_current_time,
             "vehicle_distance": None,
@@ -545,6 +546,7 @@ class World(object):
             "lane_pressure": self.get_lane_pressure,
             "lane_waiting_time_count": self.get_lane_waiting_time_count,
             "lane_delay": self.get_lane_delay,
+            "detected_lane_delay": self.get_detected_lane_delay,
             "real_delay": self.get_real_delay,
             "vehicle_trajectory": self.get_vehicle_trajectory,
             "history_vehicles": None,
@@ -848,7 +850,7 @@ class World(object):
                     detected_incoming[(inter.id, lane)] = [
                         vehicle["name"]
                         for vehicle in vehicles
-                        if lane_length - vehicle["position"] < self.reward_detection_zone_m
+                        if lane_length - vehicle["position"] < self.detection_zone_m
                     ]
                     if len(detected_incoming[(inter.id, lane)]) > 0:
                         pass
@@ -859,26 +861,68 @@ class World(object):
                     detected_outgoing[(inter.id, lane)] = [
                         vehicle["name"]
                         for vehicle in vehicles
-                        if vehicle["position"] < self.reward_detection_zone_m
+                        if vehicle["position"] < self.detection_zone_m
                     ]
 
         return detected_incoming, detected_outgoing
 
     def get_detected_lane_count(self):
         result = {lane: 0 for lane in self.all_lanes}
-        detected_incoming, _ = self.get_detected_lane_vehicle_sets()
+        detected_incoming, detected_outgoing = self.get_detected_lane_vehicle_sets()
         for (_, lane), vehicles in detected_incoming.items():
+            result[lane] = len(vehicles)
+        for (_, lane), vehicles in detected_outgoing.items():
             result[lane] = len(vehicles)
         return result
 
     def get_detected_lane_waiting_vehicle_count(self):
         result = {lane: 0 for lane in self.all_lanes}
-        detected_incoming, _ = self.get_detected_lane_vehicle_sets()
+        detected_incoming, detected_outgoing = self.get_detected_lane_vehicle_sets()
         for (_, lane), vehicles in detected_incoming.items():
             result[lane] = sum(
                 1 for vehicle in vehicles if self.eng.vehicle.getSpeed(vehicle) < 0.1
             )
+        for (_, lane), vehicles in detected_outgoing.items():
+            result[lane] = sum(
+                1 for vehicle in vehicles if self.eng.vehicle.getSpeed(vehicle) < 0.1
+            )
         return result
+
+    def get_detected_lane_waiting_time_count(self):
+        result = {lane: 0 for lane in self.all_lanes}
+        detected_incoming, detected_outgoing = self.get_detected_lane_vehicle_sets()
+        for (_, lane), vehicles in detected_incoming.items():
+            result[lane] = sum(
+                self.eng.vehicle.getWaitingTime(vehicle) for vehicle in vehicles
+            )
+        for (_, lane), vehicles in detected_outgoing.items():
+            result[lane] = sum(
+                self.eng.vehicle.getWaitingTime(vehicle) for vehicle in vehicles
+            )
+        return result
+
+    def get_detected_lane_delay(self):
+        lane_delay = dict()
+        detected_incoming, detected_outgoing = self.get_detected_lane_vehicle_sets()
+        detected_by_lane = {}
+        for (_, lane), vehicles in detected_incoming.items():
+            detected_by_lane[lane] = vehicles
+        for (_, lane), vehicles in detected_outgoing.items():
+            detected_by_lane[lane] = vehicles
+
+        for key in self.all_lanes:
+            vehicles = detected_by_lane.get(key, [])
+            lane_vehicle_count = len(vehicles)
+            lane_avg_speed = 0.0
+            speed_limit = self.eng.lane.getMaxSpeed(key)
+            for vehicle in vehicles:
+                lane_avg_speed += self.eng.vehicle.getSpeed(vehicle)
+            if lane_vehicle_count == 0:
+                lane_avg_speed = speed_limit
+            else:
+                lane_avg_speed /= lane_vehicle_count
+            lane_delay[key] = 1 - lane_avg_speed / speed_limit
+        return lane_delay
 
     def get_detected_pressure(self):
         pressures = dict()

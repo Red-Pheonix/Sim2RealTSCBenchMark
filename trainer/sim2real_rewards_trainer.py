@@ -41,7 +41,7 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         self.yellow_time = trainer_args["yellow_length"]
         sim2real_config = self.get_sim2real_config()
         self.load_pretrained = sim2real_config.get("load_pretrained", False)
-        self.reward_detection_zone_m = sim2real_config.get("reward_detection_zone_m", 0.0)
+        self.detection_zone_m = sim2real_config.get("detection_zone_m", 0.0)
 
         self.exp_name = (
             f'{cmd_args["network"]}_{cmd_args["real_setting"]}_{cmd_args["agent"]}'
@@ -109,13 +109,14 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         self.world_sim = Registry.mapping["world_mapping"]["cityflow"](
             self.cityflow_path,
             thread_num,
+            detection_zone_m=self.detection_zone_m,
         )
 
         self.world_real = Registry.mapping["world_mapping"]["sumo"](
             self.sumo_path,
             **{
                 "interface": interface,
-                "reward_detection_zone_m": self.reward_detection_zone_m,
+                "detection_zone_m": self.detection_zone_m,
             },
         )
 

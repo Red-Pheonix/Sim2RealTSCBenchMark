@@ -1,8 +1,11 @@
 sim2real:
   transform_seed: 0
+  detection_zone:
+    enabled: False
+    distance_m: 100
   noise:
     enabled: True
-    seed: 0
+    seed: 5
     features: ["lane_count", "lane_waiting_count", "lane_waiting_time_count", "lane_delay"]
     probability: 1.0
     distribution: poisson # gaussian, poisson
@@ -11,7 +14,7 @@ sim2real:
       std: 1.0
       relative: False
     poisson_config:
-      lambda: 5.0
+      lambda: 1.0
       rate: 1.0
       centered: False
       relative: False
@@ -23,7 +26,7 @@ sim2real:
     cast_int: False
   disable_sensor:
     enabled: True
-    seed: 10
+    seed: 0
     features: ["lane_count", "lane_waiting_count", "lane_waiting_time_count", "lane_delay"]
     probability: 0.2
     mask_mode: episode # run, episode, step

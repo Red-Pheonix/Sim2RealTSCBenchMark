@@ -1,5 +1,8 @@
 sim2real:
   transform_seed: 0
+  detection_zone:
+    enabled: False
+    distance_m: 50.0
   noise:
     enabled: False
     seed: 0
