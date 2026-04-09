@@ -219,23 +219,51 @@ class Sim2RealObservationsTrainer(BaseTrainer):
     def make_disable_sensor_transform(self, disable_sensor_config, base_seed):
         rng = np.random.default_rng(disable_sensor_config.get("seed", base_seed))
         feature_names = set(disable_sensor_config.get("features", []))
-        probability = disable_sensor_config.get("probability", 0.0)
         fill_value = disable_sensor_config.get("fill_value", 0.0)
         mask_mode = disable_sensor_config.get("mask_mode", "run")
+        lane_level_config = disable_sensor_config.get("lane_level", {})
+        intersection_level_config = disable_sensor_config.get("intersection_level", {})
+        apply_lane_mask = lane_level_config.get("enabled", False)
+        apply_intersection_mask = intersection_level_config.get("enabled", False)
+        lane_probability = lane_level_config.get("probability", 0.0)
+        intersection_probability = intersection_level_config.get("probability", 0.0)
         mask_state = {}
+        intersection_mask_state = {}
 
         def lane_is_masked(lane_id):
             if mask_mode in {"run", "episode"}:
                 if lane_id not in mask_state:
-                    mask_state[lane_id] = rng.random() < probability
+                    mask_state[lane_id] = rng.random() < lane_probability
                 return mask_state[lane_id]
-            return rng.random() < probability
+            return rng.random() < lane_probability
+
+        def intersection_is_masked(intersection):
+            intersection_id = intersection.id
+
+            if mask_mode in {"run", "episode"}:
+                if intersection_id not in intersection_mask_state:
+                    intersection_mask_state[intersection_id] = (
+                        rng.random() < intersection_probability
+                    )
+                return intersection_mask_state[intersection_id]
+
+            return rng.random() < intersection_probability
 
         def transform(fn_name, values, intersection=None, lanes=None, meta=None):
             if not self.lane_feature_enabled(fn_name, feature_names):
                 return values
 
             transformed = dict(values)
+            if apply_intersection_mask and intersection_is_masked(intersection):
+                for lane_group in lanes or []:
+                    for lane_id in lane_group:
+                        if lane_id in transformed:
+                            transformed[lane_id] = fill_value
+                return transformed
+
+            if not apply_lane_mask:
+                return transformed
+
             for lane_group in lanes or []:
                 for lane_id in lane_group:
                     if lane_id in transformed and lane_is_masked(lane_id):
@@ -246,6 +274,7 @@ class Sim2RealObservationsTrainer(BaseTrainer):
             if mask_mode != "episode":
                 return
             mask_state.clear()
+            intersection_mask_state.clear()
 
         transform.reset = reset
         return transform

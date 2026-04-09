@@ -5,7 +5,7 @@ sim2real:
     distance_m: 100
   noise:
     enabled: True
-    seed: 5
+    seed: 0
     features: ["lane_count", "lane_waiting_count", "lane_waiting_time_count", "lane_delay"]
     probability: 1.0
     distribution: poisson # gaussian, poisson
@@ -14,7 +14,7 @@ sim2real:
       std: 1.0
       relative: False
     poisson_config:
-      lambda: 1.0
+      lambda: 5.0
       rate: 1.0
       centered: False
       relative: False
@@ -28,6 +28,11 @@ sim2real:
     enabled: True
     seed: 0
     features: ["lane_count", "lane_waiting_count", "lane_waiting_time_count", "lane_delay"]
-    probability: 0.2
     mask_mode: episode # run, episode, step
     fill_value: 0.0
+    lane_level:
+      enabled: True
+      probability: 0.2
+    intersection_level:
+      enabled: True
+      probability: 0.2
