@@ -1,0 +1,32 @@
+trainer:
+  episodes: 10
+
+sim2real:
+  domain_randomization:
+    enabled: True
+    seed: 0
+    parameters:
+      detection_zone_distance:
+        path: ["detection_zone", "distance_m"]
+        distribution: uniform
+        uniform_config:
+          low: 10
+          high: 100
+      noise_lambda:
+        path: ["noise", "poisson_config", "lambda"]
+        distribution: uniform
+        uniform_config:
+          low: 1.0
+          high: 10.0
+      lane_failure_probability:
+        path: ["disable_sensor", "lane_level", "probability"]
+        distribution: uniform
+        uniform_config:
+          low: 0.2
+          high: 0.5
+      intersection_failure_probability:
+        path: ["disable_sensor", "intersection_level", "probability"]
+        distribution: uniform
+        uniform_config:
+          low: 0.2
+          high: 0.5

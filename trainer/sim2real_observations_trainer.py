@@ -1,4 +1,5 @@
 import os
+import copy
 
 import numpy as np
 from tqdm import tqdm
@@ -49,6 +50,53 @@ class PoissonNoiseGenerator(ObservationNoiseGenerator):
         return sampled_noise
 
 
+class DomainRandomizationDistribution:
+    def sample(self, rng):
+        raise NotImplementedError
+
+
+class UniformDomainRandomizationDistribution(DomainRandomizationDistribution):
+    def __init__(self, config):
+        self.low = config["low"]
+        self.high = config["high"]
+
+    def sample(self, rng):
+        return rng.uniform(self.low, self.high)
+
+
+class RandomizedObservationParameter:
+    @classmethod
+    def from_config(cls, name, config):
+        distribution_name = config["distribution"]
+        distribution_config = config.get(
+            f"{distribution_name}_config", config
+        )
+
+        if distribution_name == "uniform":
+            distribution = UniformDomainRandomizationDistribution(distribution_config)
+        else:
+            raise ValueError(
+                "Unsupported observation domain randomization distribution: "
+                f"{distribution_name}"
+            )
+
+        return cls(name, config["path"], distribution)
+
+    def __init__(self, name, path, distribution):
+        self.name = name
+        self.path = path
+        self.distribution = distribution
+
+    def sample(self, rng):
+        return self.distribution.sample(rng)
+
+    def apply(self, config, value):
+        target = config
+        for key in self.path[:-1]:
+            target = target[key]
+        target[self.path[-1]] = value
+
+
 @Registry.register_trainer("sim2real_observations")
 class Sim2RealObservationsTrainer(BaseTrainer):
     """
@@ -79,10 +127,33 @@ class Sim2RealObservationsTrainer(BaseTrainer):
         self.update_target_rate = trainer_args["update_target_rate"]
         self.test_when_train = trainer_args["test_when_train"]
         self.yellow_time = trainer_args["yellow_length"]
-        self.load_pretrained = self.get_sim2real_config().get("load_pretrained", False)
+        self.sim2real_config = self.get_sim2real_config()
+        self.sim_observation_config = self.get_sim_observation_config()
+        self.real_observation_config = self.get_real_observation_config()
+        self.obs_model_config = self.get_obs_model_config()
+        self.obs_model_name = cmd_args.get("obs_model", "default")
+        self.load_pretrained = self.sim2real_config.get("load_pretrained", False)
+        self.domain_randomization_config = self.obs_model_config.get(
+            "domain_randomization", {}
+        )
+        self.domain_randomization_enabled = (
+            self.obs_model_name == "domain_randomization"
+            and self.domain_randomization_config.get("enabled", False)
+        )
+        self.randomized_observation_parameters = (
+            self.build_randomized_observation_parameters()
+        )
+        self.sim_observation_rng = np.random.default_rng(
+            self.domain_randomization_config.get(
+                "seed", 0
+            )
+        )
+        self.current_sim_observation_config = self.build_domain_randomization_config()
+        self.sim_observation_transforms = self.build_sim_observation_transforms()
+        self.real_observation_transforms = self.build_real_observation_transforms()
 
         self.exp_name = (
-            f'{cmd_args["network"]}_{cmd_args["real_setting"]}_{cmd_args["agent"]}'
+            f'{cmd_args["network"]}_{cmd_args["real_setting"]}_{cmd_args["agent"]}_{cmd_args.get("obs_model", "default")}'
         )
         self.model_dir = os.path.join(
             Registry.mapping["logger_mapping"]["path"].path,
@@ -132,28 +203,69 @@ class Sim2RealObservationsTrainer(BaseTrainer):
             return sim2real_setting.param
         return {}
 
+    def get_sim_observation_config(self):
+        return self.get_sim2real_config().get("sim_config", {})
+
+    def get_real_observation_config(self):
+        return self.get_sim2real_config().get("real_config", {})
+
+    def get_obs_model_config(self):
+        return self.get_sim2real_config().get("obs_model_config", {})
+
     def lane_feature_enabled(self, fn_name, feature_names):
         return not feature_names or fn_name in feature_names
 
-    def build_observation_transforms(self):
-        sim2real_config = self.get_sim2real_config()
-        base_seed = sim2real_config.get(
-            "transform_seed",
-            Registry.mapping["command_mapping"]["setting"].param.get("seed"),
-        )
+    def build_domain_randomization_config(self):
+        sim_config = copy.deepcopy(self.sim_observation_config)
+
+        if not self.domain_randomization_enabled:
+            return sim_config
+
+        sim_config["detection_zone"]["enabled"] = True
+        sim_config["noise"]["enabled"] = True
+        sim_config["disable_sensor"]["enabled"] = True
+        sim_config["disable_sensor"]["intersection_level"]["enabled"] = True
+
+        for parameter in self.randomized_observation_parameters:
+            sampled_value = parameter.sample(self.sim_observation_rng)
+            parameter.apply(sim_config, sampled_value)
+        return sim_config
+
+    def build_randomized_observation_parameters(self):
+        randomized_parameters = []
+        for parameter_name, parameter_config in self.domain_randomization_config.get(
+            "parameters", {}
+        ).items():
+            randomized_parameters.append(
+                RandomizedObservationParameter.from_config(
+                    parameter_name, parameter_config
+                )
+            )
+        return randomized_parameters
+
+    def build_observation_transforms(self, observation_config):
+        base_seed = observation_config["transform_seed"]
         transforms = []
 
-        noise_config = sim2real_config.get("noise", {})
-        if noise_config.get("enabled", False):
+        noise_config = observation_config["noise"]
+        if noise_config["enabled"]:
             transforms.append(self.make_noise_transform(noise_config, base_seed))
 
-        disable_sensor_config = sim2real_config.get("disable_sensor", {})
-        if disable_sensor_config.get("enabled", False):
+        disable_sensor_config = observation_config["disable_sensor"]
+        if disable_sensor_config["enabled"]:
             transforms.append(
                 self.make_disable_sensor_transform(disable_sensor_config, base_seed)
             )
 
         return transforms
+
+    def build_sim_observation_transforms(self):
+        return self.build_observation_transforms(self.current_sim_observation_config)
+
+    def build_real_observation_transforms(self):
+        return self.build_observation_transforms(
+            self.real_observation_config,
+        )
 
     def reset_observation_transforms(self, world):
         transforms = getattr(world, "observation_transforms", [])
@@ -164,7 +276,7 @@ class Sim2RealObservationsTrainer(BaseTrainer):
 
     def make_noise_transform(self, noise_config, base_seed):
         rng = np.random.default_rng(noise_config.get("seed", base_seed))
-        feature_names = set(noise_config.get("features", []))
+        feature_names = set(noise_config["features"])
         noise_generator = self.build_noise_generator(noise_config)
 
         def transform(fn_name, values, intersection=None, lanes=None, meta=None):
@@ -172,13 +284,13 @@ class Sim2RealObservationsTrainer(BaseTrainer):
                 return values
 
             transformed = dict(values)
-            probability = noise_config.get("probability", 1.0)
-            bias = noise_config.get("bias", 0.0)
-            scale = noise_config.get("scale", 1.0)
+            probability = noise_config["probability"]
+            bias = noise_config["bias"]
+            scale = noise_config["scale"]
             clip_min = noise_config.get("clip_min")
             clip_max = noise_config.get("clip_max")
-            round_values = noise_config.get("round", False)
-            cast_int = noise_config.get("cast_int", False)
+            round_values = noise_config["round"]
+            cast_int = noise_config["cast_int"]
 
             for lane_group in lanes or []:
                 for lane_id in lane_group:
@@ -206,8 +318,8 @@ class Sim2RealObservationsTrainer(BaseTrainer):
         return transform
 
     def build_noise_generator(self, noise_config):
-        distribution = noise_config.get("distribution", "poisson")
-        distribution_config = noise_config.get(f"{distribution}_config", {})
+        distribution = noise_config["distribution"]
+        distribution_config = noise_config[f"{distribution}_config"]
 
         if distribution == "gaussian":
             return GaussianNoiseGenerator(distribution_config)
@@ -218,15 +330,15 @@ class Sim2RealObservationsTrainer(BaseTrainer):
 
     def make_disable_sensor_transform(self, disable_sensor_config, base_seed):
         rng = np.random.default_rng(disable_sensor_config.get("seed", base_seed))
-        feature_names = set(disable_sensor_config.get("features", []))
-        fill_value = disable_sensor_config.get("fill_value", 0.0)
-        mask_mode = disable_sensor_config.get("mask_mode", "run")
-        lane_level_config = disable_sensor_config.get("lane_level", {})
-        intersection_level_config = disable_sensor_config.get("intersection_level", {})
-        apply_lane_mask = lane_level_config.get("enabled", False)
-        apply_intersection_mask = intersection_level_config.get("enabled", False)
-        lane_probability = lane_level_config.get("probability", 0.0)
-        intersection_probability = intersection_level_config.get("probability", 0.0)
+        feature_names = set(disable_sensor_config["features"])
+        fill_value = disable_sensor_config["fill_value"]
+        mask_mode = disable_sensor_config["mask_mode"]
+        lane_level_config = disable_sensor_config["lane_level"]
+        intersection_level_config = disable_sensor_config["intersection_level"]
+        apply_lane_mask = lane_level_config["enabled"]
+        apply_intersection_mask = intersection_level_config["enabled"]
+        lane_probability = lane_level_config["probability"]
+        intersection_probability = intersection_level_config["probability"]
         mask_state = {}
         intersection_mask_state = {}
 
@@ -291,21 +403,29 @@ class Sim2RealObservationsTrainer(BaseTrainer):
 
     def create_world(self):
         thread_num = Registry.mapping["command_mapping"]["setting"].param["thread_num"]
-        detection_zone_config = self.get_sim2real_config().get("detection_zone", {})
+        detection_zone_config = self.real_observation_config["detection_zone"]
         detection_zone_m = 0.0
-        if detection_zone_config.get("enabled", False):
-            detection_zone_m = float(detection_zone_config.get("distance_m", 0.0))
+        if detection_zone_config["enabled"]:
+            detection_zone_m = float(detection_zone_config["distance_m"])
 
         self.world_sim = Registry.mapping["world_mapping"]["cityflow"](
             self.cityflow_path,
             thread_num,
+            **self.build_world_kwargs(
+                observation_transforms=(
+                    self.sim_observation_transforms
+                    if self.domain_randomization_enabled
+                    else []
+                ),
+                include_interface=False,
+            ),
         )
 
         self.world_real = Registry.mapping["world_mapping"]["cityflow"](
             self.cityflow_path,
             thread_num,
             **self.build_world_kwargs(
-                observation_transforms=self.build_observation_transforms(),
+                observation_transforms=self.real_observation_transforms,
                 include_interface=False,
             ),
             detection_zone_m=detection_zone_m,
@@ -342,21 +462,30 @@ class Sim2RealObservationsTrainer(BaseTrainer):
     def create_agents(self):
         self.agents_sim = self.create_agent_world(self.world_sim)
         self.agents_real = self.create_agent_world(self.world_real)
+        if self.domain_randomization_enabled:
+            for ag in self.agents_sim:
+                self.configure_observation_generator(
+                    ag, self.current_sim_observation_config
+                )
         for ag in self.agents_real:
-            self.configure_real_observation_generator(ag)
+            self.configure_observation_generator(ag, self.real_observation_config)
 
         if Registry.mapping["model_mapping"]["setting"].param["load_model"]:
             self.load_agents(self.agents_sim, self.model_dir)
             self.load_agents(self.agents_real, self.model_dir)
 
-    def configure_real_observation_generator(self, agent):
-        detection_zone_config = self.get_sim2real_config().get("detection_zone", {})
-        if not detection_zone_config.get("enabled", False):
-            return
+    def configure_observation_generator(self, agent, observation_config):
+        detection_zone_config = observation_config["detection_zone"]
 
         ob_generator = getattr(agent, "ob_generator", None)
         if not isinstance(ob_generator, LaneVehicleGenerator):
             return
+
+        detection_zone_m = 0.0
+        if detection_zone_config["enabled"]:
+            detection_zone_m = float(detection_zone_config["distance_m"])
+
+        agent.world.detection_zone_m = detection_zone_m
 
         agent.ob_generator = LaneVehicleGenerator(
             agent.world,
@@ -365,7 +494,7 @@ class Sim2RealObservationsTrainer(BaseTrainer):
             in_only=ob_generator.in_only,
             average=ob_generator.average,
             negative=ob_generator.negative,
-            detection_zone_m=float(detection_zone_config.get("distance_m", 1000.0)),
+            detection_zone_m=detection_zone_m,
         )
 
     def create_metrics(self):
@@ -414,12 +543,17 @@ class Sim2RealObservationsTrainer(BaseTrainer):
         desc,
     ):
         metric.clear()
-        self.reset_observation_transforms(world)
-        last_obs = env.reset()
         for agent in agents:
             agent.reset()
-            if env is self.env_real:
-                self.configure_real_observation_generator(agent)
+            if env is self.env_sim and self.domain_randomization_enabled:
+                self.configure_observation_generator(
+                    agent, self.current_sim_observation_config
+                )
+            elif env is self.env_real:
+                self.configure_observation_generator(agent, self.real_observation_config)
+                
+        self.reset_observation_transforms(world)
+        last_obs = env.reset()
 
         episode_loss = []
         flush = 0
@@ -501,12 +635,16 @@ class Sim2RealObservationsTrainer(BaseTrainer):
 
     def run_eval_episode(self, *, env, metric, world, agents, desc):
         metric.clear()
+        for agent in agents:
+            if env is self.env_sim and self.domain_randomization_enabled:
+                self.configure_observation_generator(
+                    agent, self.current_sim_observation_config
+                )
+            elif env is self.env_real:
+                self.configure_observation_generator(agent, self.real_observation_config)
+            agent.reset()
         self.reset_observation_transforms(world)
         obs = env.reset()
-        for agent in agents:
-            agent.reset()
-            if env is self.env_real:
-                self.configure_real_observation_generator(agent)
 
         i = 0
         dones = [False] * len(agents)
@@ -559,6 +697,18 @@ class Sim2RealObservationsTrainer(BaseTrainer):
         )
 
     def sim_train(self, episode):
+        if self.domain_randomization_enabled:
+            self.current_sim_observation_config = self.build_domain_randomization_config()
+            self.sim_observation_transforms = self.build_sim_observation_transforms()
+            self.world_sim.observation_transforms = self.sim_observation_transforms
+            print(
+                f"Episode {episode} sampled sim observation config:\n"
+                f"{self.current_sim_observation_config}"
+            )
+            for ag in self.agents_sim:
+                self.configure_observation_generator(
+                    ag, self.current_sim_observation_config
+                )
         self.set_replay(
             self.env_sim,
             f"sim_episode_{episode}.txt",
