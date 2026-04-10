@@ -11,7 +11,7 @@ import torch.optim as optim
 import sim2real_model
 
 
-@Registry.register_trainer("sim2real_transitions")
+@Registry.register_trainer("sim2real_transitions_grounding")
 class Sim2RealTransitionsTrainer(BaseTrainer):
     """
     Register TSCTrainer for traffic signal control tasks.
@@ -822,8 +822,3 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
             self.metric_real.delay(),
             self.metric_real.throughput(),
         )
-        
-        
-
-    def calc_dist(self, p1, p2):
-        return np.sqrt((p1["x"] - p2["x"]) ** 2 + (p1["y"] - p2["y"]) ** 2)

@@ -1,0 +1,54 @@
+# includes:
+#   - configs/sim2real_transitions/base.yml
+
+sim2real:
+  method: "domain_randomization"
+  gat: False
+  load_pretrained: False
+  domain_randomization:
+    enabled: True
+    seed: 0
+    output_dir: output_data/sim2real_transitions/domain_randomization
+    parameters:
+      headwayTime:
+        distribution: normal
+        normal_config:
+          mean: 1.5
+          std: 0.5
+        clip_min: 0.5
+        clip_max: 5.0
+      minGap:
+        distribution: normal
+        normal_config:
+          mean: 2.5
+          std: 0.5
+        clip_min: 1.0
+        clip_max: 5.0
+      usualPosAcc:
+        distribution: normal
+        normal_config:
+          mean: 0.8125
+          std: 0.20
+        clip_min: 0.5
+        clip_max: 2.7
+      usualNegAcc:
+        distribution: normal
+        normal_config:
+          mean: 2.5
+          std: 0.70
+        clip_min: 1.5
+        clip_max: 3.5
+      length:
+        distribution: normal
+        normal_config:
+          mean: 5.0
+          std: 0.5
+        clip_min: 3.0
+        clip_max: 6.0
+      width:
+        distribution: normal
+        normal_config:
+          mean: 2.0
+          std: 0.3
+        clip_min: 1.5
+        clip_max: 2.5
