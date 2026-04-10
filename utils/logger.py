@@ -109,6 +109,7 @@ def build_config(args):
         agent_name = os.path.join('./configs', args.task, "models", f'{args.agent}.yml')
         config, duplicates_warning = load_config(agent_name)
         config.setdefault('sim2real', {})
+        config.setdefault('trainer', {})
         sim_config = {}
         real_config = {}
         obs_model_config = {}
@@ -124,8 +125,13 @@ def build_config(args):
             obs_model_config_name = os.path.join(
                 './configs', args.task, f'{obs_model_name}.yml'
             )
-            obs_model_config, duplicates_warning = load_config(obs_model_config_name)
-            obs_model_config = obs_model_config.get('sim2real', {})
+            obs_model_full_config, duplicates_warning = load_config(obs_model_config_name)
+            obs_model_config = obs_model_full_config.get('sim2real', {})
+            trainer_overrides = obs_model_full_config.get('trainer', {})
+            config['trainer'], trainer_duplicates = merge_dicts(
+                config['trainer'], trainer_overrides
+            )
+            duplicates_warning.update({'trainer': trainer_duplicates})
 
         real_setting_name = os.path.join(
             './configs', args.task, 'settings', f'{args.real_setting}.yml'

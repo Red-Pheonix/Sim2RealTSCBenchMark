@@ -26,13 +26,14 @@ trainer:
   test_steps: 3600
   yellow_length: 5
   action_interval: 10
-  episodes: 100
+  episodes: 10
+  real_train_interval: 1
   update_model_rate: 1
   update_target_rate: 10
   test_when_train: False
 
 sim2real:
-  load_pretrained: False
+  load_pretrained: True
 
 model:
   name: "non-rl"

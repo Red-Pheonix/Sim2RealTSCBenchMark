@@ -121,16 +121,22 @@ class Sim2RealObservationsTrainer(BaseTrainer):
         self.test_steps = trainer_args["test_steps"]
         self.buffer_size = trainer_args["buffer_size"]
         self.action_interval = trainer_args["action_interval"]
+        self.real_train_interval = trainer_args["real_train_interval"]
         self.save_rate = logger_args["save_rate"]
         self.learning_start = trainer_args["learning_start"]
         self.update_model_rate = trainer_args["update_model_rate"]
         self.update_target_rate = trainer_args["update_target_rate"]
         self.test_when_train = trainer_args["test_when_train"]
         self.yellow_time = trainer_args["yellow_length"]
-        self.sim2real_config = self.get_sim2real_config()
-        self.sim_observation_config = self.get_sim_observation_config()
-        self.real_observation_config = self.get_real_observation_config()
-        self.obs_model_config = self.get_obs_model_config()
+        sim2real_setting = Registry.mapping.get("sim2real_mapping", {}).get("setting")
+        self.sim2real_config = (
+            sim2real_setting.param
+            if sim2real_setting and hasattr(sim2real_setting, "param")
+            else {}
+        )
+        self.sim_observation_config = self.sim2real_config.get("sim_config", {})
+        self.real_observation_config = self.sim2real_config.get("real_config", {})
+        self.obs_model_config = self.sim2real_config.get("obs_model_config", {})
         self.obs_model_name = cmd_args.get("obs_model", "default")
         self.load_pretrained = self.sim2real_config.get("load_pretrained", False)
         self.domain_randomization_config = self.obs_model_config.get(
@@ -149,8 +155,12 @@ class Sim2RealObservationsTrainer(BaseTrainer):
             )
         )
         self.current_sim_observation_config = self.build_domain_randomization_config()
-        self.sim_observation_transforms = self.build_sim_observation_transforms()
-        self.real_observation_transforms = self.build_real_observation_transforms()
+        self.sim_observation_transforms = self.build_observation_transforms(
+            self.current_sim_observation_config
+        )
+        self.real_observation_transforms = self.build_observation_transforms(
+            self.real_observation_config
+        )
 
         self.exp_name = (
             f'{cmd_args["network"]}_{cmd_args["real_setting"]}_{cmd_args["agent"]}_{cmd_args.get("obs_model", "default")}'
@@ -197,24 +207,6 @@ class Sim2RealObservationsTrainer(BaseTrainer):
         self.metric = self.metric_real
         self.env = self.env_real
 
-    def get_sim2real_config(self):
-        sim2real_setting = Registry.mapping.get("sim2real_mapping", {}).get("setting")
-        if sim2real_setting and hasattr(sim2real_setting, "param"):
-            return sim2real_setting.param
-        return {}
-
-    def get_sim_observation_config(self):
-        return self.get_sim2real_config().get("sim_config", {})
-
-    def get_real_observation_config(self):
-        return self.get_sim2real_config().get("real_config", {})
-
-    def get_obs_model_config(self):
-        return self.get_sim2real_config().get("obs_model_config", {})
-
-    def lane_feature_enabled(self, fn_name, feature_names):
-        return not feature_names or fn_name in feature_names
-
     def build_domain_randomization_config(self):
         sim_config = copy.deepcopy(self.sim_observation_config)
 
@@ -259,14 +251,6 @@ class Sim2RealObservationsTrainer(BaseTrainer):
 
         return transforms
 
-    def build_sim_observation_transforms(self):
-        return self.build_observation_transforms(self.current_sim_observation_config)
-
-    def build_real_observation_transforms(self):
-        return self.build_observation_transforms(
-            self.real_observation_config,
-        )
-
     def reset_observation_transforms(self, world):
         transforms = getattr(world, "observation_transforms", [])
         for transform in transforms:
@@ -280,7 +264,7 @@ class Sim2RealObservationsTrainer(BaseTrainer):
         noise_generator = self.build_noise_generator(noise_config)
 
         def transform(fn_name, values, intersection=None, lanes=None, meta=None):
-            if not self.lane_feature_enabled(fn_name, feature_names):
+            if feature_names and fn_name not in feature_names:
                 return values
 
             transformed = dict(values)
@@ -362,7 +346,7 @@ class Sim2RealObservationsTrainer(BaseTrainer):
             return rng.random() < intersection_probability
 
         def transform(fn_name, values, intersection=None, lanes=None, meta=None):
-            if not self.lane_feature_enabled(fn_name, feature_names):
+            if feature_names and fn_name not in feature_names:
                 return values
 
             transformed = dict(values)
@@ -699,7 +683,9 @@ class Sim2RealObservationsTrainer(BaseTrainer):
     def sim_train(self, episode):
         if self.domain_randomization_enabled:
             self.current_sim_observation_config = self.build_domain_randomization_config()
-            self.sim_observation_transforms = self.build_sim_observation_transforms()
+            self.sim_observation_transforms = self.build_observation_transforms(
+                self.current_sim_observation_config
+            )
             self.world_sim.observation_transforms = self.sim_observation_transforms
             print(
                 f"Episode {episode} sampled sim observation config:\n"
@@ -753,24 +739,36 @@ class Sim2RealObservationsTrainer(BaseTrainer):
             pretrained_dir = self.pretrained_model_dir()
             self.load_agents(self.agents_sim, pretrained_dir)
             self.load_agents(self.agents_real, pretrained_dir)
-        
+
         for episode in range(self.episodes):
             sim_loss = self.sim_train(episode)
             self.save_agents(self.agents_sim, self.model_dir)
 
-            real_loss = self.real_train(episode)
-            self.save_agents(self.agents_real, self.model_dir)
+            if self.real_train_interval > 0 and episode % self.real_train_interval == 0:
+                real_loss = self.real_train(episode)
+                self.save_agents(self.agents_real, self.model_dir)
 
-            if episode % self.save_rate == 0:
-                self.save_agents(self.agents_real, self.model_dir, e=episode)
+                if episode % self.save_rate == 0:
+                    self.save_agents(self.agents_real, self.model_dir, e=episode)
 
-            self.logger.info(
-                "episode:%s/%s, sim_loss:%s, real_loss:%s",
-                episode,
-                self.episodes,
-                sim_loss,
-                real_loss,
-            )
+                self.logger.info(
+                    "episode:%s/%s, sim_loss:%s, real_loss:%s",
+                    episode,
+                    self.episodes,
+                    sim_loss,
+                    real_loss,
+                )
+
+            else:
+                if episode % self.save_rate == 0:
+                    self.save_agents(self.agents_sim, self.model_dir, e=episode)
+
+                self.logger.info(
+                    "episode:%s/%s, sim_loss:%s, real_loss:skipped",
+                    episode,
+                    self.episodes,
+                    sim_loss,
+                )
 
             if self.test_when_train:
                 self.train_test(episode)
