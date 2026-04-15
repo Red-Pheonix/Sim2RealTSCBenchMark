@@ -1,0 +1,18 @@
+trainer:
+  episodes: 200
+
+sim2real:
+  method: maml
+  load_pretrained: True
+  maml:
+    inner_lr: 0.1
+    meta_lr: 0.001
+    inner_steps: 1
+    meta_update_interval: 1
+    sample_tasks_from_dr: True
+    support_batch_size: 64
+    query_batch_size: 64
+    first_order: True
+    rollout_test: True
+    target_update_interval: 1
+    meta_grad_clip: 5.0

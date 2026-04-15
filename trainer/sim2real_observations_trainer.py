@@ -97,7 +97,7 @@ class RandomizedObservationParameter:
         target[self.path[-1]] = value
 
 
-@Registry.register_trainer("sim2real_observations")
+@Registry.register_trainer("sim2real_observations_standard")
 class Sim2RealObservationsTrainer(BaseTrainer):
     """
     Trainer for observation-based sim2real experiments with separate sim and real rollouts.
@@ -555,7 +555,7 @@ class Sim2RealObservationsTrainer(BaseTrainer):
                 # 
                 actions = []
                 for idx, ag in enumerate(agents):
-                    actions.append(ag.get_action(last_obs[idx], last_phase[idx], test=True))
+                    actions.append(ag.get_action(last_obs[idx], last_phase[idx], test=False))
                 actions = np.stack(actions)
                 # else:
                     # actions = np.stack([ag.sample() for ag in agents])
@@ -773,8 +773,18 @@ class Sim2RealObservationsTrainer(BaseTrainer):
             if self.test_when_train:
                 self.train_test(episode)
 
-        self.save_agents(self.agents_real, self.model_dir, e=self.episodes)
-        self.save_agents(self.agents_real, self.model_dir)
+        # self.save_agents(self.agents_sim, self.model_dir, e=self.episodes)
+        self.save_agents(self.agents_sim, self.model_dir)
+        self.load_agents(self.agents_real, self.model_dir)
+        # self.save_agents(self.agents_real, self.model_dir)
+        self.run_eval_episode(
+            env=self.env_real,
+            metric=self.metric_real,
+            world=self.world_real,
+            agents=self.agents_real,
+            desc="Post-Train Real Eval",
+        )
+        self.log_metrics("POST_TRAIN_REAL", self.episodes, self.metric_real, 100)
 
     def train_test(self, episode):
         self.load_agents(self.agents_sim, self.model_dir)
