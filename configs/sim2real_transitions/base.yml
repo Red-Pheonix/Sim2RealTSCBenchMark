@@ -8,7 +8,7 @@ world:
   seed: 0
   dir: data/
 
-  saveReplay: True
+  saveReplay: False
   report_log_mode: normal # cbengine
   report_log_rate: 10
 
@@ -26,13 +26,13 @@ trainer:
   test_steps: 3600
   yellow_length: 5
   action_interval: 10
-  episodes: 100
+  episodes: 1000
   update_model_rate: 1
   update_target_rate: 10
   test_when_train: False
 
 sim2real:
-  gat: True
+  gat: False
   load_pretrained: True
 
 model:
