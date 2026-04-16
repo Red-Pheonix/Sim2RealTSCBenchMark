@@ -17,6 +17,7 @@ def modify_config_file(path, config):
     assert(os.path.exists(path)), AssertionError(f"Simulator configuration at {path} not exists")
     param = config['world']
     logger_param = config['logger']
+    should_update_log_files = param.get('saveReplay', True)
 
     if config['command']['world'] == 'cityflow':
         with open(path, 'r') as f:
@@ -26,11 +27,12 @@ def modify_config_file(path, config):
             if param.get(k) is not None:
                 path_config[k] = param.get(k)
         # modify config step2
-        file_name = os.path.join(get_output_file_path(config),  logger_param['replay_dir'])
-        if config['world']['dir'] in file_name:
-            file_name = file_name.strip(f"{config['world']['dir']} + '\n'")
-        path_config['roadnetLogFile'] = file_name + f"/{datetime.now().strftime('%Y_%m_%d-%H_%M_%S')}.json"
-        path_config['replayLogFile'] = file_name + f"/{datetime.now().strftime('%Y_%m_%d-%H_%M_%S')}.txt"
+        if should_update_log_files:
+            file_name = os.path.join(get_output_file_path(config),  logger_param['replay_dir'])
+            if config['world']['dir'] in file_name:
+                file_name = file_name.strip(f"{config['world']['dir']} + '\n'")
+            path_config['roadnetLogFile'] = file_name + f"/{datetime.now().strftime('%Y_%m_%d-%H_%M_%S')}.json"
+            path_config['replayLogFile'] = file_name + f"/{datetime.now().strftime('%Y_%m_%d-%H_%M_%S')}.txt"
         with open(path, 'w') as f:
             json.dump(path_config, f, indent=2)
         
