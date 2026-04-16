@@ -1,5 +1,7 @@
 # includes:
 #   - configs/sim2real_transitions/base.yml
+trainer:
+  episodes: 1000
 
 sim2real:
   method: "domain_randomization"
@@ -13,42 +15,35 @@ sim2real:
       headwayTime:
         distribution: normal
         normal_config:
-          mean: 1.5
-          std: 0.5
+          mean: 2.10
+          std: 1.77
         clip_min: 0.5
         clip_max: 5.0
       minGap:
         distribution: normal
         normal_config:
-          mean: 2.5
-          std: 0.5
-        clip_min: 1.0
-        clip_max: 5.0
+          mean: 2.9
+          std: 0.36
+        clip_min: 1.5
+        clip_max: 4.0
       usualPosAcc:
         distribution: normal
         normal_config:
-          mean: 0.8125
-          std: 0.20
-        clip_min: 0.5
-        clip_max: 2.7
+          mean: 2.63
+          std: 1.36
+        clip_min: 0.1
+        clip_max: 7.0
       usualNegAcc:
         distribution: normal
         normal_config:
-          mean: 2.5
-          std: 0.70
-        clip_min: 1.5
-        clip_max: 3.5
+          mean: 3.70
+          std: 1.56
+        clip_min: 0.1
+        clip_max: 7.0
       length:
         distribution: normal
         normal_config:
           mean: 5.0
-          std: 0.5
-        clip_min: 3.0
-        clip_max: 6.0
-      width:
-        distribution: normal
-        normal_config:
-          mean: 2.0
-          std: 0.3
-        clip_min: 1.5
-        clip_max: 2.5
+          std: 0.64
+        clip_min: 4.7
+        clip_max: 5.0
