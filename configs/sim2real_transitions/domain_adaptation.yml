@@ -1,0 +1,49 @@
+# includes:
+#   - configs/sim2real_transitions/base.yml
+
+sim2real:
+  method: "domain_adaptation"
+  gat: False
+  load_pretrained: True
+  eval_episodes: 5
+  train_episodes: 5
+  domain_randomization:
+    enabled: True
+    seed: 0
+    output_dir: output_data/sim2real_transitions/domain_adaptation
+    parameters:
+      headwayTime:
+        distribution: normal
+        normal_config:
+          mean: 2.10
+          std: 1.77
+        clip_min: 0.5
+        clip_max: 5.0
+      minGap:
+        distribution: normal
+        normal_config:
+          mean: 2.9
+          std: 0.36
+        clip_min: 1.5
+        clip_max: 4.0
+      usualPosAcc:
+        distribution: normal
+        normal_config:
+          mean: 2.63
+          std: 1.36
+        clip_min: 0.1
+        clip_max: 7.0
+      usualNegAcc:
+        distribution: normal
+        normal_config:
+          mean: 3.70
+          std: 1.56
+        clip_min: 0.1
+        clip_max: 7.0
+      length:
+        distribution: normal
+        normal_config:
+          mean: 5.0
+          std: 0.64
+        clip_min: 4.7
+        clip_max: 5.0

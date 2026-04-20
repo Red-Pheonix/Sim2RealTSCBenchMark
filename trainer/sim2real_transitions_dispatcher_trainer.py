@@ -11,6 +11,7 @@ class Sim2RealTransitionsDispatcherTrainer:
     METHOD_TO_TRAINER = {
         "grounding": "sim2real_transitions_grounding",
         "domain_randomization": "sim2real_transitions_domain_randomization",
+        "domain_adaptation": "sim2real_transitions_domain_adaptation",
     }
 
     def __init__(self, logger, gpu=0, cpu=False, name="sim2real_transitions"):

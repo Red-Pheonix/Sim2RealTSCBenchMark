@@ -7,6 +7,9 @@ from .sim2real_transitions_dispatcher_trainer import (
 from .sim2real_transitions_domain_randomization_trainer import (
     Sim2RealTransitionsDomainRandomizationTrainer,
 )
+from .sim2real_transitions_domain_adaptation_trainer import (
+    Sim2RealTransitionsDomainAdaptationTrainer,
+)
 from .sim2real_observations_dispatcher_trainer import (
     Sim2RealObservationsDispatcherTrainer,
 )
