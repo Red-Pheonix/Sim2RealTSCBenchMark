@@ -70,6 +70,7 @@ class Sim2RealTransitionsDomainRandomizationTrainer(BaseTrainer):
         self.update_model_rate = trainer_args["update_model_rate"]
         self.update_target_rate = trainer_args["update_target_rate"]
         self.test_when_train = trainer_args["test_when_train"]
+        self.real_eval_interval = trainer_args.get("real_eval_interval", 0)
         self.yellow_time = trainer_args["yellow_length"]
         self.load_pretrained = sim2real_args.get("load_pretrained", False)
 
@@ -440,6 +441,29 @@ class Sim2RealTransitionsDomainRandomizationTrainer(BaseTrainer):
 
         pbar.close()
 
+    def log_metrics(self, mode, step, metric, loss):
+        self.logger.info(
+            "%s step:%s, travel time:%s, q_loss:%s, rewards:%s, queue:%s, delay:%s, throughput:%s",
+            mode,
+            step,
+            metric.real_average_travel_time(),
+            loss,
+            metric.rewards(),
+            metric.queue(),
+            metric.delay(),
+            int(metric.throughput()),
+        )
+        self.writeLog(
+            mode,
+            step,
+            metric.real_average_travel_time(),
+            loss,
+            metric.rewards(),
+            metric.queue(),
+            metric.delay(),
+            metric.throughput(),
+        )
+
     def sim_train(self, episode):
         self.reload_sim_env_for_episode(episode)
         self.set_replay(
@@ -455,31 +479,13 @@ class Sim2RealTransitionsDomainRandomizationTrainer(BaseTrainer):
             total_decision_num=self.total_decision_num_sim,
             desc=f"Sim Training Epoch {episode}",
         )
-        self.save_agents(self.agents_sim, self.model_dir)
-        if episode % self.save_rate == 0:
-            self.save_agents(self.agents_sim, self.model_dir, e=episode)
-        self.writeLog(
-            "Sim Rollout",
-            episode,
-            self.metric_sim.real_average_travel_time(),
-            mean_loss,
-            self.metric_sim.rewards(),
-            self.metric_sim.queue(),
-            self.metric_sim.delay(),
-            self.metric_sim.throughput(),
-        )
-        self.logger.info(
-            "Sim Rollout episode:{}/{}, sim avg travel time:{}, rewards:{}, queue:{}, delay:{}, throughput:{}".format(
-                episode,
-                self.episodes,
-                self.metric_sim.real_average_travel_time(),
-                self.metric_sim.rewards(),
-                self.metric_sim.queue(),
-                self.metric_sim.delay(),
-                int(self.metric_sim.throughput()),
-            )
-        )
+        self.log_metrics("SIM_TRAIN", episode, self.metric_sim, mean_loss)
         return mean_loss
+
+    def should_run_real_eval(self, episode):
+        if self.real_eval_interval > 0:
+            return episode > 0 and episode % self.real_eval_interval == 0
+        return self.test_when_train
 
     def train(self):
         if self.load_pretrained:
@@ -487,6 +493,9 @@ class Sim2RealTransitionsDomainRandomizationTrainer(BaseTrainer):
 
         for episode in range(self.episodes):
             sim_loss = self.sim_train(episode)
+            self.save_agents(self.agents_sim, self.model_dir)
+            if episode % self.save_rate == 0:
+                self.save_agents(self.agents_sim, self.model_dir, e=episode)
             self.logger.info(
                 "episode:%s/%s, sim_loss:%s",
                 episode,
@@ -494,7 +503,7 @@ class Sim2RealTransitionsDomainRandomizationTrainer(BaseTrainer):
                 sim_loss,
             )
 
-            if self.test_when_train:
+            if self.should_run_real_eval(episode):
                 self.train_test(episode)
 
         self.save_agents(self.agents_sim, self.model_dir, e=self.episodes)
@@ -509,27 +518,7 @@ class Sim2RealTransitionsDomainRandomizationTrainer(BaseTrainer):
             agents=self.agents_real,
             desc="Final Real Run After Training",
         )
-        self.logger.info(
-            "Real rollout step:{}/{}, travel time:{}, rewards:{}, queue:{}, delay:{}, throughput:{}".format(
-                self.episodes,
-                self.episodes,
-                self.metric_real.real_average_travel_time(),
-                self.metric_real.rewards(),
-                self.metric_real.queue(),
-                self.metric_real.delay(),
-                int(self.metric_real.throughput()),
-            )
-        )
-        self.writeLog(
-            "Real rollout",
-            self.episodes,
-            self.metric_real.real_average_travel_time(),
-            100,
-            self.metric_real.rewards(),
-            self.metric_real.queue(),
-            self.metric_real.delay(),
-            self.metric_real.throughput(),
-        )
+        self.log_metrics("POST_TRAIN_REAL", self.episodes, self.metric_real, 100)
 
     def train_test(self, episode):
         self.load_agents(self.agents_real, self.model_dir)
@@ -539,27 +528,7 @@ class Sim2RealTransitionsDomainRandomizationTrainer(BaseTrainer):
             agents=self.agents_real,
             desc=f"Real Eval Epoch {episode}",
         )
-        self.logger.info(
-            "Real rollout step:{}/{}, travel time:{}, rewards:{}, queue:{}, delay:{}, throughput:{}".format(
-                episode,
-                self.episodes,
-                self.metric_real.real_average_travel_time(),
-                self.metric_real.rewards(),
-                self.metric_real.queue(),
-                self.metric_real.delay(),
-                int(self.metric_real.throughput()),
-            )
-        )
-        self.writeLog(
-            "Real rollout",
-            episode,
-            self.metric_real.real_average_travel_time(),
-            100,
-            self.metric_real.rewards(),
-            self.metric_real.queue(),
-            self.metric_real.delay(),
-            self.metric_real.throughput(),
-        )
+        self.log_metrics("TEST_REAL", episode, self.metric_real, 100)
         return self.metric_real.real_average_travel_time()
 
     def test(self, drop_load=False):
@@ -571,25 +540,7 @@ class Sim2RealTransitionsDomainRandomizationTrainer(BaseTrainer):
             agents=self.agents_real,
             desc="Final Real Test",
         )
-        self.logger.info(
-            "Test - Real rollout step: travel time:{}, rewards:{}, queue:{}, delay:{}, throughput:{}".format(
-                self.metric_real.real_average_travel_time(),
-                self.metric_real.rewards(),
-                self.metric_real.queue(),
-                self.metric_real.delay(),
-                int(self.metric_real.throughput()),
-            )
-        )
-        self.writeLog(
-            "Test Real",
-            0,
-            self.metric_real.real_average_travel_time(),
-            100,
-            self.metric_real.rewards(),
-            self.metric_real.queue(),
-            self.metric_real.delay(),
-            self.metric_real.throughput(),
-        )
+        self.log_metrics("TEST_REAL", 0, self.metric_real, 100)
         return self.metric_real
 
     def writeLog(

@@ -30,6 +30,7 @@ trainer:
   update_model_rate: 1
   update_target_rate: 10
   test_when_train: False
+  real_eval_interval: 100
 
 sim2real:
   gat: False
