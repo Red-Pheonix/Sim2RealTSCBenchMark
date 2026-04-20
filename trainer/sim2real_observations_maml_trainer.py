@@ -312,4 +312,4 @@ class Sim2RealObservationsMAMLTrainer(Sim2RealObservationsTrainer):
             agents=self.agents_real,
             desc="Post-Train Real Eval",
         )
-        self.log_metrics("POST_TRAIN_REAL", self.episodes, self.metric_real, 100)
+        self.log_metrics("TRAIN_REAL", self.episodes, self.metric_real, 100)

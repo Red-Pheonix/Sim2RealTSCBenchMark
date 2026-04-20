@@ -784,7 +784,7 @@ class Sim2RealObservationsTrainer(BaseTrainer):
             agents=self.agents_real,
             desc="Post-Train Real Eval",
         )
-        self.log_metrics("POST_TRAIN_REAL", self.episodes, self.metric_real, 100)
+        self.log_metrics("TRAIN_REAL", self.episodes, self.metric_real, 100)
 
     def train_test(self, episode):
         self.load_agents(self.agents_sim, self.model_dir)

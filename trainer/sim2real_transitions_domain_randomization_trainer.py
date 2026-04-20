@@ -57,6 +57,9 @@ class Sim2RealTransitionsDomainRandomizationTrainer(BaseTrainer):
         self.cityflow_path = os.path.join(
             "configs/sim", "cityflow", cmd_args["network"] + ".cfg"
         )
+        self.network_name = cmd_args["network"]
+        self.real_setting = cmd_args["real_setting"]
+        self.agent_name = cmd_args["agent"]
         self.sumo_path = os.path.join(
             "configs/sim", "sumo", cmd_args["network"] + ".cfg"
         )
@@ -109,6 +112,10 @@ class Sim2RealTransitionsDomainRandomizationTrainer(BaseTrainer):
         ) / self.domain_randomization_config.get(
             "output_dir", "output_data/sim2real_transitions/domain_randomization"
         )
+        self.domain_randomization_temp_dir = (
+            self.domain_randomization_dir / self.network_name / self.real_setting
+        )
+        self.generated_temp_files = []
 
         self.world_sim = None
         self.world_real = None
@@ -126,6 +133,9 @@ class Sim2RealTransitionsDomainRandomizationTrainer(BaseTrainer):
         self.agents = self.agents_real
         self.metric = self.metric_real
         self.env = self.env_real
+
+        if self.domain_randomization_enabled:
+            self.cleanup_stale_domain_randomization_files()
 
     def load_cityflow_config(self, cityflow_path):
         with open(cityflow_path, "r", encoding="utf-8") as file_obj:
@@ -194,12 +204,22 @@ class Sim2RealTransitionsDomainRandomizationTrainer(BaseTrainer):
         self.env_sim = TSCEnv(self.world_sim, self.agents_sim, self.metric_sim)
         self.env_real = TSCEnv(self.world_real, self.agents_real, self.metric_real)
 
-    def pretrained_model_dir(self):
+    def initial_pretrained_model_dir(self):
         return os.path.join(
             "pretrained",
             "tsc",
-            Registry.mapping["command_mapping"]["setting"].param["agent"],
-            Registry.mapping["command_mapping"]["setting"].param["network"],
+            self.agent_name,
+            self.network_name,
+        )
+
+    def transition_pretrained_model_dir(self):
+        return os.path.join(
+            "pretrained",
+            "sim2real_transitions",
+            self.agent_name,
+            self.network_name,
+            self.method,
+            self.real_setting,
         )
 
     def load_agents(self, agents, model_dir, e=None):
@@ -253,6 +273,30 @@ class Sim2RealTransitionsDomainRandomizationTrainer(BaseTrainer):
             f"{distribution_name}"
         )
 
+    def cleanup_temp_files(self, paths=None):
+        paths_to_remove = paths if paths is not None else self.generated_temp_files
+        for path in paths_to_remove:
+            try:
+                Path(path).unlink(missing_ok=True)
+            except OSError:
+                pass
+        if paths is None:
+            self.generated_temp_files = []
+
+    def cleanup_stale_domain_randomization_files(self):
+        stale_files = []
+        if self.domain_randomization_temp_dir.exists():
+            patterns = ["temp_*.cfg", "temp_flow_*.json", "temp.cfg", "temp_flow.json"]
+            for pattern in patterns:
+                stale_files.extend(self.domain_randomization_temp_dir.glob(pattern))
+
+        # Clean up any older legacy temp files from the shared root as well.
+        if self.domain_randomization_dir.exists():
+            for pattern in ["temp.cfg", "temp_flow.json"]:
+                stale_files.extend(self.domain_randomization_dir.glob(pattern))
+
+        self.cleanup_temp_files(sorted(set(stale_files)))
+
     def write_episode_randomized_cityflow_config(self, episode):
         sampled_parameters = self.sample_randomized_vehicle_parameters()
         randomized_flow = json.loads(json.dumps(self.base_cityflow_flow))
@@ -261,11 +305,11 @@ class Sim2RealTransitionsDomainRandomizationTrainer(BaseTrainer):
             for param_name, sampled_value in sampled_parameters.items():
                 vehicle_config[param_name] = sampled_value
 
-        self.domain_randomization_dir.mkdir(parents=True, exist_ok=True)
-        flow_filename = f"temp_flow.json"
-        config_filename = f"temp.cfg"
-        flow_path = self.domain_randomization_dir / flow_filename
-        config_path = self.domain_randomization_dir / config_filename
+        self.domain_randomization_temp_dir.mkdir(parents=True, exist_ok=True)
+        flow_filename = f"temp_flow_{episode}.json"
+        config_filename = f"temp_{episode}.cfg"
+        flow_path = self.domain_randomization_temp_dir / flow_filename
+        config_path = self.domain_randomization_temp_dir / config_filename
 
         with open(flow_path, "w", encoding="utf-8") as file_obj:
             json.dump(randomized_flow, file_obj)
@@ -275,11 +319,14 @@ class Sim2RealTransitionsDomainRandomizationTrainer(BaseTrainer):
             Path(self.domain_randomization_config.get(
                 "output_dir", "output_data/sim2real_transitions/domain_randomization"
             ))
+            / self.network_name
+            / self.real_setting
             / flow_filename
         ).as_posix()
         with open(config_path, "w", encoding="utf-8") as file_obj:
             json.dump(cityflow_config, file_obj, indent=2)
 
+        self.generated_temp_files.extend([flow_path, config_path])
         return config_path.as_posix(), sampled_parameters
 
     def reload_sim_env_for_episode(self, episode):
@@ -489,7 +536,7 @@ class Sim2RealTransitionsDomainRandomizationTrainer(BaseTrainer):
 
     def train(self):
         if self.load_pretrained:
-            self.load_agents(self.agents_sim, self.pretrained_model_dir())
+            self.load_agents(self.agents_sim, self.initial_pretrained_model_dir())
 
         for episode in range(self.episodes):
             sim_loss = self.sim_train(episode)
@@ -518,7 +565,7 @@ class Sim2RealTransitionsDomainRandomizationTrainer(BaseTrainer):
             agents=self.agents_real,
             desc="Final Real Run After Training",
         )
-        self.log_metrics("POST_TRAIN_REAL", self.episodes, self.metric_real, 100)
+        self.log_metrics("TRAIN_REAL", self.episodes, self.metric_real, 100)
 
     def train_test(self, episode):
         self.load_agents(self.agents_real, self.model_dir)
@@ -533,7 +580,7 @@ class Sim2RealTransitionsDomainRandomizationTrainer(BaseTrainer):
 
     def test(self, drop_load=False):
         if not drop_load:
-            self.load_agents(self.agents_real, self.model_dir, e=self.episodes)
+            self.load_agents(self.agents_real, self.transition_pretrained_model_dir())
         self.run_eval_episode(
             env=self.env_real,
             metric=self.metric_real,
