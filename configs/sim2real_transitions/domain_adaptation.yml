@@ -5,8 +5,8 @@ sim2real:
   method: "domain_adaptation"
   gat: False
   load_pretrained: True
-  eval_episodes: 5
-  train_episodes: 5
+  eval_episodes: 100
+  train_episodes: 100
   domain_randomization:
     enabled: True
     seed: 0
@@ -47,3 +47,5 @@ sim2real:
           std: 0.64
         clip_min: 4.7
         clip_max: 5.0
+  sbi:
+    density_estimator: "nsf"

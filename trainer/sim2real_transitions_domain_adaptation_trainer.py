@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 
 import numpy as np
+import torch
 from tqdm import tqdm
 
 from common.metrics import Metrics
@@ -87,6 +88,13 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
         self.domain_randomization_rng = np.random.default_rng(
             self.domain_randomization_config.get("seed", self.seed)
         )
+        self.sbi_config = sim2real_args.get("sbi", {})
+        self.sbi_density_estimator_name = self.sbi_config.get(
+            "density_estimator", "nsf"
+        )
+        self.sbi_prior = None
+        self.sbi_inference = None
+        self.posterior = None
 
         self.exp_name = (
             f'{cmd_args["network"]}_{cmd_args["real_setting"]}_{cmd_args["agent"]}_{self.method}'
@@ -110,7 +118,7 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
         self.domain_randomization_dir = Path(
             self.base_cityflow_config.get("dir", "data")
         ) / self.domain_randomization_config.get(
-            "output_dir", "output_data/sim2real_transitions/domain_randomization"
+            "output_dir", "output_data/sim2real_transitions/domain_adaptation"
         )
 
         self.world_sim = None
@@ -122,14 +130,62 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
         self.env_sim = None
         self.env_real = None
         self.total_decision_num_sim = 0
-        self.eval_data = []
 
+        self.initialize_sbi()
         self.create()
 
         self.world = self.world_real
         self.agents = self.agents_real
         self.metric = self.metric_real
         self.env = self.env_real
+
+    def initialize_sbi(self):
+        try:
+            from sbi.inference import NPE
+        except ImportError as exc:
+            raise ImportError(
+                "sbi is required by the domain adaptation trainer but is not "
+                "installed. Install it with `python -m pip install sbi`."
+            ) from exc
+
+        self.sbi_prior = self.build_sbi_prior()
+        self.sbi_inference = NPE(
+            prior=self.sbi_prior,
+            density_estimator=self.sbi_density_estimator_name,
+        )
+        self.posterior = None
+
+    def build_sbi_prior(self):
+        parameter_means = []
+        parameter_stds = []
+
+        for param_name, param_config in self.domain_randomization_config.get(
+            "parameters", {}
+        ).items():
+            distribution_name = param_config.get("distribution", "uniform")
+            if distribution_name != "normal":
+                raise ValueError(
+                    "Domain adaptation sbi prior expects normal-configured "
+                    f"parameters, but {param_name} uses {distribution_name}."
+                )
+
+            normal_config = param_config.get("normal_config", {})
+            parameter_means.append(normal_config.get("mean", 0.0))
+            parameter_stds.append(normal_config.get("std", 1.0))
+
+        if not parameter_means:
+            raise ValueError(
+                "Cannot build sbi prior because no domain randomization "
+                "parameters were configured."
+            )
+
+        return torch.distributions.Independent(
+            torch.distributions.Normal(
+                loc=torch.tensor(parameter_means, dtype=torch.float32),
+                scale=torch.tensor(parameter_stds, dtype=torch.float32),
+            ),
+            1,
+        )
 
     def load_cityflow_config(self, cityflow_path):
         with open(cityflow_path, "r", encoding="utf-8") as file_obj:
@@ -257,8 +313,66 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
             f"{distribution_name}"
         )
 
-    def write_episode_randomized_cityflow_config(self, episode):
-        sampled_parameters = self.sample_randomized_vehicle_parameters()
+    def get_parameter_names(self):
+        return list(self.domain_randomization_config.get("parameters", {}).keys())
+
+    def apply_parameter_constraints(self, sampled_parameters):
+        constrained_parameters = {}
+        for param_name in self.get_parameter_names():
+            param_config = self.domain_randomization_config["parameters"][param_name]
+            sampled_value = float(sampled_parameters[param_name])
+
+            clip_min = param_config.get("clip_min")
+            clip_max = param_config.get("clip_max")
+            if clip_min is not None:
+                sampled_value = max(clip_min, sampled_value)
+            if clip_max is not None:
+                sampled_value = min(clip_max, sampled_value)
+            if param_config.get("round", False):
+                sampled_value = np.round(sampled_value)
+
+            constrained_parameters[param_name] = float(sampled_value)
+
+        return constrained_parameters
+
+    def train_posterior(self, theta, obs):
+        if theta.size == 0 or obs.size == 0:
+            self.logger.warning(
+                "Skipping sbi model training because theta or summary metrics "
+                "are empty."
+            )
+            return
+
+        theta = torch.as_tensor(theta, dtype=torch.float32)
+        obs = torch.as_tensor(obs, dtype=torch.float32)
+
+        # train distribution estimator and save the model for later inference
+        density_estimator = self.sbi_inference.append_simulations(theta, obs).train()
+        self.posterior = self.sbi_inference.build_posterior(density_estimator)
+        
+        self.logger.info(
+            "Trained sbi density estimator with theta shape %s and summary shape %s",
+            tuple(theta.shape),
+            tuple(obs.shape),
+        )
+
+    def sample_posterior_parameters(self, summary_metric):
+        if self.posterior is None:
+            raise ValueError("Cannot sample train-time parameters before posterior training.")
+
+        x_obs = torch.as_tensor(summary_metric, dtype=torch.float32)
+        theta_sample = self.posterior.sample((1,), x=x_obs).squeeze(0).cpu().numpy()
+        sampled_parameters = {
+            param_name: float(theta_sample[idx])
+            for idx, param_name in enumerate(self.get_parameter_names())
+        }
+        return self.apply_parameter_constraints(sampled_parameters)
+
+    def write_episode_randomized_cityflow_config(self, episode, sampled_parameters=None):
+        if sampled_parameters is None:
+            sampled_parameters = self.sample_randomized_vehicle_parameters()
+        else:
+            sampled_parameters = self.apply_parameter_constraints(sampled_parameters)
         randomized_flow = json.loads(json.dumps(self.base_cityflow_flow))
         for record in randomized_flow:
             vehicle_config = record.setdefault("vehicle", {})
@@ -277,7 +391,7 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
         cityflow_config = dict(self.base_cityflow_config)
         cityflow_config["flowFile"] = (
             Path(self.domain_randomization_config.get(
-                "output_dir", "output_data/sim2real_transitions/domain_randomization"
+                "output_dir", "output_data/sim2real_transitions/domain_adaptation"
             ))
             / flow_filename
         ).as_posix()
@@ -286,17 +400,18 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
 
         return config_path.as_posix(), sampled_parameters
 
-    def reload_sim_env_for_episode(self, episode):
-        sampled_parameters = {}
-        if self.domain_randomization_enabled:
+    def reload_sim_env_for_episode(self, episode, sampled_parameters=None):
+        applied_parameters = {}
+        if self.domain_randomization_enabled or sampled_parameters is not None:
             config_path, sampled_parameters = self.write_episode_randomized_cityflow_config(
-                episode
+                episode, sampled_parameters=sampled_parameters
             )
             self.logger.info(
                 "Episode %s sim randomization params: %s",
                 episode,
                 sampled_parameters,
             )
+            applied_parameters = sampled_parameters
         else:
             config_path = self.cityflow_path
 
@@ -318,7 +433,7 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
             self.agents_sim,
         )
         self.env_sim = TSCEnv(self.world_sim, self.agents_sim, self.metric_sim)
-        return sampled_parameters
+        return applied_parameters
 
     def run_train_episode(
         self,
@@ -534,8 +649,9 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
             metric.throughput(),
         )
 
-    def sim_train(self, episode):
-        self.reload_sim_env_for_episode(episode)
+    def sim_train(self, episode, real_summary_metric):
+        sampled_parameters = self.sample_posterior_parameters(real_summary_metric)
+        self.reload_sim_env_for_episode(episode, sampled_parameters=sampled_parameters)
         self.set_replay(
             self.env_sim,
             f"sim_episode_{episode}.txt",
@@ -550,6 +666,11 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
             desc=f"Sim Training Epoch {episode}",
         )
         self.log_metrics("SIM_TRAIN", episode, self.metric_sim, mean_loss)
+        self.logger.info(
+            "Posterior-sampled train parameters for episode %s: %s",
+            episode,
+            sampled_parameters,
+        )
         return mean_loss
 
     def sim_eval(self, episode):
@@ -568,14 +689,28 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
             collect_trajectory=True,
         )
         summary_metric = self.compute_summary_metric(trajectory)
-        self.eval_data.append(
-            {
-                "episode": episode,
-                "sampled_parameters": sampled_parameters,
-                "summary_metric": summary_metric,
-            }
-        )
         self.log_metrics("SIM_EVAL", episode, self.metric_sim, 0)
+        return {
+            "episode": episode,
+            "sampled_parameters": sampled_parameters,
+            "summary_metric": summary_metric,
+        }
+
+    def real_eval(self, episode=0):
+        trajectory = self.run_eval_episode(
+            env=self.env_real,
+            metric=self.metric_real,
+            agents=self.agents_real,
+            desc=f"Dummy Real Eval Epoch {episode}",
+            max_steps=self.steps,
+            collect_trajectory=True,
+        )
+        summary_metric = self.compute_summary_metric(trajectory)
+        self.log_metrics("REAL_EVAL", episode, self.metric_real, 0)
+        return {
+            "episode": episode,
+            "summary_metric": summary_metric,
+        }
 
     def should_run_real_eval(self, episode):
         if self.real_eval_interval > 0:
@@ -586,16 +721,40 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
         if self.load_pretrained:
             self.load_agents(self.agents_sim, self.pretrained_model_dir())
 
+        eval_data = []
         for episode in range(self.eval_episodes):
-            self.sim_eval(episode)
+            eval_data.append(self.sim_eval(episode))
             self.logger.info(
                 "sim_eval_episode:%s/%s",
                 episode,
                 self.eval_episodes,
             )
 
+        # process eval data
+        theta = np.stack(
+            [
+                np.array(
+                    [
+                        item["sampled_parameters"][param_name]
+                        for param_name in self.get_parameter_names()
+                    ]
+                )
+                for item in eval_data
+            ]
+        )
+        sim_summary_metrics = np.stack([item["summary_metric"] for item in eval_data])
+        self.train_posterior(theta, sim_summary_metrics)
+
+        real_eval_data = self.real_eval()
+        real_summary_metric = real_eval_data["summary_metric"]
+        self.logger.info(
+            "Collected real summary metric with shape %s from episode %s",
+            tuple(real_summary_metric.shape),
+            real_eval_data["episode"],
+        )
+        
         for episode in range(self.train_episodes):
-            sim_loss = self.sim_train(episode)
+            sim_loss = self.sim_train(episode, real_summary_metric)
             self.save_agents(self.agents_sim, self.model_dir)
             if episode % self.save_rate == 0:
                 self.save_agents(self.agents_sim, self.model_dir, e=episode)

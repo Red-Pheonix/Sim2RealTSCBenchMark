@@ -87,13 +87,7 @@ class PressLightAgent(RLAgent):
         self.target_model = self._build_model()
         self.update_target_network()
         self.criterion = nn.MSELoss(reduction="mean")
-        self.optimizer = optim.RMSprop(
-            self.model.parameters(),
-            lr=self.learning_rate,
-            alpha=0.9,
-            centered=False,
-            eps=1e-7,
-        )
+        self.optimizer = self._build_optimizer()
 
         # print(f"Intersection: {inter_id} Rank: {self.rank}")
         # self.neighbors = 0
@@ -237,6 +231,15 @@ class PressLightAgent(RLAgent):
         model = DQNNet(self.ob_length, self.action_space.n, self.dic_agent_conf)
         return model
 
+    def _build_optimizer(self):
+        return optim.RMSprop(
+            self.model.parameters(),
+            lr=self.learning_rate,
+            alpha=0.9,
+            centered=False,
+            eps=1e-7,
+        )
+
     def remember(
         self,
         last_obs,
@@ -356,11 +359,11 @@ class PressLightAgent(RLAgent):
             model_name = os.path.join(model_dir, f"{e}_{self.rank}.pt")
         else:
             model_name = os.path.join(model_dir, f"{self.rank}.pt")
-            
-        self.model = self._build_model()
-        self.model.load_state_dict(torch.load(model_name, weights_only=True))
-        self.target_model = self._build_model()
-        self.target_model.load_state_dict(torch.load(model_name, weights_only=True))
+
+        state_dict = torch.load(model_name, weights_only=True)
+        self.model.load_state_dict(state_dict)
+        self.target_model.load_state_dict(state_dict)
+        self.optimizer = self._build_optimizer()
         print(f"model loaded at {model_name}")
 
     def save_model(self, model_dir="", e=None):
