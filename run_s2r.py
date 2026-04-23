@@ -84,11 +84,14 @@ class Runner:
 
         # Ensure network is also registered in the trainer settings
         Registry.mapping['trainer_mapping']['setting'].param['network'] = self.config['command']['network']
-        
-        self.trainer = Registry.mapping['trainer_mapping']\
-            [Registry.mapping['command_mapping']['setting'].param['task']](logger)
-        self.task = Registry.mapping['task_mapping']\
-            [Registry.mapping['command_mapping']['setting'].param['task']](self.trainer)
+
+        method = Registry.mapping["sim2real_mapping"]["setting"].param.get(
+            "method", "grounding"
+        )
+        self.task = Registry.mapping['task_mapping']["sim2real_transitions"](
+            logger, method=method
+        )
+        self.trainer = self.task.trainer
         start_time = time.time()
         self.task.run()
         logger.info(f"Total time taken: {time.time() - start_time}")
