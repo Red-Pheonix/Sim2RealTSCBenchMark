@@ -1,7 +1,5 @@
 sim2real:
   method: "domain_adaptation"
-  gat: False
-  load_pretrained: True
   eval_episodes: 100
   train_episodes: 100
   domain_randomization:

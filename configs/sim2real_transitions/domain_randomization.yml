@@ -1,10 +1,9 @@
 trainer:
   episodes: 200
+  real_eval_interval: 1
 
 sim2real:
   method: "domain_randomization"
-  gat: False
-  load_pretrained: False
   domain_randomization:
     enabled: True
     seed: 0
