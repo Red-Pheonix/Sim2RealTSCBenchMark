@@ -2,7 +2,6 @@ import task
 import trainer
 import agent
 import dataset
-import sim2real_model
 from common.registry import Registry
 from common import interface
 from common.utils import *
