@@ -2,79 +2,39 @@ import os
 import pickle as pkl
 from pathlib import Path
 import numpy as np
-from common.metrics import Metrics
-from environment import TSCEnv
 from common.registry import Registry
-from trainer.base_trainer import BaseTrainer
+from .base import TransitionTrainer
 import torch
 import torch.optim as optim
 
 
 @Registry.register_trainer("sim2real_transitions_grounding")
-class Sim2RealTransitionsTrainer(BaseTrainer):
+class TransitionGroundingTrainer(TransitionTrainer):
     """
     Register TSCTrainer for traffic signal control tasks.
     """
 
     def __init__(self, logger, gpu=0, cpu=False, name="sim2real"):
         super().__init__(logger=logger, gpu=gpu, cpu=cpu, name=name)
-        
-        network_name = Registry.mapping['command_mapping']['setting'].param['network']
-        self.cityflow_path = os.path.join('configs/sim', "cityflow", network_name + '.cfg')
-        self.sumo_path = os.path.join('configs/sim', "sumo", network_name + '.cfg')
-    
-        self.episodes = Registry.mapping["trainer_mapping"]["setting"].param["episodes"]
-        self.training_iterations = Registry.mapping["sim2real_mapping"]["setting"].param[
+
+        self.episodes = self.trainer_args["episodes"]
+        self.training_iterations = self.sim2real_args[
             "training_iterations"
         ]
-        self.steps = Registry.mapping["trainer_mapping"]["setting"].param["steps"]
-        self.test_steps = Registry.mapping["trainer_mapping"]["setting"].param[
-            "test_steps"
-        ]
-        self.buffer_size = Registry.mapping["trainer_mapping"]["setting"].param[
-            "buffer_size"
-        ]
-        self.action_interval = Registry.mapping["trainer_mapping"]["setting"].param[
-            "action_interval"
-        ]
-        self.save_rate = Registry.mapping["logger_mapping"]["setting"].param[
-            "save_rate"
-        ]
-        self.learning_start = Registry.mapping["trainer_mapping"]["setting"].param[
-            "learning_start"
-        ]
-        self.update_model_rate = Registry.mapping["trainer_mapping"]["setting"].param[
-            "update_model_rate"
-        ]
-        self.update_target_rate = Registry.mapping["trainer_mapping"]["setting"].param[
-            "update_target_rate"
-        ]
-        self.test_when_train = Registry.mapping["trainer_mapping"]["setting"].param[
-            "test_when_train"
-        ]
 
-        self.gat = Registry.mapping["sim2real_mapping"]["setting"].param["gat"]
-        self.gattype = Registry.mapping["sim2real_mapping"]["setting"].param["gattype"]
-        self.uncertainty_setting = Registry.mapping["sim2real_mapping"]["setting"].param[
+        self.gat = self.sim2real_args["gat"]
+        self.gattype = self.sim2real_args["gattype"]
+        self.uncertainty_setting = self.sim2real_args[
             "uncertainty"
         ]
-        self.delayedgat = Registry.mapping["sim2real_mapping"]["setting"].param[
-            "delayedgat"
-        ]
-        self.ground_original = Registry.mapping["sim2real_mapping"]["setting"].param[
+        self.delayedgat = self.sim2real_args["delayedgat"]
+        self.ground_original = self.sim2real_args[
             "ground_original"
         ]
-        self.last_n_uncertainties = Registry.mapping["sim2real_mapping"][
-            "setting"
-        ].param["last_n_uncertainties"]
+        self.last_n_uncertainties = self.sim2real_args["last_n_uncertainties"]
 
-        self.net = Registry.mapping["trainer_mapping"]["setting"].param["network"]
-        self.load_pretrained = Registry.mapping["sim2real_mapping"]["setting"].param.get(
-            "load_pretrained"
-        )
-        
-        cmd_args = Registry.mapping['command_mapping']['setting'].param
-        self.exp_name = f'{cmd_args["network"]}_{cmd_args["real_setting"]}_{cmd_args["agent"]}_{cmd_args["gat_model"]}'
+        self.net = self.trainer_args["network"]
+        self.exp_name = self.build_exp_name(self.cmd_args["gat_model"])
         self.dataset_dir = Path("collected") / self.exp_name
         
         # replay file is only valid in cityflow now.
@@ -99,7 +59,7 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         # consists of path of output dir + log_dir + file handlers name
         self.log_file = os.path.join(
             Registry.mapping["logger_mapping"]["path"].path,
-            Registry.mapping["logger_mapping"]["setting"].param["log_dir"],
+            self.logger_args["log_dir"],
             os.path.basename(self.logger.handlers[-1].baseFilename)
             .rstrip("_BRF.log")
             .rstrip("_ACT.log")
@@ -108,7 +68,7 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
 
         self.action_log_file = os.path.join(
             Registry.mapping["logger_mapping"]["path"].path,
-            Registry.mapping["logger_mapping"]["setting"].param["log_dir"],
+            self.logger_args["log_dir"],
             os.path.basename(self.logger.handlers[-1].baseFilename)
             .rstrip("_BRF.log")
             .rstrip("_DTL.log")
@@ -146,53 +106,10 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         return self.dataset_dir / f"{prefix}_{split}.pkl"
 
     def create_world(self):
-        """
-        create_world
-        Create world, currently support CityFlow World, SUMO World and Citypb World.
-
-        :param: None
-        :return: None
-        """
-        # traffic setting is in the world mapping
-        self.world_sim = Registry.mapping["world_mapping"]["cityflow"](
-            self.cityflow_path,
-            Registry.mapping["command_mapping"]["setting"].param["thread_num"],
-        )
-
-        sumo_add = Registry.mapping["command_mapping"]["setting"].param.get(
-                "real_setting"
-            )
-        if sumo_add != "default":
-            sumo_add = sumo_add + ".add.xml"
-        else:
-            sumo_add = None
-            
-        self.world_real = Registry.mapping["world_mapping"]["sumo"](
-            self.sumo_path,
-            interface=Registry.mapping["command_mapping"]["setting"].param["interface"],
-            sumo_add=sumo_add,
-        )
+        super().create_world()
 
     def create_metrics(self):
-        """
-        create_metrics
-        Create metrics to evaluate model performance, currently support reward, queue length, delay(approximate or real) and throughput.
-
-        :param: None
-        :return: None
-        """
-        if Registry.mapping["command_mapping"]["setting"].param["delay_type"] == "apx":
-            lane_metrics = ["rewards", "queue", "delay"]
-            world_metrics = ["real avg travel time", "throughput"]
-        else:
-            lane_metrics = ["rewards", "queue"]
-            world_metrics = ["delay", "real avg travel time", "throughput"]
-        self.metric_sim = Metrics(
-            lane_metrics, world_metrics, self.world_sim, self.agents_sim
-        )
-        self.metric_real = Metrics(
-            lane_metrics, world_metrics, self.world_real, self.agents_real
-        )
+        super().create_metrics()
 
     def create_agents(self):
         """
@@ -206,9 +123,7 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         self.agents_sim = []
         self.agents_real = []
 
-        agent_sim = Registry.mapping["model_mapping"][
-            Registry.mapping["command_mapping"]["setting"].param["agent"]
-        ](self.world_sim, 0)
+        agent_sim = Registry.mapping["model_mapping"][self.agent_name](self.world_sim, 0)
 
         num_agent = int(len(self.world_sim.intersections) / agent_sim.sub_agents)
 
@@ -221,14 +136,10 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
 
         for i in range(1, num_agent):
             self.agents_sim.append(
-                Registry.mapping["model_mapping"][
-                    Registry.mapping["command_mapping"]["setting"].param["agent"]
-                ](self.world_sim, i)
+                Registry.mapping["model_mapping"][self.agent_name](self.world_sim, i)
             )
 
-        agent_real = Registry.mapping["model_mapping"][
-            Registry.mapping["command_mapping"]["setting"].param["agent"]
-        ](self.world_real, 0)
+        agent_real = Registry.mapping["model_mapping"][self.agent_name](self.world_real, 0)
 
         num_agent = int(len(self.world_real.intersections) / agent_real.sub_agents)
         self.agents_real.append(
@@ -236,9 +147,7 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         )  # initialized N agents for traffic light control
         for i in range(1, num_agent):
             self.agents_real.append(
-                Registry.mapping["model_mapping"][
-                    Registry.mapping["command_mapping"]["setting"].param["agent"]
-                ](self.world_real, i)
+                Registry.mapping["model_mapping"][self.agent_name](self.world_real, i)
             )
 
     def create_env(self):
@@ -249,9 +158,7 @@ class Sim2RealTransitionsTrainer(BaseTrainer):
         :param: None
         :return: None
         """
-        # TODO: finalized list or non list
-        self.env_sim = TSCEnv(self.world_sim, self.agents_sim, self.metric_sim)
-        self.env_real = TSCEnv(self.world_real, self.agents_real, self.metric_real)
+        super().create_env()
 
     def train(self):
         """

@@ -9,34 +9,12 @@ from tqdm import tqdm
 from common.metrics import Metrics
 from common.registry import Registry
 from environment import TSCEnv
-from trainer.base_trainer import BaseTrainer
-
-
-class DomainRandomizationDistribution:
-    def sample(self, rng):
-        raise NotImplementedError
-
-
-class UniformDomainRandomizationDistribution(DomainRandomizationDistribution):
-    def __init__(self, config):
-        self.low = config["low"]
-        self.high = config["high"]
-
-    def sample(self, rng):
-        return rng.uniform(self.low, self.high)
-
-
-class NormalDomainRandomizationDistribution(DomainRandomizationDistribution):
-    def __init__(self, config):
-        self.mean = config.get("mean", 0.0)
-        self.std = config.get("std", 1.0)
-
-    def sample(self, rng):
-        return rng.normal(self.mean, self.std)
+from .base import TransitionTrainer
+from .distributions import NormalDistribution, UniformDistribution
 
 
 @Registry.register_trainer("sim2real_transitions_domain_adaptation")
-class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
+class TransitionDomainAdaptationTrainer(TransitionTrainer):
     """
     Run a two-stage sim loop for transition domain adaptation:
     sim evaluation episodes first, then sim training episodes, followed by
@@ -52,34 +30,12 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
     ):
         super().__init__(logger=logger, gpu=gpu, cpu=cpu, name=name)
 
-        cmd_args = Registry.mapping["command_mapping"]["setting"].param
-        trainer_args = Registry.mapping["trainer_mapping"]["setting"].param
-        logger_args = Registry.mapping["logger_mapping"]["setting"].param
-        sim2real_args = Registry.mapping["sim2real_mapping"]["setting"].param
+        self.real_eval_interval = self.trainer_args.get("real_eval_interval", 0)
+        self.eval_episodes = self.sim2real_args.get("eval_episodes", 100)
+        self.train_episodes = self.sim2real_args.get("train_episodes", 100)
 
-        self.cityflow_path = os.path.join(
-            "configs/sim", "cityflow", cmd_args["network"] + ".cfg"
-        )
-        self.sumo_path = os.path.join(
-            "configs/sim", "sumo", cmd_args["network"] + ".cfg"
-        )
-        self.steps = trainer_args["steps"]
-        self.test_steps = trainer_args["test_steps"]
-        self.buffer_size = trainer_args["buffer_size"]
-        self.action_interval = trainer_args["action_interval"]
-        self.save_rate = logger_args["save_rate"]
-        self.learning_start = trainer_args["learning_start"]
-        self.update_model_rate = trainer_args["update_model_rate"]
-        self.update_target_rate = trainer_args["update_target_rate"]
-        self.test_when_train = trainer_args["test_when_train"]
-        self.real_eval_interval = trainer_args.get("real_eval_interval", 0)
-        self.yellow_time = trainer_args["yellow_length"]
-        self.load_pretrained = sim2real_args.get("load_pretrained", False)
-        self.eval_episodes = sim2real_args.get("eval_episodes", 100)
-        self.train_episodes = sim2real_args.get("train_episodes", 100)
-
-        self.method = sim2real_args.get("method", "domain_adaptation")
-        self.domain_randomization_config = sim2real_args.get(
+        self.method = self.sim2real_args.get("method", "domain_adaptation")
+        self.domain_randomization_config = self.sim2real_args.get(
             "domain_randomization", {}
         )
         self.domain_randomization_enabled = self.domain_randomization_config.get(
@@ -88,30 +44,20 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
         self.domain_randomization_rng = np.random.default_rng(
             self.domain_randomization_config.get("seed", self.seed)
         )
-        self.sbi_config = sim2real_args.get("sbi", {})
-        self.sbi_density_estimator_name = self.sbi_config.get(
+        self.inference_config = self.sim2real_args.get(
+            "inference",
+            self.sim2real_args.get("sbi", {}),
+        )
+        self.posterior_estimator_name = self.inference_config.get(
             "density_estimator", "nsf"
         )
-        self.sbi_prior = None
-        self.sbi_inference = None
+        self.prior_distribution = None
+        self.posterior_inference = None
         self.posterior = None
 
-        self.exp_name = (
-            f'{cmd_args["network"]}_{cmd_args["real_setting"]}_{cmd_args["agent"]}_{self.method}'
-        )
-        self.model_dir = os.path.join(
-            Registry.mapping["logger_mapping"]["path"].path,
-            logger_args["model_dir"],
-            self.exp_name,
-        )
-        base_log_name = os.path.basename(self.logger.handlers[-1].baseFilename).rstrip(
-            "_BRF.log"
-        )
-        self.log_file = os.path.join(
-            Registry.mapping["logger_mapping"]["path"].path,
-            logger_args["log_dir"],
-            base_log_name + "_DTL.log",
-        )
+        self.exp_name = self.build_exp_name(self.method)
+        self.model_dir = self.build_model_dir(self.exp_name)
+        self.log_file = self.build_log_file()
 
         self.base_cityflow_config = self.load_cityflow_config(self.cityflow_path)
         self.base_cityflow_flow = self.load_cityflow_flow(self.base_cityflow_config)
@@ -131,7 +77,7 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
         self.env_real = None
         self.total_decision_num_sim = 0
 
-        self.initialize_sbi()
+        self.initialize_posterior_inference()
         self.create()
 
         self.world = self.world_real
@@ -139,23 +85,23 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
         self.metric = self.metric_real
         self.env = self.env_real
 
-    def initialize_sbi(self):
+    def initialize_posterior_inference(self):
         try:
             from sbi.inference import NPE
         except ImportError as exc:
             raise ImportError(
-                "sbi is required by the domain adaptation trainer but is not "
+                "Posterior inference requires the `sbi` package, but it is not "
                 "installed. Install it with `python -m pip install sbi`."
             ) from exc
 
-        self.sbi_prior = self.build_sbi_prior()
-        self.sbi_inference = NPE(
-            prior=self.sbi_prior,
-            density_estimator=self.sbi_density_estimator_name,
+        self.prior_distribution = self.build_prior_distribution()
+        self.posterior_inference = NPE(
+            prior=self.prior_distribution,
+            density_estimator=self.posterior_estimator_name,
         )
         self.posterior = None
 
-    def build_sbi_prior(self):
+    def build_prior_distribution(self):
         parameter_means = []
         parameter_stds = []
 
@@ -165,7 +111,7 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
             distribution_name = param_config.get("distribution", "uniform")
             if distribution_name != "normal":
                 raise ValueError(
-                    "Domain adaptation sbi prior expects normal-configured "
+                    "Domain adaptation prior expects normal-configured "
                     f"parameters, but {param_name} uses {distribution_name}."
                 )
 
@@ -175,7 +121,7 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
 
         if not parameter_means:
             raise ValueError(
-                "Cannot build sbi prior because no domain randomization "
+                "Cannot build prior distribution because no domain randomization "
                 "parameters were configured."
             )
 
@@ -187,95 +133,13 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
             1,
         )
 
-    def load_cityflow_config(self, cityflow_path):
-        with open(cityflow_path, "r", encoding="utf-8") as file_obj:
-            return json.load(file_obj)
-
-    def load_cityflow_flow(self, cityflow_config):
-        flow_path = Path(cityflow_config.get("dir", "data")) / cityflow_config["flowFile"]
-        with open(flow_path, "r", encoding="utf-8") as file_obj:
-            return json.load(file_obj)
-
-    def create_world(self):
-        thread_num = Registry.mapping["command_mapping"]["setting"].param["thread_num"]
-        self.world_sim = Registry.mapping["world_mapping"]["cityflow"](
-            self.cityflow_path,
-            thread_num,
-        )
-
-        sumo_add = Registry.mapping["command_mapping"]["setting"].param.get(
-            "real_setting"
-        )
-        if sumo_add != "default":
-            sumo_add = sumo_add + ".add.xml"
-        else:
-            sumo_add = None
-
-        self.world_real = Registry.mapping["world_mapping"]["sumo"](
-            self.sumo_path,
-            interface=Registry.mapping["command_mapping"]["setting"].param["interface"],
-            sumo_add=sumo_add,
-        )
-
-    def create_agent_world(self, world):
-        agents = []
-        agent = Registry.mapping["model_mapping"][
-            Registry.mapping["command_mapping"]["setting"].param["agent"]
-        ](world, 0)
-        num_agent = int(len(world.intersections) / agent.sub_agents)
-        agents.append(agent)
-        for i in range(1, num_agent):
-            agents.append(
-                Registry.mapping["model_mapping"][
-                    Registry.mapping["command_mapping"]["setting"].param["agent"]
-                ](world, i)
-            )
-        return agents
-
-    def create_agents(self):
-        self.agents_sim = self.create_agent_world(self.world_sim)
-        self.agents_real = self.create_agent_world(self.world_real)
-
-    def create_metrics(self):
-        if Registry.mapping["command_mapping"]["setting"].param["delay_type"] == "apx":
-            lane_metrics = ["rewards", "queue", "delay"]
-            world_metrics = ["real avg travel time", "throughput"]
-        else:
-            lane_metrics = ["rewards", "queue"]
-            world_metrics = ["delay", "real avg travel time", "throughput"]
-        self.metric_sim = Metrics(
-            lane_metrics, world_metrics, self.world_sim, self.agents_sim
-        )
-        self.metric_real = Metrics(
-            lane_metrics, world_metrics, self.world_real, self.agents_real
-        )
-
-    def create_env(self):
-        self.env_sim = TSCEnv(self.world_sim, self.agents_sim, self.metric_sim)
-        self.env_real = TSCEnv(self.world_real, self.agents_real, self.metric_real)
-
     def pretrained_model_dir(self):
         return os.path.join(
             "pretrained",
             "tsc",
-            Registry.mapping["command_mapping"]["setting"].param["agent"],
-            Registry.mapping["command_mapping"]["setting"].param["network"],
+            self.agent_name,
+            self.network_name,
         )
-
-    def load_agents(self, agents, model_dir, e=None):
-        for ag in agents:
-            ag.load_model(model_dir, e)
-
-    def save_agents(self, agents, model_dir, e=None):
-        for ag in agents:
-            ag.save_model(model_dir, e)
-
-    def set_replay(self, env, suffix, enabled):
-        if not self.save_replay or env is not self.env_sim:
-            return
-        env.eng.set_save_replay(enabled)
-        if enabled:
-            env.eng.set_replay_file(os.path.join(self.replay_file_dir, suffix))
 
     def sample_randomized_vehicle_parameters(self):
         sampled_parameters = {}
@@ -304,9 +168,9 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
         )
 
         if distribution_name == "uniform":
-            return UniformDomainRandomizationDistribution(distribution_config)
+            return UniformDistribution(distribution_config)
         if distribution_name == "normal":
-            return NormalDomainRandomizationDistribution(distribution_config)
+            return NormalDistribution(distribution_config)
 
         raise ValueError(
             "Unsupported domain randomization distribution: "
@@ -338,7 +202,7 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
     def train_posterior(self, theta, obs):
         if theta.size == 0 or obs.size == 0:
             self.logger.warning(
-                "Skipping sbi model training because theta or summary metrics "
+                "Skipping posterior training because theta or summary metrics "
                 "are empty."
             )
             return
@@ -347,11 +211,15 @@ class Sim2RealTransitionsDomainAdaptationTrainer(BaseTrainer):
         obs = torch.as_tensor(obs, dtype=torch.float32)
 
         # train distribution estimator and save the model for later inference
-        density_estimator = self.sbi_inference.append_simulations(theta, obs).train()
-        self.posterior = self.sbi_inference.build_posterior(density_estimator)
+        density_estimator = self.posterior_inference.append_simulations(
+            theta, obs
+        ).train()
+        self.posterior = self.posterior_inference.build_posterior(
+            density_estimator
+        )
         
         self.logger.info(
-            "Trained sbi density estimator with theta shape %s and summary shape %s",
+            "Trained posterior estimator with theta shape %s and summary shape %s",
             tuple(theta.shape),
             tuple(obs.shape),
         )

@@ -1,9 +1,10 @@
 from .base_trainer import BaseTrainer
 from .tsc_trainer import TSCTrainer
-from .transitions import Sim2RealTransitionsTrainer
+from .transitions import TransitionTrainer
+from .transitions import TransitionGroundingTrainer
 from .transitions import (
-    Sim2RealTransitionsDomainRandomizationTrainer,
-    Sim2RealTransitionsDomainAdaptationTrainer,
+    TransitionDomainRandomizationTrainer,
+    TransitionDomainAdaptationTrainer,
 )
 from .sim2real_observations_dispatcher_trainer import (
     Sim2RealObservationsDispatcherTrainer,
