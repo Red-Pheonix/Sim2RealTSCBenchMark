@@ -56,16 +56,16 @@ class Runner:
         interface.Command_Setting_Interface(self.config)
         interface.Logger_param_Interface(self.config)  # register logger path
 
-        if self.config['model'].get('graphic') == False:
+        # if self.config['model'].get('graphic') == False:
 
-            self.config['command']['world'] = 'sumo'
-            interface.World_param_Interface(self.config)
+        self.config['command']['world'] = 'sumo'
+        interface.World_param_Interface(self.config)
 
-            self.config['command']['world'] = 'cityflow'
-            interface.World_param_Interface(self.config)
+        self.config['command']['world'] = 'cityflow'
+        interface.World_param_Interface(self.config)
 
-        else:
-            raise ValueError
+        # else:
+        #     raise ValueError
 
         # interface.Graph_World_Interface(roadnet_path)  # register graphic parameters in Registry class
         interface.Logger_path_Interface(self.config)
