@@ -100,13 +100,20 @@ def build_config(args):
         agent_name = os.path.join('./configs', args.task, f'{args.agent}.yml')
         config, duplicates_warning = load_config(agent_name)
     elif args.task == 'sim2real_transitions':
-        
-        agent_name = os.path.join('./configs', args.task, "models" , f'{args.agent}.yml')
-        config, duplicates_warning = load_config(agent_name)
-        
-        gat_name = os.path.join('./configs', args.task, f'{args.gat_model}.yml')
-        gat_config, duplicates_warning = load_config(gat_name)
-        config.update({"sim2real":gat_config["sim2real"]})
+        base_name = os.path.join('./configs', args.task, 'base.yml')
+        config, duplicates_warning = load_config(base_name)
+
+        agent_name = os.path.join('./configs', args.task, "models", f'{args.agent}.yml')
+        agent_config, agent_duplicates = load_config(agent_name)
+        config, merge_duplicates = merge_dicts(config, agent_config)
+        duplicates_warning.update(agent_duplicates)
+        duplicates_warning.update(merge_duplicates)
+
+        method_name = os.path.join('./configs', args.task, f'{args.gat_model}.yml')
+        method_config, method_duplicates = load_config(method_name)
+        config, merge_duplicates = merge_dicts(config, method_config)
+        duplicates_warning.update(method_duplicates)
+        duplicates_warning.update(merge_duplicates)
     elif args.task == 'sim2real_observations':
         agent_name = os.path.join('./configs', args.task, "models", f'{args.agent}.yml')
         config, duplicates_warning = load_config(agent_name)

@@ -1,10 +1,8 @@
-includes:
-  - configs/sim2real_transitions/base.yml
-
-
 model:
   name: presslight
   train_model: True
+  test_model: False
+  load_model: False
   d_dense: 20
   epsilon: 0.1
   epsilon_decay: 0.995
