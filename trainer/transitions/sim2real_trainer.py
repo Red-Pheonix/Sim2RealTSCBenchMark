@@ -8,7 +8,6 @@ from common.registry import Registry
 from trainer.base_trainer import BaseTrainer
 import torch
 import torch.optim as optim
-import sim2real_model
 
 
 @Registry.register_trainer("sim2real_transitions_grounding")

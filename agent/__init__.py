@@ -13,5 +13,6 @@ from .presslight import PressLightAgent
 from .fixedtime import FixedTimeAgent
 from .mplight import MPLightAgent
 from .meta import MetaPressLightAgent
+from . import grounding
 
 # from .ppo_pfrl import IPPO_pfrl
