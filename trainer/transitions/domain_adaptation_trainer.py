@@ -30,9 +30,15 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
     ):
         super().__init__(logger=logger, gpu=gpu, cpu=cpu, name=name)
 
+        self.episodes = self.trainer_args["episodes"]
         self.real_eval_interval = self.trainer_args.get("real_eval_interval", 0)
-        self.eval_episodes = self.sim2real_args.get("eval_episodes", 100)
-        self.train_episodes = self.sim2real_args.get("train_episodes", 100)
+        self.sim_rollouts = self.sim2real_args.get(
+            "sim_rollouts", self.sim2real_args.get("eval_episodes", 100)
+        )
+        self.training_iterations = self.sim2real_args.get(
+            "training_iterations", self.sim2real_args.get("train_episodes", 100)
+        )
+        self.total_training_iterations = self.episodes * self.training_iterations
 
         self.method = self.sim2real_args.get("method", "domain_adaptation")
         self.domain_randomization_config = self.sim2real_args.get(
@@ -51,6 +57,10 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
         self.posterior_estimator_name = self.inference_config.get(
             "density_estimator", "nsf"
         )
+        self.min_posterior_samples = self.inference_config.get(
+            "min_posterior_samples", 5
+        )
+        self.posterior_sample_count = 0
         self.prior_distribution = None
         self.posterior_inference = None
         self.posterior = None
@@ -209,14 +219,16 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
 
         theta = torch.as_tensor(theta, dtype=torch.float32)
         obs = torch.as_tensor(obs, dtype=torch.float32)
+        self.posterior_sample_count += theta.shape[0]
 
-        # train distribution estimator and save the model for later inference
-        density_estimator = self.posterior_inference.append_simulations(
-            theta, obs
-        ).train()
-        self.posterior = self.posterior_inference.build_posterior(
-            density_estimator
-        )
+        self.posterior_inference.append_simulations(theta, obs)
+        if self.posterior_sample_count >= self.min_posterior_samples:
+            density_estimator = self.posterior_inference.train(
+                resume_training=self.posterior is not None
+            )
+            self.posterior = self.posterior_inference.build_posterior(
+                density_estimator
+            )
         
         self.logger.info(
             "Trained posterior estimator with theta shape %s and summary shape %s",
@@ -226,10 +238,11 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
 
     def sample_posterior_parameters(self, summary_metric):
         if self.posterior is None:
-            raise ValueError("Cannot sample train-time parameters before posterior training.")
-
-        x_obs = torch.as_tensor(summary_metric, dtype=torch.float32)
-        theta_sample = self.posterior.sample((1,), x=x_obs).squeeze(0).cpu().numpy()
+            theta_sample = self.prior_distribution.sample().cpu().numpy()
+        else:
+            x_obs = torch.as_tensor(summary_metric, dtype=torch.float32)
+            theta_sample = self.posterior.sample((1,), x=x_obs).squeeze(0).cpu().numpy()
+            
         sampled_parameters = {
             param_name: float(theta_sample[idx])
             for idx, param_name in enumerate(self.get_parameter_names())
@@ -569,7 +582,7 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
             env=self.env_real,
             metric=self.metric_real,
             agents=self.agents_real,
-            desc=f"Dummy Real Eval Epoch {episode}",
+            desc=f"Real Eval Epoch {episode}",
             max_steps=self.steps,
             collect_trajectory=True,
         )
@@ -585,58 +598,94 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
             return episode > 0 and episode % self.real_eval_interval == 0
         return self.test_when_train
 
+    def collect_sim_rollout_data(self, start_episode):
+        rollout_data = []
+        for rollout_idx in range(self.sim_rollouts):
+            episode = start_episode + rollout_idx
+            rollout_data.append(self.sim_eval(episode))
+            self.logger.info(
+                "sim_rollout:%s/%s",
+                rollout_idx + 1,
+                self.sim_rollouts,
+            )
+        return rollout_data
+
+    def collect_real_summary_metric(self, episode):
+        real_eval_data = self.real_eval(episode)
+        real_summary_metric = real_eval_data["summary_metric"]
+        self.logger.info(
+            "Collected real summary metric with shape %s from rollout %s",
+            tuple(real_summary_metric.shape),
+            episode,
+        )
+        return real_summary_metric
+
     def train(self):
         if self.load_pretrained:
             self.load_agents(self.agents_sim, self.pretrained_model_dir())
 
-        eval_data = []
-        for episode in range(self.eval_episodes):
-            eval_data.append(self.sim_eval(episode))
+        sim_rollout_episode = 0
+        training_iteration = 0
+        real_summary_metric = None
+        # save model weigghts
+        self.save_agents(self.agents_sim, self.model_dir)
+        for episode in range(self.episodes):
             self.logger.info(
-                "sim_eval_episode:%s/%s",
+                "domain_adaptation_episode:%s/%s",
                 episode,
-                self.eval_episodes,
+                self.episodes,
             )
 
-        # process eval data
-        theta = np.stack(
-            [
-                np.array(
-                    [
-                        item["sampled_parameters"][param_name]
-                        for param_name in self.get_parameter_names()
-                    ]
+            # Sim rollout: collect randomized sim trajectories for posterior training.
+            rollout_data = self.collect_sim_rollout_data(sim_rollout_episode)
+            sim_rollout_episode += self.sim_rollouts
+
+            theta = np.stack(
+                [
+                    np.array(
+                        [
+                            item["sampled_parameters"][param_name]
+                            for param_name in self.get_parameter_names()
+                        ]
+                    )
+                    for item in rollout_data
+                ]
+            )
+            sim_summary_metrics = np.stack(
+                [item["summary_metric"] for item in rollout_data]
+            )
+            self.train_posterior(theta, sim_summary_metrics)
+            
+            # Real rollout: collect real-world observations for posterior conditioning.
+            self.load_agents(self.agents_real, self.model_dir)
+            real_summary_metric = self.collect_real_summary_metric(episode)
+
+            # Policy training: train in sim domains sampled from the inferred posterior.
+            for _ in range(self.training_iterations):
+                sim_loss = self.sim_train(training_iteration, real_summary_metric)
+                self.save_agents(self.agents_sim, self.model_dir)
+                if training_iteration % self.save_rate == 0:
+                    self.save_agents(
+                        self.agents_sim,
+                        self.model_dir,
+                        e=training_iteration,
+                    )
+                self.logger.info(
+                    "training_iteration:%s/%s, sim_loss:%s",
+                    training_iteration,
+                    self.total_training_iterations,
+                    sim_loss,
                 )
-                for item in eval_data
-            ]
+
+                if self.should_run_real_eval(training_iteration):
+                    self.train_test(training_iteration)
+                training_iteration += 1
+
+        self.save_agents(
+            self.agents_sim,
+            self.model_dir,
+            e=self.total_training_iterations,
         )
-        sim_summary_metrics = np.stack([item["summary_metric"] for item in eval_data])
-        self.train_posterior(theta, sim_summary_metrics)
-
-        real_eval_data = self.real_eval()
-        real_summary_metric = real_eval_data["summary_metric"]
-        self.logger.info(
-            "Collected real summary metric with shape %s from episode %s",
-            tuple(real_summary_metric.shape),
-            real_eval_data["episode"],
-        )
-        
-        for episode in range(self.train_episodes):
-            sim_loss = self.sim_train(episode, real_summary_metric)
-            self.save_agents(self.agents_sim, self.model_dir)
-            if episode % self.save_rate == 0:
-                self.save_agents(self.agents_sim, self.model_dir, e=episode)
-            self.logger.info(
-                "sim_train_episode:%s/%s, sim_loss:%s",
-                episode,
-                self.train_episodes,
-                sim_loss,
-            )
-
-            if self.should_run_real_eval(episode):
-                self.train_test(episode)
-
-        self.save_agents(self.agents_sim, self.model_dir, e=self.train_episodes)
         self.save_agents(self.agents_sim, self.model_dir)
 
         self.load_agents(self.agents_real, self.model_dir)
@@ -646,7 +695,12 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
             agents=self.agents_real,
             desc="Final Real Run After Training",
         )
-        self.log_metrics("TRAIN_REAL", self.train_episodes, self.metric_real, 100)
+        self.log_metrics(
+            "REAL_EVAL_FINAL",
+            self.total_training_iterations,
+            self.metric_real,
+            100,
+        )
 
     def train_test(self, episode):
         self.load_agents(self.agents_real, self.model_dir)
@@ -661,7 +715,11 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
 
     def test(self, drop_load=False):
         if not drop_load:
-            self.load_agents(self.agents_real, self.model_dir, e=self.train_episodes)
+            self.load_agents(
+                self.agents_real,
+                self.model_dir,
+                e=self.total_training_iterations,
+            )
         self.run_eval_episode(
             env=self.env_real,
             metric=self.metric_real,
@@ -701,6 +759,5 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
             + "\t"
             + "%d" % cur_throughput
         )
-        log_handle = open(self.log_file, "a")
-        log_handle.write(res + "\n")
-        log_handle.close()
+        with open(self.log_file, "a") as f:
+            f.write(res + "\n")

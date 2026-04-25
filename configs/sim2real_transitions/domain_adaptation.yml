@@ -1,7 +1,7 @@
 sim2real:
   method: "domain_adaptation"
-  eval_episodes: 100
-  train_episodes: 100
+  sim_rollouts: 1
+  training_iterations: 1
   domain_randomization:
     enabled: True
     seed: 0
