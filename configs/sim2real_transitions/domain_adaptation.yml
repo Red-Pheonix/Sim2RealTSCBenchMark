@@ -44,3 +44,10 @@ sim2real:
         clip_max: 5.0
   inference:
     density_estimator: "nsf"
+    min_posterior_samples: 10
+    embedding:
+      enabled: True
+      type: "fc"
+      output_dim: 20
+      num_layers: 2
+      num_hiddens: 50

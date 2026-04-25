@@ -38,7 +38,6 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
         self.training_iterations = self.sim2real_args.get(
             "training_iterations", self.sim2real_args.get("train_episodes", 100)
         )
-        self.total_training_iterations = self.episodes * self.training_iterations
 
         self.method = self.sim2real_args.get("method", "domain_adaptation")
         self.domain_randomization_config = self.sim2real_args.get(
@@ -57,10 +56,16 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
         self.posterior_estimator_name = self.inference_config.get(
             "density_estimator", "nsf"
         )
+        self.embedding_config = self.inference_config.get("embedding", {})
+        self.embedding_enabled = self.embedding_config.get(
+            "enabled", bool(self.embedding_config)
+        )
         self.min_posterior_samples = self.inference_config.get(
             "min_posterior_samples", 5
         )
         self.posterior_sample_count = 0
+        self.posterior_nn_builder = None
+        self.fc_embedding_class = None
         self.prior_distribution = None
         self.posterior_inference = None
         self.posterior = None
@@ -98,18 +103,63 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
     def initialize_posterior_inference(self):
         try:
             from sbi.inference import NPE
+            from sbi.neural_nets import posterior_nn
+            from sbi.neural_nets.embedding_nets import FCEmbedding
         except ImportError as exc:
             raise ImportError(
                 "Posterior inference requires the `sbi` package, but it is not "
                 "installed. Install it with `python -m pip install sbi`."
             ) from exc
 
+        self.posterior_nn_builder = posterior_nn
+        self.fc_embedding_class = FCEmbedding
         self.prior_distribution = self.build_prior_distribution()
-        self.posterior_inference = NPE(
-            prior=self.prior_distribution,
-            density_estimator=self.posterior_estimator_name,
-        )
+        if not self.embedding_enabled:
+            self.posterior_inference = self.build_posterior_inference()
         self.posterior = None
+
+    def build_posterior_inference(self, observation_dim=None):
+        from sbi.inference import NPE
+
+        return NPE(
+            prior=self.prior_distribution,
+            density_estimator=self.build_density_estimator(observation_dim),
+        )
+
+    def initialize_posterior_for_training(self, observation_dim):
+        if self.posterior_inference is None:
+            self.posterior_inference = self.build_posterior_inference(observation_dim)
+
+    def build_embedding_net(self, observation_dim):
+        embedding_type = self.embedding_config.get("type", "fc")
+        if embedding_type != "fc":
+            raise ValueError(
+                "Unsupported SBI embedding type: "
+                f"{embedding_type}. Currently only `fc` is supported."
+            )
+
+        return self.fc_embedding_class(
+            input_dim=observation_dim,
+            output_dim=self.embedding_config.get("output_dim", 20),
+            num_layers=self.embedding_config.get("num_layers", 2),
+            num_hiddens=self.embedding_config.get("num_hiddens", 50),
+        )
+
+    def build_density_estimator(self, observation_dim=None):
+        if not self.embedding_enabled:
+            return self.posterior_estimator_name
+
+        if observation_dim is None:
+            raise ValueError(
+                "Cannot build SBI embedding network before the summary metric "
+                "dimension is known."
+            )
+
+        embedding_net = self.build_embedding_net(observation_dim)
+        return self.posterior_nn_builder(
+            self.posterior_estimator_name,
+            embedding_net=embedding_net,
+        )
 
     def build_prior_distribution(self):
         parameter_means = []
@@ -229,7 +279,6 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
             self.posterior = self.posterior_inference.build_posterior(
                 density_estimator
             )
-        
         self.logger.info(
             "Trained posterior estimator with theta shape %s and summary shape %s",
             tuple(theta.shape),
@@ -242,7 +291,6 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
         else:
             x_obs = torch.as_tensor(summary_metric, dtype=torch.float32)
             theta_sample = self.posterior.sample((1,), x=x_obs).squeeze(0).cpu().numpy()
-            
         sampled_parameters = {
             param_name: float(theta_sample[idx])
             for idx, param_name in enumerate(self.get_parameter_names())
@@ -625,7 +673,6 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
             self.load_agents(self.agents_sim, self.pretrained_model_dir())
 
         sim_rollout_episode = 0
-        training_iteration = 0
         real_summary_metric = None
         # save model weigghts
         self.save_agents(self.agents_sim, self.model_dir)
@@ -654,37 +701,46 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
             sim_summary_metrics = np.stack(
                 [item["summary_metric"] for item in rollout_data]
             )
+            self.initialize_posterior_for_training(sim_summary_metrics.shape[1])
             self.train_posterior(theta, sim_summary_metrics)
-            
             # Real rollout: collect real-world observations for posterior conditioning.
             self.load_agents(self.agents_real, self.model_dir)
             real_summary_metric = self.collect_real_summary_metric(episode)
 
+            # Skip policy training until posterior samples reach the threshold.
+            if self.posterior_sample_count < self.min_posterior_samples:
+                self.logger.info(
+                    "Skipping policy training until posterior samples reach %s "
+                    "(current:%s)",
+                    self.min_posterior_samples,
+                    self.posterior_sample_count,
+                )
+                continue
+
             # Policy training: train in sim domains sampled from the inferred posterior.
             for _ in range(self.training_iterations):
-                sim_loss = self.sim_train(training_iteration, real_summary_metric)
+                sim_loss = self.sim_train(episode, real_summary_metric)
                 self.save_agents(self.agents_sim, self.model_dir)
-                if training_iteration % self.save_rate == 0:
+                if episode % self.save_rate == 0:
                     self.save_agents(
                         self.agents_sim,
                         self.model_dir,
-                        e=training_iteration,
+                        e=episode,
                     )
                 self.logger.info(
-                    "training_iteration:%s/%s, sim_loss:%s",
-                    training_iteration,
-                    self.total_training_iterations,
+                    "training_episode:%s/%s, sim_loss:%s",
+                    episode,
+                    self.episodes,
                     sim_loss,
                 )
 
-                if self.should_run_real_eval(training_iteration):
-                    self.train_test(training_iteration)
-                training_iteration += 1
+                if self.should_run_real_eval(episode):
+                    self.train_test(episode)
 
         self.save_agents(
             self.agents_sim,
             self.model_dir,
-            e=self.total_training_iterations,
+            e=self.episodes,
         )
         self.save_agents(self.agents_sim, self.model_dir)
 
@@ -697,7 +753,7 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
         )
         self.log_metrics(
             "REAL_EVAL_FINAL",
-            self.total_training_iterations,
+            self.episodes,
             self.metric_real,
             100,
         )
@@ -718,7 +774,7 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
             self.load_agents(
                 self.agents_real,
                 self.model_dir,
-                e=self.total_training_iterations,
+                e=self.episodes,
             )
         self.run_eval_episode(
             env=self.env_real,
