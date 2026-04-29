@@ -1,4 +1,4 @@
-# Sim2Real Benchmark
+# Sim2Real Traffic Signal Control Benchmark
 
 # Installation
 
