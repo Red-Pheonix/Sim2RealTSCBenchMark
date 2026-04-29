@@ -1,5 +1,5 @@
 trainer:
-  episodes: 0
+  episodes: 5
 
 sim2real:
   method: domain_randomization
@@ -18,14 +18,14 @@ sim2real:
         path: ["noise", "poisson_config", "lambda"]
         distribution: uniform
         uniform_config:
-          low: 0.0
-          high: 0.0
+          low: 5.0
+          high: 5.0
       lane_failure_probability:
         path: ["disable_sensor", "lane_level", "probability"]
         distribution: uniform
         uniform_config:
           low: 0.0
-          high: 0.0
+          high: 0.5
       intersection_failure_probability:
         path: ["disable_sensor", "intersection_level", "probability"]
         distribution: uniform

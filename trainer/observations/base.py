@@ -137,6 +137,7 @@ class BaseObservationTrainer(BaseTrainer):
         self.method = self.sim2real_config.get(
             "method", cmd_args.get("obs_model", "domain_randomization")
         )
+        self.real_world_name = cmd_args.get("real_world", "cityflow")
         self.load_pretrained = self.sim2real_config.get("load_pretrained", False)
         self.domain_randomization_config = self.sim2real_config.get(
             "domain_randomization", {}
@@ -404,15 +405,31 @@ class BaseObservationTrainer(BaseTrainer):
             ),
         )
 
-        self.world_real = Registry.mapping["world_mapping"]["sumo"](
-            self.sumo_path,
-            **self.build_world_kwargs(
-                observation_transforms=self.real_observation_transforms,
-                include_interface=True,
-            ),
-            detection_zone_m=detection_zone_m,
-            sumo_add=None,
-        )
+        if self.real_world_name == "cityflow":
+            self.world_real = Registry.mapping["world_mapping"]["cityflow"](
+                self.cityflow_path,
+                thread_num,
+                **self.build_world_kwargs(
+                    observation_transforms=self.real_observation_transforms,
+                    include_interface=False,
+                ),
+                detection_zone_m=detection_zone_m,
+            )
+        elif self.real_world_name == "sumo":
+            self.world_real = Registry.mapping["world_mapping"]["sumo"](
+                self.sumo_path,
+                **self.build_world_kwargs(
+                    observation_transforms=self.real_observation_transforms,
+                    include_interface=True,
+                ),
+                detection_zone_m=detection_zone_m,
+                sumo_add=None,
+            )
+        else:
+            raise ValueError(
+                f"Unsupported observation real world: {self.real_world_name}. "
+                "Expected 'cityflow' or 'sumo'."
+            )
 
     def create_agent_world(self, world):
         agents = []
