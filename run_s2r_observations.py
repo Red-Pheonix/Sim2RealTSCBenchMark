@@ -21,11 +21,11 @@ parser.add_argument('--debug', type=bool, default=True)
 parser.add_argument('--interface', type=str, default="libsumo", choices=['libsumo', 'traci'], help="interface type")
 parser.add_argument('--delay_type', type=str, default="apx", choices=['apx', 'real'], help="method of calculating delay")
 parser.add_argument('--real_setting', type=str, default="default", help="observation setting file name under configs/sim2real_observations/settings")
-parser.add_argument('--obs_model', type=str, default="default", help="observation transfer method file name under configs/sim2real_observations")
+parser.add_argument('--obs_model', type=str, default="domain_randomization", help="observation transfer method file name under configs/sim2real_observations")
 
 parser.add_argument('-t', '--task', type=str, default="sim2real_observations", help="task type to run")
 parser.add_argument('-a', '--agent', type=str, default="dqn", help="agent type of agents in RL environment")
-parser.add_argument('-w', '--world', type=str, default="cityflow", choices=['cityflow'], help="simulator type")
+parser.add_argument('-w', '--world', type=str, default="cityflow", choices=['cityflow', 'sumo'], help="simulator type")
 parser.add_argument('-n', '--network', type=str, default="cityflow1x1", help="network name")
 parser.add_argument('-d', '--dataset', type=str, default='onfly', help='type of dataset in training process')
 
@@ -49,6 +49,11 @@ class Runner:
 
         interface.Command_Setting_Interface(self.config)
         interface.Logger_param_Interface(self.config)
+
+        self.config['command']['world'] = 'sumo'
+        interface.World_param_Interface(self.config)
+
+        self.config['command']['world'] = 'cityflow'
         interface.World_param_Interface(self.config)
 
         interface.Logger_path_Interface(self.config)
@@ -63,12 +68,10 @@ class Runner:
 
         Registry.mapping['trainer_mapping']['setting'].param['network'] = self.config['command']['network']
 
-        self.trainer = Registry.mapping['trainer_mapping'][
-            Registry.mapping['command_mapping']['setting'].param['task']
-        ](logger)
         self.task = Registry.mapping['task_mapping'][
             Registry.mapping['command_mapping']['setting'].param['task']
-        ](self.trainer)
+        ](logger)
+        self.trainer = self.task.trainer
         start_time = time.time()
         self.task.run()
         logger.info(f"Total time taken: {time.time() - start_time}")

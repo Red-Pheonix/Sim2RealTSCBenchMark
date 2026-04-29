@@ -115,43 +115,45 @@ def build_config(args):
         duplicates_warning.update(method_duplicates)
         duplicates_warning.update(merge_duplicates)
     elif args.task == 'sim2real_observations':
+        base_name = os.path.join('./configs', args.task, 'base.yml')
+        config, duplicates_warning = load_config(base_name)
+
         agent_name = os.path.join('./configs', args.task, "models", f'{args.agent}.yml')
-        config, duplicates_warning = load_config(agent_name)
-        config.setdefault('sim2real', {})
-        config.setdefault('trainer', {})
-        sim_config = {}
-        real_config = {}
-        obs_model_config = {}
+        agent_config, agent_duplicates = load_config(agent_name)
+        config, merge_duplicates = merge_dicts(config, agent_config)
+        duplicates_warning.update(agent_duplicates)
+        duplicates_warning.update(merge_duplicates)
+
+        obs_model_name = getattr(args, "obs_model", None) or "domain_randomization"
+        if obs_model_name == "default":
+            obs_model_name = config.get('sim2real', {}).get(
+                'method', 'domain_randomization'
+            )
+            args.obs_model = obs_model_name
+
+        method_name = os.path.join('./configs', args.task, f'{obs_model_name}.yml')
+        method_config, method_duplicates = load_config(method_name)
+        config, merge_duplicates = merge_dicts(config, method_config)
+        duplicates_warning.update(method_duplicates)
+        duplicates_warning.update(merge_duplicates)
 
         sim_setting_name = os.path.join(
             './configs', args.task, 'settings', 'default.yml'
         )
-        sim_setting_config, duplicates_warning = load_config(sim_setting_name)
+        sim_setting_config, setting_duplicates = load_config(sim_setting_name)
+        duplicates_warning.update(setting_duplicates)
         sim_config = sim_setting_config.get('sim2real', {})
-
-        obs_model_name = getattr(args, "obs_model", "default")
-        if obs_model_name != "default":
-            obs_model_config_name = os.path.join(
-                './configs', args.task, f'{obs_model_name}.yml'
-            )
-            obs_model_full_config, duplicates_warning = load_config(obs_model_config_name)
-            obs_model_config = obs_model_full_config.get('sim2real', {})
-            trainer_overrides = obs_model_full_config.get('trainer', {})
-            config['trainer'], trainer_duplicates = merge_dicts(
-                config['trainer'], trainer_overrides
-            )
-            duplicates_warning.update({'trainer': trainer_duplicates})
 
         real_setting_name = os.path.join(
             './configs', args.task, 'settings', f'{args.real_setting}.yml'
         )
-        real_setting_config, duplicates_warning = load_config(real_setting_name)
+        real_setting_config, setting_duplicates = load_config(real_setting_name)
+        duplicates_warning.update(setting_duplicates)
         real_config = real_setting_config.get('sim2real', {})
 
         config['sim2real'].update(real_config)
         config['sim2real']['sim_config'] = sim_config
         config['sim2real']['real_config'] = real_config
-        config['sim2real']['obs_model_config'] = obs_model_config
     elif args.task == 'sim2real_actions':
         agent_name = os.path.join('./configs', args.task, "models", f'{args.agent}.yml')
         config, duplicates_warning = load_config(agent_name)

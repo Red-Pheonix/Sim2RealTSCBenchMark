@@ -3,12 +3,12 @@ import numpy as np
 from tqdm import tqdm
 
 from common.registry import Registry
-from trainer.sim2real_observations_trainer import Sim2RealObservationsTrainer
+from .base import BaseObservationTrainer
 from utils.logger import load_config
 
 
 @Registry.register_trainer("sim2real_observations_maml")
-class Sim2RealObservationsMAMLTrainer(Sim2RealObservationsTrainer):
+class ObservationMAMLTrainer(BaseObservationTrainer):
     """
     MAML trainer for observation-based sim2real experiments.
 
@@ -19,7 +19,7 @@ class Sim2RealObservationsMAMLTrainer(Sim2RealObservationsTrainer):
     def __init__(self, logger, gpu=0, cpu=False, name="sim2real_observations"):
         super().__init__(logger=logger, gpu=gpu, cpu=cpu, name=name)
 
-        self.maml_config = self.sim2real_config["obs_model_config"]["maml"]
+        self.maml_config = self.sim2real_config["maml"]
         self.rollout_test = self.maml_config.get("rollout_test", True)
         self.target_update_interval = self.maml_config.get("target_update_interval", 1)
         self.meta_update_interval = self.maml_config.get("meta_update_interval", 10)
