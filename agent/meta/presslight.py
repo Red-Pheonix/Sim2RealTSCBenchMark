@@ -72,20 +72,20 @@ class MetaPressLightAgent(PressLightAgent):
         return random.sample(self.replay_buffer, batch_size)
 
     def compute_training_loss(self, batch_size, model):
-        self.train()
+        # self.train()
         self.meta_learner = self.model
-        # samples = self.sample_replay_batch(batch_size)
-        # if samples is None:
-        #     return None
+        samples = self.sample_replay_batch(batch_size)
+        if samples is None:
+            return None
 
-        # batch_t, batch_tp, rewards, actions = self._batchwise(samples)
+        batch_t, batch_tp, rewards, actions = self._batchwise(samples)
 
-        # out = self.target_model(batch_tp, train=False)
-        # target = rewards + self.gamma * torch.max(out, dim=1)[0]
-        # target_f = model(batch_t, train=False)
-        # for idx, action in enumerate(actions):
-        #     target_f[idx][action] = target[idx]
-        # return self.criterion(model(batch_t, train=True), target_f)
+        out = self.target_model(batch_tp, train=False)
+        target = rewards + self.gamma * torch.max(out, dim=1)[0]
+        target_f = model(batch_t, train=False)
+        for idx, action in enumerate(actions):
+            target_f[idx][action] = target[idx]
+        return self.criterion(model(batch_t, train=True), target_f)
 
     def compute_support_loss(self):
         learner = self.maml.clone()

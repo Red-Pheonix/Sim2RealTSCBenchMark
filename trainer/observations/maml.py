@@ -204,24 +204,24 @@ class ObservationMAMLTrainer(BaseObservationTrainer):
                 episode=episode,
                 desc=f"MAML Support Epoch {episode}",
                 rollout_label="support",
-                use_meta_policy=True,
+                use_meta_policy=False,
             )
-            sim_steps = self.rollout_episode(
-                env=self.env_sim,
-                metric=self.metric_sim,
-                world=self.world_sim,
-                agents=self.agents_sim,
-                episode=episode,
-                desc=f"MAML Support Epoch {episode}",
-                rollout_label="support",
-                use_meta_policy=True,
-            )
+            # sim_steps = self.rollout_episode(
+            #     env=self.env_sim,
+            #     metric=self.metric_sim,
+            #     world=self.world_sim,
+            #     agents=self.agents_sim,
+            #     episode=episode,
+            #     desc=f"MAML Support Epoch {episode}",
+            #     rollout_label="support",
+            #     use_meta_policy=True,
+            # )
 
             # reset support loss for every task
             support_losses = torch.zeros(len(self.agents_sim))            
             for i, sim_agent in enumerate(self.agents_sim):
-                # support_loss = sim_agent.compute_support_loss()
-                support_loss = torch.zeros(1)
+                support_loss = sim_agent.compute_support_loss()
+                # support_loss = torch.zeros(1)
                 support_losses[i] = support_loss
                 
             support_loss = support_losses.mean().detach().cpu().item()
@@ -250,7 +250,7 @@ class ObservationMAMLTrainer(BaseObservationTrainer):
 
             for i, sim_agent in enumerate(self.agents_sim):
                 query_loss = sim_agent.compute_query_loss()
-                # query_losses[i] += query_loss
+                query_losses[i] += query_loss
 
 
             if (
@@ -258,8 +258,7 @@ class ObservationMAMLTrainer(BaseObservationTrainer):
                 or episode == self.episodes - 1
             ):
                 for i, sim_agent in enumerate(self.agents_sim):
-                    # query_losses[i].backward()
-                    pass
+                    query_losses[i].backward()
                     sim_agent.apply_meta_update()
                     sim_agent.zero_meta_grad()
                 
