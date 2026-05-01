@@ -42,12 +42,12 @@ class IPPO_pfrl(RLAgent):
         self.sub_agents = 1
         self.rank = rank
         self.device = torch.device('cpu')
-        self.buffer_size = Registry.mapping['trainer_mapping']['trainer_setting'].param['buffer_size']
+        self.buffer_size = Registry.mapping['trainer_mapping']['setting'].param['buffer_size']
         self.replay_buffer = self.replay_buffer = deque(maxlen=self.buffer_size)
 
-        self.phase = Registry.mapping['world_mapping']['traffic_setting'].param['phase']
-        self.one_hot = Registry.mapping['world_mapping']['traffic_setting'].param['one_hot']
-        self.model_dict = Registry.mapping['model_mapping']['model_setting'].param
+        self.phase = Registry.mapping["model_mapping"]["setting"].param["phase"]
+        self.one_hot = Registry.mapping["model_mapping"]["setting"].param["one_hot"]
+        # self.model_dict = Registry.mapping['model_mapping']['model_setting'].param
 
         # get generator for each DQNAgent
         inter_id = self.world.intersection_ids[self.rank]
@@ -60,7 +60,9 @@ class IPPO_pfrl(RLAgent):
                                                      in_only=True, average='all', negative=True)
         self.action_space = gym.spaces.Discrete(len(self.world.id2intersection[inter_id].phases))
 
-        self.learning_rate = Registry.mapping['model_mapping']['model_setting'].param['learning_rate']
+        self.learning_rate = Registry.mapping["model_mapping"]["setting"].param[
+            "learning_rate"
+        ]
 
         if self.phase:
             if self.one_hot:
@@ -74,8 +76,8 @@ class IPPO_pfrl(RLAgent):
         self.optimizer = None
         self._build_model()
 
-    def __repr__():
-        return self.model
+    def __repr__(self):
+        return self.model.__repr__()
 
     def reset(self):
         inter_id = self.world.intersection_ids[self.rank]
@@ -133,6 +135,8 @@ class IPPO_pfrl(RLAgent):
         else:
             obs = ob
         obs = torch.tensor(obs, dtype=torch.float32)
+        if getattr(self.agent, "batch_last_state", None) is None:
+            return
         self.agent.observe(obs, reward, done, False)
 
     def train(self):
@@ -207,7 +211,8 @@ class IPPO_pfrl(RLAgent):
         if model_dir:
             path = model_dir
         else:
-            path = os.path.join(Registry.mapping['logger_mapping']['output_path'].path, 'model')
+            path = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model')
+            # path = os.path.join(Registry.mapping['logger_mapping']['output_path'].path, 'model')
         if not os.path.exists(path):
             os.makedirs(path)
         if e is not None:

@@ -715,6 +715,9 @@ class World(object):
         for lane in self.all_lanes:
             lane_waiting_time[lane] = 0
             for vehicle in lane_vehicles[lane]:
+                # filter out shadow vehicle
+                if "shadow" in vehicle:
+                    continue
                 lane_waiting_time[lane] += vehicle_waiting_time[vehicle]
         return lane_waiting_time
 
