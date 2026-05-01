@@ -356,6 +356,8 @@ class FRAP_DQNAgent(RLAgent):
         self.model.load_state_dict(torch.load(model_name))
         self.target_model = FRAP(self.dic_agent_conf, self.dic_phase_expansion, self.num_actions, self.phase_pairs, self.comp_mask)
         self.target_model.load_state_dict(torch.load(model_name))
+        self.optimizer = torch.optim.Adam(
+            self.model.parameters(), lr=self.learning_rate, eps=1e-7)
 
     def save_model(self, model_dir="", e=None):
         '''

@@ -323,11 +323,13 @@ class MADDPGAgent(RLAgent):
         else:
             model_p_name = os.path.join(model_dir, 'model_p', f'{self.rank}.pt')
             model_q_name = os.path.join(model_dir, 'model_q', f'{self.rank}.pt')
-        self.model_q = self._build_model(self.q_length, 1)
-        self.model_p = self._build_model(self.ob_length, self.action_space.n)
-        self.model_q.load_state_dict(torch.load(model_q_name))
-        self.model_p.load_state_dict(torch.load(model_p_name))
+        self.q_model = self._build_model(self.q_length, 1)
+        self.p_model = self._build_model(self.ob_length, self.action_space.n)
+        self.q_model.load_state_dict(torch.load(model_q_name))
+        self.p_model.load_state_dict(torch.load(model_p_name))
         self.sync_network()
+        self.q_optimizer = optim.Adam(self.q_model.parameters(), lr=self.learning_rate, eps=1e-07)
+        self.p_optimizer = optim.Adam(self.p_model.parameters(), lr=self.learning_rate * 0.1, eps=1e-07)
 
     def save_model(self, model_dir="", e=None):
         if model_dir:

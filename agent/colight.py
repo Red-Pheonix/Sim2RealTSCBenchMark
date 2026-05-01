@@ -30,7 +30,7 @@ class CoLightAgent(RLAgent):
         """
         #  general setting of world and model structure
         # TODO: different phases matching
-        self.buffer_size = Registry.mapping['trainer_mapping']['trainer_setting'].param['buffer_size']
+        self.buffer_size = Registry.mapping['trainer_mapping']['setting'].param['buffer_size']
         self.replay_buffer = deque(maxlen=self.buffer_size)
 
         self.graph = Registry.mapping['world_mapping']['graph_setting'].graph
@@ -40,9 +40,9 @@ class CoLightAgent(RLAgent):
         self.edge_idx = torch.tensor(self.graph['sparse_adj'].T, dtype=torch.long)  # source -> target
 
         #  model parameters
-        self.phase = Registry.mapping['world_mapping']['traffic_setting'].param['phase']
-        self.one_hot = Registry.mapping['world_mapping']['traffic_setting'].param['one_hot']
-        self.model_dict = Registry.mapping['model_mapping']['model_setting'].param
+        self.phase = Registry.mapping['model_mapping']['setting'].param['phase']
+        self.one_hot = Registry.mapping['model_mapping']['setting'].param['one_hot']
+        self.model_dict = Registry.mapping['model_mapping']['setting'].param
 
         #  get generator for CoLightAgent
         observation_generators = []
@@ -101,28 +101,29 @@ class CoLightAgent(RLAgent):
         self.phase_generator = phasing_generators
 
         # TODO: add irregular control of signals in the future
-        self.action_space = gym.spaces.Discrete(len(self.world.intersections[0].phases))
-
+        self.phase_lengths = np.array([len(i.phases) for i in self.world.intersections])
+        self.action_space = gym.spaces.Discrete(max(self.phase_lengths))
+        min_ob_length = max([ob[1].ob_length for ob in self.ob_generator])
         if self.phase:
             # TODO: irregular ob and phase in the future
             if self.one_hot:
-                self.ob_length = self.ob_generator[0][1].ob_length + len(self.world.intersections[0].phases)
+                self.ob_length = min_ob_length + len(self.world.intersections[0].phases)
             else:
-                self.ob_length = self.ob_generator[0][1].ob_length + 1
+                self.ob_length = min_ob_length + 1
         else:
-            self.ob_length = self.ob_generator[0][1].ob_length
+            self.ob_length = min_ob_length
 
-        self.get_attention = Registry.mapping['logger_mapping']['logger_setting'].param['get_attention']
+        self.get_attention = Registry.mapping['logger_mapping']['setting'].param['attention']
         # train parameters
         self.rank = rank
-        self.gamma = Registry.mapping['model_mapping']['model_setting'].param['gamma']
-        self.grad_clip = Registry.mapping['model_mapping']['model_setting'].param['grad_clip']
-        self.epsilon = Registry.mapping['model_mapping']['model_setting'].param['epsilon']
-        self.epsilon_decay = Registry.mapping['model_mapping']['model_setting'].param['epsilon_decay']
-        self.epsilon_min = Registry.mapping['model_mapping']['model_setting'].param['epsilon_min']
-        self.learning_rate = Registry.mapping['model_mapping']['model_setting'].param['learning_rate']
-        self.vehicle_max = Registry.mapping['model_mapping']['model_setting'].param['vehicle_max']
-        self.batch_size = Registry.mapping['model_mapping']['model_setting'].param['batch_size']
+        self.gamma = Registry.mapping['model_mapping']['setting'].param['gamma']
+        self.grad_clip = Registry.mapping['model_mapping']['setting'].param['grad_clip']
+        self.epsilon = Registry.mapping['model_mapping']['setting'].param['epsilon']
+        self.epsilon_decay = Registry.mapping['model_mapping']['setting'].param['epsilon_decay']
+        self.epsilon_min = Registry.mapping['model_mapping']['setting'].param['epsilon_min']
+        self.learning_rate = Registry.mapping['model_mapping']['setting'].param['learning_rate']
+        self.vehicle_max = Registry.mapping['model_mapping']['setting'].param['vehicle_max']
+        self.batch_size = Registry.mapping['model_mapping']['setting'].param['batch_size']
 
         self.model = self._build_model()
         self.target_model = self._build_model()
@@ -191,13 +192,11 @@ class CoLightAgent(RLAgent):
     def get_ob(self):
         x_obs = []  # sub_agents * lane_nums,
         for i in range(len(self.ob_generator)):
-            x_obs.append((self.ob_generator[i][1].generate()) / self.vehicle_max)
-        # construct edge information.
-        length = set([len(i) for i in x_obs])
-        if len(length) == 1: # each intersections may has  different lane nums
-            x_obs = np.array(x_obs, dtype=np.float32)
-        else:
-            x_obs = [np.expand_dims(x,axis=0) for x in x_obs]
+            ob = self.ob_generator[i][1].generate()/ self.vehicle_max
+            ob = np.pad(ob, (0, self.ob_length - ob.shape[-1] ))
+            x_obs.append(ob)
+            
+        x_obs = np.array(x_obs, dtype=np.float32)
         return x_obs
 
     def get_reward(self):
@@ -205,7 +204,7 @@ class CoLightAgent(RLAgent):
         rewards = []  # sub_agents
         for i in range(len(self.reward_generator)):
             rewards.append(self.reward_generator[i][1].generate())
-        rewards = np.squeeze(np.array(rewards)) * 12
+        rewards = np.squeeze(np.array(rewards, dtype=np.float32)) * 12
         return rewards
 
     def get_phase(self):
@@ -223,9 +222,12 @@ class CoLightAgent(RLAgent):
         return: value(one intersection) or [intersections,](multiple intersections)
         """
         queue = []
-        for i in range(len(self.queue)):
-            queue.append((self.queue[i][1].generate()))
-        tmp_queue = np.squeeze(np.array(queue))
+        for item in self.queue:
+            item = item[1].generate()
+            item = np.pad(item, (0, self.ob_length - item.shape[-1]))
+            queue.append(item)
+            
+        tmp_queue = np.squeeze(np.array(queue, dtype=np.float32))
         queue = np.sum(tmp_queue, axis=1 if len(tmp_queue.shape)==2 else 0)
         return queue
 
@@ -233,7 +235,7 @@ class CoLightAgent(RLAgent):
         delay = []
         for i in range(len(self.delay)):
             delay.append((self.delay[i][1].generate()))
-        delay = np.squeeze(np.array(delay))
+        delay = np.squeeze(np.array(delay, dtype=np.float32))
         return delay # [intersections,]
 
     def get_action(self, ob, phase, test=False):
@@ -258,20 +260,36 @@ class CoLightAgent(RLAgent):
             actions = self.model(x=dp.x, edge_index=dp.edge_index, train=False)
             att = None
             actions = actions.clone().detach().numpy()
-            return np.argmax(actions, axis=1), att  # [batch, agents], [batch, agents, nv, neighbor]
+            # action = np.argmax(actions, axis=1)
+            action_list = []
+            for action_vec, phase_length in zip(actions, self.phase_lengths):
+                action_list.append(np.argmax(action_vec[0:phase_length]))
+            # action = np.clip(action, 0, self.phase_lengths - 1)
+            action = np.array(action_list)
+            # action = np.clip(action, 0, self.phase_lengths - 1)
+            return action, att  # [batch, agents], [batch, agents, nv, neighbor]
         else:
             actions = self.model(x=dp.x, edge_index=dp.edge_index, train=False)
             actions = actions.clone().detach().numpy()
-            return np.argmax(actions, axis=1)  # [batch, agents] TODO: check here
+            
+            action_list = []
+            for action_vec, phase_length in zip(actions, self.phase_lengths):
+                action_list.append(np.argmax(action_vec[0:phase_length]))
+            # action = np.clip(action, 0, self.phase_lengths - 1)
+            action = np.array(action_list)
+            
+            return action  # [batch, agents] TODO: check here
 
     def sample(self):
-        return np.random.randint(0, self.action_space.n, self.sub_agents)
+        action = np.random.randint(0, self.action_space.n, self.sub_agents)
+        action = np.clip(action, 0, self.phase_lengths - 1)
+        return action
 
     def _build_model(self):
-        model = ColightNet(self.ob_length, self.action_space.n, **self.model_dict)
+        model = ColightNet(self.ob_length, self.action_space.n, self.phase_lengths, **self.model_dict)
         return model
 
-    def remember(self, last_obs, last_phase, actions, rewards, obs, cur_phase, key):
+    def remember(self, last_obs, last_phase, actions, actions_prob, rewards, obs, cur_phase, done, key):
         self.replay_buffer.append((key, (last_obs, last_phase, actions, rewards, obs, cur_phase)))
 
     def _batchwise(self, samples):
@@ -336,12 +354,15 @@ class CoLightAgent(RLAgent):
         self.model.load_state_dict(torch.load(model_name))
         self.target_model = self._build_model()
         self.target_model.load_state_dict(torch.load(model_name))
+        self.optimizer = optim.RMSprop(self.model.parameters(),
+                                       lr=self.learning_rate,
+                                       alpha=0.9, centered=False, eps=1e-7)
 
     def save_model(self, model_dir="", e=None):
         if model_dir:
             path = model_dir
         else:
-            path = os.path.join(Registry.mapping['logger_mapping']['output_path'].path, 'model')
+            path = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model')
         if not os.path.exists(path):
             os.makedirs(path)
         if e is not None:
@@ -352,9 +373,10 @@ class CoLightAgent(RLAgent):
 
 
 class ColightNet(nn.Module):
-    def __init__(self, input_dim, output_dim, **kwargs):
+    def __init__(self, input_dim, output_dim, phase_lengths, **kwargs):
         super(ColightNet, self).__init__()
         self.model_dict = kwargs
+        self.batch_size = self.model_dict['batch_size']
         self.action_space = gym.spaces.Discrete(output_dim)
         self.features = input_dim
         self.module_list = nn.ModuleList()
@@ -384,20 +406,43 @@ class ColightNet(nn.Module):
             out = nn.Linear(block.d_out, self.action_space.n)
         name = f'output'
         output_dict.update({name: out})
+        
+        # make mask
+        unpadded_phase_mask = [torch.ones(length, dtype=torch.bool) for length in phase_lengths]
+        phase_mask = torch.nn.utils.rnn.pad_sequence(unpadded_phase_mask, batch_first=True)
+        mask_layer = MaskedOutput(mask=phase_mask, batch_size=self.batch_size, action_space=self.action_space)
+        output_dict.update({'out_mask': mask_layer})
+
         self.output_layer = nn.Sequential(output_dict)
 
     def forward(self, x, edge_index, train=True):
         h = self.embedding_MLP.forward(x, train)
         # TODO: implement att
-        for mdl in self.module_list:
-            h = mdl.forward(h, edge_index, train)
+
         if train:
+            for mdl in self.module_list:
+                h = mdl.forward(h, edge_index, train)
             h = self.output_layer(h)
         else:
             with torch.no_grad():
+                for mdl in self.module_list:
+                    h = mdl.forward(h, edge_index, train)
                 h = self.output_layer(h)
         return h
 
+class MaskedOutput(nn.Module):
+    def __init__(self, mask, batch_size, action_space):
+        super(MaskedOutput, self).__init__()
+        self.batch_size = batch_size
+        self.mask = mask
+        self.action_space = action_space
+
+    def forward(self, x):
+        # Apply the mask to the output
+        # x = torch.exp(x)
+        masked_output = x.reshape(-1 ,self.mask.shape[0], self.action_space.n) * self.mask
+        masked_output = masked_output.reshape(-1, self.mask.shape[-1])
+        return masked_output
 
 class Embedding_MLP(nn.Module):
     def __init__(self, in_size, layers):
@@ -504,7 +549,7 @@ class MultiHeadAttModel(MessagePassing):
         out = torch.mul(hidden_neighbor_repr, alpha_i_expand).mean(0)
 
         # TODO: attention ouput in the future
-        self.att_list.append(alpha_i)  # [64, 16]
+        # self.att_list.append(alpha_i)  # [64, 16]
         return out
 
     def get_att(self):
