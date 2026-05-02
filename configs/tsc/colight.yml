@@ -4,6 +4,9 @@ includes:
 
 model:
   name: colight
+  train_model: True
+  test_model: False
+  load_model: False
   graphic: True
   vehicle_max: 1
   learning_rate: 0.001

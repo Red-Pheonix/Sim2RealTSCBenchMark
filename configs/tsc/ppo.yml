@@ -4,6 +4,9 @@ includes:
 
 model:
   name: ppo
+  train_model: True
+  test_model: False
+  load_model: False
   graphic: False
   vehicle_max: 1
   learning_rate: 0.001
