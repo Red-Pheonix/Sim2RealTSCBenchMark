@@ -83,16 +83,27 @@ class IPPO_pfrl(RLAgent):
         inter_id = self.world.intersection_ids[self.rank]
         inter_obj = self.world.id2intersection[inter_id]
         self.inter = inter_obj
-        self.ob_generator_lane = LaneVehicleGenerator(self.world, inter_obj, ['lane_count'],
+        self.ob_generator = LaneVehicleGenerator(self.world, inter_obj, ['lane_count'],
                                                       in_only=True, average=None)
-        self.ob_generator_wait = LaneVehicleGenerator(self.world, inter_obj, ['lane_waiting_count'],
-                                                      in_only=True, average=None)
-        self.ob_generator_wait_time = LaneVehicleGenerator(self.world, inter_obj, ['lane_waiting_time_count'],
-                                                           in_only=True, average=None)
+        # self.ob_generator_wait = LaneVehicleGenerator(self.world, inter_obj, ['lane_waiting_count'],
+        #                                               in_only=True, average=None)
+        # self.ob_generator_wait_time = LaneVehicleGenerator(self.world, inter_obj, ['lane_waiting_time_count'],
+        #                                                    in_only=True, average=None)
         self.phase_generator = IntersectionPhaseGenerator(self.world, inter_obj, ["phase"],
                                                           targets=["cur_phase"], negative=False)
         self.reward_generator = LaneVehicleGenerator(self.world, inter_obj, ["lane_waiting_time_count"],
                                                      in_only=True, average='all', negative=True)
+        self.queue = LaneVehicleGenerator(
+            self.world, inter_obj, ["lane_waiting_count"], in_only=True, negative=False
+        )
+        self.delay = LaneVehicleGenerator(
+            self.world,
+            inter_obj,
+            ["lane_delay"],
+            in_only=True,
+            average="all",
+            negative=False,
+        )
         # self.vehicles_generator = IntersectionVehicleGenerator(self.world, inter_obj, ["lane_vehicles"])
     def get_ob(self):
         x_obs = []
@@ -124,7 +135,7 @@ class IPPO_pfrl(RLAgent):
             obs = ob
         obs = torch.tensor(obs, dtype=torch.float32)
         action = self.agent.act(obs)
-        return action
+        return np.array([action])
 
     def do_observe(self, ob, phase, reward, done):
         if self.phase:

@@ -64,10 +64,11 @@ class Runner:
         self.config['command']['world'] = 'cityflow'
         interface.World_param_Interface(self.config)
 
-        # else:
-        #     raise ValueError
+        if self.config['model'].get('graphic', False):
+            param = Registry.mapping['world_mapping']['setting'].param
+            roadnet_path = param['dir'] + param['roadnetFile']
+            interface.Graph_World_Interface(roadnet_path)
 
-        # interface.Graph_World_Interface(roadnet_path)  # register graphic parameters in Registry class
         interface.Logger_path_Interface(self.config)
         # make output dir if not exist
         if not os.path.exists(Registry.mapping['logger_mapping']['path'].path):
