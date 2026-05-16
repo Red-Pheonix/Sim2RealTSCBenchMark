@@ -1,7 +1,7 @@
 sim2real:
   transform_seed: 0
   detection_zone:
-    enabled: False
+    enabled: True
     distance_m: 100
   noise:
     enabled: True
@@ -24,13 +24,13 @@ sim2real:
     round: False
     cast_int: False
   disable_sensor:
-    enabled: False
+    enabled: True
     features: ["lane_count", "lane_waiting_count", "lane_waiting_time_count", "lane_delay"]
     mask_mode: episode # run, episode, step
     fill_value: 0.0
     lane_level:
       enabled: True
-      probability: 0.2
+      probability: 0.05
     intersection_level:
       enabled: False
       probability: 1.0

@@ -534,13 +534,13 @@ class BaseObservationTrainer(BaseTrainer):
     def run_eval_episode(self, *, env, metric, world, agents, desc):
         metric.clear()
         for agent in agents:
+            agent.reset()
             if env is self.env_sim and self.domain_randomization_enabled:
                 self.configure_observation_generator(
                     agent, self.current_sim_observation_config
                 )
             elif env is self.env_real:
                 self.configure_observation_generator(agent, self.real_observation_config)
-            agent.reset()
         self.reset_observation_transforms(world)
         obs = env.reset()
 

@@ -8,7 +8,7 @@ sim2real:
     seed: 0
     features: ["lane_count", "lane_waiting_count", "lane_waiting_time_count", "lane_delay"]
     probability: 1.0
-    distribution: poisson # gaussian, poisson
+    distribution: gaussian # gaussian, poisson
     gaussian_config:
       mean: 0.0
       std: 1.0
