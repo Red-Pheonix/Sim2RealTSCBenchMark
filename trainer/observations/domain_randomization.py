@@ -165,13 +165,26 @@ class ObservationDomainRandomizationTrainer(BaseObservationTrainer):
                 sim_loss,
             )
 
+            if self.should_run_real_eval(episode):
+                self.train_test(episode)
+
         self.save_agents(self.agents_sim, self.model_dir)
+
+    def should_run_real_eval(self, episode):
+        return (
+            self.real_eval_interval > 0
+            and episode > 0
+            and episode % self.real_eval_interval == 0
+        )
+
+    def train_test(self, episode):
         self.load_agents(self.agents_real, self.model_dir)
         self.run_eval_episode(
             env=self.env_real,
             metric=self.metric_real,
             world=self.world_real,
             agents=self.agents_real,
-            desc="Post-Train Real Eval",
+            desc=f"Real Eval Epoch {episode}",
         )
-        self.log_metrics("TRAIN_REAL", self.episodes, self.metric_real, 100)
+        self.log_metrics("TEST_REAL", episode, self.metric_real, 100)
+        return self.metric_real.real_average_travel_time()

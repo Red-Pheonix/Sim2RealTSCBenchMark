@@ -125,6 +125,7 @@ class BaseObservationTrainer(BaseTrainer):
         self.update_model_rate = trainer_args["update_model_rate"]
         self.update_target_rate = trainer_args["update_target_rate"]
         self.test_when_train = trainer_args["test_when_train"]
+        self.real_eval_interval = trainer_args.get("real_eval_interval", 0)
         self.yellow_time = trainer_args["yellow_length"]
         sim2real_setting = Registry.mapping.get("sim2real_mapping", {}).get("setting")
         self.sim2real_config = (
