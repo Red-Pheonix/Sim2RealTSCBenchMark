@@ -9,7 +9,6 @@ from .transitions import (
 from .observations import (
     BaseObservationTrainer,
     ObservationDomainRandomizationTrainer,
-    ObservationMAMLTrainer,
 )
 from .sim2real_actions_trainer import Sim2RealActionsTrainer
 from .sim2real_rewards_trainer import Sim2RealRewardsTrainer

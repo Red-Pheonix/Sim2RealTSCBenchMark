@@ -1,3 +1,2 @@
 from .base import BaseObservationTrainer
 from .domain_randomization import ObservationDomainRandomizationTrainer
-from .maml import ObservationMAMLTrainer
