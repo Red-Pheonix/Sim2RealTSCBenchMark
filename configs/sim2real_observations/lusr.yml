@@ -1,10 +1,31 @@
 trainer:
-  episodes: 300
+  episodes: 200
   real_eval_interval: 1
 
 sim2real:
-  method: domain_randomization
+  method: lusr
   load_pretrained: True
+  lusr:
+    # If True, retrain encoders even when pretrained/lusr/{network}/ has cached weights.
+    force_retrain: False
+
+    # Per-intersection VAE shape.
+    content_dim: 8
+    class_dim: 4
+    hidden: 128
+
+    # Stage 1: one rollout per sampled DR config, all dumped into the VAE dataset.
+    pretrain_episodes: 100
+
+    # Stage 1 VAE training (per-intersection).
+    epochs: 300
+    batch_size: 64
+    beta: 10.0
+    bloss_coef: 1.0
+    lr: 0.0001
+
+  # Stage 1 reuses the existing observation DR distribution to sample domains.
+  # Same parameter schema as configs/sim2real_observations/domain_randomization.yml.
   domain_randomization:
     seed: 0
     parameters:

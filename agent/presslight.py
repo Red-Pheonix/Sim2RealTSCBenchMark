@@ -220,6 +220,16 @@ class PressLightAgent(RLAgent):
         """
         return np.random.randint(0, self.action_space.n, self.sub_agents)
 
+    def rebuild_model(self, ob_length):
+        """Swap in a fresh Q-net sized for `ob_length`, reset the target net to
+        match, rebuild the optimizer, and clear the replay buffer."""
+        self.ob_length = ob_length
+        self.model = self._build_model()
+        self.target_model = self._build_model()
+        self.update_target_network()
+        self.optimizer = self._build_optimizer()
+        self.replay_buffer.clear()
+
     def _build_model(self):
         """
         _build_model

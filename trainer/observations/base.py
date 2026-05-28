@@ -143,10 +143,6 @@ class BaseObservationTrainer(BaseTrainer):
         self.domain_randomization_config = self.sim2real_config.get(
             "domain_randomization", {}
         )
-        self.domain_randomization_enabled = (
-            self.method == "domain_randomization"
-            and self.domain_randomization_config.get("enabled", False)
-        )
         self.randomized_observation_parameters = (
             self.build_randomized_observation_parameters()
         )
@@ -210,10 +206,6 @@ class BaseObservationTrainer(BaseTrainer):
 
     def build_domain_randomization_config(self):
         sim_config = copy.deepcopy(self.sim_observation_config)
-
-        if not self.domain_randomization_enabled:
-            return sim_config
-
         sim_config["detection_zone"]["enabled"] = True
         sim_config["noise"]["enabled"] = True
         sim_config["disable_sensor"]["enabled"] = True
@@ -223,6 +215,32 @@ class BaseObservationTrainer(BaseTrainer):
             sampled_value = parameter.sample(self.sim_observation_rng)
             parameter.apply(sim_config, sampled_value)
         return sim_config
+
+    def apply_new_sim_domain(self):
+        self.current_sim_observation_config = self.build_domain_randomization_config()
+        self.sim_observation_transforms = self.build_observation_transforms(
+            self.current_sim_observation_config
+        )
+        self.world_sim.observation_transforms = self.sim_observation_transforms
+
+    def apply_default_sim_domain(self):
+        self.current_sim_observation_config = copy.deepcopy(self.sim_observation_config)
+        self.sim_observation_transforms = self.build_observation_transforms(
+            self.current_sim_observation_config
+        )
+        self.world_sim.observation_transforms = self.sim_observation_transforms
+
+    def reset_episode(self, env, world, agents):
+        for agent in agents:
+            agent.reset()
+            if env is self.env_sim:
+                self.configure_observation_generator(
+                    agent, self.current_sim_observation_config
+                )
+            elif env is self.env_real:
+                self.configure_observation_generator(agent, self.real_observation_config)
+        self.reset_observation_transforms(world)
+        return env.reset()
 
     def build_randomized_observation_parameters(self):
         randomized_parameters = []
@@ -397,11 +415,7 @@ class BaseObservationTrainer(BaseTrainer):
             self.cityflow_path,
             thread_num,
             **self.build_world_kwargs(
-                observation_transforms=(
-                    self.sim_observation_transforms
-                    if self.domain_randomization_enabled
-                    else []
-                ),
+                observation_transforms=self.sim_observation_transforms,
                 include_interface=False,
             ),
         )
@@ -463,11 +477,10 @@ class BaseObservationTrainer(BaseTrainer):
     def create_agents(self):
         self.agents_sim = self.create_agent_world(self.world_sim)
         self.agents_real = self.create_agent_world(self.world_real)
-        if self.domain_randomization_enabled:
-            for ag in self.agents_sim:
-                self.configure_observation_generator(
-                    ag, self.current_sim_observation_config
-                )
+        for ag in self.agents_sim:
+            self.configure_observation_generator(
+                ag, self.current_sim_observation_config
+            )
         for ag in self.agents_real:
             self.configure_observation_generator(ag, self.real_observation_config)
 
@@ -534,16 +547,7 @@ class BaseObservationTrainer(BaseTrainer):
 
     def run_eval_episode(self, *, env, metric, world, agents, desc):
         metric.clear()
-        for agent in agents:
-            agent.reset()
-            if env is self.env_sim and self.domain_randomization_enabled:
-                self.configure_observation_generator(
-                    agent, self.current_sim_observation_config
-                )
-            elif env is self.env_real:
-                self.configure_observation_generator(agent, self.real_observation_config)
-        self.reset_observation_transforms(world)
-        obs = env.reset()
+        obs = self.reset_episode(env, world, agents)
 
         i = 0
         dones = [False] * len(agents)

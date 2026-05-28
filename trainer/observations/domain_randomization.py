@@ -23,17 +23,7 @@ class ObservationDomainRandomizationTrainer(BaseObservationTrainer):
         desc,
     ):
         metric.clear()
-        for agent in agents:
-            agent.reset()
-            if env is self.env_sim and self.domain_randomization_enabled:
-                self.configure_observation_generator(
-                    agent, self.current_sim_observation_config
-                )
-            elif env is self.env_real:
-                self.configure_observation_generator(agent, self.real_observation_config)
-
-        self.reset_observation_transforms(world)
-        last_obs = env.reset()
+        last_obs = self.reset_episode(env, world, agents)
 
         episode_loss = []
         flush = 0
@@ -114,20 +104,11 @@ class ObservationDomainRandomizationTrainer(BaseObservationTrainer):
         return total_decision_num, mean_loss, i
 
     def sim_train(self, episode):
-        if self.domain_randomization_enabled:
-            self.current_sim_observation_config = self.build_domain_randomization_config()
-            self.sim_observation_transforms = self.build_observation_transforms(
-                self.current_sim_observation_config
-            )
-            self.world_sim.observation_transforms = self.sim_observation_transforms
-            print(
-                f"Episode {episode} sampled sim observation config:\n"
-                f"{self.current_sim_observation_config}"
-            )
-            for ag in self.agents_sim:
-                self.configure_observation_generator(
-                    ag, self.current_sim_observation_config
-                )
+        self.apply_new_sim_domain()
+        print(
+            f"Episode {episode} sampled sim observation config:\n"
+            f"{self.current_sim_observation_config}"
+        )
         self.set_replay(
             self.env_sim,
             f"sim_episode_{episode}.txt",
