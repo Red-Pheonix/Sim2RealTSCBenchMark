@@ -3,7 +3,8 @@ trainer:
   real_eval_interval: 1
 
 sim2real:
-  method: lusr
+  method: latent_observation
+  latent_obs_method: lusr
   load_pretrained: True
   lusr:
     # If True, retrain encoders even when pretrained/lusr/{network}/ has cached weights.

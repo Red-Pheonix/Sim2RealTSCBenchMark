@@ -1,3 +1,3 @@
 from .base import BaseObservationTrainer
 from .domain_randomization import ObservationDomainRandomizationTrainer
-from .lusr import ObservationLUSRTrainer
+from .latent import LatentObservationTrainer

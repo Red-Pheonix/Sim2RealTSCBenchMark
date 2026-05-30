@@ -11,7 +11,7 @@ class Sim2RealObservationsTask(BaseTask):
 
     METHOD_TO_TRAINER = {
         "domain_randomization": "sim2real_observations_domain_randomization",
-        "lusr": "sim2real_observations_lusr",
+        "latent_observation": "sim2real_observations_latent",
     }
 
     def __init__(
