@@ -1,0 +1,63 @@
+trainer:
+  episodes: 200
+  real_eval_interval: 1
+
+sim2real:
+  method: latent_observation
+  latent_obs_method: atc
+  load_pretrained: True
+  atc:
+    # If True, retrain encoders even when pretrained/atc/{network}/ has cached weights.
+    force_retrain: True
+
+    # Per-intersection encoder shape.
+    latent_dim: 8
+    hidden: 128
+
+    # Stage 1: one rollout per sampled DR config. ATC pairs (s_t, s_{t+k}) are
+    # built ONLY within the same episode (different episodes have different DR
+    # configs and would yield meaningless pairs).
+    pretrain_episodes: 10
+
+    # Stage 1 contrastive training (per-intersection).
+    epochs: 100
+    batch_size: 64
+    lr: 0.0001
+    encoder_tau: 0.01    # EMA rate from the ATC paper (slightly faster than CURL's 0.005)
+
+    # Temporal offset (k in s_{t+k}). Paper default is 3.
+    temporal_k: 3
+
+    # Vector-obs augmentation (Gaussian noise + per-feature dropout) -- replaces
+    # the original random-crop + intensity-jitter augmentation which only
+    # applies to pixel input.
+    aug_noise_std: 0.1
+    aug_mask_prob: 0.1
+
+  domain_randomization:
+    seed: 0
+    parameters:
+      detection_zone_distance:
+        path: ["detection_zone", "distance_m"]
+        distribution: uniform
+        uniform_config:
+          low: 1
+          high: 100
+      noise_std:
+        path: ["noise", "gaussian_config", "std"]
+        distribution: uniform
+        uniform_config:
+          low: 1.5
+          high: 5.0
+      lane_failure_probability:
+        path: ["disable_sensor", "lane_level", "probability"]
+        distribution: uniform
+        uniform_config:
+          low: 0.1
+          high: 0.3
+      intersection_failure_probability:
+        path: ["disable_sensor", "intersection_level", "probability"]
+        distribution: uniform
+        uniform_config:
+          low: 0.0
+          high: 0.0

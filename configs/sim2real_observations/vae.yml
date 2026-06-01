@@ -1,0 +1,54 @@
+trainer:
+  episodes: 200
+  real_eval_interval: 1
+
+sim2real:
+  method: latent_observation
+  latent_obs_method: vae_embedding
+  load_pretrained: True
+  vae_embedding:
+    # If True, retrain encoders even when pretrained/vae_embedding/{network}/ has cached weights.
+    force_retrain: False
+
+    # Per-intersection VAE shape.
+    latent_dim: 8
+    hidden: 128
+
+    # Stage 1: one rollout per sampled DR config.
+    pretrain_episodes: 10
+
+    # Stage 1 VAE training (per-intersection).
+    epochs: 50
+    batch_size: 64
+    lr: 0.0001
+    beta: 1.0    # 1.0 = vanilla VAE (LUSR-paper VAE-Embedding); >1 would be beta-VAE / DARLA-like
+
+  # Multi-domain stage-1 collection matches the LUSR paper's shared dataset
+  # for baselines; same param schema as configs/sim2real_observations/lusr.yml.
+  domain_randomization:
+    seed: 0
+    parameters:
+      detection_zone_distance:
+        path: ["detection_zone", "distance_m"]
+        distribution: uniform
+        uniform_config:
+          low: 1
+          high: 100
+      noise_std:
+        path: ["noise", "gaussian_config", "std"]
+        distribution: uniform
+        uniform_config:
+          low: 1.5
+          high: 5.0
+      lane_failure_probability:
+        path: ["disable_sensor", "lane_level", "probability"]
+        distribution: uniform
+        uniform_config:
+          low: 0.1
+          high: 0.3
+      intersection_failure_probability:
+        path: ["disable_sensor", "intersection_level", "probability"]
+        distribution: uniform
+        uniform_config:
+          low: 0.0
+          high: 0.0

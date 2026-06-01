@@ -1,0 +1,59 @@
+trainer:
+  episodes: 200
+  real_eval_interval: 1
+
+sim2real:
+  method: latent_observation
+  latent_obs_method: curl
+  load_pretrained: True
+  curl:
+    # If True, retrain encoders even when pretrained/curl/{network}/ has cached weights.
+    force_retrain: False
+
+    # Per-intersection encoder shape.
+    latent_dim: 8
+    hidden: 128
+
+    # Stage 1: one rollout per sampled DR config (multi-domain collection,
+    # matching the LUSR-paper baseline practice). CURL itself does not use
+    # domain tags; the augmentation supplies the contrastive variation.
+    pretrain_episodes: 100
+
+    # Stage 1 contrastive training (per-intersection).
+    epochs: 100
+    batch_size: 64
+    lr: 0.0001
+    encoder_tau: 0.005   # EMA rate from original CURL (curl_sac.py default)
+
+    # Vector-obs augmentation (Gaussian noise + per-feature dropout) -- replaces
+    # the original random-crop augmentation which only applies to pixel input.
+    aug_noise_std: 0.5
+    aug_mask_prob: 0.3
+
+  domain_randomization:
+    seed: 0
+    parameters:
+      detection_zone_distance:
+        path: ["detection_zone", "distance_m"]
+        distribution: uniform
+        uniform_config:
+          low: 1
+          high: 100
+      noise_std:
+        path: ["noise", "gaussian_config", "std"]
+        distribution: uniform
+        uniform_config:
+          low: 1.5
+          high: 5.0
+      lane_failure_probability:
+        path: ["disable_sensor", "lane_level", "probability"]
+        distribution: uniform
+        uniform_config:
+          low: 0.1
+          high: 0.3
+      intersection_failure_probability:
+        path: ["disable_sensor", "intersection_level", "probability"]
+        distribution: uniform
+        uniform_config:
+          low: 0.0
+          high: 0.0
