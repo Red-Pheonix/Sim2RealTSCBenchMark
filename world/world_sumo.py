@@ -809,11 +809,9 @@ class World(object):
         for intsec in self.intersections:
             for lane in intsec.lanes:
                 result.update({lane: intsec.full_observation[lane]['lane_count']})
-        return self.transform_observation(
-            "lane_count",
-            result,
-            lanes=self.get_lane_groups(),
-        )
+        # NOTE: transforms are applied once in LaneVehicleGenerator.generate(),
+        # mirroring world_cityflow. Applying them here too double-counted them.
+        return result
 
     def get_pressure(self):
         '''
@@ -981,11 +979,8 @@ class World(object):
         for intsec in self.intersections:
             for lane in intsec.lanes:
                 result.update({lane: intsec.full_observation[lane]['lane_waiting_time_count']})
-        return self.transform_observation(
-            "lane_waiting_time_count",
-            result,
-            lanes=self.get_lane_groups(),
-        )
+        # transforms applied once in the generator; see get_lane_vehicle_count.
+        return result
 
     def get_lane_waiting_vehicle_count(self):
         '''
@@ -999,11 +994,8 @@ class World(object):
         for intsec in self.intersections:
             for lane in intsec.lanes:
                 result.update({lane: intsec.full_observation[lane]['lane_waiting_count']})
-        return self.transform_observation(
-            "lane_waiting_count",
-            result,
-            lanes=self.get_lane_groups(),
-        )
+        # transforms applied once in the generator; see get_lane_vehicle_count.
+        return result
 
     def get_cur_phase(self):
         '''
@@ -1111,11 +1103,8 @@ class World(object):
             else:
                 lane_avg_speed /= lane_vehicle_count
             lane_delay[key] = 1 - lane_avg_speed / speed_limit
-        return self.transform_observation(
-            "lane_delay",
-            lane_delay,
-            lanes=self.get_lane_groups(),
-        )
+        # transforms applied once in the generator; see get_lane_vehicle_count.
+        return lane_delay
 
     # def get_plan_depart_time(self):
     #     """
