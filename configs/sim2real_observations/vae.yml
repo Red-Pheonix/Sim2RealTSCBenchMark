@@ -15,10 +15,10 @@ sim2real:
     hidden: 128
 
     # Stage 1: one rollout per sampled DR config.
-    pretrain_episodes: 10
+    pretrain_episodes: 100
 
     # Stage 1 VAE training (per-intersection).
-    epochs: 50
+    epochs: 300
     batch_size: 64
     lr: 0.0001
     beta: 1.0    # 1.0 = vanilla VAE (LUSR-paper VAE-Embedding); >1 would be beta-VAE / DARLA-like

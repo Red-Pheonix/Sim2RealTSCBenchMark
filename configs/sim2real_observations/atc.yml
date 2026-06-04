@@ -17,10 +17,10 @@ sim2real:
     # Stage 1: one rollout per sampled DR config. ATC pairs (s_t, s_{t+k}) are
     # built ONLY within the same episode (different episodes have different DR
     # configs and would yield meaningless pairs).
-    pretrain_episodes: 10
+    pretrain_episodes: 100
 
     # Stage 1 contrastive training (per-intersection).
-    epochs: 100
+    epochs: 300
     batch_size: 64
     lr: 0.0001
     encoder_tau: 0.01    # EMA rate from the ATC paper (slightly faster than CURL's 0.005)
@@ -31,8 +31,8 @@ sim2real:
     # Vector-obs augmentation (Gaussian noise + per-feature dropout) -- replaces
     # the original random-crop + intensity-jitter augmentation which only
     # applies to pixel input.
-    aug_noise_std: 0.1
-    aug_mask_prob: 0.1
+    aug_noise_std: 0.5
+    aug_mask_prob: 0.3
 
   domain_randomization:
     seed: 0
