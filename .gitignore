@@ -2,6 +2,9 @@ __pycache__/
 *.DS_Store
 .idea/
 .vscode/
+.venv/
+.python/
+.tools/
 data/output_data/*
 !data/output_data/tsc/cityflow_dqn/cityflow1x1/test/model/*
 .ipynb
@@ -25,3 +28,4 @@ raw_results
 pretrained/sim2real_transitions
 sbi-logs
 figures
+agent/latent_observation/DARLA_README.md
