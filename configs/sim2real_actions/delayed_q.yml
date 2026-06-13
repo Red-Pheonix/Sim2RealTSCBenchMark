@@ -1,0 +1,13 @@
+trainer:
+  episodes: 30
+  real_eval_interval: 1  # run real eval every episode during training
+  eval_sim: false        # skip sim-delay eval (TEST_SIM); only real transfer matters
+
+sim2real:
+  method: delayed_q
+  pred_learning_rate: 0.001
+  pred_train_iters: 1
+  # Assumed delay the agent is trained under and compensates for. The real delay
+  # is set by the real_setting's `action_delay`; the sim<->real mismatch between
+  # the two is the experiment. Matched to the default setting (15) out of the box.
+  sim_action_delay: 20

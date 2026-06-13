@@ -31,8 +31,15 @@ class Sim2RealActionsTrainer(BaseTrainer):
         trainer_args = Registry.mapping["trainer_mapping"]["setting"].param
         logger_args = Registry.mapping["logger_mapping"]["setting"].param
 
+        # Sim and real may use different simulators (cross-simulator transfer,
+        # e.g. sim cityflow -> real sumo). real_world defaults to the sim world.
+        self.sim_world_name = cmd_args["world"]
+        self.real_world_name = cmd_args.get("real_world") or cmd_args["world"]
         self.path = os.path.join(
-            "configs/sim", cmd_args["world"], cmd_args["network"] + ".cfg"
+            "configs/sim", self.sim_world_name, cmd_args["network"] + ".cfg"
+        )
+        self.real_path = os.path.join(
+            "configs/sim", self.real_world_name, cmd_args["network"] + ".cfg"
         )
         self.episodes = trainer_args["episodes"]
         self.steps = trainer_args["steps"]
@@ -44,10 +51,26 @@ class Sim2RealActionsTrainer(BaseTrainer):
         self.update_model_rate = trainer_args["update_model_rate"]
         self.update_target_rate = trainer_args["update_target_rate"]
         self.test_when_train = trainer_args["test_when_train"]
+        # Periodic in-training real eval, mirroring the observation trainers:
+        # every `real_eval_interval` episodes run train_test (sim + real eval).
+        # 0 disables it.
+        self.real_eval_interval = trainer_args.get("real_eval_interval", 0)
+        # Whether to also run the sim-delay eval (TEST_SIM) in train_test/test.
+        # The experiment only needs real-delay transfer, so this can be turned off.
+        self.eval_sim = trainer_args.get("eval_sim", True)
         self.yellow_time = trainer_args["yellow_length"]
         sim2real_config = self.get_sim2real_config()
         self.load_pretrained = sim2real_config.get("load_pretrained", False)
-        self.sim_action_delay = ConstantActionDelay(0)
+        # Two independent execution delays:
+        #   sim_action_delay  -- the delay the agent is trained under (and, for a
+        #                        mitigation method, the delay it compensates for).
+        #   real_action_delay -- the delay the deployment ("real") env actually
+        #                        applies. The sim->real gap is the mismatch between
+        #                        these two. Default sim delay 0 = naive-baseline
+        #                        behavior (train delay-free, get hit by real delay).
+        self.sim_action_delay = ConstantActionDelay(
+            sim2real_config.get("sim_action_delay", 0)
+        )
         self.real_action_delay = ConstantActionDelay(
             sim2real_config.get("action_delay", 0)
         )
@@ -112,17 +135,19 @@ class Sim2RealActionsTrainer(BaseTrainer):
         }
 
     def create_world(self):
-        world_type = Registry.mapping["command_mapping"]["setting"].param["world"]
-        world_cls = Registry.mapping["world_mapping"][world_type]
+        world_mapping = Registry.mapping["world_mapping"]
         thread_num = Registry.mapping["command_mapping"]["setting"].param["thread_num"]
 
-        self.world_sim = world_cls(
+        # Both cityflow and sumo World classes take (config_path, thread/placeholder,
+        # **kwargs) and read the `interface` kwarg, so the call is identical for
+        # either simulator -- only the class and config path differ.
+        self.world_sim = world_mapping[self.sim_world_name](
             self.path,
             thread_num,
             **self._build_world_kwargs(),
         )
-        self.world_real = world_cls(
-            self.path,
+        self.world_real = world_mapping[self.real_world_name](
+            self.real_path,
             thread_num,
             **self._build_world_kwargs(),
         )
@@ -225,13 +250,66 @@ class Sim2RealActionsTrainer(BaseTrainer):
             ag.save_model(model_dir, e)
 
     def set_replay(self, env, suffix, enabled):
-        if Registry.mapping["command_mapping"]["setting"].param["world"] != "cityflow":
+        # Replay saving is a cityflow-only engine feature. Pick the world that
+        # owns this env so the sumo (real) env is skipped under cross-sim setups.
+        world_name = self.real_world_name if env is self.env_real else self.sim_world_name
+        if world_name != "cityflow":
             return
         if not self.save_replay:
             return
         env.eng.set_save_replay(enabled)
         if enabled:
             env.eng.set_replay_file(os.path.join(self.replay_file_dir, suffix))
+
+    # ------------------------------------------------------------------
+    # Mitigation hooks. Defaults preserve the naive-baseline behavior;
+    # action-gap method trainers (e.g. Delayed-Q) override these to route
+    # decisions/transitions through their method model. ``idx`` identifies the
+    # intersection so methods can keep per-intersection state.
+    # ------------------------------------------------------------------
+
+    def on_decision_start(self, obs, phases, test):
+        """Called once per decision, before the per-agent select_action loop,
+        with the FULL per-intersection obs/phase arrays. Default no-op; methods
+        whose models need a global view (e.g. PRLight's neighbor-aware
+        predictor) override this to cache the snapshot."""
+
+    def select_action(self, ag, idx, ob, phase, test):
+        return ag.get_action(ob, phase, test=test)
+
+    def store_transition(
+        self,
+        ag,
+        idx,
+        *,
+        last_obs,
+        last_phase,
+        chosen_action,
+        executed_action,
+        actions_prob,
+        reward,
+        obs,
+        cur_phase,
+        done,
+        key,
+    ):
+        ag.remember(
+            last_obs,
+            last_phase,
+            executed_action,
+            actions_prob,
+            reward,
+            obs,
+            cur_phase,
+            done,
+            key,
+        )
+
+    def train_agents(self, agents):
+        return np.stack([ag.train() for ag in agents])
+
+    def reset_episode_state(self, agents, init_phases):
+        pass
 
     def run_train_episode(
         self,
@@ -255,6 +333,7 @@ class Sim2RealActionsTrainer(BaseTrainer):
         dones = [False] * len(agents)
         last_phase = np.stack([ag.get_phase() for ag in agents])
         delay_state = self.initialize_action_delay_state(agents, last_phase)
+        self.reset_episode_state(agents, last_phase)
 
         pbar = tqdm(total=int(self.steps / self.action_interval), desc=desc)
 
@@ -263,10 +342,13 @@ class Sim2RealActionsTrainer(BaseTrainer):
                 pbar.update()
                 last_phase = np.stack([ag.get_phase() for ag in agents])
 
+                self.on_decision_start(last_obs, last_phase, test=False)
                 actions = []
                 for idx, ag in enumerate(agents):
                     actions.append(
-                        ag.get_action(last_obs[idx], last_phase[idx], test=True)
+                        self.select_action(
+                            ag, idx, last_obs[idx], last_phase[idx], test=False
+                        )
                     )
                 proposed_actions = np.stack(actions)
                 self.enqueue_delayed_actions(
@@ -293,16 +375,19 @@ class Sim2RealActionsTrainer(BaseTrainer):
 
                 cur_phase = np.stack([ag.get_phase() for ag in agents])
                 for idx, ag in enumerate(agents):
-                    ag.remember(
-                        last_obs[idx],
-                        last_phase[idx],
-                        executed_actions[idx],
-                        actions_prob[idx],
-                        rewards[idx],
-                        obs[idx],
-                        cur_phase[idx],
-                        dones[idx],
-                    f"{episode}_{i // self.action_interval}_{ag.id}",
+                    self.store_transition(
+                        ag,
+                        idx,
+                        last_obs=last_obs[idx],
+                        last_phase=last_phase[idx],
+                        chosen_action=proposed_actions[idx],
+                        executed_action=executed_actions[idx],
+                        actions_prob=actions_prob[idx],
+                        reward=rewards[idx],
+                        obs=obs[idx],
+                        cur_phase=cur_phase[idx],
+                        done=dones[idx],
+                        key=f"{episode}_{i // self.action_interval}_{ag.id}",
                     )
 
                 flush += 1
@@ -317,7 +402,7 @@ class Sim2RealActionsTrainer(BaseTrainer):
                 and total_decision_num % self.update_model_rate
                 == self.update_model_rate - 1
             ):
-                cur_loss_q = np.stack([ag.train() for ag in agents])
+                cur_loss_q = self.train_agents(agents)
                 episode_loss.append(cur_loss_q)
 
             if (
@@ -345,15 +430,19 @@ class Sim2RealActionsTrainer(BaseTrainer):
         dones = [False] * len(agents)
         phases = np.stack([ag.get_phase() for ag in agents])
         delay_state = self.initialize_action_delay_state(agents, phases)
+        self.reset_episode_state(agents, phases)
         pbar = tqdm(total=int(self.test_steps / self.action_interval), desc=desc)
 
         while i < self.test_steps:
             if i % self.action_interval == 0:
                 pbar.update()
                 phases = np.stack([ag.get_phase() for ag in agents])
+                self.on_decision_start(obs, phases, test=True)
                 actions = []
                 for idx, ag in enumerate(agents):
-                    actions.append(ag.get_action(obs[idx], phases[idx], test=True))
+                    actions.append(
+                        self.select_action(ag, idx, obs[idx], phases[idx], test=True)
+                    )
                 proposed_actions = np.stack(actions)
                 self.enqueue_delayed_actions(
                     proposed_actions, delay_state, self.eval_action_delay
@@ -417,27 +506,12 @@ class Sim2RealActionsTrainer(BaseTrainer):
         self.logger.info("sim step:%s/%s", steps_run, self.steps)
         return mean_loss
 
-    def real_train(self, episode):
-        self.load_agents(self.agents_real, self.model_dir)
-        self.set_replay(
-            self.env_real,
-            f"real_episode_{episode}.txt",
-            episode % self.save_rate == 0,
-        )
-        self.total_decision_num_real, mean_loss, steps_run = self.run_train_episode(
-            env=self.env_real,
-            metric=self.metric_real,
-            agents=self.agents_real,
-            episode=episode,
-            total_decision_num=self.total_decision_num_real,
-            desc=f"Real Training Epoch {episode}",
-            action_delay=self.real_action_delay,
-        )
-        self.log_metrics("REAL_TRAIN", episode, self.metric_real, mean_loss)
-        self.logger.info("real step:%s/%s", steps_run, self.steps)
-        return mean_loss
-
     def train(self):
+        # Zero-shot sim2real: train only in sim, evaluate in real (like the
+        # observation/transition trainers). The real env is never trained on --
+        # the action gap (execution delay) is handled at real-eval time, and any
+        # mitigation method's auxiliary models are delay-independent so they too
+        # learn from sim data.
         if self.load_pretrained:
             pretrained_dir = self.pretrained_model_dir()
             self.load_agents(self.agents_sim, pretrained_dir)
@@ -447,36 +521,44 @@ class Sim2RealActionsTrainer(BaseTrainer):
             sim_loss = self.sim_train(episode)
             self.save_agents(self.agents_sim, self.model_dir)
 
-            real_loss = self.real_train(episode)
-            self.save_agents(self.agents_real, self.model_dir)
-
             if episode % self.save_rate == 0:
-                self.save_agents(self.agents_real, self.model_dir, e=episode)
+                self.save_agents(self.agents_sim, self.model_dir, e=episode)
 
             self.logger.info(
-                "episode:%s/%s, sim_loss:%s, real_loss:%s",
+                "episode:%s/%s, sim_loss:%s",
                 episode,
                 self.episodes,
                 sim_loss,
-                real_loss,
             )
 
-            if self.test_when_train:
+            if self.test_when_train or self.should_run_real_eval(episode):
                 self.train_test(episode)
 
-        self.save_agents(self.agents_real, self.model_dir, e=self.episodes)
-        self.save_agents(self.agents_real, self.model_dir)
+        self.save_agents(self.agents_sim, self.model_dir, e=self.episodes)
+        self.save_agents(self.agents_sim, self.model_dir)
+
+    def should_run_real_eval(self, episode):
+        # Mirror the observation trainers: fire every `real_eval_interval`
+        # episodes (skipping episode 0 so there's at least one trained epoch).
+        return (
+            self.real_eval_interval > 0
+            and episode > 0
+            and episode % self.real_eval_interval == 0
+        )
 
     def train_test(self, episode):
-        self.load_agents(self.agents_sim, self.model_dir)
-        self.eval_action_delay = self.sim_action_delay
-        self.run_eval_episode(
-            env=self.env_sim,
-            metric=self.metric_sim,
-            agents=self.agents_sim,
-            desc=f"Sim Eval Epoch {episode}",
-        )
-        self.log_metrics("TEST_SIM", episode, self.metric_sim, 100)
+        # Sim eval is optional (the experiment only cares about real-delay
+        # transfer); `eval_sim: false` in the config skips it.
+        if self.eval_sim:
+            self.load_agents(self.agents_sim, self.model_dir)
+            self.eval_action_delay = self.sim_action_delay
+            self.run_eval_episode(
+                env=self.env_sim,
+                metric=self.metric_sim,
+                agents=self.agents_sim,
+                desc=f"Sim Eval Epoch {episode}",
+            )
+            self.log_metrics("TEST_SIM", episode, self.metric_sim, 100)
 
         self.load_agents(self.agents_real, self.model_dir)
         self.eval_action_delay = self.real_action_delay
@@ -490,17 +572,18 @@ class Sim2RealActionsTrainer(BaseTrainer):
         return self.metric_real.real_average_travel_time()
 
     def test(self, drop_load=False):
-        if not drop_load:
-            self.load_agents(self.agents_sim, self.model_dir, e=self.episodes)
-        self.set_replay(self.env_sim, "final_sim.txt", True)
-        self.eval_action_delay = self.sim_action_delay
-        self.run_eval_episode(
-            env=self.env_sim,
-            metric=self.metric_sim,
-            agents=self.agents_sim,
-            desc="Final Sim Test",
-        )
-        self.log_metrics("FINAL_TEST_SIM", 0, self.metric_sim, 100)
+        if self.eval_sim:
+            if not drop_load:
+                self.load_agents(self.agents_sim, self.model_dir, e=self.episodes)
+            self.set_replay(self.env_sim, "final_sim.txt", True)
+            self.eval_action_delay = self.sim_action_delay
+            self.run_eval_episode(
+                env=self.env_sim,
+                metric=self.metric_sim,
+                agents=self.agents_sim,
+                desc="Final Sim Test",
+            )
+            self.log_metrics("FINAL_TEST_SIM", 0, self.metric_sim, 100)
 
         if not drop_load:
             self.load_agents(self.agents_real, self.model_dir, e=self.episodes)

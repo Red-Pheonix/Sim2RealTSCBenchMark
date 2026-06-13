@@ -12,4 +12,5 @@ from .observations import (
     LatentObservationTrainer,
 )
 from .sim2real_actions_trainer import Sim2RealActionsTrainer
+from .action_delay import Sim2RealActionsDelayedQTrainer
 from .sim2real_rewards_trainer import Sim2RealRewardsTrainer

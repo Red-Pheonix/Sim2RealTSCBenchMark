@@ -1,0 +1,16 @@
+# Oblivious-Q baseline (Derman et al. 2021): "Delayed-Q minus the forward model".
+# Trained AND evaluated under the execution delay, but the agent ignores it -- no
+# prediction/compensation. Reuses the Delayed-Q trainer with the compensation
+# horizon forced to 0; the environment still applies sim_action_delay in sim.
+#
+# Keep sim_action_delay matched to the real_setting's `action_delay` (the agent
+# trains under the same delay it deploys into). Contrast with `naive`, which
+# trains delay-free (direct transfer).
+trainer:
+  episodes: 300
+  real_eval_interval: 3  # run real eval every episode during training
+  eval_sim: false        # only real-delay transfer matters
+
+sim2real:
+  method: oblivious_q
+  sim_action_delay: 20   # env delay applied during sim training (match real action_delay)

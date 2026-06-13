@@ -1,0 +1,11 @@
+# Naive baseline ("direct transfer"): no action-gap mitigation. A delay-unaware
+# agent trained in delay-free sim and deployed straight into the delayed real env,
+# acting on the current observation. No sim_action_delay (sim delay = 0) and no
+# compensation -- that's the point of the baseline.
+trainer:
+  episodes: 300
+  real_eval_interval: 3  # run real eval every episode during training
+  eval_sim: false        # only real-delay transfer matters
+
+sim2real:
+  method: naive

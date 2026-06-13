@@ -14,5 +14,6 @@ from .fixedtime import FixedTimeAgent
 from .mplight import MPLightAgent
 from . import grounding
 from . import latent_observation
+from . import action_delay
 
 # from .ppo_pfrl import IPPO_pfrl
