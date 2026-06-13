@@ -1,0 +1,67 @@
+trainer:
+  episodes: 200
+  real_eval_interval: 1
+
+sim2real:
+  method: latent_observation
+  latent_obs_method: darla
+  load_pretrained: True
+  darla:
+    # If True, retrain encoders even when pretrained/darla/{network}/ has cached weights.
+    force_retrain: False
+
+    # Per-intersection beta-VAE shape.
+    latent_dim: 8
+    hidden: 128
+
+    # Stage 1: one rollout per sampled DR config (multi-domain collection,
+    # matching the LUSR-paper baseline practice). DARLA has no domain tags --
+    # the DAE + beta-VAE just learn over the pooled multi-domain obs.
+    pretrain_episodes: 100
+
+    # Stage 1 beta-VAE training (per-intersection). beta > 1 is what makes this
+    # DARLA rather than VAE-Embedding; it pressures the latent toward a
+    # disentangled code. The LUSR paper sweeps DARLA over beta in {10, 30, 100}.
+    epochs: 300
+    batch_size: 64
+    lr: 0.0001
+    beta: 10.0
+
+    # Stage 0 Denoising AutoEncoder (DAE). Its internal feature space is the
+    # perceptual reconstruction target for the beta-VAE (Higgins et al. 2017,
+    # Eq. 2). Trained with occlusion-style masking noise on the obs vector.
+    dae_hidden: 128
+    dae_feature_dim: 64
+    dae_epochs: 100
+    dae_lr: 0.001         # paper A.3.1 uses Adam 1e-3 for the DAE (vs 1e-4 for the beta-VAE in A.3.2)
+    dae_mask_prob: 0.2    # fraction of obs features zeroed as denoising corruption
+
+  # Stage 1 reuses the existing observation DR distribution to sample domains.
+  # Same parameter schema as configs/sim2real_observations/lusr.yml.
+  domain_randomization:
+    seed: 0
+    parameters:
+      detection_zone_distance:
+        path: ["detection_zone", "distance_m"]
+        distribution: uniform
+        uniform_config:
+          low: 1
+          high: 100
+      noise_std:
+        path: ["noise", "gaussian_config", "std"]
+        distribution: uniform
+        uniform_config:
+          low: 1.5
+          high: 5.0
+      lane_failure_probability:
+        path: ["disable_sensor", "lane_level", "probability"]
+        distribution: uniform
+        uniform_config:
+          low: 0.1
+          high: 0.3
+      intersection_failure_probability:
+        path: ["disable_sensor", "intersection_level", "probability"]
+        distribution: uniform
+        uniform_config:
+          low: 0.0
+          high: 0.0
