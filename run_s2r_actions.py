@@ -40,6 +40,13 @@ parser.add_argument(
     default="default",
     help="action setting file name under configs/sim2real_actions/settings",
 )
+parser.add_argument(
+    "--act_model",
+    type=str,
+    default="naive",
+    help="action-gap mitigation method file name under configs/sim2real_actions "
+    "(e.g. delayed_q); 'naive' = no-mitigation baseline",
+)
 
 parser.add_argument(
     "-t", "--task", type=str, default="sim2real_actions", help="task type to run"
@@ -53,7 +60,16 @@ parser.add_argument(
     type=str,
     default="cityflow",
     choices=["cityflow", "sumo"],
-    help="simulator type",
+    help="simulator type for the SIM (source) environment",
+)
+parser.add_argument(
+    "--real_world",
+    type=str,
+    default="sumo",
+    choices=["cityflow", "sumo"],
+    help="simulator type for the REAL (target) environment. Defaults to sumo "
+    "(cross-simulator transfer from the cityflow sim). Pass cityflow for an "
+    "all-cityflow setup.",
 )
 parser.add_argument("-n", "--network", type=str, default="cityflow1x1", help="network name")
 parser.add_argument(
@@ -76,6 +92,9 @@ class Runner:
     def config_registry(self):
         self.config["command"]["network"] = args.network
         self.config["command"]["real_setting"] = args.real_setting
+        self.config["command"]["act_model"] = args.act_model
+        # Real (target) simulator; defaults to the sim world when not given.
+        self.config["command"]["real_world"] = args.real_world or args.world
 
         interface.Command_Setting_Interface(self.config)
         interface.Logger_param_Interface(self.config)
@@ -95,12 +114,10 @@ class Runner:
             "command"
         ]["network"]
 
-        self.trainer = Registry.mapping["trainer_mapping"][
-            Registry.mapping["command_mapping"]["setting"].param["task"]
-        ](logger)
         self.task = Registry.mapping["task_mapping"][
             Registry.mapping["command_mapping"]["setting"].param["task"]
-        ](self.trainer)
+        ](logger)
+        self.trainer = self.task.trainer
         start_time = time.time()
         self.task.run()
         logger.info(f"Total time taken: {time.time() - start_time}")
