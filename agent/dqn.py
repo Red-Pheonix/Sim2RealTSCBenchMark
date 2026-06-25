@@ -7,7 +7,6 @@ import json
 import random
 from collections import deque
 import gym
-import pandas as pd
 
 from generator import LaneVehicleGenerator, IntersectionPhaseGenerator, IntersectionVehicleGenerator
 
@@ -65,19 +64,10 @@ class DQNAgent(RLAgent):
         self.vehicle_max = Registry.mapping['model_mapping']['setting'].param['vehicle_max']
         self.batch_size = Registry.mapping['model_mapping']['setting'].param['batch_size']
 
-        # join two together to make filename
-        phase_trans_filename = Registry.mapping["world_mapping"]["setting"].param.get("phaseTransitions")
-
-        if phase_trans_filename is not None:
-            phase_trans_filename = os.path.join(
-                Registry.mapping["world_mapping"]["setting"].param["dir"],
-                phase_trans_filename
-            )
-            # open the file
-            self.phase_transitions = self.process_phase_transition_table(phase_trans_filename, int(inter_id))
-        else:
-            self.phase_transitions = None
-
+        # Phase-transition (action-validity) masking now lives in a trainer-owned
+        # action transform (trainer/actions/phase_transition.py), not here.
+        # The agent just applies whatever mask it is handed via get_action's
+        # valid_mask_fn; with no mask, all actions are valid.
 
         self.model = self._build_model()
         self.target_model = self._build_model()
@@ -87,56 +77,8 @@ class DQNAgent(RLAgent):
                                        lr=self.learning_rate,
                                        alpha=0.9, centered=False, eps=1e-7)
 
-        num_phases = self.action_space.n
-
-        # allowed transitions mask
-        self.allowed_mask = torch.zeros(num_phases, num_phases, dtype=torch.bool)
-        self.min_time = torch.zeros(num_phases, num_phases)
-        self.max_time = torch.full((num_phases, num_phases), float('inf'))
-
-        if self.phase_transitions is not None:
-            self.generate_allowed_mask(num_phases)
-        else:
-            self.allowed_mask = torch.ones(num_phases, num_phases, dtype=torch.bool)
-
     def __repr__(self):
         return self.model.__repr__()
-    
-    def process_phase_transition_table(self, phase_trans_filename, inter_id):
-        
-        phase_transitions = pd.read_csv(phase_trans_filename)
-        phase_transitions = phase_transitions[phase_transitions["node_id"] == inter_id]
-        
-        out = {}
-        for from_phase, g in phase_transitions.groupby("from_phase", sort=True):
-            out[int(from_phase)] = {
-                int(r["to_phase"]): {
-                    "allowed": int(r["allowed"]),
-                    "min_time_to_transition": float(r["min_time_to_transition"]),
-                    "max_time_to_transition": float(r["max_time_to_transition"]),
-                }
-                for _, r in g.iterrows()
-            }
-        
-        if out is not None:
-            return out
-        else:
-            return None
-
-    def generate_allowed_mask(self , num_phases):
-        for from_phase, _ in self.phase_transitions.items():
-            for to_phase in self.phase_transitions[from_phase]:
-                t = self.phase_transitions[from_phase][to_phase]
-                self.allowed_mask[from_phase - 1, to_phase - 1] = bool(t["allowed"])
-                self.min_time[from_phase - 1, to_phase - 1] = t["min_time_to_transition"]
-                self.max_time[from_phase - 1, from_phase - 1] = t["max_time_to_transition"]
-
-        # round the times
-        self.min_time = torch.where(torch.isfinite(self.min_time), torch.round(self.min_time), self.min_time)
-        self.max_time = torch.where(torch.isfinite(self.max_time), torch.round(self.max_time), self.max_time)
-        
-        # Allow phase -> same phase
-        self.allowed_mask |= torch.eye(num_phases, dtype=torch.bool)
 
     def reset(self):
         '''
@@ -200,7 +142,7 @@ class DQNAgent(RLAgent):
         phase = (np.concatenate(phase)).astype(np.int8)
         return phase
 
-    def get_action(self, ob, phase, test=False):
+    def get_action(self, ob, phase, test=False, valid_mask_fn=None):
         '''
         get_action
         Generate action.
@@ -208,6 +150,9 @@ class DQNAgent(RLAgent):
         :param ob: observation
         :param phase: current phase
         :param test: boolean, decide whether is test process
+        :param valid_mask_fn: optional callable(phase) -> (1, n_actions) bool mask of
+            valid actions, supplied by the trainer's phase-transition transform. When
+            None, all actions are valid (equivalent to the old all-ones mask).
         :return action: action that has the highest score
         '''
         if self.phase:
@@ -220,9 +165,10 @@ class DQNAgent(RLAgent):
         observation = torch.tensor(feature, dtype=torch.float32)
         # TODO: no need to calculate gradient when interacting with environment
 
-        # grab current time
-        current_phase_time = self.phase_generator.I.current_phase_time
-        valid_action_mask = self.generate_action_mask(phase, current_phase_time)
+        if valid_mask_fn is not None:
+            valid_action_mask = valid_mask_fn(phase)
+        else:
+            valid_action_mask = torch.ones(1, self.action_space.n, dtype=torch.bool)
 
         if not test:
             if np.random.rand() <= self.epsilon:
@@ -235,22 +181,6 @@ class DQNAgent(RLAgent):
         action = np.argmax(actions, axis=1)
 
         return action
-
-    def generate_action_mask(self, phase, current_phase_time):
-        allowed = self.allowed_mask[phase]
-
-        min_ok = current_phase_time >= self.min_time[phase]
-        max_ok = current_phase_time + self.action_interval <= self.max_time[phase]
-
-        time_ok = min_ok & max_ok
-
-        valid_mask = allowed & time_ok
-        
-        # special case where no valid actions are available
-        if (~valid_mask).all().item():
-            valid_mask[0][phase] = True
-        
-        return valid_mask
 
     def sample(self):
         '''

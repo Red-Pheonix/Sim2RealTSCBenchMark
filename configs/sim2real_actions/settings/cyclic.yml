@@ -1,0 +1,6 @@
+sim2real:
+  action_delay_type: constant
+  action_delay: 0
+  # Real-side phase-transition masking. Value names the variant table under
+  #   raw_data/<network>/phase_transitions/<value>.json   (missing file -> hard error)
+  real_phase_transition: pt_cyclic

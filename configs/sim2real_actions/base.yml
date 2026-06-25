@@ -33,6 +33,20 @@ trainer:
 
 sim2real:
   load_pretrained: True
+  # Phase-transition (action-validity) masking. OFF by default; opt in per side.
+  # Value:
+  #   false / null / unset -> no masking on that side (no masks applied)
+  #   "<variant>"          -> per-network variant table:
+  #                           raw_data/<network>/phase_transitions/<variant>.json
+  #                           (e.g. pt_cyclic -> raw_data/tempe/phase_transitions/pt_cyclic.json)
+  #   "<path>"             -> exact path (has a '/' or ends in .json/.csv), relative to dir
+  # A bare variant name keeps a setting file correct across a network sweep (picked
+  # per network). A requested-but-missing file is a hard error (phase-transition runs
+  # only exist for networks that ship a table). The table is in canonical NEMA order
+  # and reordered to the agent's action order via the net's tlLogic at load time. sim
+  # side usually lives in the method yml; real side in settings/*.yml.
+  # sim_phase_transition: pt_cyclic
+  # real_phase_transition: pt_cyclic
 
 model:
   name: "non-rl"

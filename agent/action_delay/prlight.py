@@ -354,9 +354,10 @@ class PRLightModel:
     # action selection on the predicted m-steps-ahead state
     # ------------------------------------------------------------------
 
-    def select_action(self, agent, idx, ob, phase, test):
+    def select_action(self, agent, idx, ob, phase, test, valid_mask_fn=None):
+        kw = {"valid_mask_fn": valid_mask_fn} if valid_mask_fn is not None else {}
         if self.m == 0:
-            return agent.get_action(ob, phase, test=test)
+            return agent.get_action(ob, phase, test=test, **kw)
 
         # One forward pass to s_{t+m} once trained; warmup falls back to the
         # current observation. The queue advances either way so it stays a

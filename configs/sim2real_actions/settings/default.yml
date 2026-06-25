@@ -1,3 +1,7 @@
 sim2real:
   action_delay_type: constant
   action_delay: 0
+  # Real-side phase-transition validity masking (the deployment's hidden constraint).
+  # Off by default; set true to use the network's default CSV, or a path to a specific
+  # CSV. See base.yml for the tri-state semantics.
+  # real_phase_transition: true

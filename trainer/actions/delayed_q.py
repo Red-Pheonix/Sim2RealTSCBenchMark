@@ -14,7 +14,7 @@ applied, no prediction). No trainer subclass is needed for it.
 
 import agent.action_delay  # noqa: F401 -- register the method models
 from common.registry import Registry
-from trainer.sim2real_actions_trainer import Sim2RealActionsTrainer
+from trainer.actions.sim2real_actions_trainer import Sim2RealActionsTrainer
 
 
 _METHOD_LABELS = {
@@ -67,11 +67,14 @@ class Sim2RealActionsDelayedQTrainer(Sim2RealActionsTrainer):
             self.real_action_delay.delay,
         )
 
-    def select_action(self, ag, idx, ob, phase, test):
+    def select_action(self, ag, idx, ob, phase, test, valid_mask_fn=None):
         # The model decides how to act: predict ŝ_{t+m} and act on it (Delayed-Q),
         # or act on the current observation (Oblivious-Q). m=0 is handled inside
-        # the model.
-        return self.model.select_action(ag, idx, ob, phase, test)
+        # the model. valid_mask_fn (phase-transition validity) is forwarded to the
+        # base agent's get_action.
+        return self.model.select_action(
+            ag, idx, ob, phase, test, valid_mask_fn=valid_mask_fn
+        )
 
     # Q-replay is identical to the baseline: the environment's delay queue already
     # stores the executed (delayed) action with its execution-time state/reward,

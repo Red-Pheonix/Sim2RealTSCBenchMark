@@ -31,9 +31,10 @@ class ObliviousQModel:
         # the shared model signature but unused -- there is no compensation.
         self.m = 0
 
-    def select_action(self, agent, idx, ob, phase, test):
+    def select_action(self, agent, idx, ob, phase, test, valid_mask_fn=None):
         # Act on the current (delayed) observation -- no look-ahead.
-        return agent.get_action(ob, phase, test=test)
+        kw = {"valid_mask_fn": valid_mask_fn} if valid_mask_fn is not None else {}
+        return agent.get_action(ob, phase, test=test, **kw)
 
     def train_predictor(self, agents):
         pass

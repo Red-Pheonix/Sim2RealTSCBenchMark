@@ -11,6 +11,9 @@ from .observations import (
     ObservationDomainRandomizationTrainer,
     LatentObservationTrainer,
 )
-from .sim2real_actions_trainer import Sim2RealActionsTrainer
-from .action_delay import Sim2RealActionsDelayedQTrainer
+from .actions import (
+    Sim2RealActionsTrainer,
+    Sim2RealActionsDelayedQTrainer,
+    Sim2RealActionsPRLightTrainer,
+)
 from .sim2real_rewards_trainer import Sim2RealRewardsTrainer

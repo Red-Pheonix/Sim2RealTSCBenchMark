@@ -181,7 +181,7 @@ class PressLightAgent(RLAgent):
         phase = (np.concatenate(phase)).astype(np.int8)
         return phase
 
-    def get_action(self, ob, phase, test=False):
+    def get_action(self, ob, phase, test=False, valid_mask_fn=None):
         """
         get_action
         Generate action.
@@ -189,11 +189,11 @@ class PressLightAgent(RLAgent):
         :param ob: observation
         :param phase: current phase
         :param test: boolean, decide whether is test process
+        :param valid_mask_fn: optional callable(phase) -> (1, n_actions) bool mask of
+            valid actions, supplied by the trainer's phase-transition transform. When
+            None, all actions are valid (equivalent to the old all-ones mask).
         :return: action that has the highest score
         """
-        if not test:
-            if np.random.rand() <= self.epsilon:
-                return self.sample()
         if self.phase:
             if self.one_hot:
                 feature = np.concatenate(
@@ -204,7 +204,19 @@ class PressLightAgent(RLAgent):
         else:
             feature = ob
         observation = torch.tensor(feature, dtype=torch.float32)
+
+        if valid_mask_fn is not None:
+            valid_action_mask = valid_mask_fn(phase)
+        else:
+            valid_action_mask = torch.ones(1, self.action_space.n, dtype=torch.bool)
+
+        if not test:
+            if np.random.rand() <= self.epsilon:
+                action = torch.multinomial(valid_action_mask.float(), num_samples=1)[0]
+                return action
+
         actions = self.model(observation, train=False)
+        actions = actions.masked_fill(~valid_action_mask, float("-inf"))
         actions = actions.clone().detach().numpy()
         action = np.argmax(actions, axis=1)
         # self.logger.info(f"Action: {action}")

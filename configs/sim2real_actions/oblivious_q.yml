@@ -7,10 +7,10 @@
 # trains under the same delay it deploys into). Contrast with `naive`, which
 # trains delay-free (direct transfer).
 trainer:
-  episodes: 300
-  real_eval_interval: 3  # run real eval every episode during training
+  episodes: 100
+  real_eval_interval: 1  # run real eval every episode during training
   eval_sim: false        # only real-delay transfer matters
 
 sim2real:
   method: oblivious_q
-  sim_action_delay: 20   # env delay applied during sim training (match real action_delay)
+  sim_action_delay: 0   # env delay applied during sim training (match real action_delay)

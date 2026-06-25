@@ -13,7 +13,7 @@ method reads top-to-bottom. Like Delayed-Q the base agents stay plain wrappers
 
 from common.registry import Registry
 from agent.action_delay import PRLightModel
-from trainer.sim2real_actions_trainer import Sim2RealActionsTrainer
+from trainer.actions.sim2real_actions_trainer import Sim2RealActionsTrainer
 
 
 @Registry.register_trainer("sim2real_actions_prlight")
@@ -58,12 +58,17 @@ class Sim2RealActionsPRLightTrainer(Sim2RealActionsTrainer):
             self.real_action_delay.delay,
         )
 
-    def select_action(self, ag, idx, ob, phase, test):
+    def select_action(self, ag, idx, ob, phase, test, valid_mask_fn=None):
         # Every agent (sim and real) acts on the predicted state ŝ_{t+m}; m=0
         # falls back to plain base action selection inside the model.
+        # valid_mask_fn (phase-transition validity) is forwarded to get_action.
         if self.m > 0:
-            return self.model.select_action(ag, idx, ob, phase, test)
-        return super().select_action(ag, idx, ob, phase, test)
+            return self.model.select_action(
+                ag, idx, ob, phase, test, valid_mask_fn=valid_mask_fn
+            )
+        return super().select_action(
+            ag, idx, ob, phase, test, valid_mask_fn=valid_mask_fn
+        )
 
     def on_decision_start(self, obs, phases, test):
         # Hand the model the full per-intersection snapshot so select_action can

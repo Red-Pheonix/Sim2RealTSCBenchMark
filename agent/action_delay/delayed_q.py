@@ -138,9 +138,10 @@ class DelayedQModel:
     # action selection on the predicted m-steps-ahead state
     # ------------------------------------------------------------------
 
-    def select_action(self, agent, idx, ob, phase, test):
+    def select_action(self, agent, idx, ob, phase, test, valid_mask_fn=None):
+        kw = {"valid_mask_fn": valid_mask_fn} if valid_mask_fn is not None else {}
         if self.m == 0:
-            return agent.get_action(ob, phase, test=test)
+            return agent.get_action(ob, phase, test=test, **kw)
 
         # Predict the state m steps ahead once the model has data; during warmup
         # fall back to the current observation. Either way the pending-action
@@ -151,7 +152,7 @@ class DelayedQModel:
         else:
             ob_in, phase_in = ob, phase
 
-        action = agent.get_action(ob_in, phase_in, test=test)
+        action = agent.get_action(ob_in, phase_in, test=test, **kw)
         self.queues[idx].append(int(np.asarray(action).flatten()[0]))
         return action
 
