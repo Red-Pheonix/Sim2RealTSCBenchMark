@@ -1,0 +1,19 @@
+# Action shielding: phase-transition action-gap mitigation. The agent trained in
+# delay/constraint-free sim is deployed into the real env whose NEMA controller
+# drops illegal transitions (the gap, set by the real_setting's
+# `real_phase_transition` table). The shield hands the agent the per-decision
+# legal-action mask at real-eval so it only ever requests transitions the real
+# controller will actually execute -- AND keeps the drop-illegal backstop. Sim
+# training stays unconstrained (test-time-only, zero-shot). Reuses the base
+# sim2real_actions trainer; no mitigation model -- the mask flows through the
+# existing valid_mask -> get_action path.
+trainer:
+  episodes: 300
+  real_eval_interval: 1  # run real eval every episode during training
+  eval_sim: false        # only real transfer matters
+
+sim2real:
+  method: shield
+  # Mask the real-eval agent to legal actions (the gap table comes from the
+  # real_setting's `real_phase_transition`). enforce stays the default elsewhere.
+  real_phase_transition_mode: shield

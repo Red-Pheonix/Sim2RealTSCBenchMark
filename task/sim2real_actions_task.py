@@ -12,6 +12,10 @@ class Sim2RealActionsTask(BaseTask):
 
     METHOD_TO_TRAINER = {
         "naive": "sim2real_actions",  # direct transfer: delay-free sim, no mitigation
+        # Action shielding (phase-transition gap): reuses the base trainer; the legal
+        # -action mask flows through the existing valid_mask -> get_action path, so no
+        # mitigation model/subclass is needed. The shield mode is set in shield.yml.
+        "shield": "sim2real_actions",
         # Oblivious-Q reuses the Delayed-Q trainer, which forces the compensation
         # horizon to 0 for it: trained under delay, ignores it (no model rolled).
         "oblivious_q": "sim2real_actions_delayed_q",

@@ -123,11 +123,17 @@ class Sim2RealActionsTrainer(BaseTrainer):
         real_pt = self.resolve_phase_transition_file(
             sim2real_config.get("real_phase_transition", False)
         )
+        # Per-side phase-transition mode: 'enforce' (the gap -- drop illegal, agent
+        # unaware; the naive baseline) or 'shield' (the mitigation -- also hand the
+        # agent the legal-action mask). Defaults to 'enforce' so naive and the delay
+        # sweep are unchanged; the shield method sets real_phase_transition_mode.
+        sim_pt_mode = sim2real_config.get("sim_phase_transition_mode", "enforce")
+        real_pt_mode = sim2real_config.get("real_phase_transition_mode", "enforce")
         self.sim_action_transforms = self.build_action_transforms(
-            self.agents_sim, self.sim_action_delay, sim_pt
+            self.agents_sim, self.sim_action_delay, sim_pt, sim_pt_mode
         )
         self.real_action_transforms = self.build_action_transforms(
-            self.agents_real, self.real_action_delay, real_pt
+            self.agents_real, self.real_action_delay, real_pt, real_pt_mode
         )
 
         self.world = self.world_real
@@ -244,12 +250,15 @@ class Sim2RealActionsTrainer(BaseTrainer):
         network = Registry.mapping["world_mapping"]["setting"].param.get("network")
         return os.path.join("raw_data", network, "phase_transitions", value + ".json")
 
-    def build_action_transforms(self, agents, delay_transform, pt_file=None):
+    def build_action_transforms(
+        self, agents, delay_transform, pt_file=None, pt_mode="enforce"
+    ):
         """Build the action-transform pipeline for one side (sim or real).
 
         ``pt_file`` (already resolved by ``_resolve_phase_transition_file``) selects
-        the phase-transition validity masker: when set, a ``PhaseTransition`` over the
-        side's agents is prepended; when ``None`` no masking is applied. The
+        the phase-transition transform: when set, a ``PhaseTransition`` over the
+        side's agents is prepended; when ``None`` none is applied. ``pt_mode`` is its
+        mode -- ``enforce`` (the gap) or ``shield`` (mask + enforce backstop). The
         execution-delay transform always follows. ``delay_transform`` (the side's
         ActionDelay) is reused so method trainers can still read its ``.delay``."""
         transforms = []
@@ -266,7 +275,9 @@ class Sim2RealActionsTrainer(BaseTrainer):
                     f"(requested by the action setting). Provide the file or disable "
                     f"phase transitions for this run."
                 )
-            transforms.append(PhaseTransition(agents, self.action_interval, pt_path))
+            transforms.append(
+                PhaseTransition(agents, self.action_interval, pt_path, mode=pt_mode)
+            )
         transforms.append(delay_transform)
         return transforms
 
