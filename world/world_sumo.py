@@ -1013,33 +1013,30 @@ class World(object):
     def get_average_travel_time(self):
         '''
         get_average_travel_time
-        Get average travel time of all vehicles.
-        
-        :param: None
-        :return tvg_time: average travel time of all vehicles
+        DEFAULT travel-time metric: average over all vehicles that have entered the
+        network -- finished trips plus those still in-network (timed to the current
+        step). Congestion-aware (a jammed network is reflected, not hidden) and
+        consistent with cityflow's engine metric, so sumo<->cityflow are comparable.
+
+        Computed from inside_vehicles (enter times already tracked) to avoid
+        getDeparture/getPendingVehicles -- pending (un-inserted) vehicles are
+        deliberately NOT counted. The legacy arrived-only computation (finished trips
+        only -- the old LibSignal default, blind to gridlock) is preserved in
+        get_vehicles() but is no longer used as the default.
+
+        :return: average travel time (in-network inclusive)
         '''
-        # result = 0
-        # count = 0
-        # # finished ones
-        # for v in self.vehicles.keys():
-        #     count += 1
-        #     result += self.vehicles[v]
-        # # in roadnet vehicles
-        # cur_time = self.eng.simulation.getTime()
-        # for i in self.eng.vehicle.getIDList():
-        #     count += 1
-        #     result += (cur_time - self.eng.vehicle.getDeparture(i) + self.eng.vehicle.getDepartDelay(i)) 
-        # # delayed in buffer
-        # for j in self.eng.simulation.getPendingVehicles():
-        #     count += 1
-        #     result += self.eng.vehicle.getDepartDelay(j)
-        # if count == 0:
-        #     return 0
-        # else:
-        #     return result/count
-        tvg_time = self.get_vehicles()
-        # self.eng.vehicle.getDepartDelay(1)
-        return tvg_time
+        cur = self.get_current_time()
+        result = 0.0
+        count = 0
+        for travel_time in self.vehicles.values():        # finished trips
+            result += travel_time
+            count += 1
+        for vid, enter in self.inside_vehicles.items():   # still in network
+            if vid not in self.vehicles:
+                result += cur - enter
+                count += 1
+        return result / count if count else 0
 
     def get_average_travel_time_total(self):
         '''delay added'''
