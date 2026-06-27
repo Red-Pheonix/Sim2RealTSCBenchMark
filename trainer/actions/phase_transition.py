@@ -5,11 +5,15 @@ Loads a per-node phase-transition table (JSON, under
 rules. Two modes:
 
 - ``mode="enforce"`` (default) -- models the REAL controller: the agent is NOT told
-  the rules (no policy mask). At each decision it may request any phase; if the
-  requested transition from the current phase is illegal (disallowed, or its
-  min/max dwell-time window is not met) the request is silently dropped and the
-  intersection HOLDS the current phase. The agent thinks it switched but the signal
-  didn't move -- that mismatch is the sim2real phase-transition gap (naive baseline).
+  the dwell-window rules. At each decision it may request any phase; if the requested
+  transition from the current phase is illegal (disallowed, or its min/max dwell-time
+  window is not met) the request is silently dropped and the intersection HOLDS the
+  current phase. The agent thinks it switched but the signal didn't move -- that
+  mismatch is the sim2real phase-transition gap (naive baseline). The one rule the
+  controller still imposes is force-off: past a phase's max-green, holding is illegal,
+  so the agent is masked to its non-current phases and forced to leave (it picks the
+  highest-Q successor). This keeps the gap's controller realistic instead of letting
+  the agent dwell on a phase forever.
 - ``mode="shield"`` -- the shield mitigation: hand the agent a per-decision validity
   mask via ``valid_mask`` so it only ever picks legal actions, AND keep the enforce
   backstop (drop-illegal at execution) so the controller's spec cannot be violated
@@ -45,11 +49,14 @@ class PhaseTransition(ActionTransform):
         self.agents = list(agents)
         self.action_interval = action_interval
         self.mode = mode
-        # The shield contributes a policy mask (agent only ever picks legal actions);
-        # the gap (enforce) mode leaves the agent unmasked. Both modes drop illegal
-        # transitions at execution -- for shield that is just a backstop behind the
-        # mask, for enforce it is the gap itself.
-        self.provides_mask = mode == "shield"
+        # Both modes hand the agent a mask via valid_mask. Shield exposes the full
+        # legal set (the agent only ever picks legal actions). Enforce exposes ONLY
+        # the force-off constraint (past max-green the agent cannot hold) and is
+        # otherwise all-permissive, so the agent stays unaware of the dwell windows
+        # -- that unawareness, plus begin_interval dropping illegal switches to hold,
+        # is the gap. begin_interval is the execution backstop behind the mask in
+        # both modes, so the controller's spec holds even for a non-masking agent.
+        self.provides_mask = True
 
         with open(json_path, encoding="utf-8") as f:
             table = json.load(f)
@@ -79,50 +86,140 @@ class PhaseTransition(ActionTransform):
                         min_time[af, at] = float(info["min_time_to_transition"])
                         max_time[af, at] = float(info["max_time_to_transition"])
 
-            # phase -> same phase is always allowed (holding is always legal)
-            allowed |= torch.eye(num_phases, dtype=torch.bool)
+            # Hold (phase -> same phase) is a normal windowed action, not an always-on
+            # escape hatch: legal from dwell 0 up to the phase's max-green, then it
+            # force-offs. max-green = the latest deadline among the phase's real
+            # (allowed, off-diagonal) outgoing transitions -- past it every transition
+            # window has also closed, so the controller must leave. A phase with no
+            # outgoing transition in the table keeps an infinite hold (nothing to
+            # force off to).
+            offdiag_allowed = allowed.clone()
+            offdiag_allowed.fill_diagonal_(False)
+            cand = torch.where(
+                offdiag_allowed, max_time, torch.full_like(max_time, float("-inf"))
+            )
+            max_green = cand.max(dim=1).values  # (num_phases,); -inf if no outgoing
+            for p in range(num_phases):
+                allowed[p, p] = True
+                min_time[p, p] = 0.0
+                max_time[p, p] = (
+                    float(max_green[p]) if torch.isfinite(max_green[p]) else float("inf")
+                )
 
             self.allowed_mask.append(allowed)
             self.min_time.append(min_time)
             self.max_time.append(max_time)
 
+        # Safety accounting (per-episode; read+reset by the trainer). A *violation*
+        # is any issued action that is illegal under the real window rules: the
+        # agent's own illegal switches (dropped to a hold -- the gap) AND the force-off
+        # leaves past max-green (a "necessary illegal", but illegal). The naive agent
+        # racks these up, the shielded agent only ever has the necessary force-offs,
+        # so the rate is what justifies the shield. *force_offs* is the force-off
+        # subset, tracked separately to show how many violations were forced.
+        self.violations = 0
+        self.force_offs = 0
+        self.decisions = 0
+
     # ------------------------------------------------------------------
-    # drop illegal requested transitions at execution time (both modes:
-    # the gap for enforce, the backstop behind the mask for shield)
+    # core legality: the per-decision legal-action set, shared by the
+    # execution backstop and the agent-facing mask so they cannot disagree
+    # ------------------------------------------------------------------
+    def _legal_set(self, idx, cur):
+        """Return ``(legal, forced, strict)`` for current phase ``cur`` (int).
+
+        ``strict`` is the (num_phases,) bool of actions legal under the real window
+        rules: each transition within its [min, max] dwell window, plus holding (the
+        diagonal) up to the phase's max-green. ``forced`` is True when ``strict`` is
+        empty (dwell past max-green) -- the controller must leave. ``legal`` is the
+        set the agent is actually offered: ``strict`` normally, or every non-current
+        phase when forced (so it is never empty). A force-off leave is therefore in
+        ``legal`` but NOT in ``strict`` -- it is still an illegal (expired) move.
+        """
+        t = self.agents[idx].phase_generator.I.current_phase_time
+        allowed = self.allowed_mask[idx][cur]
+        min_ok = t >= self.min_time[idx][cur]
+        max_ok = t + self.action_interval <= self.max_time[idx][cur]
+        strict = allowed & min_ok & max_ok
+        forced = not bool(strict.any())
+        if forced:
+            legal = torch.ones_like(strict)
+            legal[cur] = False
+        else:
+            legal = strict
+        return legal, forced, strict
+
+    def _forceoff_target(self, idx, cur):
+        """Deterministic force-off successor for the execution backstop -- used only
+        when an unmasked/edge action would otherwise hold illegally past max-green (a
+        masking agent never requests this). Picks the allowed successor with the
+        latest deadline; falls back to the next phase index if the table lists none."""
+        n = self.allowed_mask[idx].shape[0]
+        allowed = self.allowed_mask[idx][cur].clone()
+        allowed[cur] = False
+        cand = torch.where(
+            allowed,
+            self.max_time[idx][cur],
+            torch.full_like(self.max_time[idx][cur], float("-inf")),
+        )
+        if bool(torch.isfinite(cand).any()):
+            return int(torch.argmax(cand))
+        return (cur + 1) % n
+
+    # ------------------------------------------------------------------
+    # execution backstop (both modes): resolve an illegal requested action
     # ------------------------------------------------------------------
     def begin_interval(self, proposed_actions):
-        # Rewrite illegal requests to "hold current phase" IN PLACE, before any
-        # downstream transform (e.g. ActionDelay) enqueues the action. The agent is
-        # unaware -- it requested a switch that the real controller silently ignores.
+        # Rewrite illegal requests IN PLACE before any downstream transform (e.g.
+        # ActionDelay) enqueues them, and tally safety stats. A switch the controller
+        # refuses becomes a hold (the gap) and counts as a violation; past max-green
+        # the agent is forced off (counted separately). Normally the mask already kept
+        # the request legal, so this is a no-op backstop.
         for idx, ag in enumerate(self.agents):
             cur = int(np.asarray(ag.get_phase()).reshape(-1)[0])
             req = int(np.asarray(proposed_actions[idx]).reshape(-1)[0])
-            if req != cur and not self._transition_ok(idx, cur, req):
+            legal, forced, strict = self._legal_set(idx, cur)
+            self.decisions += 1
+            # A violation is any issued action that is illegal under the real window
+            # rules (strict). That covers the agent's own illegal switches AND the
+            # force-off leaves past max-green -- a "necessary illegal" but illegal all
+            # the same. force_offs tracks that necessary-illegal subset separately.
+            if not bool(strict[req]):
+                self.violations += 1
+            if forced:
+                self.force_offs += 1
+                if not bool(legal[req]):  # tried to hold -> force a leave
+                    proposed_actions[idx] = self._forceoff_target(idx, cur)
+            elif not bool(legal[req]):
+                # illegal switch the controller drops to a hold (the gap)
                 proposed_actions[idx] = cur
 
+    def collect_stats(self):
+        """(violations, force_offs, decisions) accumulated since the last reset."""
+        return self.violations, self.force_offs, self.decisions
+
+    def reset_stats(self):
+        self.violations = 0
+        self.force_offs = 0
+        self.decisions = 0
+
     def _transition_ok(self, idx, cur, nxt):
-        t = self.agents[idx].phase_generator.I.current_phase_time
-        if not bool(self.allowed_mask[idx][cur, nxt]):
-            return False
-        if t < float(self.min_time[idx][cur, nxt]):
-            return False
-        if t + self.action_interval > float(self.max_time[idx][cur, nxt]):
-            return False
-        return True
+        legal, _, _ = self._legal_set(idx, cur)
+        return bool(legal[nxt])
 
     # ------------------------------------------------------------------
-    # shield mode: hand the agent the legal-action set
+    # the legal-action mask handed to the agent at decision time
     # ------------------------------------------------------------------
     def valid_mask(self, idx, phase):
-        current_phase_time = self.agents[idx].phase_generator.I.current_phase_time
-
-        allowed = self.allowed_mask[idx][phase]
-        min_ok = current_phase_time >= self.min_time[idx][phase]
-        max_ok = current_phase_time + self.action_interval <= self.max_time[idx][phase]
-        valid_mask = allowed & (min_ok & max_ok)
-
-        # special case where no valid actions are available -> keep current phase
-        if (~valid_mask).all().item():
-            valid_mask[0][phase] = True
-
-        return valid_mask
+        cur = int(np.asarray(phase).reshape(-1)[0])
+        legal, forced, _ = self._legal_set(idx, cur)
+        if self.mode == "shield":
+            # full constraint: the agent only ever picks legal actions
+            return legal.unsqueeze(0)
+        # enforce/gap: keep the agent unaware of the normal dwell windows (it may
+        # request anything; illegal switches are dropped to hold by begin_interval).
+        # The one thing the real controller still imposes is force-off -- past
+        # max-green it cannot hold -- so expose only that.
+        if forced:
+            return legal.unsqueeze(0)
+        return torch.ones_like(legal).unsqueeze(0)

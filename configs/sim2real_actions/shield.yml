@@ -1,19 +1,26 @@
-# Action shielding: phase-transition action-gap mitigation. The agent trained in
-# delay/constraint-free sim is deployed into the real env whose NEMA controller
-# drops illegal transitions (the gap, set by the real_setting's
+# Action shielding: phase-transition action-gap mitigation. The real env's NEMA
+# controller drops illegal phase transitions (the gap, set by the real_setting's
 # `real_phase_transition` table). The shield hands the agent the per-decision
-# legal-action mask at real-eval so it only ever requests transitions the real
-# controller will actually execute -- AND keeps the drop-illegal backstop. Sim
-# training stays unconstrained (test-time-only, zero-shot). Reuses the base
-# sim2real_actions trainer; no mitigation model -- the mask flows through the
-# existing valid_mask -> get_action path.
+# legal-action mask so it only ever requests transitions the controller will
+# actually execute -- AND keeps the drop-illegal backstop.
+#
+# Train-time shielding: sim mirrors the real phase-transition table (via the
+# `same_as_real` sentinel) and is masked in `shield` mode too, so the agent learns
+# its policy INSIDE the legal-action set rather than having a mask bolted on at
+# eval over actions it was trained to value. The naive baseline still exposes the
+# raw gap (no masking anywhere; illegal transitions silently dropped) -- that is
+# the comparison point. Reuses the base sim2real_actions trainer; no mitigation
+# model -- the mask flows through the existing valid_mask -> get_action path.
 trainer:
   episodes: 300
-  real_eval_interval: 1  # run real eval every episode during training
+  real_eval_interval: 3  # run real eval every episode during training
   eval_sim: false        # only real transfer matters
 
 sim2real:
   method: shield
-  # Mask the real-eval agent to legal actions (the gap table comes from the
-  # real_setting's `real_phase_transition`). enforce stays the default elsewhere.
+  # Mask both sides to legal actions. Sim mirrors the real table (the gap table
+  # comes from the real_setting's `real_phase_transition`) so the agent trains
+  # within the same constraint it is deployed under.
+  sim_phase_transition: same_as_real
+  sim_phase_transition_mode: shield
   real_phase_transition_mode: shield

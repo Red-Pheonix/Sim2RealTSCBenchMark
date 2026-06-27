@@ -117,12 +117,16 @@ class Sim2RealActionsTrainer(BaseTrainer):
         # `real_phase_transition` -- so sim and real can mask independently (or with
         # different CSVs), mirroring the sim/real delay split. The ActionDelay
         # objects above are reused so method trainers can still read their .delay.
-        sim_pt = self.resolve_phase_transition_file(
-            sim2real_config.get("sim_phase_transition", False)
-        )
-        real_pt = self.resolve_phase_transition_file(
-            sim2real_config.get("real_phase_transition", False)
-        )
+        sim_pt_value = sim2real_config.get("sim_phase_transition", False)
+        real_pt_value = sim2real_config.get("real_phase_transition", False)
+        # Train-time shielding: the shield method trains the agent inside the same
+        # legal-action set it faces at real-eval, so sim mirrors real's table. The
+        # table name lives in the setting yml (per-network), so the method file uses
+        # the `same_as_real` sentinel rather than naming a table it can't know.
+        if sim_pt_value == "same_as_real":
+            sim_pt_value = real_pt_value
+        sim_pt = self.resolve_phase_transition_file(sim_pt_value)
+        real_pt = self.resolve_phase_transition_file(real_pt_value)
         # Per-side phase-transition mode: 'enforce' (the gap -- drop illegal, agent
         # unaware; the naive baseline) or 'shield' (the mitigation -- also hand the
         # agent the legal-action mask). Defaults to 'enforce' so naive and the delay
@@ -532,9 +536,31 @@ class Sim2RealActionsTrainer(BaseTrainer):
 
         pbar.close()
 
-    def log_metrics(self, mode, step, metric, loss):
+    def safety_stats(self, action_transforms):
+        """Sum and RESET the phase-transition safety counters for one side.
+
+        Returns ``(violation_rate, forceoff_rate, violations, force_offs, decisions)``
+        as per-agent-decision rates (the headline) plus raw counts. Sides with no
+        phase-transition transform (e.g. the unconstrained sim, or any non-PT
+        experiment) report zeros."""
+        violations = force_offs = decisions = 0
+        for transform in action_transforms or []:
+            if hasattr(transform, "collect_stats"):
+                tv, tf, td = transform.collect_stats()
+                violations += tv
+                force_offs += tf
+                decisions += td
+                transform.reset_stats()
+        vr = violations / decisions if decisions else 0.0
+        fr = force_offs / decisions if decisions else 0.0
+        return vr, fr, violations, force_offs, decisions
+
+    def log_metrics(self, mode, step, metric, loss, action_transforms=None):
+        vr, fr, violations, force_offs, _ = self.safety_stats(action_transforms)
         self.logger.info(
-            "%s step:%s, travel time:%s, q_loss:%s, rewards:%s, queue:%s, delay:%s, throughput:%s",
+            "%s step:%s, travel time:%s, q_loss:%s, rewards:%s, queue:%s, delay:%s, "
+            "throughput:%s, violation_rate:%.4f, forceoff_rate:%.4f, "
+            "violations:%s, force_offs:%s",
             mode,
             step,
             metric.real_average_travel_time(),
@@ -543,6 +569,10 @@ class Sim2RealActionsTrainer(BaseTrainer):
             metric.queue(),
             metric.delay(),
             int(metric.throughput()),
+            vr,
+            fr,
+            violations,
+            force_offs,
         )
         self.writeLog(
             mode,
@@ -553,6 +583,8 @@ class Sim2RealActionsTrainer(BaseTrainer):
             metric.queue(),
             metric.delay(),
             metric.throughput(),
+            vr,
+            fr,
         )
 
     def sim_train(self, episode):
@@ -570,7 +602,9 @@ class Sim2RealActionsTrainer(BaseTrainer):
             desc=f"Sim Training Epoch {episode}",
             action_transforms=self.sim_action_transforms,
         )
-        self.log_metrics("SIM_TRAIN", episode, self.metric_sim, mean_loss)
+        self.log_metrics(
+            "SIM_TRAIN", episode, self.metric_sim, mean_loss, self.sim_action_transforms
+        )
         self.logger.info("sim step:%s/%s", steps_run, self.steps)
         return mean_loss
 
@@ -626,7 +660,9 @@ class Sim2RealActionsTrainer(BaseTrainer):
                 desc=f"Sim Eval Epoch {episode}",
                 action_transforms=self.sim_action_transforms,
             )
-            self.log_metrics("TEST_SIM", episode, self.metric_sim, 100)
+            self.log_metrics(
+                "TEST_SIM", episode, self.metric_sim, 100, self.sim_action_transforms
+            )
 
         self.load_agents(self.agents_real, self.model_dir)
         self.run_eval_episode(
@@ -636,7 +672,9 @@ class Sim2RealActionsTrainer(BaseTrainer):
             desc=f"Real Eval Epoch {episode}",
             action_transforms=self.real_action_transforms,
         )
-        self.log_metrics("TEST_REAL", episode, self.metric_real, 100)
+        self.log_metrics(
+            "TEST_REAL", episode, self.metric_real, 100, self.real_action_transforms
+        )
         return self.metric_real.real_average_travel_time()
 
     def test(self, drop_load=False):
@@ -651,7 +689,9 @@ class Sim2RealActionsTrainer(BaseTrainer):
                 desc="Final Sim Test",
                 action_transforms=self.sim_action_transforms,
             )
-            self.log_metrics("FINAL_TEST_SIM", 0, self.metric_sim, 100)
+            self.log_metrics(
+                "FINAL_TEST_SIM", 0, self.metric_sim, 100, self.sim_action_transforms
+            )
 
         if not drop_load:
             self.load_agents(self.agents_real, self.model_dir, e=self.episodes)
@@ -663,7 +703,9 @@ class Sim2RealActionsTrainer(BaseTrainer):
             desc="Final Real Test",
             action_transforms=self.real_action_transforms,
         )
-        self.log_metrics("FINAL_TEST_REAL", 0, self.metric_real, 100)
+        self.log_metrics(
+            "FINAL_TEST_REAL", 0, self.metric_real, 100, self.real_action_transforms
+        )
         return self.metric_real
 
     def writeLog(
@@ -676,6 +718,8 @@ class Sim2RealActionsTrainer(BaseTrainer):
         cur_queue,
         cur_delay,
         cur_throughput,
+        violation_rate=0.0,
+        forceoff_rate=0.0,
     ):
         res = (
             self.exp_name
@@ -695,6 +739,10 @@ class Sim2RealActionsTrainer(BaseTrainer):
             + "%.2f" % cur_delay
             + "\t"
             + "%d" % cur_throughput
+            + "\t"
+            + "%.4f" % violation_rate
+            + "\t"
+            + "%.4f" % forceoff_rate
         )
         log_handle = open(self.log_file, "a")
         log_handle.write(res + "\n")
