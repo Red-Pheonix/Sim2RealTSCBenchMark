@@ -1,0 +1,15 @@
+# Plain GAT + DEPLOYMENT SHIELD. The GAT-trained policy is deployed MASKED (the controller
+# hands it the legal-action set at real eval), so violations are 0 by construction -- the
+# question is whether GAT training improves travel time over naive+shield. Same trainer as
+# gat.yml; only the real-side mode flips to shield.
+trainer:
+  episodes: 40
+  real_eval_interval: 1
+  eval_sim: false
+
+sim2real:
+  method: gat
+  gat_warmup: 5
+  gat_uncertainty: false
+  gat_forward_action: proposed
+  real_phase_transition_mode: shield     # <-- mask the policy at deployment (0 violations)

@@ -1,0 +1,20 @@
+# Domain Randomization (DR) over the phase-transition constraint -- SHIELDED variant.
+# Each sim episode a fresh RANDOM valid constraint is synthesized from the permissive base
+# (flexible): a random fraction of its transitions is disallowed, keeping the graph
+# strongly connected (timings untouched). Trained MASKED (shield mode, mirrored onto the
+# generated table by the DR trainer) so the agent sees each episode's legal set, then
+# deployed masked on the UNSEEN target (real_phase_transition from the setting). DR never
+# trains on the target table -- the target is just one member of the randomized family.
+# Drop range covers the deployment regime: barrier ~0.43 of edges, cyclic ~0.86.
+# Compare against: naive, shield (clean policy + eval mask), train_shield (target only),
+# dr_noshield (unshielded DR).
+trainer:
+  episodes: 120
+  real_eval_interval: 3
+  eval_sim: false
+
+sim2real:
+  method: dr
+  real_phase_transition_mode: shield     # deploy masked on the setting's target table
+  dr_base_table: pt_flexible             # permissive base: drop edges from this
+  dr_drop_range: [0.2, 0.45]             # per-episode fraction of edges disabled (random)

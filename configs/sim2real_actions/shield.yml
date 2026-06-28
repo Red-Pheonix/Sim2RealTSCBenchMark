@@ -1,16 +1,17 @@
-# Action shielding: phase-transition action-gap mitigation. The real env's NEMA
-# controller drops illegal phase transitions (the gap, set by the real_setting's
-# `real_phase_transition` table). The shield hands the agent the per-decision
-# legal-action mask so it only ever requests transitions the controller will
+# Action shielding (test-time): phase-transition action-gap mitigation. The real env's
+# NEMA controller drops illegal phase transitions (the gap, set by the real_setting's
+# `real_phase_transition` table). The shield hands the agent the per-decision legal
+# -action mask at DEPLOYMENT so it only ever requests transitions the controller will
 # actually execute -- AND keeps the drop-illegal backstop.
 #
-# Train-time shielding: sim mirrors the real phase-transition table (via the
-# `same_as_real` sentinel) and is masked in `shield` mode too, so the agent learns
-# its policy INSIDE the legal-action set rather than having a mask bolted on at
-# eval over actions it was trained to value. The naive baseline still exposes the
-# raw gap (no masking anywhere; illegal transitions silently dropped) -- that is
-# the comparison point. Reuses the base sim2real_actions trainer; no mitigation
-# model -- the mask flows through the existing valid_mask -> get_action path.
+# DEPLOYMENT-ONLY masking: the agent trains on a CLEAN, unconstrained sim (no sim phase
+# -transition transform) and the mask is bolted on only at real eval, over actions the
+# policy was trained to value constraint-blind. Contrast with `train_shield`, which masks
+# sim too so the policy is learned WITHIN the constraint. Both reach 0 violations, so the
+# pair isolates POLICY QUALITY (masked-clean vs trained-within). The naive baseline is the
+# raw gap (no masking; illegal transitions silently dropped). Reuses the base
+# sim2real_actions trainer; the mask flows through the existing valid_mask -> get_action
+# path -- no mitigation model.
 trainer:
   episodes: 300
   real_eval_interval: 3  # run real eval every episode during training
@@ -18,9 +19,6 @@ trainer:
 
 sim2real:
   method: shield
-  # Mask both sides to legal actions. Sim mirrors the real table (the gap table
-  # comes from the real_setting's `real_phase_transition`) so the agent trains
-  # within the same constraint it is deployed under.
-  sim_phase_transition: same_as_real
-  sim_phase_transition_mode: shield
+  # Mask ONLY at deployment; sim trains unconstrained (no sim_phase_transition*), so the
+  # masked policy is constraint-blind -- the test-time-only counterpart of train_shield.
   real_phase_transition_mode: shield

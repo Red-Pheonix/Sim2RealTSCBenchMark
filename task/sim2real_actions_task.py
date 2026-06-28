@@ -16,8 +16,25 @@ class Sim2RealActionsTask(BaseTask):
         # -action mask flows through the existing valid_mask -> get_action path, so no
         # mitigation model/subclass is needed. The shield mode is set in shield.yml.
         "shield": "sim2real_actions",
+        # Train-time shield: mask the agent to the legal set DURING sim training
+        # (vs `shield`, which masks only at deployment). Pure config on the base trainer.
+        "train_shield": "sim2real_actions",
+        # Soft shield: ground the sim with the real controller and penalize illegal
+        # requests in the reward -- a soft constraint vs shield's hard mask. Its own
+        # trainer (stores the requested action + adds the violation-penalty reward
+        # transform), since both are soft_shield-exclusive.
+        "soft_shield": "sim2real_actions_soft_shield",
         # Oblivious-Q reuses the Delayed-Q trainer, which forces the compensation
         # horizon to 0 for it: trained under delay, ignores it (no model rolled).
+        # Domain randomization: train across a randomized family of phase-transition
+        # tables (masked) so the policy is robust to the legal-action structure.
+        "dr": "sim2real_actions_dr",
+        # GAT / UGAT (Grounded Action Transformation): KEPT AS NEGATIVE RESULTS -- grounding
+        # learns but does not close the PT gap. Both reuse the proven grounding infra; gat
+        # grounds always, ugat gates on inverse-model uncertainty. Same trainer, the
+        # `uncertainty` flag (gat.yml / ugat.yml) selects the variant.
+        "gat": "sim2real_actions_gat",
+        "ugat": "sim2real_actions_gat",
         "oblivious_q": "sim2real_actions_delayed_q",
         "delayed_q": "sim2real_actions_delayed_q",
         "prlight": "sim2real_actions_prlight",  # one-shot neighbor-aware prediction

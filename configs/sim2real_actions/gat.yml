@@ -1,0 +1,15 @@
+# Plain GAT (Grounded Action Transformation) for the phase-transition action gap. Reuses
+# the proven grounding infra (N_net forward + inverse), grounds EVERY action (no
+# uncertainty gate), forward model learns from the PROPOSED action. Kept as a negative
+# -result baseline: grounding learns but doesn't close the PT gap, and ungated it can
+# gridlock on constraint-heavy tables (barrier). Contrast: ugat.yml (uncertainty-gated).
+trainer:
+  episodes: 40
+  real_eval_interval: 1
+  eval_sim: false
+
+sim2real:
+  method: gat
+  gat_warmup: 5
+  gat_uncertainty: false           # ground always (plain GAT)
+  gat_forward_action: proposed

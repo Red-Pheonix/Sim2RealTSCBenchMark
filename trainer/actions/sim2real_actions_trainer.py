@@ -4,6 +4,7 @@ import numpy as np
 from tqdm import tqdm
 
 from .delay import ActionDelay
+from .delay_shield import DelayAwareShield
 from .phase_transition import PhaseTransition
 from common.metrics import Metrics
 from common.registry import Registry
@@ -139,6 +140,8 @@ class Sim2RealActionsTrainer(BaseTrainer):
         self.real_action_transforms = self.build_action_transforms(
             self.agents_real, self.real_action_delay, real_pt, real_pt_mode
         )
+        # Training happens on the sim side, so reward shaping only attaches there.
+        self.sim_reward_transforms = self.build_reward_transforms()
 
         self.world = self.world_real
         self.agents = self.agents_real
@@ -265,7 +268,35 @@ class Sim2RealActionsTrainer(BaseTrainer):
         mode -- ``enforce`` (the gap) or ``shield`` (mask + enforce backstop). The
         execution-delay transform always follows. ``delay_transform`` (the side's
         ActionDelay) is reused so method trainers can still read its ``.delay``."""
-        transforms = []
+        # Delay-aware shield owns BOTH the delay and the execution-time mask, so it
+        # replaces the [ActionDelay, PhaseTransition] pair on this side.
+        if pt_mode == "delay_shield":
+            if pt_file is None:
+                raise ValueError(
+                    "real_phase_transition_mode: delay_shield requires a phase-"
+                    "transition table (set real_phase_transition in the setting)."
+                )
+            world_param = Registry.mapping["world_mapping"]["setting"].param
+            pt_path = os.path.join(world_param["dir"], pt_file)
+            if not os.path.exists(pt_path):
+                raise FileNotFoundError(
+                    f"phase-transition table not found at {pt_path} "
+                    f"(requested by the action setting)."
+                )
+            return [
+                DelayAwareShield(
+                    agents, self.action_interval, pt_path, delay=delay_transform.delay
+                )
+            ]
+
+        # Order matters: ActionDelay FIRST, PhaseTransition AFTER. The delay enqueues
+        # the agent's RAW request; the phase-transition transform then validates the
+        # action the delay *releases* against the controller's current clock -- i.e.
+        # legality is judged at EXECUTION time, after the delay, not at decision time.
+        # That is what makes a decision-time shield go stale under delay (the legal set
+        # shifts during the delay window). With delay 0 the release is immediate, so
+        # execution state == decision state and behaviour is unchanged.
+        transforms = [delay_transform]
         if pt_file is not None:
             world_param = Registry.mapping["world_mapping"]["setting"].param
             pt_path = os.path.join(world_param["dir"], pt_file)
@@ -282,8 +313,13 @@ class Sim2RealActionsTrainer(BaseTrainer):
             transforms.append(
                 PhaseTransition(agents, self.action_interval, pt_path, mode=pt_mode)
             )
-        transforms.append(delay_transform)
         return transforms
+
+    def build_reward_transforms(self):
+        """Reward-shaping pipeline for the TRAINING signal (the reported metric stays
+        raw). Empty on the base trainer (no reward-side mitigation); a method trainer
+        overrides this to add transforms -- e.g. soft_shield's violation penalty."""
+        return []
 
     def make_valid_mask_fn(self, action_transforms, idx):
         """Combine the validity masks from the transforms into one callable
@@ -357,10 +393,15 @@ class Sim2RealActionsTrainer(BaseTrainer):
         done,
         key,
     ):
+        # By default store the EXECUTED action (the real delay/transition outcome --
+        # what actually happened in the env). A method trainer overrides action_to_store
+        # to change this; soft_shield stores the REQUESTED action so its penalty lands
+        # on the agent's own choice.
+        action = self.action_to_store(chosen_action, executed_action)
         ag.remember(
             last_obs,
             last_phase,
-            executed_action,
+            action,
             actions_prob,
             reward,
             obs,
@@ -368,6 +409,11 @@ class Sim2RealActionsTrainer(BaseTrainer):
             done,
             key,
         )
+
+    def action_to_store(self, chosen_action, executed_action):
+        """Which action goes into the replay buffer. Base: the EXECUTED action (the
+        true env outcome). soft_shield overrides this to store the REQUESTED action."""
+        return executed_action
 
     def train_agents(self, agents):
         return np.stack([ag.train() for ag in agents])
@@ -385,6 +431,7 @@ class Sim2RealActionsTrainer(BaseTrainer):
         total_decision_num,
         desc,
         action_transforms,
+        reward_transforms=(),
     ):
         metric.clear()
         last_obs = env.reset()
@@ -418,6 +465,11 @@ class Sim2RealActionsTrainer(BaseTrainer):
                         )
                     )
                 proposed_actions = np.stack(actions)
+                # The action the agent REQUESTED, before the controller drops/forces
+                # it in begin_interval (which rewrites proposed_actions in place).
+                # soft_shield learns on this, not the executed action, so the agent
+                # learns the effect of its own choices.
+                requested_actions = proposed_actions.copy()
                 for transform in action_transforms:
                     transform.begin_interval(proposed_actions)
 
@@ -438,7 +490,15 @@ class Sim2RealActionsTrainer(BaseTrainer):
                     rewards_list.append(np.stack(rewards))
 
                 rewards = np.mean(rewards_list, axis=0)
-                metric.update(rewards)
+                metric.update(rewards)  # raw reward -> the reported metric
+
+                # Shape only the TRAINING signal (the metric keeps the raw reward).
+                # Each reward transform maps (rewards, action_transforms) -> rewards,
+                # pulling whatever it needs from the action pipeline itself; the trainer
+                # only wires the two pipelines together.
+                train_rewards = rewards.astype(float).copy()
+                for transform in reward_transforms:
+                    train_rewards = transform(train_rewards, action_transforms)
 
                 cur_phase = np.stack([ag.get_phase() for ag in agents])
                 for idx, ag in enumerate(agents):
@@ -447,10 +507,10 @@ class Sim2RealActionsTrainer(BaseTrainer):
                         idx,
                         last_obs=last_obs[idx],
                         last_phase=last_phase[idx],
-                        chosen_action=proposed_actions[idx],
+                        chosen_action=requested_actions[idx],
                         executed_action=executed_actions[idx],
                         actions_prob=actions_prob[idx],
-                        reward=rewards[idx],
+                        reward=train_rewards[idx],
                         obs=obs[idx],
                         cur_phase=cur_phase[idx],
                         done=dones[idx],
@@ -601,6 +661,7 @@ class Sim2RealActionsTrainer(BaseTrainer):
             total_decision_num=self.total_decision_num_sim,
             desc=f"Sim Training Epoch {episode}",
             action_transforms=self.sim_action_transforms,
+            reward_transforms=self.sim_reward_transforms,
         )
         self.log_metrics(
             "SIM_TRAIN", episode, self.metric_sim, mean_loss, self.sim_action_transforms

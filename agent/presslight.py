@@ -212,10 +212,15 @@ class PressLightAgent(RLAgent):
 
         if not test:
             if np.random.rand() <= self.epsilon:
+                self.last_q_values = None  # random action: no usable preference
                 action = torch.multinomial(valid_action_mask.float(), num_samples=1)[0]
                 return action
 
         actions = self.model(observation, train=False)
+        # Cache the RAW (pre-mask) Q-vector as this decision's committed preference, so
+        # a delay-aware shield can re-rank it against the post-delay legal set at
+        # execution time (the agent itself cannot, since it only sees decision-time obs).
+        self.last_q_values = actions.clone().detach().numpy().reshape(-1)
         actions = actions.masked_fill(~valid_action_mask, float("-inf"))
         actions = actions.clone().detach().numpy()
         action = np.argmax(actions, axis=1)

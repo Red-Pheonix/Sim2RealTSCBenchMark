@@ -38,14 +38,18 @@ import numpy as np
 import torch
 
 from .base import ActionTransform
+from .interval_hold import IntervalHold
+from .safety import SafetyStats
 
 
 class PhaseTransition(ActionTransform):
-    def __init__(self, agents, action_interval, json_path, mode="enforce"):
+    def __init__(self, agents, action_interval, json_path=None, mode="enforce", table=None):
         if mode not in ("enforce", "shield"):
             raise ValueError(
                 f"PhaseTransition mode must be 'enforce' or 'shield', got {mode!r}"
             )
+        if json_path is None and table is None:
+            raise ValueError("PhaseTransition needs either json_path or an in-memory table.")
         self.agents = list(agents)
         self.action_interval = action_interval
         self.mode = mode
@@ -53,13 +57,17 @@ class PhaseTransition(ActionTransform):
         # legal set (the agent only ever picks legal actions). Enforce exposes ONLY
         # the force-off constraint (past max-green the agent cannot hold) and is
         # otherwise all-permissive, so the agent stays unaware of the dwell windows
-        # -- that unawareness, plus begin_interval dropping illegal switches to hold,
-        # is the gap. begin_interval is the execution backstop behind the mask in
-        # both modes, so the controller's spec holds even for a non-masking agent.
+        # -- that unawareness, plus resolve_step dropping illegal switches to hold,
+        # is the gap. resolve_step is the execution backstop behind the mask in both
+        # modes (it judges the released action at execution time), so the controller's
+        # spec holds even for a non-masking agent, and even under action delay.
         self.provides_mask = True
 
-        with open(json_path, encoding="utf-8") as f:
-            table = json.load(f)
+        # The transition table is either loaded from disk (json_path) or supplied in
+        # memory (table) -- the latter lets DR hand it a procedurally generated constraint.
+        if table is None:
+            with open(json_path, encoding="utf-8") as f:
+                table = json.load(f)
 
         self.allowed_mask = []
         self.min_time = []
@@ -110,16 +118,18 @@ class PhaseTransition(ActionTransform):
             self.min_time.append(min_time)
             self.max_time.append(max_time)
 
-        # Safety accounting (per-episode; read+reset by the trainer). A *violation*
-        # is any issued action that is illegal under the real window rules: the
-        # agent's own illegal switches (dropped to a hold -- the gap) AND the force-off
-        # leaves past max-green (a "necessary illegal", but illegal). The naive agent
-        # racks these up, the shielded agent only ever has the necessary force-offs,
-        # so the rate is what justifies the shield. *force_offs* is the force-off
-        # subset, tracked separately to show how many violations were forced.
-        self.violations = 0
-        self.force_offs = 0
-        self.decisions = 0
+        # Safety accounting (per-episode; read+reset by the trainer). The transform
+        # decides legality; SafetyStats keeps the books -- avoidable *violations* vs
+        # controller *force_offs*, plus the per-agent last_violation flag soft_shield
+        # reads. See trainer/actions/safety.py for the violation/force-off rationale.
+        self.safety = SafetyStats(len(self.agents))
+        # Validation happens at EXECUTION (resolve_step), not decision time: a delayed
+        # action is judged against the controller's clock at the moment it is released,
+        # which is why a decision-time shield goes stale under delay. resolve_step runs
+        # every env step; IntervalHold makes that per-step path behave as one decision
+        # per interval -- it flags the release boundary (where this transform validates
+        # and counts once) and holds the committed phase across the interval's steps.
+        self.hold = IntervalHold(len(self.agents))
 
     # ------------------------------------------------------------------
     # core legality: the per-decision legal-action set, shared by the
@@ -143,8 +153,17 @@ class PhaseTransition(ActionTransform):
         strict = allowed & min_ok & max_ok
         forced = not bool(strict.any())
         if forced:
-            legal = torch.ones_like(strict)
+            # Force-off: dwell is past max-green, the controller MUST leave. Relax
+            # only the TIMING -- the agent may go to any normally-ALLOWED successor
+            # (for cyclic that is the single next phase; for flexible, the allowed
+            # set), never an arbitrary jump that would break the controller's
+            # transition graph. Fall back to any non-current only if the table lists
+            # no successor at all (degenerate node).
+            legal = self.allowed_mask[idx][cur].clone()
             legal[cur] = False
+            if not bool(legal.any()):
+                legal = torch.ones_like(strict)
+                legal[cur] = False
         else:
             legal = strict
         return legal, forced, strict
@@ -167,45 +186,67 @@ class PhaseTransition(ActionTransform):
         return (cur + 1) % n
 
     # ------------------------------------------------------------------
-    # execution backstop (both modes): resolve an illegal requested action
+    # execution backstop (both modes): resolve an illegal action at the moment
+    # it is RELEASED by the upstream delay, against the controller's live clock
     # ------------------------------------------------------------------
+    def reset(self, agents, init_phases):
+        self.hold.reset()
+
     def begin_interval(self, proposed_actions):
-        # Rewrite illegal requests IN PLACE before any downstream transform (e.g.
-        # ActionDelay) enqueues them, and tally safety stats. A switch the controller
-        # refuses becomes a hold (the gap) and counts as a violation; past max-green
-        # the agent is forced off (counted separately). Normally the mask already kept
-        # the request legal, so this is a no-op backstop.
-        for idx, ag in enumerate(self.agents):
-            cur = int(np.asarray(ag.get_phase()).reshape(-1)[0])
-            req = int(np.asarray(proposed_actions[idx]).reshape(-1)[0])
-            legal, forced, strict = self._legal_set(idx, cur)
-            self.decisions += 1
-            # A violation is any issued action that is illegal under the real window
-            # rules (strict). That covers the agent's own illegal switches AND the
-            # force-off leaves past max-green -- a "necessary illegal" but illegal all
-            # the same. force_offs tracks that necessary-illegal subset separately.
-            if not bool(strict[req]):
-                self.violations += 1
-            if forced:
-                self.force_offs += 1
-                if not bool(legal[req]):  # tried to hold -> force a leave
-                    proposed_actions[idx] = self._forceoff_target(idx, cur)
-            elif not bool(legal[req]):
-                # illegal switch the controller drops to a hold (the gap)
-                proposed_actions[idx] = cur
+        # Validation is deferred to resolve_step (execution time). Here we only mark
+        # that a new decision has begun so resolve_step tallies one decision's stats on
+        # its first call of the interval. The action is enqueued raw by the upstream
+        # ActionDelay; the controller judges it when it is released, not now -- so under
+        # delay the decision-time mask the agent used may no longer be legal.
+        self.hold.begin()
+
+    def resolve_step(self, executed_actions):
+        # The controller commits one phase per decision. At the interval's first step
+        # (the release boundary) we judge the action the upstream ActionDelay just
+        # released against the controller's CURRENT clock (post-delay) and commit the
+        # corrected phase; IntervalHold then holds that committed phase for every step
+        # of the interval, so the signal gets one consistent command (no conflicting
+        # mid-yellow rewrites). Judging at release -- not at the agent's decision -- is
+        # what makes a decision-time shield go stale under delay: the legal set has
+        # moved on, so the residual violations tallied here are exactly that gap.
+        flat = np.asarray(executed_actions).reshape(len(self.agents), -1)
+        if self.hold.take_boundary():
+            for idx, ag in enumerate(self.agents):
+                cur = int(np.asarray(ag.get_phase()).reshape(-1)[0])
+                req = int(flat[idx, 0])
+                n = self.allowed_mask[idx].shape[0]
+                if not (0 <= cur < n) or not (0 <= req < n):
+                    # transitional/out-of-range read at the boundary: pass through
+                    self.hold.commit(idx, req)
+                    continue
+                legal, forced, strict = self._legal_set(idx, cur)
+                # A violation is an AVOIDABLE illegal switch: out-of-window or
+                # disallowed while a legal action still existed. Force-off leaves (past
+                # max-green, when NO legal action exists) are tracked separately.
+                violated = (not forced) and (not bool(strict[req]))
+                self.safety.record(idx, violated, forced)
+                if forced:
+                    target = req if bool(legal[req]) else self._forceoff_target(idx, cur)
+                elif not bool(legal[req]):
+                    target = cur  # illegal switch dropped to a hold (the gap)
+                else:
+                    target = req
+                self.hold.commit(idx, target)
+        return self.hold.apply(executed_actions)
+
+    @property
+    def last_violation(self):
+        """Per-agent illegal-request flag from the most recent decision (read by the
+        soft_shield reward transform). Lives on the SafetyStats; exposed here so the
+        trainer can read it off the transform directly."""
+        return self.safety.last_violation
 
     def collect_stats(self):
         """(violations, force_offs, decisions) accumulated since the last reset."""
-        return self.violations, self.force_offs, self.decisions
+        return self.safety.collect()
 
     def reset_stats(self):
-        self.violations = 0
-        self.force_offs = 0
-        self.decisions = 0
-
-    def _transition_ok(self, idx, cur, nxt):
-        legal, _, _ = self._legal_set(idx, cur)
-        return bool(legal[nxt])
+        self.safety.reset()
 
     # ------------------------------------------------------------------
     # the legal-action mask handed to the agent at decision time

@@ -15,6 +15,9 @@ from .phase_transition import PhaseTransition
 from .sim2real_actions_trainer import Sim2RealActionsTrainer
 from .delayed_q import Sim2RealActionsDelayedQTrainer
 from .prlight import Sim2RealActionsPRLightTrainer
+from .soft_shield import Sim2RealActionsSoftShieldTrainer
+from .dr import Sim2RealActionsDRTrainer
+from .gat_trainer import Sim2RealActionsGATTrainer
 
 __all__ = [
     "ActionTransform",
@@ -23,4 +26,7 @@ __all__ = [
     "Sim2RealActionsTrainer",
     "Sim2RealActionsDelayedQTrainer",
     "Sim2RealActionsPRLightTrainer",
+    "Sim2RealActionsSoftShieldTrainer",
+    "Sim2RealActionsDRTrainer",
+    "Sim2RealActionsGATTrainer",
 ]

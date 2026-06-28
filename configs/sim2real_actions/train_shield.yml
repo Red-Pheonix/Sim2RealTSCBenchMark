@@ -1,0 +1,18 @@
+# Train-time shield (invalid-action masking during training). The agent is masked to
+# the legal action set throughout SIM training -- sim mirrors the real controller's
+# table (`same_as_real`, shield mode) -- so it learns a policy that operates WITHIN the
+# constraint from the start, then deploys with the real shield. Contrast with `shield`
+# (test-time only), which masks a constraint-blind policy only at deployment: both reach
+# 0 violations, so the comparison isolates POLICY QUALITY (trained-within-constraint vs
+# masked-clean). Train-aware: assumes the controller's table is known at training time.
+# Refs: invalid action masking (Huang & Ontanon 2022), action shielding (Alshiekh 2018).
+trainer:
+  episodes: 300
+  real_eval_interval: 3
+  eval_sim: false
+
+sim2real:
+  method: train_shield
+  sim_phase_transition: same_as_real     # sim uses the real controller's table
+  sim_phase_transition_mode: shield      # ... and masks the agent during training
+  real_phase_transition_mode: shield     # deploy masked too (safe both ends)

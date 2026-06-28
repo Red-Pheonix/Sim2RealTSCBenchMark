@@ -1,0 +1,18 @@
+# Domain Randomization (DR) over the phase-transition constraint -- UNSHIELDED variant.
+# Same per-episode randomized constraints as dr.yml (random subsets of the flexible base,
+# strongly connected, timings untouched), but in `enforce` mode: the agent is UNMASKED,
+# requests freely, and illegal requests are dropped/forced by the controller (the raw gap)
+# -- on the synthesized sim constraints AND at deployment. It learns to avoid illegal
+# transitions only by experiencing the drops, so it keeps a nonzero violation rate. The
+# contrast with dr.yml isolates what the shield buys on top of DR: robustness (but unsafe)
+# vs robust AND 0 violations.
+trainer:
+  episodes: 120
+  real_eval_interval: 3
+  eval_sim: false
+
+sim2real:
+  method: dr
+  real_phase_transition_mode: enforce   # unmasked: synthesized constraints + deploy raw gap
+  dr_base_table: pt_flexible
+  dr_drop_range: [0.2, 0.45]

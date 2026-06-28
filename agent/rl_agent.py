@@ -11,6 +11,13 @@ class RLAgent(BaseAgent):
     '''
     RLAgent Class is mainly used for creating a rl-based agent and base methods.
     '''
+    # The raw (pre-mask) Q-vector from the agent's most recent get_action -- its
+    # committed action preference for that decision. None until an agent caches one
+    # (e.g. PressLightAgent.get_action). Consumed by the delay-aware shield, which
+    # carries this preference through the delay queue and re-ranks it against the
+    # post-delay legal set at execution time.
+    last_q_values = None
+
     def __init__(self, world, intersection_ids):
         super().__init__(world)
         self.id = intersection_ids

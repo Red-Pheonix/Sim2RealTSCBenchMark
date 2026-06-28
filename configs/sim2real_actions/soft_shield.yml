@@ -1,0 +1,21 @@
+# Soft shield (reward-penalty / soft constraint) -- the soft counterpart of `shield`'s
+# hard mask. Grounds the sim with the real controller (enforce: illegal requests are
+# dropped / force-off exactly as at deployment) and PENALIZES the training reward for
+# every illegal request, so the agent learns to AVOID illegal actions through the reward
+# signal rather than being prevented from picking them. Deployed UNMASKED (the real side
+# stays enforce, set by the setting), so it keeps a low-but-nonzero violation rate -- the
+# soft point between naive (high) and shield (zero). Learns on the REQUESTED action so
+# the penalty attaches to the choice the agent actually made. Train-aware: assumes the
+# controller's table is known at training time. NOTE: a constraint penalty, not general
+# reward shaping (that is a reward-gap concern).
+trainer:
+  episodes: 300
+  real_eval_interval: 3
+  eval_sim: false
+
+sim2real:
+  method: soft_shield                    # -> Sim2RealActionsSoftShieldTrainer (stores the
+                                         #    requested action; adds the violation penalty)
+  sim_phase_transition: same_as_real     # ground the sim with the real controller ...
+  sim_phase_transition_mode: enforce     # ... (drop illegal / force-off, agent unmasked)
+  violation_penalty: 5.0                  # reward penalty per illegal request (hyperparameter)

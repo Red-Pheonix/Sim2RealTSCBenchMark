@@ -1,0 +1,15 @@
+# UGAT (Uncertainty-gated GAT) for the phase-transition action gap. Same reused grounding
+# infra as gat.yml, but grounds an action only when the inverse model is CONFIDENT
+# (uncertainty < running average) -- the evidential-uncertainty gate that keeps grounding
+# stable where plain GAT gridlocks. Forward model learns from the PROPOSED action. The
+# stable member of the grounding family; still a negative result (doesn't close the gap).
+trainer:
+  episodes: 40
+  real_eval_interval: 1
+  eval_sim: false
+
+sim2real:
+  method: ugat
+  gat_warmup: 5
+  gat_uncertainty: true            # uncertainty-gated grounding (UGAT)
+  gat_forward_action: proposed
