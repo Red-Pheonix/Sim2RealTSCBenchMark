@@ -1,0 +1,15 @@
+sim2real:
+  method: dynamic_reward_shaping
+  # Dynamic reward shaping: closed sim->real loop that TUNES the shaping weights to maximize
+  # the real return (the optimal SURROGATE reward, ORP). Bilevel shaping = Hu et al. NeurIPS
+  # 2020 / PGRD; active closed loop co-anchored with Active Reward Learning (Daniel et al.
+  # RSS 2014); instantiated as BayRn (GP Bayesian Optimization over the real return, Muratore
+  # et al. 2021) via scikit-optimize (skopt.Optimizer, GP base estimator + Expected Improvement).
+  n_init: 5
+  opt_rounds: 20
+  finetune_episodes: 10
+  warmup_episodes: 20
+  final_episodes: 0       # refine off: promote the SAVED best candidate (held-out-checked if >0)
+  reward_scale: 1.0
+  # Budget (shared 300-ep pool): warmup + (n_init + opt_rounds)*(finetune + 1) + final
+  #   = 20 + 25*(10+1) + 0 = 295  (270 sim + 25 real)

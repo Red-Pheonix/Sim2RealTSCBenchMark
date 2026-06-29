@@ -1,0 +1,9 @@
+sim2real:
+  # Hidden true objective R_real = -(Σ w_i φ_i). Aligned with the proxy reward
+  # (queue/delay/waiting), so naive should already be near-optimal (gap ~ 0 sanity).
+  true_reward:
+    queue: 1.0
+    delay: 1.0
+    waiting: 0.5
+  sim_episodes: 100
+  real_episodes: 5

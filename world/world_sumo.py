@@ -26,6 +26,8 @@ import sumolib
 import libsumo
 import traci
 
+from world.throughput_fairness import ThroughputFairness
+
 
 def resolve_sumo_additional_files(base_dir, combined_file, sumo_add):
     use_default_add = not sumo_add
@@ -497,6 +499,7 @@ class World(object):
             self.id2intersection[ts] = Intersection(ts, self, self.green_phases[ts])  # this IntSec has different phases
             self.intersections.append(self.id2intersection[ts])
         self.id2idx = {i: idx for idx,i in enumerate(self.id2intersection)}
+        self._build_lane_intersection_index()
         # TODO: to see if its necessary to test .intersections or .observe here
         # TODO: to see if pass observation and its shape by generator
         self.all_roads = [x for x in self.eng.edge.getIDList()]
@@ -553,8 +556,20 @@ class World(object):
             "phase": self.get_cur_phase,
             "throughput": self.get_cur_throughput,
             "average_travel_time": None,
-            "segmented_lane_count": self.get_segmented_lane_count
+            "segmented_lane_count": self.get_segmented_lane_count,
+            # Reward-gap cost components that sumo can measure but cityflow cannot
+            # (the irreducible part of the reward gap). Registered ONLY here -- the
+            # cityflow world has no equivalent, so the reward FeatureBank treats them
+            # as sim-unavailable. Computed once per step via the subscribe/get_info
+            # path, same as every other feature.
+            "lane_co2": self.get_lane_co2,                       # per-lane CO2 (g/s)
+            "lane_fuel": self.get_lane_fuel,                     # per-lane fuel (g/s)
+            "intersection_emergency_stops": self.get_intersection_emergency_stops,
+            "intersection_collisions": self.get_intersection_collisions,
+            # throughput-based fairness (cross-sim: cityflow registers it too)
+            "intersection_fairness": self.get_intersection_fairness,
         }
+        self._fairness = ThroughputFairness()
         self.fns = []
         self.info = {}
         # test generate observation information
@@ -690,6 +705,8 @@ class World(object):
             self.id2intersection[ts] = Intersection(ts, self, self.green_phases[ts])  # this IntSec has different phases
             self.intersections.append(self.id2intersection[ts])
         self.id2idx = {i: idx for idx,i in enumerate(self.id2intersection)}
+        self._build_lane_intersection_index()
+        self._fairness.reset()  # new episode: clear cumulative served-throughput state
 
         for intsec in self.intersections:
             intsec.observe(self.step_length, self.max_distance)
@@ -1128,6 +1145,98 @@ class World(object):
         throughput = len(self.vehicles)
         # TODO: check if only trach left cars
         return throughput
+
+    def _build_lane_intersection_index(self):
+        """Map every controlled lane -> the id of the intersection it belongs to,
+        preferring the intersection where it is an INCOMING lane (events near an
+        intersection are attributed to the approach the vehicle is on). Used to
+        attribute network-global safety events (emergency stops, collisions) to a
+        specific intersection so they can enter a per-intersection reward."""
+        self.lane2inter = {}
+        for inter in self.intersections:            # incoming lanes first
+            for road in inter.in_roads:
+                for lane in inter.road_lane_mapping.get(road, []):
+                    self.lane2inter.setdefault(lane, inter.id)
+        for inter in self.intersections:            # then any other controlled lane
+            for lane in inter.lanes:
+                self.lane2inter.setdefault(lane, inter.id)
+
+    def get_lane_co2(self):
+        """Per-lane CO2 emission (g/s) from sumo's HBEFA emission model. cityflow has
+        no emission model, so this info function exists ONLY on the sumo world -> the
+        reward FeatureBank sees `emission` as sim-unavailable (part of the gap)."""
+        result = {}
+        for intsec in self.intersections:
+            for lane in intsec.lanes:
+                try:
+                    result[lane] = self.eng.lane.getCO2Emission(lane) / 1000.0  # mg/s -> g/s
+                except Exception:
+                    result[lane] = 0.0
+        return result
+
+    def get_lane_fuel(self):
+        """Per-lane fuel consumption (g/s) from sumo's emission model (sumo-only)."""
+        result = {}
+        for intsec in self.intersections:
+            for lane in intsec.lanes:
+                try:
+                    result[lane] = self.eng.lane.getFuelConsumption(lane) / 1000.0  # mg/s -> g/s
+                except Exception:
+                    result[lane] = 0.0
+        return result
+
+    def get_intersection_emergency_stops(self):
+        """Per-intersection count of vehicles that performed an emergency (hard) brake
+        this step. The simulator reports these network-globally; we attribute each to
+        the intersection controlling the lane the vehicle is on (sumo-only)."""
+        counts = {i.id: 0.0 for i in self.intersections}
+        try:
+            vids = self.eng.simulation.getEmergencyStoppingVehiclesIDList()
+        except Exception:
+            return counts
+        for v in vids:
+            try:
+                lane = self.eng.vehicle.getLaneID(v)
+            except Exception:
+                continue
+            inter = self.lane2inter.get(lane)
+            if inter is not None:
+                counts[inter] += 1.0
+        return counts
+
+    def get_intersection_collisions(self):
+        """Per-intersection collision count this step, attributed by the collision's
+        lane (sumo-only; cityflow has no collision detection)."""
+        counts = {i.id: 0.0 for i in self.intersections}
+        try:
+            cols = self.eng.simulation.getCollisions()
+        except Exception:
+            return counts
+        for c in cols:
+            lane = getattr(c, "lane", None)
+            if lane is None:
+                continue
+            inter = self.lane2inter.get(lane)
+            if inter is not None:
+                counts[inter] += 1.0
+        return counts
+
+    def get_intersection_fairness(self):
+        """Per-intersection throughput-based fairness cost (cross-sim). Accumulates
+        served throughput per approach and returns the max-min spread over demand-active
+        approaches. Runs once per step via the subscribe/_update_infos path, so the
+        cumulative state advances every step (state resets in `reset()`)."""
+        for inter in self.intersections:
+            approaches = {}
+            for road in inter.in_roads:
+                ids, waiting = set(), 0.0
+                for lane in inter.road_lane_mapping.get(road, []):
+                    obs = inter.full_observation.get(lane, {})
+                    ids.update(v["name"] for v in obs.get("vehicles", []))
+                    waiting += obs.get("lane_waiting_count", 0)
+                approaches[road] = (ids, waiting)
+            self._fairness.update(inter.id, approaches)
+        return {inter.id: self._fairness.cost(inter.id) for inter in self.intersections}
 
     def get_vehicle_lane(self):
         '''

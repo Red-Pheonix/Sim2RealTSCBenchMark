@@ -1,0 +1,11 @@
+sim2real:
+  # Phase-transition special case (tempe/bullhead only). R_real weights a safety
+  # (violation) term; shield enforces it as a constraint, pt_naive incurs it.
+  phase_transition: pt_cyclic
+  reward_components: [safety]
+  true_reward:
+    queue: 1.0
+    delay: 0.5
+    safety: 5.0
+  sim_episodes: 100
+  real_episodes: 5

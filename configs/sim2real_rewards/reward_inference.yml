@@ -1,0 +1,6 @@
+sim2real:
+  method: reward_inference
+  probe_episodes: 2       # sim episodes per probe policy (small: just induce diversity)
+  ridge_lambda: 0.01
+  reward_scale: 1.0
+  real_episodes: 5        # real probe budget (~ d components)

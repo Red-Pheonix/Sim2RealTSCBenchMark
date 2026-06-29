@@ -33,6 +33,22 @@ trainer:
 
 sim2real:
   load_pretrained: True
+  # Per-component normalizers for the reward feature bank. The bank emits RAW costs;
+  # the reward transforms divide each φ_i by these so -(w·φ) is scale-stable for the
+  # Q-net and weights express RELATIVE importance. Settings may override per network.
+  # (sumo-only / fairness norms are rough -- tune as needed.)
+  component_norm:
+    queue: 10.0
+    delay: 1.0
+    waiting: 100.0
+    pressure: 10.0
+    switches: 1.0
+    fairness: 50.0      # max-min spread of CUMULATIVE served throughput (grows over episode)
+    emission: 10.0
+    fuel: 1.0
+    emergency_stops: 1.0
+    collisions: 1.0
+    safety: 1.0
 
 model:
   name: "non-rl"

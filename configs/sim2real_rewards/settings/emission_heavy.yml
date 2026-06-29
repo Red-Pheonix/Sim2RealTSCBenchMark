@@ -1,0 +1,7 @@
+sim2real:
+  reward_components: [emission]   # sumo-only; absent in sim, only addressable via correlated proxies
+  true_reward:
+    queue: 0.5
+    emission: 2.0
+  sim_episodes: 100
+  real_episodes: 5

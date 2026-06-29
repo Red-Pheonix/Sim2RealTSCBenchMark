@@ -1,0 +1,12 @@
+sim2real:
+  # Physical safety measured natively by sumo (collisions), attributed per intersection.
+  # Distinct from the `safety` (controller-rule violation) component used by the
+  # phase-transition / shield special case. Sumo-only: cityflow has no collision
+  # detection, so a sim-trained policy is blind to this term and can only reach it
+  # through correlated proxies (queue).
+  reward_components: [collisions]
+  true_reward:
+    queue: 0.5
+    collisions: 5.0
+  sim_episodes: 100
+  real_episodes: 6

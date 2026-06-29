@@ -178,13 +178,21 @@ def build_config(args):
         config, duplicates_warning = load_config(agent_name)
         config.setdefault('sim2real', {})
 
+        reward_model = getattr(args, "reward_model", None) or "naive"
+        method_name = os.path.join('./configs', args.task, f'{reward_model}.yml')
+        method_config, method_duplicates = load_config(method_name)
+        config, merge_duplicates = merge_dicts(config, method_config)
+        duplicates_warning.update(method_duplicates)
+        duplicates_warning.update(merge_duplicates)
+
         real_setting_name = os.path.join(
             './configs', args.task, 'settings', f'{args.real_setting}.yml'
         )
-        real_setting_config, duplicates_warning = load_config(real_setting_name)
+        real_setting_config, setting_duplicates = load_config(real_setting_name)
         config.setdefault('sim2real', {})
         config['sim2real'].update(real_setting_config.get('sim2real', {}))
-        
+        duplicates_warning.update(setting_duplicates)
+
     else:
         raise ValueError("Unsupported task name: {}".format(args.task))
     config.update({'command': args.__dict__})

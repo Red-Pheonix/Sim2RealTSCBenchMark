@@ -1,0 +1,5 @@
+sim2real:
+  method: reward_random
+  dirichlet_alpha: 1.0
+  reward_scale: 1.0
+  # random_components: [queue, delay, waiting, pressure, switches]  # optional mask

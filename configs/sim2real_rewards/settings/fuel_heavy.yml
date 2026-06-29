@@ -1,0 +1,7 @@
+sim2real:
+  reward_components: [fuel]   # sumo-only (HBEFA fuel model); absent in cityflow sim
+  true_reward:
+    queue: 0.5
+    fuel: 2.0
+  sim_episodes: 100
+  real_episodes: 5

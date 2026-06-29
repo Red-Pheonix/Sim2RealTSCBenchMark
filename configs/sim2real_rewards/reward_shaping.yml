@@ -1,0 +1,6 @@
+sim2real:
+  method: reward_shaping
+  reward_scale: 1.0
+  # shaping_weights:  # optional; default = uniform over all components
+  #   queue: 1.0
+  #   delay: 1.0

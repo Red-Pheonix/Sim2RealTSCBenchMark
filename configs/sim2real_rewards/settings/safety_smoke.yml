@@ -1,0 +1,9 @@
+sim2real:
+  phase_transition: pt_cyclic
+  reward_components: [safety]
+  true_reward:
+    queue: 1.0
+    delay: 0.5
+    safety: 5.0
+  sim_episodes: 2
+  real_episodes: 2

@@ -1,0 +1,6 @@
+sim2real:
+  method: morl_grid
+  morl_episodes: 12        # sim episodes per grid weight vector
+  final_episodes: 0        # extra sim training of the SELECTED weight (0 -> reuse morl_episodes)
+  reward_scale: 1.0
+  # weight_grid:          # optional explicit list of {component: w} dicts

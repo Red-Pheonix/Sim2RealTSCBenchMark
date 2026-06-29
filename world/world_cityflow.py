@@ -4,6 +4,8 @@ import cityflow
 from common.registry import Registry
 from collections import OrderedDict
 
+from world.throughput_fairness import ThroughputFairness
+
 import numpy as np
 from math import atan2, pi
 import math
@@ -324,9 +326,12 @@ class World(object):
             "phase": self.get_cur_phase,
             "throughput": self.get_cur_throughput,
             "averate_travel_time": self.get_average_travel_time,
+            # throughput-based fairness (cross-sim: world_sumo registers it too)
+            "intersection_fairness": self.get_intersection_fairness,
             # "segmented_lane_count": self.get_segmented_lane_count
             # "action_executed": self.get_executed_action
         }
+        self._fairness = ThroughputFairness()
         self.fns = []
         self.info = {}
         self.vehicle_waiting_time = {}  # key: vehicle_id, value: the waiting time of this vehicle since last halt.
@@ -447,6 +452,24 @@ class World(object):
             if (not np.isnan(vehicle["cost_time"])) and vehicle["leave_time"] <= self.eng.get_current_time():
                 throughput += 1
         return throughput
+
+    def get_intersection_fairness(self):
+        """Per-intersection throughput-based fairness cost (cross-sim). Accumulates
+        served throughput per approach and returns the max-min spread over demand-active
+        approaches. Runs once per step via the subscribe/_update_infos path; cumulative
+        state resets in `reset()`."""
+        lane_vehicles = self.eng.get_lane_vehicles()
+        lane_waiting = self.eng.get_lane_waiting_vehicle_count()
+        for inter in self.intersections:
+            approaches = {}
+            for road in inter.in_roads:
+                ids, waiting = set(), 0.0
+                for lane in inter.get_lanes_for_roads([road], outgoing=False):
+                    ids.update(lane_vehicles.get(lane) or [])
+                    waiting += (lane_waiting.get(lane) or 0)
+                approaches[road["id"]] = (ids, waiting)
+            self._fairness.update(inter.id, approaches)
+        return {inter.id: self._fairness.cost(inter.id) for inter in self.intersections}
 
     def get_executed_action(self):
         '''
@@ -892,6 +915,7 @@ class World(object):
         self.eng.reset()
         for I in self.intersections:
             I.reset()
+        self._fairness.reset()  # new episode: clear cumulative served-throughput state
         self._update_infos()
         # reset vehicles info
         self.reset_vehicle_info()

@@ -40,6 +40,12 @@ parser.add_argument(
     default="default",
     help="reward setting file name under configs/sim2real_rewards/settings",
 )
+parser.add_argument(
+    "--reward_model",
+    type=str,
+    default="naive",
+    help="reward-gap method (naive, reward_shaping, reward_random, reward_inference, dynamic_reward_shaping, morl_grid, shield)",
+)
 
 parser.add_argument(
     "-t", "--task", type=str, default="sim2real_rewards", help="task type to run"
@@ -76,6 +82,7 @@ class Runner:
     def config_registry(self):
         self.config["command"]["network"] = args.network
         self.config["command"]["real_setting"] = args.real_setting
+        self.config["command"]["reward_model"] = args.reward_model
 
         interface.Command_Setting_Interface(self.config)
         interface.Logger_param_Interface(self.config)
@@ -95,12 +102,11 @@ class Runner:
             "command"
         ]["network"]
 
-        self.trainer = Registry.mapping["trainer_mapping"][
-            Registry.mapping["command_mapping"]["setting"].param["task"]
-        ](logger)
+        # The task resolves the concrete method trainer from the configured
+        # reward_model (mirrors the observation runner), so build it from the logger.
         self.task = Registry.mapping["task_mapping"][
             Registry.mapping["command_mapping"]["setting"].param["task"]
-        ](self.trainer)
+        ](logger)
         start_time = time.time()
         self.task.run()
         logger.info(f"Total time taken: {time.time() - start_time}")

@@ -1,0 +1,7 @@
+sim2real:
+  reward_components: [fairness]
+  true_reward:
+    queue: 0.5
+    fairness: 2.0
+  sim_episodes: 100
+  real_episodes: 5

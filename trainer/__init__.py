@@ -16,4 +16,13 @@ from .actions import (
     Sim2RealActionsDelayedQTrainer,
     Sim2RealActionsPRLightTrainer,
 )
-from .sim2real_rewards_trainer import Sim2RealRewardsTrainer
+from .rewards import (
+    Sim2RealRewardsTrainer,
+    Sim2RealRewardsShapingTrainer,
+    Sim2RealRewardsRandomTrainer,
+    Sim2RealRewardsInferenceTrainer,
+    Sim2RealRewardsShieldTrainer,
+    Sim2RealRewardsPTNaiveTrainer,
+    Sim2RealRewardsMORLGridTrainer,
+    Sim2RealRewardsDynamicShapingTrainer,
+)
