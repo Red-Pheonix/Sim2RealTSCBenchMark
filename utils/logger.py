@@ -12,44 +12,31 @@ from common.registry import Registry
 
 def modify_config_file(path, config):
     """
-    load .cfg file at path and modify it according to the config parameters
+    load .cfg file at path and read its parameters.
+
+    NOTE: for cityflow/sumo this NO LONGER writes the .cfg back to disk. The
+    file used to be read-modify-written in place, which raced when several
+    experiments ran on the same network concurrently (both engines rewriting
+    the shared wrapper at once). The .cfg on disk is now the source of truth --
+    keep engine-relevant settings (notably `saveReplay`, and interval/seed) set
+    correctly there. Anything the yaml `world` section adds that is NOT already
+    in the .cfg is still returned via `other_world_settings` and merged
+    in-memory by load_config_dict; keys already present in the .cfg take their
+    value from the file. The sumo overrides were all no-ops (yaml == file) and
+    the only cityflow override that mattered was saveReplay, which is why it
+    must be set at the source instead.
     """
     assert(os.path.exists(path)), AssertionError(f"Simulator configuration at {path} not exists")
     param = config['world']
     logger_param = config['logger']
-    should_update_log_files = param.get('saveReplay', True)
 
     if config['command']['world'] == 'cityflow':
         with open(path, 'r') as f:
             path_config = json.load(f)
-        for k in path_config.keys():
-            # modify config step1
-            if param.get(k) is not None:
-                path_config[k] = param.get(k)
-        # modify config step2
-        if should_update_log_files:
-            file_name = os.path.join(get_output_file_path(config),  logger_param['replay_dir'])
-            if config['world']['dir'] in file_name:
-                file_name = file_name.strip(f"{config['world']['dir']} + '\n'")
-            path_config['roadnetLogFile'] = file_name + f"/{datetime.now().strftime('%Y_%m_%d-%H_%M_%S')}.json"
-            path_config['replayLogFile'] = file_name + f"/{datetime.now().strftime('%Y_%m_%d-%H_%M_%S')}.txt"
-        with open(path, 'w') as f:
-            json.dump(path_config, f, indent=2)
-        
+
     elif config['command']['world'] == 'sumo':
         with open(path, 'r') as f:
             path_config = json.load(f)
-        # config step 1
-        for k in path_config.keys():
-            if param.get(k) is not None:
-                path_config[k] = param.get(k)
-        # config step 2
-        #path_config['roadnetLogFile'] = file_name + f"/{datetime.now().strftime('%Y_%m_%d-%H_%M_%S')}.json"
-        #path_config['replayLogFile'] = file_name + f"/{datetime.now().strftime('%Y_%m_%d-%H_%M_%S')}.txt"
-        path_config['interval'] = param['interval']
-        with open(path, 'w') as f:
-            json.dump(path_config, f, indent=2)
-
 
     elif config['command']['world'] == 'openengine':
         # not in .json format

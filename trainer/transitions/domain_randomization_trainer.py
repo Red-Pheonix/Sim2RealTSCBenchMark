@@ -47,13 +47,14 @@ class TransitionDomainRandomizationTrainer(TransitionTrainer):
 
         self.base_cityflow_config = self.load_cityflow_config(self.cityflow_path)
         self.base_cityflow_flow = self.load_cityflow_flow(self.base_cityflow_config)
-        self.domain_randomization_dir = Path(
-            self.base_cityflow_config.get("dir", "data")
-        ) / self.domain_randomization_config.get(
-            "output_dir", "output_data/sim2real_transitions/domain_randomization"
-        )
+        # Randomized cityflow configs/flows are written into THIS run's own
+        # output directory (keyed by --prefix), not a shared network/setting
+        # dir. That way concurrent runs never write to, read, or clean up each
+        # other's temp files. `sim_dir` is the cityflow `dir` (data/); flowFile
+        # paths inside the temp cfg are stored relative to it, as cityflow wants.
+        self.sim_dir = self.base_cityflow_config.get("dir", "data")
         self.domain_randomization_temp_dir = (
-            self.domain_randomization_dir / self.network_name / self.real_setting
+            Path(Registry.mapping["logger_mapping"]["path"].path) / "dr_temp"
         )
         self.generated_temp_files = []
 
@@ -142,16 +143,13 @@ class TransitionDomainRandomizationTrainer(TransitionTrainer):
             self.generated_temp_files = []
 
     def cleanup_stale_domain_randomization_files(self):
+        # Only ever scans this run's own temp dir, so it can't delete a
+        # concurrent run's live temp files.
         stale_files = []
         if self.domain_randomization_temp_dir.exists():
             patterns = ["temp_*.cfg", "temp_flow_*.json", "temp.cfg", "temp_flow.json"]
             for pattern in patterns:
                 stale_files.extend(self.domain_randomization_temp_dir.glob(pattern))
-
-        # Clean up any older legacy temp files from the shared root as well.
-        if self.domain_randomization_dir.exists():
-            for pattern in ["temp.cfg", "temp_flow.json"]:
-                stale_files.extend(self.domain_randomization_dir.glob(pattern))
 
         self.cleanup_temp_files(sorted(set(stale_files)))
 
@@ -173,13 +171,8 @@ class TransitionDomainRandomizationTrainer(TransitionTrainer):
             json.dump(randomized_flow, file_obj)
 
         cityflow_config = dict(self.base_cityflow_config)
-        cityflow_config["flowFile"] = (
-            Path(self.domain_randomization_config.get(
-                "output_dir", "output_data/sim2real_transitions/domain_randomization"
-            ))
-            / self.network_name
-            / self.real_setting
-            / flow_filename
+        cityflow_config["flowFile"] = Path(
+            os.path.relpath(flow_path, self.sim_dir)
         ).as_posix()
         with open(config_path, "w", encoding="utf-8") as file_obj:
             json.dump(cityflow_config, file_obj, indent=2)

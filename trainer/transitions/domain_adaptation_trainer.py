@@ -76,10 +76,13 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
 
         self.base_cityflow_config = self.load_cityflow_config(self.cityflow_path)
         self.base_cityflow_flow = self.load_cityflow_flow(self.base_cityflow_config)
-        self.domain_randomization_dir = Path(
-            self.base_cityflow_config.get("dir", "data")
-        ) / self.domain_randomization_config.get(
-            "output_dir", "output_data/sim2real_transitions/domain_adaptation"
+        # Randomized cityflow config/flow written into THIS run's own output
+        # directory (keyed by --prefix) so concurrent runs never collide on a
+        # shared temp.cfg/temp_flow.json. `sim_dir` is the cityflow `dir`
+        # (data/); flowFile inside the temp cfg is stored relative to it.
+        self.sim_dir = self.base_cityflow_config.get("dir", "data")
+        self.domain_adaptation_temp_dir = (
+            Path(Registry.mapping["logger_mapping"]["path"].path) / "da_temp"
         )
 
         self.world_sim = None
@@ -308,21 +311,18 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
             for param_name, sampled_value in sampled_parameters.items():
                 vehicle_config[param_name] = sampled_value
 
-        self.domain_randomization_dir.mkdir(parents=True, exist_ok=True)
+        self.domain_adaptation_temp_dir.mkdir(parents=True, exist_ok=True)
         flow_filename = f"temp_flow.json"
         config_filename = f"temp.cfg"
-        flow_path = self.domain_randomization_dir / flow_filename
-        config_path = self.domain_randomization_dir / config_filename
+        flow_path = self.domain_adaptation_temp_dir / flow_filename
+        config_path = self.domain_adaptation_temp_dir / config_filename
 
         with open(flow_path, "w", encoding="utf-8") as file_obj:
             json.dump(randomized_flow, file_obj)
 
         cityflow_config = dict(self.base_cityflow_config)
-        cityflow_config["flowFile"] = (
-            Path(self.domain_randomization_config.get(
-                "output_dir", "output_data/sim2real_transitions/domain_adaptation"
-            ))
-            / flow_filename
+        cityflow_config["flowFile"] = Path(
+            os.path.relpath(flow_path, self.sim_dir)
         ).as_posix()
         with open(config_path, "w", encoding="utf-8") as file_obj:
             json.dump(cityflow_config, file_obj, indent=2)
