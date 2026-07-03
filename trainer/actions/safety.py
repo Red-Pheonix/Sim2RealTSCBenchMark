@@ -40,10 +40,17 @@ class SafetyStats:
     """
 
     def __init__(self, n_agents):
+        self.n_agents = n_agents
         self.violations = 0
         self.force_offs = 0
         self.decisions = 0
         self.last_violation = np.zeros(n_agents, dtype=bool)
+        # Per-agent cumulative counters (for per-intersection BRF logging on PT runs).
+        # The scalar totals above are just these summed; kept separate to avoid
+        # touching the hot aggregate path.
+        self.agent_violations = np.zeros(n_agents, dtype=np.int64)
+        self.agent_force_offs = np.zeros(n_agents, dtype=np.int64)
+        self.agent_decisions = np.zeros(n_agents, dtype=np.int64)
 
     def record(self, idx, violated, forced):
         """Tally one agent-decision. ``violated`` and ``forced`` are mutually
@@ -53,12 +60,26 @@ class SafetyStats:
         self.last_violation[idx] = violated
         self.violations += int(violated)
         self.force_offs += int(forced)
+        self.agent_decisions[idx] += 1
+        self.agent_violations[idx] += int(violated)
+        self.agent_force_offs[idx] += int(forced)
 
     def collect(self):
         """(violations, force_offs, decisions) accumulated since the last reset."""
         return self.violations, self.force_offs, self.decisions
 
+    def collect_per_agent(self):
+        """Per-agent (violations, force_offs, decisions) arrays since the last reset."""
+        return (
+            self.agent_violations.copy(),
+            self.agent_force_offs.copy(),
+            self.agent_decisions.copy(),
+        )
+
     def reset(self):
         self.violations = 0
         self.force_offs = 0
         self.decisions = 0
+        self.agent_violations[:] = 0
+        self.agent_force_offs[:] = 0
+        self.agent_decisions[:] = 0

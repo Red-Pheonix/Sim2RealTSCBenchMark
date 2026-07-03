@@ -245,6 +245,11 @@ class PhaseTransition(ActionTransform):
         """(violations, force_offs, decisions) accumulated since the last reset."""
         return self.safety.collect()
 
+    def collect_per_agent_stats(self):
+        """Per-agent (violations, force_offs, decisions) arrays since the last reset,
+        indexed to match ``self.agents`` (== the trainer's per-side agent order)."""
+        return self.safety.collect_per_agent()
+
     def reset_stats(self):
         self.safety.reset()
 

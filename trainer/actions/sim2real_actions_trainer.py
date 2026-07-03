@@ -597,24 +597,75 @@ class Sim2RealActionsTrainer(BaseTrainer):
     def safety_stats(self, action_transforms):
         """Sum and RESET the phase-transition safety counters for one side.
 
-        Returns ``(violation_rate, forceoff_rate, violations, force_offs, decisions)``
-        as per-agent-decision rates (the headline) plus raw counts. Sides with no
-        phase-transition transform (e.g. the unconstrained sim, or any non-PT
-        experiment) report zeros."""
+        Returns ``(violation_rate, forceoff_rate, violations, force_offs, decisions,
+        per_agent)``: per-agent-decision rates (the headline) plus raw counts, and
+        ``per_agent`` = ``[violations[], force_offs[], decisions[]]`` numpy arrays
+        summed across phase-transition transforms (``None`` when no PT transform is
+        present -- delay-only or any non-PT run). Sides with no phase-transition
+        transform report zeros / ``None``."""
         violations = force_offs = decisions = 0
+        per_agent = None
         for transform in action_transforms or []:
             if hasattr(transform, "collect_stats"):
                 tv, tf, td = transform.collect_stats()
                 violations += tv
                 force_offs += tf
                 decisions += td
+                if hasattr(transform, "collect_per_agent_stats"):
+                    av, af, ad = transform.collect_per_agent_stats()
+                    if per_agent is None:
+                        per_agent = [np.array(av), np.array(af), np.array(ad)]
+                    else:
+                        per_agent[0] = per_agent[0] + av
+                        per_agent[1] = per_agent[1] + af
+                        per_agent[2] = per_agent[2] + ad
                 transform.reset_stats()
         vr = violations / decisions if decisions else 0.0
         fr = force_offs / decisions if decisions else 0.0
-        return vr, fr, violations, force_offs, decisions
+        return vr, fr, violations, force_offs, decisions, per_agent
+
+    def _intersection_ids(self, metric, n):
+        """Human intersection ids in the metric's per-intersection order, padded to
+        length ``n`` with positional indices if the world exposes fewer."""
+        try:
+            inters = metric.world.intersections
+            ids = [str(getattr(inters[i], "id", i)) for i in range(len(inters))]
+        except Exception:
+            ids = []
+        if len(ids) < n:
+            ids += [str(i) for i in range(len(ids), n)]
+        return ids
+
+    def _log_per_intersection(self, mode, step, metric, per_agent):
+        """PT runs only: one BRF line per intersection with its phase-transition
+        safety counters + queue. The action-PT gap ships on few networks (bullhead,
+        tempe), so this per-intersection resolution compensates. Indexed to the side's
+        agent order, which matches the metric's per-intersection arrays."""
+        av, af, ad = per_agent
+        try:
+            lane_q = metric.lane_queue()
+        except Exception:
+            lane_q = None
+        ids = self._intersection_ids(metric, len(ad))
+        for i in range(len(ad)):
+            d = int(ad[i])
+            vr_i = av[i] / d if d else 0.0
+            fr_i = af[i] / d if d else 0.0
+            q_i = (
+                float(lane_q[i])
+                if lane_q is not None and i < len(lane_q)
+                else float("nan")
+            )
+            self.logger.info(
+                "%s_PER_INT step:%s int:%s id:%s violations:%s force_offs:%s "
+                "decisions:%s violation_rate:%.4f forceoff_rate:%.4f queue:%.4f",
+                mode, step, i, ids[i], int(av[i]), int(af[i]), d, vr_i, fr_i, q_i,
+            )
 
     def log_metrics(self, mode, step, metric, loss, action_transforms=None):
-        vr, fr, violations, force_offs, _ = self.safety_stats(action_transforms)
+        vr, fr, violations, force_offs, _, per_agent = self.safety_stats(
+            action_transforms
+        )
         self.logger.info(
             "%s step:%s, travel time:%s, q_loss:%s, rewards:%s, queue:%s, delay:%s, "
             "throughput:%s, violation_rate:%.4f, forceoff_rate:%.4f, "
@@ -644,6 +695,10 @@ class Sim2RealActionsTrainer(BaseTrainer):
             vr,
             fr,
         )
+        # Phase-transition runs (per_agent present): also emit per-intersection lines
+        # to the BRF. Delay-only / non-PT runs skip this (per_agent is None).
+        if per_agent is not None:
+            self._log_per_intersection(mode, step, metric, per_agent)
 
     def sim_train(self, episode):
         self.set_replay(
