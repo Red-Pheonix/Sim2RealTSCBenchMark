@@ -11,8 +11,8 @@ sim2real:
     force_retrain: False
 
     # Per-intersection beta-VAE shape.
-    latent_dim: 8
-    hidden: 128
+    latent_dim: 16
+    hidden: 64
 
     # Stage 1: one rollout per sampled DR config (multi-domain collection,
     # matching the LUSR-paper baseline practice). DARLA has no domain tags --
@@ -21,11 +21,11 @@ sim2real:
 
     # Stage 1 beta-VAE training (per-intersection). beta > 1 is what makes this
     # DARLA rather than VAE-Embedding; it pressures the latent toward a
-    # disentangled code. The LUSR paper sweeps DARLA over beta in {10, 30, 100}.
+    # disentangled code. Tuned via random search (40 trials, tempe_1x1, setting4).
     epochs: 300
     batch_size: 64
-    lr: 0.0001
-    beta: 10.0
+    lr: 0.000015
+    beta: 33.0
 
     # Stage 0 Denoising AutoEncoder (DAE). Its internal feature space is the
     # perceptual reconstruction target for the beta-VAE (Higgins et al. 2017,
