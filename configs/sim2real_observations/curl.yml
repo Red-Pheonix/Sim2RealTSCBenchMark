@@ -11,7 +11,7 @@ sim2real:
     force_retrain: False
 
     # Per-intersection encoder shape.
-    latent_dim: 8
+    latent_dim: 16
     hidden: 128
 
     # Stage 1: one rollout per sampled DR config (multi-domain collection,
@@ -20,15 +20,16 @@ sim2real:
     pretrain_episodes: 100
 
     # Stage 1 contrastive training (per-intersection).
+    # Tuned via random search (60 trials, tempe_1x1, setting4).
     epochs: 300
     batch_size: 64
-    lr: 0.0001
-    encoder_tau: 0.005   # EMA rate from original CURL (curl_sac.py default)
+    lr: 0.000022
+    encoder_tau: 0.0017
 
     # Vector-obs augmentation (Gaussian noise + per-feature dropout) -- replaces
     # the original random-crop augmentation which only applies to pixel input.
-    aug_noise_std: 0.5
-    aug_mask_prob: 0.3
+    aug_noise_std: 1.2
+    aug_mask_prob: 0.43
 
   domain_randomization:
     seed: 0

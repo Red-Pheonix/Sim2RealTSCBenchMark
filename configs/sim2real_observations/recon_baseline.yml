@@ -4,37 +4,30 @@ trainer:
 
 sim2real:
   method: latent_observation
-  latent_obs_method: atc
+  latent_obs_method: recon_baseline
   load_pretrained: True
-  atc:
-    # If True, retrain encoders even when pretrained/atc/{network}/ has cached weights.
+  recon_baseline:
+    # If True, retrain even when pretrained/recon_baseline/{network}/ has cached weights.
     force_retrain: False
 
-    # Per-intersection encoder shape.
-    latent_dim: 32
-    hidden: 256
+    # Bottleneck autoencoder shape. NOTE: unlike the latent methods, the policy
+    # consumes the DECODER OUTPUT (the reconstructed observation, obs_dim), not
+    # the bottleneck code -- latent_dim here is the compression/denoising knob.
+    latent_dim: 8
+    hidden: 128
 
-    # Stage 1: one rollout per sampled DR config. ATC pairs (s_t, s_{t+k}) are
-    # built ONLY within the same episode (different episodes have different DR
-    # configs and would yield meaningless pairs).
+    # Stage 1: one rollout per sampled DR config.
     pretrain_episodes: 100
 
-    # Stage 1 contrastive training (per-intersection).
-    # Tuned via random search (70 trials, tempe_1x1, setting4).
+    # Stage 1 autoencoder training (per-intersection). Plain MSE reconstruction;
+    # no KL/beta -- that is what makes this the reconstruction baseline rather
+    # than VAE-Embedding.
     epochs: 300
     batch_size: 64
-    lr: 0.00017
-    encoder_tau: 0.078
+    lr: 0.0001
 
-    # Temporal offset (k in s_{t+k}).
-    temporal_k: 3
-
-    # Vector-obs augmentation (Gaussian noise + per-feature dropout) -- replaces
-    # the original random-crop + intensity-jitter augmentation which only
-    # applies to pixel input.
-    aug_noise_std: 0.67
-    aug_mask_prob: 0.31
-
+  # Multi-domain stage-1 collection matches the shared-dataset practice used by
+  # every other baseline; same param schema as configs/sim2real_observations/lusr.yml.
   domain_randomization:
     seed: 0
     parameters:

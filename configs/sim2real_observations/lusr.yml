@@ -11,19 +11,20 @@ sim2real:
     force_retrain: False
 
     # Per-intersection VAE shape.
-    content_dim: 8
-    class_dim: 4
-    hidden: 128
+    content_dim: 16
+    class_dim: 16
+    hidden: 64
 
     # Stage 1: one rollout per sampled DR config, all dumped into the VAE dataset.
     pretrain_episodes: 100
 
     # Stage 1 VAE training (per-intersection).
+    # Tuned via random search (60 trials, tempe_1x1, setting4).
     epochs: 300
     batch_size: 64
-    beta: 10.0
-    bloss_coef: 1.0
-    lr: 0.0001
+    beta: 7.9
+    bloss_coef: 0.95
+    lr: 0.00011
 
   # Stage 1 reuses the existing observation DR distribution to sample domains.
   # Same parameter schema as configs/sim2real_observations/domain_randomization.yml.
