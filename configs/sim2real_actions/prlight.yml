@@ -10,8 +10,8 @@ trainer:
 sim2real:
   method: prlight
   sim_action_delay: 20      # env delay during sim training; match real action_delay
-  pred_learning_rate: 0.001 # paper: Adam lr 1e-3
-  pred_train_iters: 1
+  pred_learning_rate: 0.0001 # tuned (collaborator; setting4, real_delay 60); paper: Adam lr 1e-3
+  pred_train_iters: 5        # tuned (collaborator; setting4, real_delay 60); paper: 1
   pred_buffer_cap: 1000     # paper: prediction buffer length 1000
   probing_radius: 600       # neighbor radius in roadnet units (JL-GAT style)
   include_neighbor_actions: false  # paper ignores neighbor control within horizon

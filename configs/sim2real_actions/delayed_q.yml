@@ -5,8 +5,8 @@ trainer:
 
 sim2real:
   method: delayed_q
-  pred_learning_rate: 0.001
-  pred_train_iters: 1
+  pred_learning_rate: 0.0001  # tuned (collaborator; setting4, real_delay 60)
+  pred_train_iters: 5         # tuned (collaborator; setting4, real_delay 60)
   # Assumed delay the agent is trained under and compensates for. The real delay
   # is set by the real_setting's `action_delay`; the sim<->real mismatch between
   # the two is the experiment. Matched to the default setting (15) out of the box.
