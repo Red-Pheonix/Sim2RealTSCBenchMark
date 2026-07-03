@@ -49,13 +49,13 @@ EXTRA_INFO_FN = {
     "collisions": "intersection_collisions",            # sumo-only
 }
 
-# DTL `mode` values (column 2). The real-budget cap is enforced on TEST_REAL ALONE, so
-# `count(mode == "TEST_REAL") == real rollouts spent <= real_episodes`:
-#   TRAIN_SIM       -- sim training episode (no real interaction)
-#   TEST_REAL       -- BUDGET-COUNTED real rollout (probe / grid or BO selection eval /
-#                      keep-best validation): every one costs from the <=100 real budget
-#   TRANSFER_REAL   -- naive-family per-episode transfer-curve eval (scoring, free)
-#   FINAL_TEST_REAL -- final benchmark scoring eval (scoring, free)
+# DTL `mode` values (column 2) -- the repo-wide canonical four:
+#   SIM_TRAIN  -- sim training episode (no real interaction)
+#   SIM_TEST   -- sim evaluation rollout (unused by the reward gap today)
+#   REAL_TRAIN -- real rollout whose outcome FEEDS the method (probe / grid or BO
+#                 selection eval / keep-best validation). This is the real-budget
+#                 spend: count(REAL_TRAIN) == self._real_rollouts <= real_episodes.
+#   REAL_TEST  -- real scoring eval (naive-family transfer curve + final test); free.
 #
 # DTL data-log column order (header row written once at the top of each run's log).
 # First 9 match the other tasks' DTL; the last 3 are reward-gap extras.
@@ -108,6 +108,10 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         self.update_model_rate = trainer_args["update_model_rate"]
         self.update_target_rate = trainer_args["update_target_rate"]
         self.test_when_train = trainer_args["test_when_train"]
+        # Thin the naive-family transfer curve (REAL_TEST rows) like the other gaps:
+        # eval every `real_eval_interval` episodes (300 eps / 3 -> 100 rows). 0 = every
+        # episode (legacy behavior).
+        self.real_eval_interval = trainer_args.get("real_eval_interval", 0)
         self.yellow_time = trainer_args["yellow_length"]
 
         sim2real_config = self.get_sim2real_config()
@@ -117,6 +121,11 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         self.sim_episodes = int(
             sim2real_config.get("sim_episodes", trainer_args["episodes"])
         )
+        # Direct transfer: pretrained policy, ZERO training, one real eval. The flag
+        # lives in the method yml (settings override sim2real keys, so a plain
+        # `sim_episodes: 0` there would be clobbered by the setting's 300).
+        if sim2real_config.get("direct_transfer", False):
+            self.sim_episodes = 0
         # real_episodes is the REAL-rollout CAP (<=100 under the budget policy), a hard
         # ceiling a method enforces against -- NOT bound by sim_episodes. (The old
         # `real <= sim` clamp belonged to the retired split-budget framing; under the
@@ -159,7 +168,7 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         # DTL header (written once at the top of the fresh per-run data log).
         with open(self.log_file, "w") as f:
             f.write("\t".join(DTL_COLUMNS) + "\n")
-        # Monotonic sim-episode counter so every method's TRAIN_SIM rows share one
+        # Monotonic sim-episode counter so every method's SIM_TRAIN rows share one
         # step axis (warmup + per-candidate fine-tunes all advance it).
         self._sim_train_step = 0
         self._last_train_reward = 0.0
@@ -488,12 +497,12 @@ class Sim2RealRewardsTrainer(BaseTrainer):
 
     # ---- logging ----------------------------------------------------------
     def _log_sim_train(self, loss, metric=None):
-        """Emit one TRAIN_SIM DTL row at the current monotonic sim-episode step, then
+        """Emit one SIM_TRAIN DTL row at the current monotonic sim-episode step, then
         advance it. Used by every method's sim training so the train curve interleaves
-        with TEST_REAL rows (consistent with the base loop / other tasks). Records the
+        with real-eval rows (consistent with the base loop / other tasks). Records the
         transformed training reward (`_last_train_reward`) in the `train_reward` column."""
         self.log_metrics(
-            "TRAIN_SIM", self._sim_train_step, metric or self.metric_sim, loss,
+            "SIM_TRAIN", self._sim_train_step, metric or self.metric_sim, loss,
             train_reward=self._last_train_reward,
         )
         self._sim_train_step += 1
@@ -557,7 +566,7 @@ class Sim2RealRewardsTrainer(BaseTrainer):
             agents=self.agents_sim,
             feature_bank=self.feature_bank_sim,
             episode=episode,
-            desc=f"TRAIN_SIM Epoch {episode}",
+            desc=f"SIM_TRAIN Epoch {episode}",
         )
         self._log_sim_train(mean_loss)
         self.logger.info("sim step:%s/%s", steps_run, self.steps)
@@ -574,17 +583,36 @@ class Sim2RealRewardsTrainer(BaseTrainer):
             self.logger.info(
                 "episode:%s/%s, sim_loss:%s", episode, self.sim_episodes, sim_loss
             )
-            if self.test_when_train:
+            if self.test_when_train and self._should_run_real_eval(episode):
                 self.train_test(episode)
         self.save_agents(self.agents_sim, self.model_dir, e=self.sim_episodes)
         self.save_agents(self.agents_sim, self.model_dir)
         self._log_real_budget()
 
+    def _should_run_real_eval(self, episode):
+        # Mirror the observation trainers: every `real_eval_interval` episodes
+        # (skipping episode 0); interval 0 -> every episode.
+        if self.real_eval_interval <= 0:
+            return True
+        return episode > 0 and episode % self.real_eval_interval == 0
+
+    def _save_method_state(self, state):
+        """Persist a small JSON of method-level results (identified/selected weights,
+        BO history, ...) next to the policy weights -- reproducibility: the weights
+        alone don't tell you WHAT the method inferred/selected."""
+        import json
+
+        os.makedirs(self.model_dir, exist_ok=True)
+        path = os.path.join(self.model_dir, "method_state.json")
+        with open(path, "w") as f:
+            json.dump(state, f, indent=2, default=float)
+        self.logger.info("Saved method state to %s", path)
+
     def _log_real_budget(self):
         """Report real rollouts spent vs the cap. Every method calls this at the end of
         `train()` so the DTL/run log carry an auditable budget number. Invariant: the
-        count equals the number of `TEST_REAL` rows in the DTL (scoring evals use the
-        TRANSFER_REAL / FINAL_TEST_REAL modes and are not counted)."""
+        count equals the number of `REAL_TRAIN` rows in the DTL (scoring evals use the
+        REAL_TEST mode and are not counted)."""
         cap = self.real_episodes or 0
         self.logger.info(
             "real rollouts used: %s/%s", self._real_rollouts, cap
@@ -596,7 +624,7 @@ class Sim2RealRewardsTrainer(BaseTrainer):
 
     def train_test(self, episode):
         # Scoring-only transfer-curve eval (naive family); NOT charged to the real
-        # budget and logged as TRANSFER_REAL, NOT TEST_REAL, so the count of TEST_REAL
+        # budget and logged as REAL_TEST (scoring), NOT REAL_TRAIN, so the count of REAL_TRAIN
         # rows stays equal to the real budget spent (see _log_real_budget).
         self.load_agents(self.agents_real, self.model_dir)
         true_reward, breakdown = self.run_eval_episode(
@@ -604,17 +632,17 @@ class Sim2RealRewardsTrainer(BaseTrainer):
             metric=self.metric_real,
             agents=self.agents_real,
             feature_bank=self.feature_bank_real,
-            desc=f"TRANSFER_REAL Epoch {episode}",
+            desc=f"REAL_TEST Epoch {episode}",
             count_budget=False,
         )
         self.log_metrics(
-            "TRANSFER_REAL", episode, self.metric_real, 100, true_reward, breakdown
+            "REAL_TEST", episode, self.metric_real, 100, true_reward, breakdown
         )
         return true_reward
 
     def test(self, drop_load=False):
         # Final benchmark scoring eval; NOT charged to the real budget, logged as
-        # FINAL_TEST_REAL (repo convention across gaps), NOT TEST_REAL.
+        # REAL_TEST (repo-wide convention), free of the real budget.
         if not drop_load:
             self.load_agents(self.agents_real, self.model_dir, e=self.sim_episodes)
         true_reward, breakdown = self.run_eval_episode(
@@ -622,11 +650,11 @@ class Sim2RealRewardsTrainer(BaseTrainer):
             metric=self.metric_real,
             agents=self.agents_real,
             feature_bank=self.feature_bank_real,
-            desc="FINAL_TEST_REAL",
+            desc="REAL_TEST",
             count_budget=False,
         )
         self.log_metrics(
-            "FINAL_TEST_REAL", 0, self.metric_real, 100, true_reward, breakdown
+            "REAL_TEST", 0, self.metric_real, 100, true_reward, breakdown
         )
         return self.metric_real
 

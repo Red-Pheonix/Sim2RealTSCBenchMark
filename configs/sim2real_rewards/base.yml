@@ -29,10 +29,11 @@ trainer:
   episodes: 100
   update_model_rate: 1
   update_target_rate: 10
-  # Real transfer-curve eval each sim episode (naive family; the method trainers
-  # self-log their own TEST_REAL rows). These are SCORING evals, excluded from the real
-  # budget (train_test / test pass count_budget=False). See reward_gap_fix_plan Task 10.
+  # Real transfer-curve eval during sim training (naive family; the method trainers
+  # self-log their own REAL_TRAIN rows). These are SCORING evals, excluded from the
+  # real budget (train_test / test pass count_budget=False).
   test_when_train: True
+  real_eval_interval: 3  # 300 eps / eval every 3rd -> 100 REAL_TEST rows
 
 sim2real:
   load_pretrained: True

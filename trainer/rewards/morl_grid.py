@@ -115,11 +115,11 @@ class Sim2RealRewardsMORLGridTrainer(Sim2RealRewardsTrainer):
                     agents=self.agents_sim,
                     feature_bank=self.feature_bank_sim,
                     episode=ep,
-                    desc=f"TRAIN_SIM MORLGrid[w{gi}] Epoch {ep}",
+                    desc=f"SIM_TRAIN MORLGrid[w{gi}] Epoch {ep}",
                 )
                 self._log_sim_train(loss)
             # Deploy this grid policy once in real; keep the best by R_real. Log a
-            # standard TEST_REAL row to the DTL (grid index as step, weights in detail).
+            # standard REAL_TRAIN row to the DTL (grid index as step, weights in detail).
             self.save_agents(self.agents_sim, self.model_dir)
             self.load_agents(self.agents_real, self.model_dir)
             r_real, breakdown = self.run_eval_episode(
@@ -127,10 +127,10 @@ class Sim2RealRewardsMORLGridTrainer(Sim2RealRewardsTrainer):
                 metric=self.metric_real,
                 agents=self.agents_real,
                 feature_bank=self.feature_bank_real,
-                desc=f"TEST_REAL MORLGrid[w{gi}] select",
+                desc=f"REAL_TRAIN MORLGrid[w{gi}] select",
             )
             self.log_metrics(
-                "TEST_REAL", gi + 1, self.metric_real, 100, r_real, breakdown,
+                "REAL_TRAIN", gi + 1, self.metric_real, 100, r_real, breakdown,
                 f"grid;w={self._w_detail(w)}",
             )
             if r_real > best_r:
@@ -172,10 +172,10 @@ class Sim2RealRewardsMORLGridTrainer(Sim2RealRewardsTrainer):
                 r, bd = self.run_eval_episode(
                     env=self.env_real, metric=self.metric_real, agents=self.agents_real,
                     feature_bank=self.feature_bank_real,
-                    desc=f"TEST_REAL MORLGrid-Refine[{detail}]",
+                    desc=f"REAL_TRAIN MORLGrid-Refine[{detail}]",
                 )
                 self.log_metrics(
-                    "TEST_REAL", step, self.metric_real, 100, r, bd,
+                    "REAL_TRAIN", step, self.metric_real, 100, r, bd,
                     f"refine;w={self._w_detail(best_w)};{detail}",
                 )
                 return float(r)
@@ -188,7 +188,7 @@ class Sim2RealRewardsMORLGridTrainer(Sim2RealRewardsTrainer):
                     agents=self.agents_sim,
                     feature_bank=self.feature_bank_sim,
                     episode=ep,
-                    desc=f"TRAIN_SIM MORLGrid-Refine Epoch {ep}",
+                    desc=f"SIM_TRAIN MORLGrid-Refine Epoch {ep}",
                 )
                 self._log_sim_train(loss)
                 if (ep + 1) % eval_rate == 0 or ep == refine_episodes - 1:
@@ -203,4 +203,12 @@ class Sim2RealRewardsMORLGridTrainer(Sim2RealRewardsTrainer):
             self.save_agents(self.agents_sim, self.model_dir, e=self.sim_episodes)
             self.save_agents(self.agents_sim, self.model_dir)
         self.logger.info("MORLGrid selected policy with R_real=%.4f", best_r)
+        if best_w is not None:
+            self._save_method_state({
+                "selected_w": {
+                    c: float(best_w[i]) for i, c in enumerate(self.components)
+                },
+                "grid_size": len(grid),
+                "best_R_real": float(best_r),
+            })
         self._log_real_budget()

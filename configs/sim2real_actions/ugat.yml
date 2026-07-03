@@ -4,8 +4,8 @@
 # stable where plain GAT gridlocks. Forward model learns from the PROPOSED action. The
 # stable member of the grounding family; still a negative result (doesn't close the gap).
 trainer:
-  episodes: 40
-  real_eval_interval: 1
+  episodes: 100
+  real_eval_interval: 1  # per-episode REAL_TRAIN rollout is the method; 100 eps -> 100 rows
   eval_sim: false
 
 sim2real:

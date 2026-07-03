@@ -1,6 +1,6 @@
 trainer:
   episodes: 300
-  real_eval_interval: 1
+  real_eval_interval: 3  # 300 eps / eval every 3rd -> 100 REAL_TEST rows
 
 sim2real:
   method: domain_randomization

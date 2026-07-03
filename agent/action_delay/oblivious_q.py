@@ -41,3 +41,9 @@ class ObliviousQModel:
 
     def reset_all(self, init_phases):
         pass
+
+    def save_aux(self, model_dir):
+        pass  # no predictor -- nothing to persist
+
+    def load_aux(self, model_dir):
+        pass

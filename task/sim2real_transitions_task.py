@@ -15,6 +15,10 @@ class Sim2RealTransitionsTask(BaseTask):
         "grounding": "sim2real_transitions_grounding",
         "domain_randomization": "sim2real_transitions_domain_randomization",
         "domain_adaptation": "sim2real_transitions_domain_adaptation",
+        # Direct transfer: pretrained sim policy, 0 training episodes, one real eval
+        # (the raw transition-gap number). Reuses the DR trainer -- with episodes=0
+        # its randomization never fires; train() ends with the single real eval.
+        "direct_transfer": "sim2real_transitions_domain_randomization",
     }
 
     def __init__(

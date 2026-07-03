@@ -11,6 +11,8 @@ method reads top-to-bottom. Like Delayed-Q the base agents stay plain wrappers
 -- only the mitigation hooks are overridden.
 """
 
+import os
+
 from common.registry import Registry
 from agent.action_delay import PRLightModel
 from trainer.actions.sim2real_actions_trainer import Sim2RealActionsTrainer
@@ -75,6 +77,21 @@ class Sim2RealActionsPRLightTrainer(Sim2RealActionsTrainer):
         # assemble neighbor features for each ego intersection.
         if self.m > 0:
             self.model.cache_decision_state(obs, phases)
+
+    def train(self):
+        super().train()
+        # Persist the OTPM predictors with the policy (reproducibility: the
+        # predictor is part of the method).
+        if self.m > 0:
+            self.model.save_aux(self.model_dir)
+
+    def test(self, drop_load=False):
+        # Eval-only entry: reload the saved predictors so the method evaluates as
+        # trained (without them PRLight silently degrades to raw-obs actions).
+        aux = os.path.join(self.model_dir, "predictor_0.pt")
+        if self.m > 0 and os.path.exists(aux):
+            self.model.load_aux(self.model_dir)
+        return super().test(drop_load)
 
     def store_transition(self, ag, idx, **kwargs):
         # Q-replay stays the baseline's (handled by super()); additionally feed

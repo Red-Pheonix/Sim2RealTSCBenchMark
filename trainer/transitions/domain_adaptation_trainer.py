@@ -618,7 +618,7 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
             collect_trajectory=True,
         )
         summary_metric = self.compute_summary_metric(trajectory)
-        self.log_metrics("SIM_EVAL", episode, self.metric_sim, 0)
+        self.log_metrics("SIM_TEST", episode, self.metric_sim, 0)
         return {
             "episode": episode,
             "sampled_parameters": sampled_parameters,
@@ -635,7 +635,7 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
             collect_trajectory=True,
         )
         summary_metric = self.compute_summary_metric(trajectory)
-        self.log_metrics("REAL_EVAL", episode, self.metric_real, 0)
+        self.log_metrics("REAL_TRAIN", episode, self.metric_real, 0)
         return {
             "episode": episode,
             "summary_metric": summary_metric,
@@ -743,6 +743,7 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
             e=self.episodes,
         )
         self.save_agents(self.agents_sim, self.model_dir)
+        self.save_posterior()
 
         self.load_agents(self.agents_real, self.model_dir)
         self.run_eval_episode(
@@ -752,11 +753,27 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
             desc="Final Real Run After Training",
         )
         self.log_metrics(
-            "REAL_EVAL_FINAL",
+            "REAL_TEST",
             self.episodes,
             self.metric_real,
             100,
         )
+
+    def save_posterior(self):
+        """Persist the SBI posterior next to the policy weights (reproducibility:
+        the inferred dynamics posterior is part of the method)."""
+        if self.posterior is None:
+            return
+        import pickle
+
+        os.makedirs(self.model_dir, exist_ok=True)
+        path = os.path.join(self.model_dir, "sbi_posterior.pkl")
+        try:
+            with open(path, "wb") as f:
+                pickle.dump(self.posterior, f)
+            self.logger.info("Saved SBI posterior to %s", path)
+        except (pickle.PicklingError, TypeError, AttributeError) as err:
+            self.logger.warning("Could not pickle SBI posterior: %s", err)
 
     def train_test(self, episode):
         self.load_agents(self.agents_real, self.model_dir)
@@ -766,7 +783,7 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
             agents=self.agents_real,
             desc=f"Real Eval Epoch {episode}",
         )
-        self.log_metrics("TEST_REAL", episode, self.metric_real, 100)
+        self.log_metrics("REAL_TEST", episode, self.metric_real, 100)
         return self.metric_real.real_average_travel_time()
 
     def test(self, drop_load=False):
@@ -782,7 +799,7 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
             agents=self.agents_real,
             desc="Final Real Test",
         )
-        self.log_metrics("TEST_REAL", 0, self.metric_real, 100)
+        self.log_metrics("REAL_TEST", 0, self.metric_real, 100)
         return self.metric_real
 
     def writeLog(

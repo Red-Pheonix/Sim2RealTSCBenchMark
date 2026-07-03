@@ -1,0 +1,39 @@
+# Isolated obs gap: Gaussian observation noise only (std=3).
+sim2real:
+  transform_seed: 0
+  detection_zone:
+    enabled: False
+    distance_m: 50.0
+  noise:
+    enabled: True
+    seed: 0
+    features: ["lane_count", "lane_waiting_count", "lane_waiting_time_count", "lane_delay"]
+    probability: 1.0
+    distribution: gaussian # gaussian, poisson
+    gaussian_config:
+      mean: 0.0
+      std: 3.0
+      relative: False
+    poisson_config:
+      lambda:
+      rate: 1.0
+      centered: False
+      relative: False
+    bias: 0.0
+    scale: 1.0
+    clip_min: 0.0
+    clip_max:
+    round: False
+    cast_int: False
+  disable_sensor:
+    enabled: False
+    seed: 0
+    features: ["lane_count", "lane_waiting_count", "lane_waiting_time_count", "lane_delay"]
+    mask_mode: episode # run, episode, step
+    fill_value: 0.0
+    lane_level:
+      enabled: True
+      probability: 0.2
+    intersection_level:
+      enabled: False
+      probability: 0.2

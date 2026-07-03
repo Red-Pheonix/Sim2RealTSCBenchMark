@@ -11,7 +11,10 @@ class Sim2RealActionsTask(BaseTask):
     """
 
     METHOD_TO_TRAINER = {
-        "naive": "sim2real_actions",  # direct transfer: delay-free sim, no mitigation
+        "naive": "sim2real_actions",  # baseline: delay-free sim training, no mitigation
+        # Direct transfer proper: pretrained sim policy, 0 training episodes, one real
+        # eval (the raw action-gap number). Same base trainer, config-only.
+        "direct_transfer": "sim2real_actions",
         # Action shielding (phase-transition gap): reuses the base trainer; the legal
         # -action mask flows through the existing valid_mask -> get_action path, so no
         # mitigation model/subclass is needed. The shield mode is set in shield.yml.

@@ -1,6 +1,6 @@
 trainer:
   episodes: 200
-  real_eval_interval: 1
+  real_eval_interval: 2  # 100 pretrain + 200 RL; eval every 2nd -> 100 REAL_TEST rows
 
 sim2real:
   method: latent_observation

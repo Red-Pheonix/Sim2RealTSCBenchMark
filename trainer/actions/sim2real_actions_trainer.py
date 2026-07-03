@@ -49,7 +49,7 @@ class Sim2RealActionsTrainer(BaseTrainer):
         # every `real_eval_interval` episodes run train_test (sim + real eval).
         # 0 disables it.
         self.real_eval_interval = trainer_args.get("real_eval_interval", 0)
-        # Whether to also run the sim-delay eval (TEST_SIM) in train_test/test.
+        # Whether to also run the sim-delay eval (SIM_TEST) in train_test/test.
         # The experiment only needs real-delay transfer, so this can be turned off.
         self.eval_sim = trainer_args.get("eval_sim", True)
         self.yellow_time = trainer_args["yellow_length"]
@@ -69,8 +69,12 @@ class Sim2RealActionsTrainer(BaseTrainer):
             sim2real_config.get("action_delay", 0)
         )
 
+        # exp_name has FOUR components: network _ setting _ agent _ mitigation-method
+        # (the act_model), matching the other three gaps so the DTL column-1 token
+        # alone identifies a run (naive / delayed_q / prlight / gat / dr / ...).
         self.exp_name = (
-            f'{cmd_args["network"]}_{cmd_args["real_setting"]}_{cmd_args["agent"]}'
+            f'{cmd_args["network"]}_{cmd_args["real_setting"]}'
+            f'_{cmd_args["agent"]}_{cmd_args.get("act_model") or "naive"}'
         )
         self.model_dir = os.path.join(
             Registry.mapping["logger_mapping"]["path"].path,
@@ -716,7 +720,7 @@ class Sim2RealActionsTrainer(BaseTrainer):
                 action_transforms=self.sim_action_transforms,
             )
             self.log_metrics(
-                "TEST_SIM", episode, self.metric_sim, 100, self.sim_action_transforms
+                "SIM_TEST", episode, self.metric_sim, 100, self.sim_action_transforms
             )
 
         self.load_agents(self.agents_real, self.model_dir)
@@ -728,7 +732,7 @@ class Sim2RealActionsTrainer(BaseTrainer):
             action_transforms=self.real_action_transforms,
         )
         self.log_metrics(
-            "TEST_REAL", episode, self.metric_real, 100, self.real_action_transforms
+            "REAL_TEST", episode, self.metric_real, 100, self.real_action_transforms
         )
         return self.metric_real.real_average_travel_time()
 
@@ -745,7 +749,7 @@ class Sim2RealActionsTrainer(BaseTrainer):
                 action_transforms=self.sim_action_transforms,
             )
             self.log_metrics(
-                "FINAL_TEST_SIM", 0, self.metric_sim, 100, self.sim_action_transforms
+                "SIM_TEST", 0, self.metric_sim, 100, self.sim_action_transforms
             )
 
         if not drop_load:
@@ -759,7 +763,7 @@ class Sim2RealActionsTrainer(BaseTrainer):
             action_transforms=self.real_action_transforms,
         )
         self.log_metrics(
-            "FINAL_TEST_REAL", 0, self.metric_real, 100, self.real_action_transforms
+            "REAL_TEST", 0, self.metric_real, 100, self.real_action_transforms
         )
         return self.metric_real
 

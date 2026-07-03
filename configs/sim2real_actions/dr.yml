@@ -9,8 +9,8 @@
 # Compare against: naive, shield (clean policy + eval mask), train_shield (target only),
 # dr_noshield (unshielded DR).
 trainer:
-  episodes: 120
-  real_eval_interval: 3
+  episodes: 300
+  real_eval_interval: 3  # 300 eps / eval every 3rd -> 100 REAL_TEST rows
   eval_sim: false
 
 sim2real:

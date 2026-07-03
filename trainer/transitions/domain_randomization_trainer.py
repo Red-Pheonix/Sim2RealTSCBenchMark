@@ -416,7 +416,7 @@ class TransitionDomainRandomizationTrainer(TransitionTrainer):
             agents=self.agents_real,
             desc="Final Real Run After Training",
         )
-        self.log_metrics("TRAIN_REAL", self.episodes, self.metric_real, 100)
+        self.log_metrics("REAL_TEST", self.episodes, self.metric_real, 100)
 
     def train_test(self, episode):
         self.load_agents(self.agents_real, self.model_dir)
@@ -426,7 +426,7 @@ class TransitionDomainRandomizationTrainer(TransitionTrainer):
             agents=self.agents_real,
             desc=f"Real Eval Epoch {episode}",
         )
-        self.log_metrics("TEST_REAL", episode, self.metric_real, 100)
+        self.log_metrics("REAL_TEST", episode, self.metric_real, 100)
         return self.metric_real.real_average_travel_time()
 
     def test(self, drop_load=False):
@@ -438,7 +438,7 @@ class TransitionDomainRandomizationTrainer(TransitionTrainer):
             agents=self.agents_real,
             desc="Final Real Test",
         )
-        self.log_metrics("TEST_REAL", 0, self.metric_real, 100)
+        self.log_metrics("REAL_TEST", 0, self.metric_real, 100)
         return self.metric_real
 
     def writeLog(

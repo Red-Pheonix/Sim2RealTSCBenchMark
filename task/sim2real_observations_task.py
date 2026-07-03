@@ -12,6 +12,10 @@ class Sim2RealObservationsTask(BaseTask):
     METHOD_TO_TRAINER = {
         "domain_randomization": "sim2real_observations_domain_randomization",
         "latent_observation": "sim2real_observations_latent",
+        # Direct transfer: pretrained sim policy, 0 training episodes, one real eval
+        # (the raw obs-gap number). Reuses the DR trainer -- with episodes=0 its
+        # randomization never fires, so it degrades to load-pretrained + final test.
+        "direct_transfer": "sim2real_observations_domain_randomization",
     }
 
     def __init__(

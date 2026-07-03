@@ -125,6 +125,7 @@ class JLGATSim2RealTransitionModel(DecentralizedSim2RealTransitionModel):
         sim2real_params = Registry.mapping["sim2real_mapping"]["setting"].param
         self.uncertainty_setting = sim2real_params["uncertainty"]
         self.last_n_uncertainties = sim2real_params["last_n_uncertainties"]
+        self.grounding_epochs = int(sim2real_params.get("grounding_epochs", 100))
         self.prob_grounding = sim2real_params.get("prob_grounding", 0)
         
         probing_radius = Registry.mapping["world_mapping"]["setting"].param.get("probing_radius")
@@ -372,8 +373,8 @@ class JLGATSim2RealTransitionModel(DecentralizedSim2RealTransitionModel):
         self.prepare_forward_data()
         self.prepare_inverse_data()
         for idx in range(len(self.agents_sim)):
-            self.forward_models[idx].train(100, "forward", idx, 5000, "jlgat")
-            self.inverse_models[idx].train(100, "inverse", idx, 5000, "jlgat")
+            self.forward_models[idx].train(self.grounding_epochs, "forward", idx, 5000, "jlgat")
+            self.inverse_models[idx].train(self.grounding_epochs, "inverse", idx, 5000, "jlgat")
 
     def save_models(self, e):
         for model in self.forward_models:

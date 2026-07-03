@@ -53,6 +53,7 @@ class LatentObservationTrainer(BaseObservationTrainer):
         if not self.model.force_retrain and all(os.path.exists(p) for p in paths):
             self.logger.info("Loading cached latent encoders from %s", self.enc_dec_cache_dir)
             self.model.load(paths)
+            self._save_run_encoders()
             return
 
         self.load_agents(self.agents_sim, self.pretrained_model_dir())
@@ -66,7 +67,21 @@ class LatentObservationTrainer(BaseObservationTrainer):
         self.model.train()
 
         os.makedirs(self.enc_dec_cache_dir, exist_ok=True)
-        self.model.save(paths)
+        # ATOMIC cache write: concurrent runs of the same (method, network) share this
+        # cache; write to unique tmp files then rename so a concurrent reader never
+        # loads a half-written checkpoint.
+        tmp_paths = [f"{p}.tmp{os.getpid()}" for p in paths]
+        self.model.save(tmp_paths)
+        for tmp, dst in zip(tmp_paths, paths):
+            os.replace(tmp, dst)
+        self._save_run_encoders()
+
+    def _save_run_encoders(self):
+        """Persist the encoders THIS run used into the run's model_dir (alongside the
+        policy checkpoints), so the run is reproducible on its own even if the shared
+        per-method cache (`pretrained/<method>/<network>/`) is later overwritten."""
+        os.makedirs(self.model_dir, exist_ok=True)
+        self.model.save(self.model.cache_paths(self.model_dir))
 
     def collect_latent_train_episode(self, episode_id):
         self.model.prepare_latent_train_episode(episode_id, self)
@@ -108,6 +123,25 @@ class LatentObservationTrainer(BaseObservationTrainer):
         for agents in (self.agents_sim, self.agents_real):
             for i, ag in enumerate(agents):
                 ag.get_ob = self.make_encoded_get_ob(ag.get_ob, i)
+        self._latent_ready = True
+
+    def test(self, drop_load=False):
+        """Eval-only entry (train_model: False): rebuild the latent stack from the
+        RUN's saved encoders (fall back to the shared cache) before the base test.
+        No-op when train() already set the stack up in this process."""
+        if not getattr(self, "_latent_ready", False):
+            run_paths = self.model.cache_paths(self.model_dir)
+            if all(os.path.exists(p) for p in run_paths):
+                self.logger.info("Loading run-scoped latent encoders from %s", self.model_dir)
+                self.model.load(run_paths)
+            else:
+                self.logger.info(
+                    "Loading cached latent encoders from %s", self.enc_dec_cache_dir
+                )
+                self.model.load(self.model.cache_paths(self.enc_dec_cache_dir))
+            self.build_latent_agents()
+            self.attach_latent_encoders()
+        return super().test(drop_load)
 
     def make_encoded_get_ob(self, raw_get_ob, intersection_id):
         def encoded():
@@ -246,7 +280,7 @@ class LatentObservationTrainer(BaseObservationTrainer):
             agents=self.agents_real,
             desc=f"Real Eval Epoch {episode}",
         )
-        self.log_metrics("TEST_REAL", episode, self.metric_real, 100)
+        self.log_metrics("REAL_TEST", episode, self.metric_real, 100)
         return self.metric_real.real_average_travel_time()
 
     # ------------------------------------------------------------------
@@ -279,4 +313,6 @@ class LatentObservationTrainer(BaseObservationTrainer):
             if self.should_run_real_eval(episode):
                 self.train_test(episode)
 
+        # Final e-tagged checkpoint so test()/eval-only reloads (e=self.episodes) work.
+        self.save_agents(self.agents_sim, self.model_dir, e=self.episodes)
         self.save_agents(self.agents_sim, self.model_dir)

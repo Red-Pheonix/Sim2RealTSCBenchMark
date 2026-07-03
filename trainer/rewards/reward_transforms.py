@@ -108,7 +108,7 @@ class TrueReward(_LinearCost):
     """The hidden real objective `R_real = -(Φ · w*)`, used ONLY at eval to score.
 
     Reads `w*` from the setting file (projected through `FeatureBank.weight_vector`).
-    The agent never sees `w*`; this object scores `TEST_REAL` and logs the
+    The agent never sees `w*`; this object scores the real evals and logs the
     per-component breakdown so we can see *which* term a method got right.
     """
 

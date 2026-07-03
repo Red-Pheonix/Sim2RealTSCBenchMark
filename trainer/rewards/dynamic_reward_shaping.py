@@ -101,21 +101,21 @@ class Sim2RealRewardsDynamicShapingTrainer(Sim2RealRewardsTrainer):
             self.on_episode_start(ep)
             loss, _ = self.run_train_episode(
                 env=self.env_sim, metric=self.metric_sim, agents=self.agents_sim,
-                feature_bank=self.feature_bank_sim, episode=ep, desc=f"TRAIN_SIM {tag}",
+                feature_bank=self.feature_bank_sim, episode=ep, desc=f"SIM_TRAIN {tag}",
             )
             self._log_sim_train(loss)
 
     def _eval_real(self, desc, step=0, detail=""):
         """Deploy the current sim policy in real for one episode, log a standard
-        TEST_REAL row to the DTL (so candidates land in the data log like the base
+        REAL_TRAIN row to the DTL (so candidates land in the data log like the base
         methods), and return R_real."""
         self.save_agents(self.agents_sim, self.model_dir)
         self.load_agents(self.agents_real, self.model_dir)
         r_real, breakdown = self.run_eval_episode(
             env=self.env_real, metric=self.metric_real, agents=self.agents_real,
-            feature_bank=self.feature_bank_real, desc=f"TEST_REAL {desc}",
+            feature_bank=self.feature_bank_real, desc=f"REAL_TRAIN {desc}",
         )
-        self.log_metrics("TEST_REAL", step, self.metric_real, 100, r_real, breakdown, detail)
+        self.log_metrics("REAL_TRAIN", step, self.metric_real, 100, r_real, breakdown, detail)
         return float(r_real)
 
     def _finetune_and_eval(self, base_dir, w_act, tag, step=0, detail=""):
@@ -184,4 +184,12 @@ class Sim2RealRewardsDynamicShapingTrainer(Sim2RealRewardsTrainer):
         self.load_agents(self.agents_sim, best_dir)
         self.save_agents(self.agents_sim, self.model_dir, e=self.sim_episodes)
         self.save_agents(self.agents_sim, self.model_dir)
+        self._save_method_state({
+            "selected_w": self._nonzero_w(self._full_w(best_w_act)),
+            "bo_history": [
+                {"x": [float(v) for v in xi], "neg_R_real": float(yi)}
+                for xi, yi in zip(opt.Xi, opt.yi)
+            ],
+            "best_R_real": float(best_r),
+        })
         self._log_real_budget()

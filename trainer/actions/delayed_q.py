@@ -12,6 +12,8 @@ the configured method names (``sim2real.method``), and Oblivious-Q is just a
 applied, no prediction). No trainer subclass is needed for it.
 """
 
+import os
+
 import agent.action_delay  # noqa: F401 -- register the method models
 from common.registry import Registry
 from trainer.actions.sim2real_actions_trainer import Sim2RealActionsTrainer
@@ -75,6 +77,21 @@ class Sim2RealActionsDelayedQTrainer(Sim2RealActionsTrainer):
         return self.model.select_action(
             ag, idx, ob, phase, test, valid_mask_fn=valid_mask_fn
         )
+
+    def train(self):
+        super().train()
+        # Persist the prediction models with the policy (reproducibility: the
+        # predictor is part of the method; Oblivious-Q's is a no-op).
+        self.model.save_aux(self.model_dir)
+
+    def test(self, drop_load=False):
+        # Eval-only entry: reload the saved predictors so the method evaluates as
+        # trained (without them Delayed-Q silently degrades to acting on the raw
+        # delayed observation).
+        aux = os.path.join(self.model_dir, "predictor_0.pt")
+        if os.path.exists(aux):
+            self.model.load_aux(self.model_dir)
+        return super().test(drop_load)
 
     # Q-replay is identical to the baseline: the environment's delay queue already
     # stores the executed (delayed) action with its execution-time state/reward,

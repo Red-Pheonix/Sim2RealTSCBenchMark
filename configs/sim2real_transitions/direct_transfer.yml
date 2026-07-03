@@ -1,0 +1,17 @@
+# Direct transfer (transition gap): load the cityflow-pretrained sim policy and
+# evaluate it ONCE in the real (sumo + setting demand) env. 0 training episodes ->
+# the resulting REAL_TEST number IS the raw transition-gap baseline.
+# Reuses the DR trainer; with episodes=0 the randomization never fires and train()
+# degrades to load-pretrained + the single final real eval.
+trainer:
+  episodes: 0
+  real_eval_interval: 0
+
+sim2real:
+  method: "direct_transfer"
+  # DR trainer reads this block at __init__; disabled and never sampled (0 episodes).
+  domain_randomization:
+    enabled: False
+    seed: 0
+    output_dir: output_data/sim2real_transitions/direct_transfer
+    parameters: {}

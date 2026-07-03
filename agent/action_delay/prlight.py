@@ -433,3 +433,17 @@ class PRLightModel:
                 self.optimizers[i].step()
                 self.last_pred_loss = float(loss.detach().numpy())
             self.predictor_trained = True
+
+    # ---- persistence (reproducibility: the predictor is part of the method) ----
+    def save_aux(self, model_dir):
+        """Save the per-intersection OTPM predictors next to the policy weights."""
+        os.makedirs(model_dir, exist_ok=True)
+        for i, m in enumerate(self.models):
+            torch.save(m.state_dict(), os.path.join(model_dir, f"predictor_{i}.pt"))
+
+    def load_aux(self, model_dir):
+        for i, m in enumerate(self.models):
+            m.load_state_dict(
+                torch.load(os.path.join(model_dir, f"predictor_{i}.pt"))
+            )
+        self.predictor_trained = True

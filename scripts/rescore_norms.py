@@ -43,7 +43,9 @@ KNOWN_METHODS = [  # longest-first so e.g. reward_shaping matches before shaping
     "dynamic_reward_shaping", "reward_inference", "reward_shaping", "reward_random",
     "morl_grid", "pt_naive", "shield", "naive",
 ]
-EVAL_MODES = {"TEST_REAL", "FINAL_TEST_REAL"}
+# Old names kept so historical logs still parse; new canonical names are
+# REAL_TRAIN (budget-counted candidate rollouts) and REAL_TEST (scoring evals).
+EVAL_MODES = {"TEST_REAL", "FINAL_TEST_REAL", "TRANSFER_REAL", "REAL_TRAIN", "REAL_TEST"}
 
 
 def parse_components(cell):

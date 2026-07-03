@@ -7,8 +7,8 @@
 # trains under the same delay it deploys into). Contrast with `naive`, which
 # trains delay-free (direct transfer).
 trainer:
-  episodes: 100
-  real_eval_interval: 1  # run real eval every episode during training
+  episodes: 300
+  real_eval_interval: 3  # 300 eps / eval every 3rd -> 100 REAL_TEST rows
   eval_sim: false        # only real-delay transfer matters
 
 sim2real:

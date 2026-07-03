@@ -11,6 +11,9 @@ class Sim2RealRewardsTask(BaseTask):
 
     METHOD_TO_TRAINER = {
         "naive": "sim2real_rewards",
+        # Direct transfer proper: pretrained sim policy, 0 training episodes, one real
+        # eval. Same naive trainer; sim2real.direct_transfer forces sim_episodes=0.
+        "direct_transfer": "sim2real_rewards",
         "reward_shaping": "sim2real_rewards_shaping",
         "reward_random": "sim2real_rewards_random",
         "reward_inference": "sim2real_rewards_reward_inference",

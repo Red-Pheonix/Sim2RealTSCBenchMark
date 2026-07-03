@@ -1,0 +1,13 @@
+# Direct transfer (action gap): load the pretrained delay-free sim policy and
+# evaluate it ONCE in the delayed / phase-constrained real env. 0 training episodes
+# -> the resulting REAL_TEST number IS the raw action-gap baseline.
+trainer:
+  episodes: 0
+  real_eval_interval: 0
+  eval_sim: false        # only the real eval matters
+
+model:
+  test_model: True       # run test() -> the single REAL_TEST row
+
+sim2real:
+  method: direct_transfer

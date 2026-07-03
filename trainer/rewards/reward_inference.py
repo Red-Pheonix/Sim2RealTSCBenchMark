@@ -143,7 +143,7 @@ class Sim2RealRewardsInferenceTrainer(Sim2RealRewardsTrainer):
                 agents=self.agents_sim,
                 feature_bank=self.feature_bank_sim,
                 episode=ep,
-                desc=f"TRAIN_SIM {tag} Epoch {ep}",
+                desc=f"SIM_TRAIN {tag} Epoch {ep}",
             )
             self._log_sim_train(loss)
         self.save_agents(self.agents_sim, self.model_dir)
@@ -215,16 +215,16 @@ class Sim2RealRewardsInferenceTrainer(Sim2RealRewardsTrainer):
             phi, r_real = self._collect_real()
             phi_rows.append(phi)
             y.append(r_real)
-            # Log a standard TEST_REAL row (probe index as step). The ridge keeps the
+            # Log a standard REAL_TRAIN row (probe index as step). The ridge keeps the
             # raw `r_real`/Φ; the logged R_real is normalized per-decision to match the
-            # scale of the other methods' TEST_REAL rows.
+            # scale of the other methods' REAL_TRAIN rows.
             decisions = max(int(self.test_steps / self.action_interval), 1)
             breakdown = {
                 k: v / decisions
                 for k, v in self.true_reward.breakdown(phi[None, :]).items()
             }
             self.log_metrics(
-                "TEST_REAL", len(phi_rows), self.metric_real, 100,
+                "REAL_TRAIN", len(phi_rows), self.metric_real, 100,
                 r_real / decisions, breakdown, f"probe[{c}]",
             )
 
@@ -297,9 +297,9 @@ class Sim2RealRewardsInferenceTrainer(Sim2RealRewardsTrainer):
             r, bd = self.run_eval_episode(
                 env=self.env_real, metric=self.metric_real, agents=self.agents_real,
                 feature_bank=self.feature_bank_real,
-                desc=f"TEST_REAL RewardInference-Final[{detail}]",
+                desc=f"REAL_TRAIN RewardInference-Final[{detail}]",
             )
-            self.log_metrics("TEST_REAL", step, self.metric_real, 100, r, bd, f"final;{detail}")
+            self.log_metrics("REAL_TRAIN", step, self.metric_real, 100, r, bd, f"final;{detail}")
             return float(r)
 
         # Warm-start (== naive policy) is the floor.
@@ -310,7 +310,7 @@ class Sim2RealRewardsInferenceTrainer(Sim2RealRewardsTrainer):
             loss, _ = self.run_train_episode(
                 env=self.env_sim, metric=self.metric_sim, agents=self.agents_sim,
                 feature_bank=self.feature_bank_sim, episode=ep,
-                desc="TRAIN_SIM RewardInference-Final",
+                desc="SIM_TRAIN RewardInference-Final",
             )
             self._log_sim_train(loss)
             if (ep + 1) % eval_rate == 0 or ep == final_episodes - 1:
@@ -323,4 +323,14 @@ class Sim2RealRewardsInferenceTrainer(Sim2RealRewardsTrainer):
         self.logger.info("RewardInference-Final: deploying best checkpoint R_real=%.4f", best_r)
         self.save_agents(self.agents_sim, self.model_dir, e=self.sim_episodes)
         self.save_agents(self.agents_sim, self.model_dir)
+        self._save_method_state({
+            "identified_w": {
+                c: float(self.identified_w[i]) for i, c in enumerate(self.components)
+            },
+            "actionable_w": {
+                c: float(actionable_w[i]) for i, c in enumerate(self.components)
+            },
+            "probe_components": list(probe_list),
+            "best_R_real": float(best_r),
+        })
         self._log_real_budget()

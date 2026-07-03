@@ -1,0 +1,9 @@
+# Direct transfer (reward gap): load the pretrained sim policy and evaluate it ONCE
+# in real, scored by the setting's hidden objective R_real. 0 training episodes ->
+# the resulting REAL_TEST number IS the raw reward-gap baseline.
+# `direct_transfer: True` forces sim_episodes=0 in the trainer (a plain
+# `sim_episodes: 0` here would be clobbered by the setting yml's 300 -- settings
+# override method ymls for sim2real keys).
+sim2real:
+  method: direct_transfer
+  direct_transfer: True

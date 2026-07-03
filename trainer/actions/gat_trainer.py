@@ -13,7 +13,7 @@ Per episode (mirrors trainer/transitions/grounding_trainer.py):
   1. policy_training -- sim DQN; ground each action via the model once warmed up.
   2. sim_rollout     -- ungrounded sim rollout, collect (s,a,s') for the INVERSE (sim data).
   3. real_rollout    -- real env (real_action_transforms), collect (s, PROPOSED a, s') for
-                        the FORWARD (real data); log TEST_REAL.
+                        the FORWARD (real data); log REAL_TRAIN.
   4. train the forward/inverse models.
 
 Outcome (documented negative result): grounding learns, but does not close the PT gap --
@@ -72,13 +72,17 @@ class Sim2RealActionsGATTrainer(Sim2RealActionsTrainer):
             sim_loss = self._policy_training(episode, grounded)
             self.save_agents(self.agents_sim, self.model_dir)
             self._sim_rollout()          # inverse (sim) data
-            self._real_rollout(episode)  # forward (real) data + TEST_REAL
+            self._real_rollout(episode)  # forward (real) data + REAL_TRAIN
             self.transition_model.train_transition_models()
             self._gat_ready = True
             self.logger.info(
                 "GAT episode:%s/%s grounded:%s sim_loss:%.4f", episode, self.episodes,
                 grounded, sim_loss,
             )
+        # Persist the forward/inverse grounding models (reproducibility: they are
+        # part of the method) + a final e-tagged policy checkpoint for test().
+        self.transition_model.save_models(self.episodes)
+        self.save_agents(self.agents_sim, self.model_dir, e=self.episodes)
 
     # ------------------------------------------------------------------
     def _records(self, last_obs, actions, obs):
@@ -181,7 +185,8 @@ class Sim2RealActionsGATTrainer(Sim2RealActionsTrainer):
     # ------------------------------------------------------------------
     def _real_rollout(self, episode):
         """Real env rollout (real_action_transforms applied) -> collect (s, fwd_action, s')
-        for the FORWARD model (real data); log TEST_REAL."""
+        for the FORWARD model (real data); log REAL_TRAIN (the rollout FEEDS the method,
+        so it is real-budget spend, not a scoring eval)."""
         # Deploy the freshly-trained sim policy: load its weights into the real agents,
         # else real eval runs stale/initial weights (byte-identical every episode).
         self.load_agents(self.agents_real, self.model_dir)
@@ -235,4 +240,4 @@ class Sim2RealActionsGATTrainer(Sim2RealActionsTrainer):
                 break
         self.transition_model._write_pickle(
             self.transition_model._dataset_file(forward=True, train=True), records)
-        self.log_metrics("TEST_REAL", episode, metric, 100, transforms)
+        self.log_metrics("REAL_TRAIN", episode, metric, 100, transforms)

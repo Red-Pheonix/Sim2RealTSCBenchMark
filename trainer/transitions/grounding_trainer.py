@@ -336,7 +336,7 @@ class TransitionGroundingTrainer(TransitionTrainer):
             self.transition_model.finalize_policy_stats(episode, policy_stats)
 
             self.writeLog(
-                "TRAIN",
+                "SIM_TRAIN",
                 e,
                 self.metric_sim.real_average_travel_time(),
                 mean_loss,
@@ -442,7 +442,7 @@ class TransitionGroundingTrainer(TransitionTrainer):
             pkl.dump(state_action_next_state, f)
 
             self.writeLog(
-                "Sim Rollout",
+                "SIM_TEST",
                 e,
                 self.metric_sim.real_average_travel_time(),
                 100,
@@ -526,7 +526,7 @@ class TransitionGroundingTrainer(TransitionTrainer):
             )
         )
         self.writeLog(
-            "Real rollout",
+            "REAL_TRAIN",
             e,
             self.metric_real.real_average_travel_time(),
             100,
@@ -560,7 +560,7 @@ class TransitionGroundingTrainer(TransitionTrainer):
         writeLog
         Write log for record and debug.
 
-        :param mode: "TRAIN" or "TEST"
+        :param mode: one of SIM_TRAIN / SIM_TEST / REAL_TRAIN / REAL_TEST
         :param step: current step in simulation
         :param travel_time: current travel time
         :param loss: current loss
@@ -669,7 +669,7 @@ class TransitionGroundingTrainer(TransitionTrainer):
             )
         )
         self.writeLog(
-            "Test_Sim_rollout",
+            "SIM_TEST",
             1,
             self.metric_sim.real_average_travel_time(),
             1,
@@ -719,7 +719,7 @@ class TransitionGroundingTrainer(TransitionTrainer):
             )
         )
         self.writeLog(
-            "Test_Real_rollout",
+            "REAL_TEST",
             1,
             self.metric_real.real_average_travel_time(),
             1,

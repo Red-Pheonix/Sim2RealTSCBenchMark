@@ -1,0 +1,15 @@
+# Direct transfer (observation gap): load the pretrained sim policy and evaluate it
+# ONCE in the real env under the setting's observation transforms (noise / detection
+# zone / sensor dropout -- the transforms ARE the gap). 0 training episodes -> the
+# resulting REAL_TEST number IS the raw observation-gap baseline.
+# Reuses the DR trainer; with episodes=0 the randomization never fires.
+trainer:
+  episodes: 0
+  real_eval_interval: 0
+
+model:
+  test_model: True       # run test() -> SIM_TEST + the single REAL_TEST row
+
+sim2real:
+  method: direct_transfer
+  load_pretrained: True

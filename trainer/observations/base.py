@@ -608,7 +608,7 @@ class BaseObservationTrainer(BaseTrainer):
             agents=self.agents_sim,
             desc=f"Sim Eval Epoch {episode}",
         )
-        self.log_metrics("TEST_SIM", episode, self.metric_sim, 100)
+        self.log_metrics("SIM_TEST", episode, self.metric_sim, 100)
 
         self.load_agents(self.agents_real, self.model_dir)
         self.run_eval_episode(
@@ -618,7 +618,7 @@ class BaseObservationTrainer(BaseTrainer):
             agents=self.agents_real,
             desc=f"Real Eval Epoch {episode}",
         )
-        self.log_metrics("TEST_REAL", episode, self.metric_real, 100)
+        self.log_metrics("REAL_TEST", episode, self.metric_real, 100)
         return self.metric_real.real_average_travel_time()
 
     def test(self, drop_load=False):
@@ -632,7 +632,7 @@ class BaseObservationTrainer(BaseTrainer):
             agents=self.agents_sim,
             desc="Final Sim Test",
         )
-        self.log_metrics("FINAL_TEST_SIM", 0, self.metric_sim, 100)
+        self.log_metrics("SIM_TEST", 0, self.metric_sim, 100)
 
         if not drop_load:
             self.load_agents(self.agents_real, self.model_dir, e=self.episodes)
@@ -644,7 +644,7 @@ class BaseObservationTrainer(BaseTrainer):
             agents=self.agents_real,
             desc="Final Real Test",
         )
-        self.log_metrics("FINAL_TEST_REAL", 0, self.metric_real, 100)
+        self.log_metrics("REAL_TEST", 0, self.metric_real, 100)
         return self.metric_real
 
     def writeLog(

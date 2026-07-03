@@ -4,7 +4,7 @@
 # compensation -- that's the point of the baseline.
 trainer:
   episodes: 300
-  real_eval_interval: 3  # run real eval every episode during training
+  real_eval_interval: 3  # 300 eps / eval every 3rd -> 100 REAL_TEST rows
   eval_sim: false        # only real-delay transfer matters
 
 sim2real:

@@ -89,6 +89,9 @@ class DecentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
         sim2real_params = Registry.mapping["sim2real_mapping"]["setting"].param
         self.uncertainty_setting = sim2real_params["uncertainty"]
         self.last_n_uncertainties = sim2real_params["last_n_uncertainties"]
+        # Per-episode grounding-model training epochs (config-driven so smoke/large
+        # networks can dial it down; production default 100).
+        self.grounding_epochs = int(sim2real_params.get("grounding_epochs", 100))
         self.setting = Registry.mapping["command_mapping"]["setting"].param.get("real_setting")
         self.gat_path = os.path.join(
             Registry.mapping["logger_mapping"]["path"].path, "model", Registry.mapping["command_mapping"]["setting"].param["gat_model"] , self.setting
@@ -239,8 +242,8 @@ class DecentralizedSim2RealTransitionModel(BaseSim2RealTransitionModel):
         self.prepare_forward_data()
         self.prepare_inverse_data()
         for idx in range(len(self.agents_sim)):
-            self.forward_models[idx].train(100, "forward", idx, 5000, "decentralized")
-            self.inverse_models[idx].train(100, "inverse", idx, 5000, "decentralized")
+            self.forward_models[idx].train(self.grounding_epochs, "forward", idx, 5000, "decentralized")
+            self.inverse_models[idx].train(self.grounding_epochs, "inverse", idx, 5000, "decentralized")
     
     def save_models(self, e):
         for model in self.forward_models:

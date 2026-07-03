@@ -149,6 +149,9 @@ class ObservationDomainRandomizationTrainer(BaseObservationTrainer):
             if self.should_run_real_eval(episode):
                 self.train_test(episode)
 
+        # Final e-tagged checkpoint: test() loads `e=self.episodes`, and with
+        # episodes=0 (direct transfer) the in-loop e-saves never fire.
+        self.save_agents(self.agents_sim, self.model_dir, e=self.episodes)
         self.save_agents(self.agents_sim, self.model_dir)
 
     def should_run_real_eval(self, episode):
@@ -167,5 +170,5 @@ class ObservationDomainRandomizationTrainer(BaseObservationTrainer):
             agents=self.agents_real,
             desc=f"Real Eval Epoch {episode}",
         )
-        self.log_metrics("TEST_REAL", episode, self.metric_real, 100)
+        self.log_metrics("REAL_TEST", episode, self.metric_real, 100)
         return self.metric_real.real_average_travel_time()
