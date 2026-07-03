@@ -61,8 +61,8 @@ class TransitionGroundingTrainer(TransitionTrainer):
             Registry.mapping["logger_mapping"]["path"].path,
             self.logger_args["log_dir"],
             os.path.basename(self.logger.handlers[-1].baseFilename)
-            .rstrip("_BRF.log")
-            .rstrip("_ACT.log")
+            .removesuffix("_BRF.log")
+            .removesuffix("_ACT.log")
             + "_DTL.log",
         )
 
@@ -70,8 +70,8 @@ class TransitionGroundingTrainer(TransitionTrainer):
             Registry.mapping["logger_mapping"]["path"].path,
             self.logger_args["log_dir"],
             os.path.basename(self.logger.handlers[-1].baseFilename)
-            .rstrip("_BRF.log")
-            .rstrip("_DTL.log")
+            .removesuffix("_BRF.log")
+            .removesuffix("_DTL.log")
             + "_ACT.log",
         )
 

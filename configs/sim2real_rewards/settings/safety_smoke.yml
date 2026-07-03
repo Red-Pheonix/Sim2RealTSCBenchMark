@@ -1,6 +1,7 @@
 sim2real:
   phase_transition: pt_cyclic
   reward_components: [safety]
+  load_pretrained: False   # tempe/bullhead ship no pretrained dqn; smoke trains from scratch
   true_reward:
     queue: 1.0
     delay: 0.5

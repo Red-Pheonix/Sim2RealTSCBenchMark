@@ -29,7 +29,10 @@ trainer:
   episodes: 100
   update_model_rate: 1
   update_target_rate: 10
-  test_when_train: False
+  # Real transfer-curve eval each sim episode (naive family; the method trainers
+  # self-log their own TEST_REAL rows). These are SCORING evals, excluded from the real
+  # budget (train_test / test pass count_budget=False). See reward_gap_fix_plan Task 10.
+  test_when_train: True
 
 sim2real:
   load_pretrained: True
@@ -53,7 +56,7 @@ sim2real:
 model:
   name: "non-rl"
   train_model: True
-  test_model: False
+  test_model: True   # final benchmark scoring eval for every method (scoring, not budget)
   load_model: False
   graphic: False
   vehicle_max: 1

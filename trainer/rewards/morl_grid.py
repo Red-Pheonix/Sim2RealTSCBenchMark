@@ -32,6 +32,8 @@ morl_grid trains a *fixed set* spanning the simplex and *picks* by real performa
 the non-adaptive, grid-search member of the search-then-select family).
 """
 
+import itertools
+
 import numpy as np
 
 from common.registry import Registry
@@ -50,6 +52,9 @@ class Sim2RealRewardsMORLGridTrainer(Sim2RealRewardsTrainer):
         # Tadepalli 2005: once the preference is fixed, refine that policy further).
         # 0 -> reuse morl_episodes.
         self.final_episodes = int(cfg.get("final_episodes", 0))
+        # Validate (and keep-best) the refine policy every this-many episodes; the
+        # actual rate is max(this, ceil(refine_eps / remaining_real_budget)).
+        self.refine_eval_rate = int(cfg.get("refine_eval_rate", 2))
         self.reward_scale = float(cfg.get("reward_scale", 1.0))
         self.weight_grid = self._build_grid(cfg.get("weight_grid"))
 
@@ -57,15 +62,24 @@ class Sim2RealRewardsMORLGridTrainer(Sim2RealRewardsTrainer):
         return None
 
     def _build_grid(self, grid_cfg):
-        """Weight vectors spanning the simplex: each single-component corner + the
-        uniform mix (or an explicit list of `{component: w}` dicts from the config).
-        Only SIM-COMPUTABLE components are used -- a grid point on a sim-unavailable
-        term (e.g. emission in cityflow) trains on an all-zero reward (degenerate)."""
+        """Weight vectors spanning the simplex (or an explicit list of `{component: w}`
+        dicts from the config). Default layout, in order:
+          1. the UNIFORM mix (first, so it's never the point dropped by a tight real
+             budget -- it is usually the strongest single candidate);
+          2. each single-component corner;
+          3. every pairwise 50/50 mix (C(n,2)).
+        With the 5 sim-core components -> 1 + 5 + 10 = 16 grid points. Only
+        SIM-COMPUTABLE components are used -- a grid point on a sim-unavailable term
+        (e.g. emission in cityflow) trains on an all-zero reward (degenerate)."""
         if grid_cfg:
             return [self.feature_bank_sim.weight_vector(g) for g in grid_cfg]
         comps = self.feature_bank_sim.available_components()
-        grid = [self.feature_bank_sim.weight_vector({c: 1.0}) for c in comps]
-        grid.append(self.feature_bank_sim.weight_vector({c: 1.0 / len(comps) for c in comps}))
+        grid = [self.feature_bank_sim.weight_vector({c: 1.0 / len(comps) for c in comps})]
+        grid += [self.feature_bank_sim.weight_vector({c: 1.0}) for c in comps]
+        grid += [
+            self.feature_bank_sim.weight_vector({a: 0.5, b: 0.5})
+            for a, b in itertools.combinations(comps, 2)
+        ]
         return grid
 
     def train(self):
@@ -75,7 +89,16 @@ class Sim2RealRewardsMORLGridTrainer(Sim2RealRewardsTrainer):
         # here instead of random init -- parity with naive.
         self._capture_reset_base()
 
+        # Grid selection spends one real rollout per grid point; reserve the rest of the
+        # real budget for the refine validations below. With real_episodes=100 and a
+        # 16-point grid this never truncates, but warn (not silently drop) if it does.
         budget = self.real_episodes or len(self.weight_grid)
+        if budget < len(self.weight_grid):
+            self.logger.warning(
+                "MORLGrid: real budget %s < grid size %s; dropping %s grid point(s) "
+                "(uniform mix is first, so it is retained)",
+                budget, len(self.weight_grid), len(self.weight_grid) - budget,
+            )
         grid = self.weight_grid[:budget]
         best_r, best_dir, best_w = -np.inf, None, None
         self.logger.info("MORLGrid: %s grid policies", len(grid))
@@ -116,8 +139,10 @@ class Sim2RealRewardsMORLGridTrainer(Sim2RealRewardsTrainer):
                 best_dir = self.model_dir + f"_morl_grid_best_{gi}"
                 self.save_agents(self.agents_sim, best_dir)
         # --- Refine the selected weight: with the preference now fixed, train its
-        # policy a bit longer (Natarajan & Tadepalli 2005 -- refine the chosen policy
-        # once the preference is determined) before promoting it for test(). ---
+        # policy longer (Natarajan & Tadepalli 2005 -- refine the chosen policy once the
+        # preference is determined), KEEPING THE BEST checkpoint by real R_real. The
+        # selected grid policy is the floor, so refine can never ship worse than what
+        # the grid search picked (parity with reward_inference's phase-3 keep-best). ---
         if best_dir is not None:
             # Start refine from a CLEAN agent (fresh replay buffer + decision counter)
             # loaded with the best grid's weights. Reusing the last grid's agent would
@@ -127,7 +152,35 @@ class Sim2RealRewardsMORLGridTrainer(Sim2RealRewardsTrainer):
             self.reward_transform = LinearReward(
                 best_w, self.components, self.reward_scale, norm=self.component_norm
             )
-            for ep in range(self.final_episodes or self.morl_episodes):
+            refine_episodes = self.final_episodes or self.morl_episodes
+            # Cap refine validations by the remaining real budget (grid already spent
+            # len(grid)); validate every `refine_eval_rate` episodes.
+            val_budget = refine_episodes
+            if self.real_episodes:
+                val_budget = min(val_budget, max(1, self.real_episodes - len(grid)))
+            # CEILING division (floor would validate every episode when
+            # refine_episodes < 2*val_budget, e.g. with refine_eval_rate=1); keeps
+            # grid + refine validations within the real cap.
+            eval_rate = max(
+                self.refine_eval_rate, -(-refine_episodes // max(1, val_budget))
+            )
+            refine_best_dir = self.model_dir + "_morl_refine_best"
+
+            def _validate_refine(step, detail):
+                self.save_agents(self.agents_sim, self.model_dir)
+                self.load_agents(self.agents_real, self.model_dir)
+                r, bd = self.run_eval_episode(
+                    env=self.env_real, metric=self.metric_real, agents=self.agents_real,
+                    feature_bank=self.feature_bank_real,
+                    desc=f"TEST_REAL MORLGrid-Refine[{detail}]",
+                )
+                self.log_metrics(
+                    "TEST_REAL", step, self.metric_real, 100, r, bd,
+                    f"refine;w={self._w_detail(best_w)};{detail}",
+                )
+                return float(r)
+
+            for ep in range(refine_episodes):
                 self.on_episode_start(ep)
                 loss, _ = self.run_train_episode(
                     env=self.env_sim,
@@ -138,28 +191,16 @@ class Sim2RealRewardsMORLGridTrainer(Sim2RealRewardsTrainer):
                     desc=f"TRAIN_SIM MORLGrid-Refine Epoch {ep}",
                 )
                 self._log_sim_train(loss)
-            # Winner's-curse guard: keep the refined policy ONLY if it actually evaluates
-            # better in real; otherwise promote the saved best grid policy unchanged.
-            self.save_agents(self.agents_sim, self.model_dir)
-            self.load_agents(self.agents_real, self.model_dir)
-            r_ref, breakdown = self.run_eval_episode(
-                env=self.env_real,
-                metric=self.metric_real,
-                agents=self.agents_real,
-                feature_bank=self.feature_bank_real,
-                desc="TEST_REAL MORLGrid-Refine",
-            )
-            self.log_metrics(
-                "TEST_REAL", len(grid) + 1, self.metric_real, 100, r_ref, breakdown,
-                f"refine;w={self._w_detail(best_w)}",
-            )
-            self.logger.info(
-                "MORLGrid refine R_real=%.4f (selected best=%.4f)", r_ref, best_r
-            )
-            if r_ref >= best_r:
-                best_r = r_ref
-            else:
-                self.load_agents(self.agents_sim, best_dir)  # revert to selected policy
+                if (ep + 1) % eval_rate == 0 or ep == refine_episodes - 1:
+                    r_ref = _validate_refine(len(grid) + 1 + ep, f"ckpt{ep + 1}")
+                    if r_ref > best_r:
+                        best_r = r_ref
+                        self.save_agents(self.agents_sim, refine_best_dir)
+                        best_dir = refine_best_dir  # promote refined checkpoint
+            # Promote the best real-validated policy (selected grid floor or a refined
+            # checkpoint that beat it).
+            self.load_agents(self.agents_sim, best_dir)
             self.save_agents(self.agents_sim, self.model_dir, e=self.sim_episodes)
             self.save_agents(self.agents_sim, self.model_dir)
         self.logger.info("MORLGrid selected policy with R_real=%.4f", best_r)
+        self._log_real_budget()

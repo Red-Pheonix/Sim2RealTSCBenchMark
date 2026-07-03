@@ -1,6 +1,11 @@
 sim2real:
   method: morl_grid
-  morl_episodes: 12        # sim episodes per grid weight vector
-  final_episodes: 0        # extra sim training of the SELECTED weight (0 -> reuse morl_episodes)
+  # Budget (shared 300-ep pool, real <= 100; see notes/reward_gap_fix_plan.md Task 7):
+  #   grid = 16 points (uniform + 5 corners + C(5,2)=10 pairwise mixes)
+  #   sim  = grid (16 * 9) + refine (93) = 144 + 93 = 237
+  #   real = grid selection (16) + refine keep-best validations (~46) = ~62 (<= 100)
+  morl_episodes: 9         # sim episodes per grid weight vector
+  final_episodes: 93       # refine training of the SELECTED weight (keep-best)
+  refine_eval_rate: 2      # validate/keep-best every 2nd refine episode
   reward_scale: 1.0
   # weight_grid:          # optional explicit list of {component: w} dicts

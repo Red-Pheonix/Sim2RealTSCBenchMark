@@ -5,11 +5,14 @@ sim2real:
   # 2020 / PGRD; active closed loop co-anchored with Active Reward Learning (Daniel et al.
   # RSS 2014); instantiated as BayRn (GP Bayesian Optimization over the real return, Muratore
   # et al. 2021) via scikit-optimize (skopt.Optimizer, GP base estimator + Expected Improvement).
-  n_init: 5
-  opt_rounds: 20
-  finetune_episodes: 10
+  n_init: 10
+  opt_rounds: 30
+  finetune_episodes: 6
   warmup_episodes: 20
   final_episodes: 0       # refine off: promote the SAVED best candidate (held-out-checked if >0)
   reward_scale: 1.0
-  # Budget (shared 300-ep pool): warmup + (n_init + opt_rounds)*(finetune + 1) + final
-  #   = 20 + 25*(10+1) + 0 = 295  (270 sim + 25 real)
+  # Budget (shared 300-ep pool, real <= 100; see notes/reward_gap_fix_plan.md Task 7):
+  #   warmup + (n_init + opt_rounds)*(finetune) sim + (n_init + opt_rounds) real
+  #   = 20 + 40*6 sim + 40 real = 260 sim + 40 real = 300
+  # BO candidate count (n_init + opt_rounds = 40) is the real spend; independent of the
+  # setting's real_episodes cap (40 <= 100).

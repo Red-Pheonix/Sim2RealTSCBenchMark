@@ -176,9 +176,9 @@ class BaseObservationTrainer(BaseTrainer):
         )
         self.dataset.initiate(ep=self.episodes, step=self.steps, interval=self.action_interval)
 
-        base_log_name = os.path.basename(self.logger.handlers[-1].baseFilename).rstrip(
-            "_BRF.log"
-        )
+        base_log_name = os.path.basename(
+            self.logger.handlers[-1].baseFilename
+        ).removesuffix("_BRF.log")
         self.log_file = os.path.join(
             Registry.mapping["logger_mapping"]["path"].path,
             logger_args["log_dir"],

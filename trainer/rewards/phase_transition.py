@@ -32,6 +32,7 @@ from environment import TSCEnv
 from trainer.actions.phase_transition import PhaseTransition
 from trainer.rewards.base import Sim2RealRewardsTrainer, resolve_components
 from trainer.rewards.feature_bank import FeatureBank
+from trainer.rewards.reward_transforms import TrueReward
 
 
 class _PhaseTransitionRewardTrainer(Sim2RealRewardsTrainer):
@@ -75,8 +76,12 @@ class _PhaseTransitionRewardTrainer(Sim2RealRewardsTrainer):
             )
             self.components = self.feature_bank_real.components
             w_star = self.feature_bank_real.weight_vector(self.true_reward_weights)
-            self.true_reward.w = w_star
-            self.true_reward.component_names = list(self.components)
+            # Rebuild (not mutate) the scorer: the component list grew, so w AND norm
+            # must be re-derived over the new layout. Mutating only `.w` would leave
+            # `.norm` at the old length -> shape mismatch at eval.
+            self.true_reward = TrueReward(
+                w_star, self.components, norm=self.component_norm
+            )
         self._safety_idx = self.components.index("safety")
         # This trainer DOES compute safety (from PhaseTransition.last_violation), which
         # `resolve_components` can't know about (no info fn), so mark it available on both
@@ -173,7 +178,10 @@ class _PhaseTransitionRewardTrainer(Sim2RealRewardsTrainer):
         pbar.close()
         return (np.mean(np.array(episode_loss)) if episode_loss else 0), i
 
-    def run_eval_episode(self, *, env, metric, agents, feature_bank, desc):
+    def run_eval_episode(self, *, env, metric, agents, feature_bank, desc,
+                         count_budget=True):
+        if count_budget:
+            self._real_rollouts += 1
         pt = self.pt_sim if env is self.env_sim else self.pt_real
         metric.clear()
         obs = env.reset()

@@ -27,9 +27,14 @@ identifying `w*`);
 
 Probe design: rather than query arbitrary rollouts, we choose probe policies that induce
 *diverse* feature profiles (one short probe per component, each on a unit-weight
-`LinearReward(e_c)`) so the `K x d` system is well-conditioned -- an open-loop experimental
-design for identifiability. Each probe is deployed once in real -> one `(Φ, R_real)` row.
-Real budget spent = number of probes (`~d`).
+`LinearReward(e_c)`, cycled `probe_repeats` times with fresh inits) so the `K x d` system
+is better-conditioned -- an open-loop experimental design for identifiability. Each probe
+is deployed once in real -> one `(Φ, R_real)` row.
+
+Real budget (shared 300-ep pool, real <= 100): probes + 1 warm-start floor eval +
+keep-best validations during phase-3 final training. Every real rollout that shapes the
+deployed policy (probes identify ŵ; validations pick the checkpoint) is counted; only the
+final benchmark scoring eval is free. See notes/reward_gap_fix_plan.md (Task 7).
 """
 
 import os
@@ -38,7 +43,7 @@ import numpy as np
 
 from common.registry import Registry
 from trainer.rewards.base import Sim2RealRewardsTrainer
-from trainer.rewards.reward_transforms import LinearReward
+from trainer.rewards.reward_transforms import LinearReward, _norm_vector
 
 
 @Registry.register_trainer("sim2real_rewards_reward_inference")
@@ -50,6 +55,12 @@ class Sim2RealRewardsInferenceTrainer(Sim2RealRewardsTrainer):
         # Sim episodes per probe policy (kept small -- a probe only needs to induce a
         # distinct feature profile, not converge).
         self.probe_episodes = int(cfg.get("probe_episodes", 3))
+        # Probe-only learning_start. The global learning_start (1000) exceeds a probe's
+        # whole decision budget (probe_episodes * 360), so at the default the probe DQN
+        # never calls train() -- probes stay random-init and their per-component reward
+        # is unused. Lower it just for probes so they actually learn a distinct policy;
+        # phase-3 final training keeps the normal learning_start.
+        self.probe_learning_start = int(cfg.get("probe_learning_start", 200))
         # Which components to probe. Default = SIM-AVAILABLE only: a probe policy
         # trains in sim, so probing a sim-unobservable term (emission in cityflow)
         # just trains on a zero reward. The objective's real-only terms are still
@@ -57,12 +68,24 @@ class Sim2RealRewardsInferenceTrainer(Sim2RealRewardsTrainer):
         self.probe_components = cfg.get(
             "probe_components", self.feature_bank_sim.available_components()
         )
+        # Repeats of the probe set (each repeat uses fresh random inits, so identical
+        # single-component probes still induce SLIGHTLY different feature profiles ->
+        # more rows for the ridge and a marginally better-conditioned system). With ~5
+        # sim components and probe_repeats 3 -> 15 probe rows.
+        self.probe_repeats = int(cfg.get("probe_repeats", 3))
         self.ridge_lambda = float(cfg.get("ridge_lambda", 1e-2))
         self.reward_scale = float(cfg.get("reward_scale", 1.0))
+        # Phase-3 final-training length (sim episodes). Explicit knob: `sim_episodes` is
+        # now the whole 300-ep pool reference, NOT phase 3's length, so we must not
+        # reuse it here (that would blow the budget). Default 155 keeps
+        # probes(≈45) + final(155) = 200 sim, leaving 100 real for probes+validations.
+        self.final_episodes = int(cfg.get("final_episodes", 155))
         # Number of real validations during final training -> keep the best checkpoint
         # (parity with morl_grid/DRS; the warm-start is the floor). Guards against
-        # shipping a final policy that gridlocked on a weak actionable reward.
-        self.final_evals = int(cfg.get("final_evals", 8))
+        # shipping a final policy that gridlocked on a weak actionable reward. The
+        # actual validation count is capped by the real budget in train() (real =
+        # probes + 1 warm-start floor + validations <= real_episodes).
+        self.final_evals = int(cfg.get("final_evals", 84))
         self.identified_w = None
 
     # naive transform during probe/final is set explicitly in train(); the base
@@ -72,7 +95,9 @@ class Sim2RealRewardsInferenceTrainer(Sim2RealRewardsTrainer):
 
     def _collect_real(self):
         """Deploy the current sim policy in real for one episode; return the
-        accumulated cost vector `Φ` and the scalar `R_real`."""
+        accumulated cost vector `Φ` and the scalar `R_real`. Counts against the real
+        budget (a probe is a real rollout that shapes ŵ, hence the deployed policy)."""
+        self._real_rollouts += 1
         self.save_agents(self.agents_sim, self.model_dir)
         self.load_agents(self.agents_real, self.model_dir)
         self.metric_real.clear()  # populate metric so the probe can log a standard DTL row
@@ -124,9 +149,19 @@ class Sim2RealRewardsInferenceTrainer(Sim2RealRewardsTrainer):
         self.save_agents(self.agents_sim, self.model_dir)
 
     def _ridge(self, phi_rows, y):
-        """ŵ = argmin ||Φ ŵ - (-y)||^2 + λ||ŵ||^2, then clip to nonneg (costs)."""
-        Phi = np.asarray(phi_rows, dtype=float)
-        target = -np.asarray(y, dtype=float)  # -R_real = Φ · w*
+        """ŵ = argmin ||Φ ŵ - (-y)||^2 + λ||ŵ||^2, then clip to nonneg (costs).
+
+        Φ is NORMALIZED (raw φ / component_norm) before the solve so ŵ lives in the
+        SAME space as LinearReward/TrueReward, which score `-( (φ/norm) · w )`. Without
+        this, `_collect_real` returns raw φ while the target R_real is built from
+        normalized φ, so the fit would give ŵ_i ≈ w*_i / n_i -- and Phase 3 divides by
+        the norm AGAIN, distorting relative weights by a factor n_i per component. The
+        normalization also makes `ridge_lambda` penalize every component on one scale.
+        """
+        Phi = np.asarray(phi_rows, dtype=float) / _norm_vector(
+            self.components, self.component_norm
+        )
+        target = -np.asarray(y, dtype=float)  # -R_real = (Φ/norm) · w*
         d = Phi.shape[1]
         A = Phi.T @ Phi + self.ridge_lambda * np.eye(d)
         w = np.linalg.solve(A, Phi.T @ target)
@@ -140,13 +175,18 @@ class Sim2RealRewardsInferenceTrainer(Sim2RealRewardsTrainer):
         self._capture_reset_base()
 
         # --- Phase 1: diverse probes -> (Φ, R_real) rows (spends real budget) ---
+        # Probe list = sim-available components cycled `probe_repeats` times. Reserve 1
+        # real rollout for the phase-3 warm-start floor eval, so probes take at most
+        # real_episodes - 1 of the budget.
         phi_rows, y = [], []
-        budget = self.real_episodes or len(self.probe_components)
-        probe_components = self.probe_components[:budget]
+        probe_list = list(self.probe_components) * self.probe_repeats
+        probe_cap = max(1, (self.real_episodes or len(probe_list)) - 1)
+        probe_list = probe_list[:probe_cap]
         self.logger.info(
-            "RewardInference: %s probes over components %s", len(probe_components), probe_components
+            "RewardInference: %s probes (components %s x %s repeats, capped at %s by real budget)",
+            len(probe_list), self.probe_components, self.probe_repeats, probe_cap,
         )
-        for c in probe_components:
+        for pi, c in enumerate(probe_list):
             w = self.feature_bank_sim.weight_vector({c: 1.0})
             # Probes need DIVERSE feature profiles -> independent random inits, NOT a
             # shared warm-start (which collapses them to the same policy). The final
@@ -159,11 +199,19 @@ class Sim2RealRewardsInferenceTrainer(Sim2RealRewardsTrainer):
             # identifiable. The aggregate (congestion) direction IS captured, which is
             # what drives the final policy. A genuinely diverse probe design is open work.
             self._reset_sim_policy(warm_start=False)
-            self._train_sim(
-                self.probe_episodes,
-                LinearReward(w, self.components, self.reward_scale, norm=self.component_norm),
-                f"Probe[{c}]",
-            )
+            # Probe-only learning_start: the global one (1000) exceeds a probe's whole
+            # decision budget, so without this the probe DQN never trains and every
+            # probe stays random-init (its per-component reward unused). Restore after.
+            ls_saved = self.learning_start
+            self.learning_start = self.probe_learning_start
+            try:
+                self._train_sim(
+                    self.probe_episodes,
+                    LinearReward(w, self.components, self.reward_scale, norm=self.component_norm),
+                    f"Probe[{c}#{pi}]",
+                )
+            finally:
+                self.learning_start = ls_saved
             phi, r_real = self._collect_real()
             phi_rows.append(phi)
             y.append(r_real)
@@ -226,8 +274,17 @@ class Sim2RealRewardsInferenceTrainer(Sim2RealRewardsTrainer):
         # on an emission-dominated objective) would be shipped as-is; here the warm-start
         # is the floor, so reward_inference can never deploy worse than naive. Probes are
         # the REAL-budget cost; the deployed policy still gets the full sim budget. ---
-        final_episodes = self.sim_episodes
-        eval_rate = max(1, final_episodes // max(1, self.final_evals))
+        final_episodes = self.final_episodes
+        # Cap validations by the remaining real budget: real = probes + 1 warm-start
+        # floor + validations <= real_episodes. Reserve the probes already spent + the
+        # warm-start, then spread the rest over the final training.
+        val_budget = self.final_evals
+        if self.real_episodes:
+            val_budget = min(val_budget, max(1, self.real_episodes - len(phi_rows) - 1))
+        # CEILING division: floor gives rate 1 whenever final_episodes < 2*val_budget
+        # (e.g. 155//84 = 1 -> validate EVERY episode -> 155 rollouts, blowing the cap).
+        # Ceiling keeps validations <= val_budget so probes + 1 + validations <= real cap.
+        eval_rate = max(1, -(-final_episodes // max(1, val_budget)))
         self._reset_sim_policy()
         self.reward_transform = LinearReward(
             actionable_w, self.components, self.reward_scale, norm=self.component_norm
@@ -266,3 +323,4 @@ class Sim2RealRewardsInferenceTrainer(Sim2RealRewardsTrainer):
         self.logger.info("RewardInference-Final: deploying best checkpoint R_real=%.4f", best_r)
         self.save_agents(self.agents_sim, self.model_dir, e=self.sim_episodes)
         self.save_agents(self.agents_sim, self.model_dir)
+        self._log_real_budget()

@@ -12,9 +12,14 @@ Method trainers subclass this and override one of:
   * `train()` for methods that spend the real budget (reward_inference /
     dynamic_reward_shaping / morl_grid).
 
-Budget: total 300 episodes, `sim_episodes` (default 200) for sim training and
-`real_episodes` (default 100, `<= sim`) for real rollouts -- a method is defined by
-how it spends the real budget. naive spends 0 (real = eval only).
+Budget: one fungible pool of 300 episodes per method (sim + real <= 300), of which at
+most `real_episodes` (100) may be REAL. `sim_episodes` (300) is the naive-family training
+length and the pool reference; a method is defined by how it converts real budget into
+information. Every real rollout that shapes the deployed policy (probes, grid/BO selection
+evals, keep-best validations) is charged to the real budget via `self._real_rollouts`;
+scoring-only evals (final test, the naive-family `train_test` transfer curve) pass
+`count_budget=False` and are free. naive spends 0 real -- it gets the whole pool in sim.
+See notes/reward_gap_fix_plan.md (Task 7).
 """
 
 import os
@@ -44,6 +49,14 @@ EXTRA_INFO_FN = {
     "collisions": "intersection_collisions",            # sumo-only
 }
 
+# DTL `mode` values (column 2). The real-budget cap is enforced on TEST_REAL ALONE, so
+# `count(mode == "TEST_REAL") == real rollouts spent <= real_episodes`:
+#   TRAIN_SIM       -- sim training episode (no real interaction)
+#   TEST_REAL       -- BUDGET-COUNTED real rollout (probe / grid or BO selection eval /
+#                      keep-best validation): every one costs from the <=100 real budget
+#   TRANSFER_REAL   -- naive-family per-episode transfer-curve eval (scoring, free)
+#   FINAL_TEST_REAL -- final benchmark scoring eval (scoring, free)
+#
 # DTL data-log column order (header row written once at the top of each run's log).
 # First 9 match the other tasks' DTL; the last 3 are reward-gap extras.
 DTL_COLUMNS = [
@@ -104,14 +117,11 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         self.sim_episodes = int(
             sim2real_config.get("sim_episodes", trainer_args["episodes"])
         )
+        # real_episodes is the REAL-rollout CAP (<=100 under the budget policy), a hard
+        # ceiling a method enforces against -- NOT bound by sim_episodes. (The old
+        # `real <= sim` clamp belonged to the retired split-budget framing; under the
+        # 300-pool policy real can exceed sim while still fitting the pool.)
         self.real_episodes = int(sim2real_config.get("real_episodes", 0))
-        if self.real_episodes > self.sim_episodes:
-            self.logger.warning(
-                "real_episodes (%s) > sim_episodes (%s); clamping (real <= sim).",
-                self.real_episodes,
-                self.sim_episodes,
-            )
-            self.real_episodes = self.sim_episodes
         self.episodes = self.sim_episodes  # back-compat for any base hooks
 
         # Hidden true objective + which extended components are in play.
@@ -138,9 +148,9 @@ class Sim2RealRewardsTrainer(BaseTrainer):
             self.exp_name,
         )
 
-        base_log_name = os.path.basename(self.logger.handlers[-1].baseFilename).rstrip(
-            "_BRF.log"
-        )
+        base_log_name = os.path.basename(
+            self.logger.handlers[-1].baseFilename
+        ).removesuffix("_BRF.log")
         self.log_file = os.path.join(
             Registry.mapping["logger_mapping"]["path"].path,
             logger_args["log_dir"],
@@ -153,6 +163,12 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         # step axis (warmup + per-candidate fine-tunes all advance it).
         self._sim_train_step = 0
         self._last_train_reward = 0.0
+        # Real-budget counter: every real rollout whose outcome shapes the deployed
+        # policy (probes, grid/BO selection evals, keep-best validations) counts against
+        # `real_episodes` (the <=100 cap). Scoring-only evals (final test, naive-family
+        # `train_test` transfer curve) pass count_budget=False and don't. See
+        # notes/reward_gap_fix_plan.md Task 7.
+        self._real_rollouts = 0
 
         self.world_sim = None
         self.world_real = None
@@ -424,9 +440,15 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         self._last_train_reward = shaped_sum / shaped_n if shaped_n else 0.0
         return mean_loss, i
 
-    def run_eval_episode(self, *, env, metric, agents, feature_bank, desc):
+    def run_eval_episode(self, *, env, metric, agents, feature_bank, desc,
+                         count_budget=True):
         """Eval rollout that also accumulates the TRUE objective `R_real` + its
-        per-component breakdown (summed over decisions and agents)."""
+        per-component breakdown (summed over decisions and agents).
+
+        `count_budget` (default True): count this real rollout against the real budget.
+        Pass False for scoring-only evals (final test / naive-family transfer curve)."""
+        if count_budget:
+            self._real_rollouts += 1
         metric.clear()
         obs = env.reset()
         for agent in agents:
@@ -556,22 +578,43 @@ class Sim2RealRewardsTrainer(BaseTrainer):
                 self.train_test(episode)
         self.save_agents(self.agents_sim, self.model_dir, e=self.sim_episodes)
         self.save_agents(self.agents_sim, self.model_dir)
+        self._log_real_budget()
+
+    def _log_real_budget(self):
+        """Report real rollouts spent vs the cap. Every method calls this at the end of
+        `train()` so the DTL/run log carry an auditable budget number. Invariant: the
+        count equals the number of `TEST_REAL` rows in the DTL (scoring evals use the
+        TRANSFER_REAL / FINAL_TEST_REAL modes and are not counted)."""
+        cap = self.real_episodes or 0
+        self.logger.info(
+            "real rollouts used: %s/%s", self._real_rollouts, cap
+        )
+        if cap and self._real_rollouts > cap:
+            self.logger.warning(
+                "real budget EXCEEDED: used %s > cap %s", self._real_rollouts, cap
+            )
 
     def train_test(self, episode):
+        # Scoring-only transfer-curve eval (naive family); NOT charged to the real
+        # budget and logged as TRANSFER_REAL, NOT TEST_REAL, so the count of TEST_REAL
+        # rows stays equal to the real budget spent (see _log_real_budget).
         self.load_agents(self.agents_real, self.model_dir)
         true_reward, breakdown = self.run_eval_episode(
             env=self.env_real,
             metric=self.metric_real,
             agents=self.agents_real,
             feature_bank=self.feature_bank_real,
-            desc=f"TEST_REAL Epoch {episode}",
+            desc=f"TRANSFER_REAL Epoch {episode}",
+            count_budget=False,
         )
         self.log_metrics(
-            "TEST_REAL", episode, self.metric_real, 100, true_reward, breakdown
+            "TRANSFER_REAL", episode, self.metric_real, 100, true_reward, breakdown
         )
         return true_reward
 
     def test(self, drop_load=False):
+        # Final benchmark scoring eval; NOT charged to the real budget, logged as
+        # FINAL_TEST_REAL (repo convention across gaps), NOT TEST_REAL.
         if not drop_load:
             self.load_agents(self.agents_real, self.model_dir, e=self.sim_episodes)
         true_reward, breakdown = self.run_eval_episode(
@@ -579,10 +622,11 @@ class Sim2RealRewardsTrainer(BaseTrainer):
             metric=self.metric_real,
             agents=self.agents_real,
             feature_bank=self.feature_bank_real,
-            desc="TEST_REAL",
+            desc="FINAL_TEST_REAL",
+            count_budget=False,
         )
         self.log_metrics(
-            "TEST_REAL", 0, self.metric_real, 100, true_reward, breakdown
+            "FINAL_TEST_REAL", 0, self.metric_real, 100, true_reward, breakdown
         )
         return self.metric_real
 

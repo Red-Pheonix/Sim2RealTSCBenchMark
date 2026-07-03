@@ -257,6 +257,8 @@ class DQNAgent(RLAgent):
         :param: None
         :return: value of loss
         '''
+        if len(self.replay_buffer) < self.batch_size:
+            return 0.0  # not enough transitions to sample a batch yet
         samples = random.sample(self.replay_buffer, self.batch_size)
         b_t, b_tp, rewards, actions = self._batchwise(samples)
         out = self.target_model(b_tp, train=False)

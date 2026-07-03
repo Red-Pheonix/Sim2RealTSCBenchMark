@@ -88,9 +88,9 @@ class Sim2RealActionsTrainer(BaseTrainer):
             ep=self.episodes, step=self.steps, interval=self.action_interval
         )
 
-        base_log_name = os.path.basename(self.logger.handlers[-1].baseFilename).rstrip(
-            "_BRF.log"
-        )
+        base_log_name = os.path.basename(
+            self.logger.handlers[-1].baseFilename
+        ).removesuffix("_BRF.log")
         self.log_file = os.path.join(
             Registry.mapping["logger_mapping"]["path"].path,
             logger_args["log_dir"],
@@ -106,7 +106,6 @@ class Sim2RealActionsTrainer(BaseTrainer):
         self.env_sim = None
         self.env_real = None
         self.total_decision_num_sim = 0
-        self.total_decision_num_real = 0
 
         self.create()
 
@@ -439,7 +438,6 @@ class Sim2RealActionsTrainer(BaseTrainer):
             agent.reset()
 
         episode_loss = []
-        flush = 0
         i = 0
         dones = [False] * len(agents)
         last_phase = np.stack([ag.get_phase() for ag in agents])
@@ -516,10 +514,6 @@ class Sim2RealActionsTrainer(BaseTrainer):
                         done=dones[idx],
                         key=f"{episode}_{i // self.action_interval}_{ag.id}",
                     )
-
-                flush += 1
-                if flush == self.buffer_size - 1:
-                    flush = 0
 
                 total_decision_num += 1
                 last_obs = obs

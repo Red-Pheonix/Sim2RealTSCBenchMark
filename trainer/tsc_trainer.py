@@ -51,7 +51,7 @@ class TSCTrainer(BaseTrainer):
         # consists of path of output dir + log_dir + file handlers name
         self.log_file = os.path.join(Registry.mapping['logger_mapping']['path'].path,
                                      Registry.mapping['logger_mapping']['setting'].param['log_dir'],
-                                     os.path.basename(self.logger.handlers[-1].baseFilename).rstrip('_BRF.log') + '_DTL.log'
+                                     os.path.basename(self.logger.handlers[-1].baseFilename).removesuffix('_BRF.log') + '_DTL.log'
                                      )
         # add this for sanity
         self.create()
@@ -60,7 +60,7 @@ class TSCTrainer(BaseTrainer):
         cols = ["mode", "epoch","timestep"] + self.agent_ids
         self.action_log_file = os.path.join(Registry.mapping['logger_mapping']['path'].path,
                                     Registry.mapping['logger_mapping']['setting'].param['log_dir'],
-                                    os.path.basename(self.logger.handlers[-1].baseFilename).rstrip('_BRF.log') + '_ACTION.log'
+                                    os.path.basename(self.logger.handlers[-1].baseFilename).removesuffix('_BRF.log') + '_ACTION.log'
                                     )
         self.action_log = pd.DataFrame(columns=cols)  # 0 rows, you can append later        
         

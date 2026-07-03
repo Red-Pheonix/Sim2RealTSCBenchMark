@@ -1,6 +1,15 @@
 sim2real:
   method: reward_inference
-  probe_episodes: 2       # sim episodes per probe policy (small: just induce diversity)
+  # Budget (shared 300-ep pool, real <= 100; see notes/reward_gap_fix_plan.md Task 7):
+  #   sim  = probes (probe_repeats * |sim-comps| * probe_episodes) + final_episodes
+  #        ~= (3 * 5 * 3) + 155 = 45 + 155 = 200
+  #   real = probes (~15) + 1 warm-start floor eval + validations (<=84) = 100
+  probe_episodes: 3       # 3*360=1080 decisions; with probe_learning_start=200,
+                          # ~880 update steps/probe (was 2 -> probes never trained)
+  probe_learning_start: 200
+  probe_repeats: 3        # cycle the sim-available components 3x -> ~15 probe rows
+  final_episodes: 155     # phase-3 final training length (NOT sim_episodes/the pool)
+  final_evals: 84         # keep-best real validations, capped by remaining real budget
   ridge_lambda: 0.01
   reward_scale: 1.0
-  real_episodes: 5        # real probe budget (~ d components)
+  # real_episodes is owned by the setting files (all 100); do not set it here.

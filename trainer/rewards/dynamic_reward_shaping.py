@@ -39,10 +39,20 @@ Loop (BayRn Algorithm 1), with parameters = reward weights `w`:
   * end: train the best `w`'s policy (a bit longer) and promote it for test().
 
 skopt optimizes a box `[0,1]^d` over the SIM-ACTIONABLE components (a sim-unobservable term
-is inert in sim); each raw point is normalized to the simplex for the reward. Each candidate
-is fine-tuned from a FIXED warm-started base policy (budget-aware stand-in for BayRn's
-from-scratch PolOpt, so each `R_real(w)` is a clean function of `w`). The optimizer finds
-which actionable proxies best raise the REAL `R_real` (which still scores the hidden term).
+is inert in sim). We search the RAW box directly -- the weight vector is NOT projected to
+the simplex -- so BO tunes both the DIRECTION of the shaping reward and its SCALE (`‖w‖`).
+That is deliberate: reward magnitude affects DQN fine-tuning (Henderson et al. 2018), so
+scale is a legitimate shaping knob, and the degenerate all-zero corner is simply a valid
+candidate that keep-best never selects. Each candidate is fine-tuned from a FIXED
+warm-started base policy (budget-aware stand-in for BayRn's from-scratch PolOpt, so each
+`R_real(w)` is a clean function of `w`). The optimizer finds which actionable proxies best
+raise the REAL `R_real` (which still scores the hidden term).
+
+Budget (shared 300-ep pool, real <= 100; see notes/reward_gap_fix_plan.md Task 7): the BO
+spends `n_init + opt_rounds` real rollouts (one per candidate eval), INDEPENDENT of the
+setting's `real_episodes` -- with the defaults that is 40 real. Every candidate eval shapes
+the deployed policy (keep-best selects among them), so all are counted; only the final
+scoring eval is free.
 """
 
 import numpy as np
@@ -74,15 +84,8 @@ class Sim2RealRewardsDynamicShapingTrainer(Sim2RealRewardsTrainer):
     def build_reward_transform(self, feature_bank):
         return None  # reward set per candidate in train()
 
-    @staticmethod
-    def _normalize(x):
-        """Raw box point -> simplex weight vector over the actionable components."""
-        return x
-        # x = np.maximum(np.asarray(x, dtype=float), 1e-9)
-        # return x / x.sum()
-
     def _full_w(self, w_act):
-        """Embed an actionable-simplex point into the full component weight vector."""
+        """Embed an actionable-component weight vector into the full component vector."""
         w = np.zeros(len(self.components))
         w[self._act_idx] = w_act
         return w
@@ -145,7 +148,9 @@ class Sim2RealRewardsDynamicShapingTrainer(Sim2RealRewardsTrainer):
         best_r, best_dir, best_w_act = -np.inf, None, None
         for t in range(n_total):
             x = opt.ask()
-            w_act = self._normalize(x)
+            # BO searches the raw [0,1]^d box directly (no simplex projection): direction
+            # AND scale of the shaping reward are both tuned.
+            w_act = np.asarray(x, dtype=float)
             phase = "init" if t < self.n_init else "bo"
             tag = f"DynShaping[{phase} {t + 1}/{n_total}]"
             detail = f"{phase};w={self._w_detail(self._full_w(w_act))}"
@@ -179,3 +184,4 @@ class Sim2RealRewardsDynamicShapingTrainer(Sim2RealRewardsTrainer):
         self.load_agents(self.agents_sim, best_dir)
         self.save_agents(self.agents_sim, self.model_dir, e=self.sim_episodes)
         self.save_agents(self.agents_sim, self.model_dir)
+        self._log_real_budget()

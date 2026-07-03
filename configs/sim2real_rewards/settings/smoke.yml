@@ -1,6 +1,26 @@
 sim2real:
+  # Crash-test setting: tiny budgets so every method finishes fast. The setting block
+  # overrides the method yml (see utils/logger.build_config), so these small method
+  # knobs apply regardless of --reward_model. NOT a scientific budget.
   true_reward:
     queue: 1.0
     delay: 0.5
   sim_episodes: 2
-  real_episodes: 3
+  real_episodes: 12
+  # reward_inference
+  probe_episodes: 1
+  probe_learning_start: 100   # must be >= batch_size (64); DQN samples a full batch
+  probe_repeats: 1
+  final_episodes: 2   # shared: reward_inference phase-3 len AND morl_grid refine len
+  final_evals: 2
+  # morl_grid (small explicit grid so the 16-point default doesn't dominate smoke)
+  morl_episodes: 1
+  refine_eval_rate: 1
+  weight_grid:
+    - {queue: 1.0}
+    - {delay: 1.0}
+  # dynamic_reward_shaping
+  n_init: 2
+  opt_rounds: 1
+  finetune_episodes: 1
+  warmup_episodes: 1
