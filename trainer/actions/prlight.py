@@ -93,6 +93,13 @@ class Sim2RealActionsPRLightTrainer(Sim2RealActionsTrainer):
             self.model.load_aux(self.model_dir)
         return super().test(drop_load)
 
+    def save_method_aux(self, e=None):
+        # e-tag the predictor with each policy checkpoint so any step reloads exactly.
+        self.model.save_aux(self.model_dir, e=e)
+
+    def load_method_aux(self, load_dir, e):
+        self.model.load_aux(load_dir, e=e)
+
     def store_transition(self, ag, idx, **kwargs):
         # Q-replay stays the baseline's (handled by super()); additionally feed
         # the model the per-decision executed actions it turns into m-apart

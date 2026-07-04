@@ -93,6 +93,13 @@ class Sim2RealActionsDelayedQTrainer(Sim2RealActionsTrainer):
             self.model.load_aux(self.model_dir)
         return super().test(drop_load)
 
+    def save_method_aux(self, e=None):
+        # e-tag the predictor with each policy checkpoint so any step reloads exactly.
+        self.model.save_aux(self.model_dir, e=e)
+
+    def load_method_aux(self, load_dir, e):
+        self.model.load_aux(load_dir, e=e)
+
     # Q-replay is identical to the baseline: the environment's delay queue already
     # stores the executed (delayed) action with its execution-time state/reward,
     # which is exactly the shifted tuple (s_{t+m}, a_t, r_{t+m}, s_{t+m+1}). So we

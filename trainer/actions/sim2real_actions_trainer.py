@@ -739,6 +739,7 @@ class Sim2RealActionsTrainer(BaseTrainer):
 
             if episode % self.save_rate == 0:
                 self.save_agents(self.agents_sim, self.model_dir, e=episode)
+                self.save_method_aux(e=episode)
 
             self.logger.info(
                 "episode:%s/%s, sim_loss:%s",
@@ -820,6 +821,61 @@ class Sim2RealActionsTrainer(BaseTrainer):
         self.log_metrics(
             "REAL_TEST", 0, self.metric_real, 100, self.real_action_transforms
         )
+        return self.metric_real
+
+    def prepare_eval(self):
+        """Hook run once before a checkpoint-replay sweep. Naive/oblivious need
+        nothing; method trainers with extra state may override."""
+
+    def save_method_aux(self, e=None):
+        """Persist method-specific per-checkpoint aux (e-tagged) alongside the policy
+        checkpoint at episode e. Default no-op; delay methods override to save the
+        predictor so any checkpoint reloads exactly."""
+
+    def load_method_aux(self, load_dir, e):
+        """Load the e-matched method aux from load_dir during a checkpoint replay.
+        Default no-op; delay methods override to load the predictor for step e."""
+
+    def replay_curve(self):
+        """Train-once-eval-many (toggle: --replay_curve).
+
+        Reload every training checkpoint at the real-eval cadence and evaluate it
+        under THIS run's --real_setting delay, rebuilding that setting's transfer
+        curve with NO retraining. Delay training is setting-independent (sim delay
+        frozen), so checkpoint e is what a full run under this setting would have
+        produced. Weights come from --load_setting's model dir; rows are logged
+        under this run's real_setting.
+        """
+        cmd = Registry.mapping["command_mapping"]["setting"].param
+        load_setting = cmd.get("load_setting", "") or cmd["real_setting"]
+        load_dir = os.path.join(
+            Registry.mapping["logger_mapping"]["path"].path,
+            Registry.mapping["logger_mapping"]["setting"].param["model_dir"],
+            f'{cmd["network"]}_{load_setting}_{cmd["agent"]}_{cmd.get("act_model") or "naive"}',
+        )
+        self.prepare_eval()
+
+        interval = self.real_eval_interval if self.real_eval_interval > 0 else 1
+        checkpoints = [e for e in range(1, self.episodes) if e % interval == 0]
+        self.logger.info(
+            "replay_curve: %d checkpoints from %s -> eval real_setting=%s",
+            len(checkpoints), load_dir, cmd["real_setting"],
+        )
+        for e in checkpoints:
+            if not os.path.exists(os.path.join(load_dir, f"{e}_0.pt")):
+                self.logger.warning("replay_curve: checkpoint e=%s missing in %s; skipping",
+                                    e, load_dir)
+                continue
+            self.load_agents(self.agents_real, load_dir, e=e)
+            self.load_method_aux(load_dir, e)
+            self.run_eval_episode(
+                env=self.env_real,
+                metric=self.metric_real,
+                agents=self.agents_real,
+                desc=f"Replay Eval e={e}",
+                action_transforms=self.real_action_transforms,
+            )
+            self.log_metrics("REAL_TEST", e, self.metric_real, 100, self.real_action_transforms)
         return self.metric_real
 
     def writeLog(

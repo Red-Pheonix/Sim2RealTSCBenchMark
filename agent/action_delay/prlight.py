@@ -435,15 +435,19 @@ class PRLightModel:
             self.predictor_trained = True
 
     # ---- persistence (reproducibility: the predictor is part of the method) ----
-    def save_aux(self, model_dir):
-        """Save the per-intersection OTPM predictors next to the policy weights."""
+    def save_aux(self, model_dir, e=None):
+        """Save the per-intersection OTPM predictors next to the policy weights.
+        e-tag (predictor_{e}_{i}.pt) mirrors the policy checkpoints so any training
+        step reloads exactly; e=None writes the latest (predictor_{i}.pt)."""
         os.makedirs(model_dir, exist_ok=True)
+        tag = f"{e}_" if e is not None else ""
         for i, m in enumerate(self.models):
-            torch.save(m.state_dict(), os.path.join(model_dir, f"predictor_{i}.pt"))
+            torch.save(m.state_dict(), os.path.join(model_dir, f"predictor_{tag}{i}.pt"))
 
-    def load_aux(self, model_dir):
+    def load_aux(self, model_dir, e=None):
+        tag = f"{e}_" if e is not None else ""
         for i, m in enumerate(self.models):
             m.load_state_dict(
-                torch.load(os.path.join(model_dir, f"predictor_{i}.pt"))
+                torch.load(os.path.join(model_dir, f"predictor_{tag}{i}.pt"))
             )
         self.predictor_trained = True

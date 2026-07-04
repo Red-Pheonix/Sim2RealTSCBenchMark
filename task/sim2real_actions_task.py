@@ -73,6 +73,11 @@ class Sim2RealActionsTask(BaseTask):
 
     def run(self):
         try:
+            cmd = Registry.mapping["command_mapping"]["setting"].param
+            if cmd.get("replay_curve", False):
+                # train-once-eval-many: skip training, replay checkpoints on real_setting
+                self.trainer.replay_curve()
+                return
             if Registry.mapping["model_mapping"]["setting"].param["train_model"]:
                 self.trainer.train()
             if Registry.mapping["model_mapping"]["setting"].param["test_model"]:

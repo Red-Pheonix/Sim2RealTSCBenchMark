@@ -125,10 +125,11 @@ class LatentObservationTrainer(BaseObservationTrainer):
                 ag.get_ob = self.make_encoded_get_ob(ag.get_ob, i)
         self._latent_ready = True
 
-    def test(self, drop_load=False):
-        """Eval-only entry (train_model: False): rebuild the latent stack from the
-        RUN's saved encoders (fall back to the shared cache) before the base test.
-        No-op when train() already set the stack up in this process."""
+    def _ensure_latent_stack(self):
+        """Rebuild the latent stack from the RUN's saved encoders (fall back to the
+        shared cache). No-op when train() already set the stack up in this process.
+        The encoder cache is setting-independent, so this works for cross-setting
+        replay (the run-scoped path won't exist -> shared cache is used)."""
         if not getattr(self, "_latent_ready", False):
             run_paths = self.model.cache_paths(self.model_dir)
             if all(os.path.exists(p) for p in run_paths):
@@ -141,6 +142,15 @@ class LatentObservationTrainer(BaseObservationTrainer):
                 self.model.load(self.model.cache_paths(self.enc_dec_cache_dir))
             self.build_latent_agents()
             self.attach_latent_encoders()
+
+    def prepare_eval(self):
+        # Checkpoint-replay (train-once-eval-many) needs the encoder stack too.
+        self._ensure_latent_stack()
+
+    def test(self, drop_load=False):
+        """Eval-only entry (train_model: False): rebuild the latent stack before
+        the base test. No-op when train() already set the stack up in this process."""
+        self._ensure_latent_stack()
         return super().test(drop_load)
 
     def make_encoded_get_ob(self, raw_get_ob, intersection_id):

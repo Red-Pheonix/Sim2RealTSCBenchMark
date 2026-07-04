@@ -647,6 +647,55 @@ class BaseObservationTrainer(BaseTrainer):
         self.log_metrics("REAL_TEST", 0, self.metric_real, 100)
         return self.metric_real
 
+    def prepare_eval(self):
+        """Hook run once before a checkpoint-replay sweep. Base/DR trainers need
+        nothing; the latent trainer overrides this to rebuild the encoder stack."""
+
+    def replay_curve(self):
+        """Train-once-eval-many (toggle: --replay_curve).
+
+        Reload every training checkpoint at the real-eval cadence and evaluate it
+        on THIS run's --real_setting, reconstructing that setting's transfer curve
+        with NO retraining. Because obs training is setting-independent, checkpoint
+        e is identical to what a full run under this setting would have produced,
+        so the curve is exact.
+
+        Weights are read from --load_setting's model dir (the setting training
+        actually ran under); rows are logged under this run's real_setting so each
+        setting's curve stays distinct.
+        """
+        cmd = Registry.mapping["command_mapping"]["setting"].param
+        load_setting = cmd.get("load_setting", "") or cmd["real_setting"]
+        load_dir = os.path.join(
+            Registry.mapping["logger_mapping"]["path"].path,
+            Registry.mapping["logger_mapping"]["setting"].param["model_dir"],
+            f'{cmd["network"]}_{load_setting}_{cmd["agent"]}_{self.method}',
+        )
+        self.prepare_eval()
+
+        interval = self.real_eval_interval if self.real_eval_interval > 0 else 1
+        # Same episodes the training curve was evaluated at (see should_run_real_eval).
+        checkpoints = [e for e in range(1, self.episodes) if e % interval == 0]
+        self.logger.info(
+            "replay_curve: %d checkpoints from %s -> eval real_setting=%s",
+            len(checkpoints), load_dir, cmd["real_setting"],
+        )
+        for e in checkpoints:
+            if not os.path.exists(os.path.join(load_dir, f"{e}_0.pt")):
+                self.logger.warning("replay_curve: checkpoint e=%s missing in %s; skipping",
+                                    e, load_dir)
+                continue
+            self.load_agents(self.agents_real, load_dir, e=e)
+            self.run_eval_episode(
+                env=self.env_real,
+                metric=self.metric_real,
+                world=self.world_real,
+                agents=self.agents_real,
+                desc=f"Replay Eval e={e}",
+            )
+            self.log_metrics("REAL_TEST", e, self.metric_real, 100)
+        return self.metric_real
+
     def writeLog(
         self,
         mode,

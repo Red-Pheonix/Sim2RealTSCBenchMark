@@ -47,6 +47,19 @@ parser.add_argument(
     help="action-gap mitigation method file name under configs/sim2real_actions "
     "(e.g. delayed_q); 'naive' = no-mitigation baseline",
 )
+parser.add_argument(
+    "--replay_curve",
+    action="store_true",
+    help="train-once-eval-many: skip training and replay every checkpoint on "
+    "--real_setting to rebuild its transfer curve (default off = normal train/one-eval)",
+)
+parser.add_argument(
+    "--load_setting",
+    type=str,
+    default="",
+    help="setting whose trained checkpoints to load for --replay_curve "
+    "(defaults to --real_setting)",
+)
 
 parser.add_argument(
     "-t", "--task", type=str, default="sim2real_actions", help="task type to run"
@@ -93,6 +106,8 @@ class Runner:
         self.config["command"]["network"] = args.network
         self.config["command"]["real_setting"] = args.real_setting
         self.config["command"]["act_model"] = args.act_model
+        self.config["command"]["replay_curve"] = args.replay_curve
+        self.config["command"]["load_setting"] = args.load_setting
         # Real (target) simulator; defaults to the sim world when not given.
         self.config["command"]["real_world"] = args.real_world or args.world
 
