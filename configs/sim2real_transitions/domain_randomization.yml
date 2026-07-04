@@ -35,7 +35,7 @@ sim2real:
         normal_config:
           mean: 3.70
           std: 1.56
-        clip_min: 0.1
+        clip_min: 1.0   # was 0.1; <~0.4 makes weak-braking cars overshoot cologne3's short roads -> CityFlow router.cpp assert (SIGABRT)
         clip_max: 7.0
       length:
         distribution: normal
