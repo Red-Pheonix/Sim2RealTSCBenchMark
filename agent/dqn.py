@@ -73,9 +73,7 @@ class DQNAgent(RLAgent):
         self.target_model = self._build_model()
         self.update_target_network()
         self.criterion = nn.MSELoss(reduction='mean')
-        self.optimizer = optim.RMSprop(self.model.parameters(),
-                                       lr=self.learning_rate,
-                                       alpha=0.9, centered=False, eps=1e-7)
+        self.optimizer = self._build_optimizer()
 
     def __repr__(self):
         return self.model.__repr__()
@@ -203,6 +201,35 @@ class DQNAgent(RLAgent):
         model = DQNNet(self.ob_length, self.action_space.n)
         return model
 
+    def _build_optimizer(self):
+        '''
+        _build_optimizer
+        Build the optimizer for the Q-net (factored out so rebuild_model / load_model
+        can reset it; matches PressLightAgent).
+
+        :return: RMSprop optimizer over the current model parameters
+        '''
+        return optim.RMSprop(self.model.parameters(),
+                             lr=self.learning_rate,
+                             alpha=0.9, centered=False, eps=1e-7)
+
+    def rebuild_model(self, ob_length):
+        '''
+        rebuild_model
+        Swap in a fresh Q-net sized for `ob_length`, reset the target net to match,
+        rebuild the optimizer, and clear the replay buffer. Used by trainers that
+        resize the observation (e.g. the latent-observation gap) after construction.
+
+        :param ob_length: new observation length the Q-net input is resized to
+        :return: None
+        '''
+        self.ob_length = ob_length
+        self.model = self._build_model()
+        self.target_model = self._build_model()
+        self.update_target_network()
+        self.optimizer = self._build_optimizer()
+        self.replay_buffer.clear()
+
     def remember(self, last_obs, last_phase, actions, actions_prob, rewards, obs, cur_phase, done, key):
         '''
         remember
@@ -303,9 +330,7 @@ class DQNAgent(RLAgent):
         self.model.load_state_dict(torch.load(model_name))
         self.target_model = self._build_model()
         self.target_model.load_state_dict(torch.load(model_name))
-        self.optimizer = optim.RMSprop(self.model.parameters(),
-                                       lr=self.learning_rate,
-                                       alpha=0.9, centered=False, eps=1e-7)
+        self.optimizer = self._build_optimizer()
 
     def save_model(self, model_dir="", e=None):
         '''

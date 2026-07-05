@@ -38,9 +38,13 @@ class LatentObservationTrainer(BaseObservationTrainer):
             obs_dims=[ag.ob_generator.ob_length for ag in self.agents_sim],
             device=device,
         )
+        # Cache is per AGENT as well as method/network: agents use different obs
+        # generators (dqn = incoming lanes only, presslight = all lanes), so their
+        # encoders have different input dims and MUST NOT share a cache dir.
         self.enc_dec_cache_dir = os.path.join(
             "pretrained",
             method,
+            Registry.mapping["command_mapping"]["setting"].param["agent"],
             Registry.mapping["command_mapping"]["setting"].param["network"],
         )
 
@@ -79,7 +83,7 @@ class LatentObservationTrainer(BaseObservationTrainer):
     def _save_run_encoders(self):
         """Persist the encoders THIS run used into the run's model_dir (alongside the
         policy checkpoints), so the run is reproducible on its own even if the shared
-        per-method cache (`pretrained/<method>/<network>/`) is later overwritten."""
+        per-agent cache (`pretrained/<method>/<agent>/<network>/`) is later overwritten."""
         os.makedirs(self.model_dir, exist_ok=True)
         self.model.save(self.model.cache_paths(self.model_dir))
 
