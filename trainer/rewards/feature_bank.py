@@ -52,6 +52,12 @@ from generator import LaneVehicleGenerator
 # was previously mis-named `stops`).
 CORE_COMPONENTS = ["queue", "delay", "waiting", "pressure", "switches"]
 
+# Info-backed EVENT components: per-step occurrence counts, so the per-decision cost
+# is the SUM over the interval's steps (a boundary-step point-sample would miss 9 of
+# 10 events at action_interval=10). Rate/level components (emission, fuel, fairness)
+# take the interval MEAN instead (same units as a point-sample, full coverage).
+EVENT_COMPONENTS = {"emergency_stops", "collisions", "ssm_conflicts"}
+
 class FeatureBank:
     """Per-intersection cost vector `φ` over a fixed component list.
 
@@ -116,6 +122,15 @@ class FeatureBank:
                 )
                 for ag in agents
             ]
+        # Per-interval accumulation for the info-backed components: the rollout loop
+        # calls `step_accumulate()` after EVERY env step and `reset_interval()` once
+        # per decision (after the feature matrix is built), so `features()` sees the
+        # full interval -- MEAN for rates (emission/fuel/fairness), SUM for events
+        # (EVENT_COMPONENTS) -- instead of a boundary-step point-sample. If a loop
+        # never calls `step_accumulate()` (acc_n == 0), `features()` falls back to
+        # the instantaneous read (legacy behavior).
+        self._acc = {c: np.zeros(len(agents)) for c in self._extra_gens}
+        self._acc_n = 0
 
     def available_components(self):
         """Components this simulator can actually compute (training methods restrict
@@ -137,6 +152,24 @@ class FeatureBank:
         val = np.asarray(gen.generate(), dtype=float)
         return float(np.mean(val)) if val.size else 0.0
 
+    # ---- per-interval accumulation of the info-backed components ------------
+    def step_accumulate(self):
+        """Fold the current step's info-backed values into the interval buffers.
+        Call once per env step (the world recomputes subscribed info per step, so
+        the generator read is a cached lookup)."""
+        for c, gens in self._extra_gens.items():
+            acc = self._acc[c]
+            for idx, gen in enumerate(gens):
+                acc[idx] += self._scalar(gen)
+        self._acc_n += 1
+
+    def reset_interval(self):
+        """Clear the interval buffers. Call after the decision's feature matrix is
+        built (all agents read), and once at episode start."""
+        for acc in self._acc.values():
+            acc[:] = 0.0
+        self._acc_n = 0
+
     def features(self, idx, phase_changed=False):
         """Cost vector `φ` for intersection `idx` (aligned with `self.components`)."""
         raw = {
@@ -152,10 +185,15 @@ class FeatureBank:
             if c in raw:
                 continue
             if c in self._extra_gens:
-                # info-backed cost (fairness / sumo-only) read once per step via its
-                # info function: fairness is per-intersection; emission/fuel average
-                # over incoming lanes.
-                raw[c] = self._scalar(self._extra_gens[c][idx])
+                # info-backed cost (fairness / sumo-only). With step accumulation
+                # (see step_accumulate) the decision sees the WHOLE interval: SUM for
+                # event counts, MEAN for rates/levels (same units as a point-sample).
+                # Without it (acc_n == 0), fall back to the instantaneous read.
+                if self._acc_n > 0:
+                    total = float(self._acc[c][idx])
+                    raw[c] = total if c in EVENT_COMPONENTS else total / self._acc_n
+                else:
+                    raw[c] = self._scalar(self._extra_gens[c][idx])
             else:
                 # unavailable here (e.g. emission on cityflow), or `safety` which the
                 # PT/shield trainer injects -- genuinely 0.0, not proxied.

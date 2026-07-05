@@ -1,7 +1,19 @@
 sim2real:
+  # Fairness objective, RESPECIFIED 2026-07-04 after a Goodhart failure: the original
+  # w* = {queue: 0.5, fairness: 2.0} was maximized by GRIDLOCK -- the fairness cost is
+  # the max-min spread of cumulative served throughput across demand-active approaches,
+  # and equal starvation (nobody served) has spread ~0, so morl_grid deployed a
+  # gridlocked policy (travel 954s, throughput 813 vs 1836) that scored R_real -2.30 vs
+  # an honest fair policy's -4.71. Any pure-disparity measure has this degenerate
+  # optimum ("everyone is equal if everyone is equally poor"), so the fix prices
+  # STARVATION in w* instead of redefining the spread: `waiting` (cross-sim, veh*s) is
+  # ~10 under honest control and ~19,000 under gridlock, so the exploit now scores
+  # ~-190 (rescored from the same logged phi rows) and can never win. The fairness
+  # MEASURE itself is unchanged (metric columns stay comparable across runs).
   reward_components: [fairness]
   true_reward:
     queue: 0.5
+    waiting: 1.0
     fairness: 2.0
   sim_episodes: 300
   real_episodes: 100

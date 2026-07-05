@@ -35,7 +35,7 @@ from collections import defaultdict
 # base.yml component_norm (authoritative; hasn't changed per network).
 COMPONENT_NORM = {
     "queue": 10.0, "delay": 1.0, "waiting": 100.0, "pressure": 10.0, "switches": 1.0,
-    "fairness": 50.0, "emission": 10.0, "fuel": 1.0, "emergency_stops": 1.0,
+    "fairness": 50.0, "emission": 10.0, "fuel": 1.0, "emergency_stops": 1.0, "ssm_conflicts": 10.0,
     "collisions": 1.0, "safety": 1.0,
 }
 

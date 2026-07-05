@@ -47,6 +47,10 @@ EXTRA_INFO_FN = {
     "fuel": "lane_fuel",                   # sumo-only
     "emergency_stops": "intersection_emergency_stops",  # sumo-only
     "collisions": "intersection_collisions",            # sumo-only
+    # surrogate-safety conflicts (TTC < SSM_TTC_THRESHOLD, 1.5s SSAM standard); registered on
+    # the sumo world only when the device is enabled (rewards create_world passes
+    # ssm_device=True), so availability resolution handles it like the other extras
+    "ssm_conflicts": "intersection_ssm_conflicts",       # sumo-only, device-gated
 }
 
 # DTL `mode` values (column 2) -- the repo-wide canonical four:
@@ -58,11 +62,139 @@ EXTRA_INFO_FN = {
 #   REAL_TEST  -- real scoring eval (naive-family transfer curve + final test); free.
 #
 # DTL data-log column order (header row written once at the top of each run's log).
-# First 9 match the other tasks' DTL; the last 3 are reward-gap extras.
+# First 9 match the other tasks' DTL; then the reward-gap extras. The raw-metric
+# columns are appended AFTER `detail` so positional parsers of the old 13-col schema
+# (e.g. scripts/rescore_norms.py, cols[11]/cols[12]) keep working unchanged.
+#
+# Raw benchmark-metric columns + units (per rollout the row reports; an EMPTY cell
+# means this side's simulator cannot compute the metric -- distinct from a true 0.
+# cityflow rows carry only `fairness`; sumo rows carry all five). Units verified
+# against the sumo 1.26 TraCI docs ("Sum of CO2 emissions on this lane in mg/s
+# during this time step"; likewise fuel since sumo 1.14) and env.step == 1
+# simulated second (all shipped sumocfgs use step-length 1):
+#   fairness         veh    final max-min spread of CUMULATIVE served throughput
+#                           (vehicle counts) across demand-active approaches, mean
+#                           over intersections (Raeis & Leon-Garcia arXiv:2107.10146).
+#                           Grows with episode length -- only compare equal-length runs.
+#   emission         kg     episode-total CO2, sum over vehicles on the CONTROLLED
+#                           in+out lanes (junction-internal lanes excluded), sumo
+#                           HBEFA model; mg/s summed per 1s step.
+#   fuel             kg     same accumulation for fuel (mg/s since sumo 1.14);
+#                           ~/0.74 kg/L for liters of gasoline. Sanity: fuel/emission
+#                           ~= 0.32 (stoichiometric CO2 of gasoline).
+#   emergency_stops  count  episode-total sumo "emergency stop" events: a vehicle
+#                           forced to an abrupt stop exceeding its emergencyDecel
+#                           (e.g. caught at the stop bar by a phase switch); one
+#                           event per occurrence, attributed to the controlling
+#                           intersection.
+#   ssm_conflicts    count  episode-total vehicles whose SSM-device min TTC dropped
+#                           below SSM_TTC_THRESHOLD (world_sumo.py; 1.5 s = the FHWA
+#                           SSAM standard since 2026-07-05, earlier runs used a 3.0 s
+#                           screening value -- counts NOT comparable across the two).
+#                           Each vehicle counted once per episode. The STANDARD
+#                           surrogate-safety measure; sumo traffic is collision-free
+#                           by construction so near-crash conflicts, not crashes,
+#                           carry the safety signal.
+#   collisions       count  episode-total UNIQUE collider-victim pairs from
+#                           simulation.getCollisions. Junction-conflict detection is
+#                           enabled by world_sumo's sumo_cmd (--collision.check-
+#                           junctions, action=warn: detection only, physics
+#                           untouched); pairs dedup per episode in
+#                           get_intersection_collisions. Runs BEFORE 2026-07-04 had
+#                           detection off (sumo default) -> structurally 0.
+#   phi_raw          --     RAW unnormalized per-decision feature-bank costs as
+#                           `name=value;...` (summed over intersections, mean over
+#                           decisions) -- the numbers BEHIND the `components` column,
+#                           which stays the WEIGHTED normalized w*_i*(phi_i/n_i)
+#                           terms. Eval rows only (empty on SIM_TRAIN). Per-term
+#                           units (per intersection-decision): queue = veh halted,
+#                           mean over incoming lanes; delay = 1 - mean_speed/limit
+#                           in [0,1]; waiting = veh*s (SUM of currently-waiting
+#                           vehicles' accumulated waits), mean over incoming lanes;
+#                           pressure = |veh in-out|; switches / safety = 0/1 flag
+#                           (mean over decisions = rate in [0,1]). The info-backed
+#                           terms are INTERVAL-ACCURATE (FeatureBank.step_accumulate,
+#                           every sim step): emission / fuel / fairness = interval
+#                           MEAN (g/s resp. veh; mean over incoming lanes for the
+#                           lane-keyed ones); emergency_stops / collisions = interval
+#                           SUM (events this decision) -- so summed over an episode's
+#                           decisions the event terms EQUAL the episode metric
+#                           columns (up to lane attribution), and R_real scores full
+#                           coverage rather than a 1-in-10 boundary point-sample.
+RAW_METRIC_COLUMNS = ["fairness", "emission", "fuel", "emergency_stops",
+                      "ssm_conflicts", "collisions"]
 DTL_COLUMNS = [
     "exp_name", "mode", "step", "travel_time", "loss", "rewards",
     "queue", "delay", "throughput", "train_reward", "R_real", "components", "detail",
+    *RAW_METRIC_COLUMNS, "phi_raw",
 ]
+
+
+# --- Raw benchmark metrics logged alongside R_real (logging-only) -------------
+# metric name -> world info fn. Deliberately DECOUPLED from the feature bank: the
+# bank only tracks the setting's components (touching it would change method
+# behavior -- reward_inference probes per component, random_reward's simplex, ...),
+# while these are recorded on EVERY run regardless of what R_real weights.
+RAW_METRIC_FNS = {
+    "fairness": "intersection_fairness",                 # cross-sim
+    "emission": "lane_co2",                              # sumo-only
+    "fuel": "lane_fuel",                                 # sumo-only
+    "emergency_stops": "intersection_emergency_stops",   # sumo-only
+    "collisions": "intersection_collisions",             # sumo-only
+    "ssm_conflicts": "intersection_ssm_conflicts",       # sumo-only, device-gated
+}
+
+
+class RawMetricsAccumulator:
+    """Episode accumulator for the raw benchmark metrics (see RAW_METRIC_FNS).
+
+    One per side (sim / real). Subscribes every metric fn the wrapped world
+    registers (the world computes subscribed fns once per step via its
+    subscribe/_update_infos path, so `step()` only reads the cached value) and
+    folds it into episode totals:
+
+      * emission / fuel -- lane-keyed rates (g/s over controlled lanes); summed
+        over lanes and steps (1 s world interval) -> episode totals, reported in kg.
+      * emergency_stops / collisions -- per-intersection counts this step ->
+        episode-total counts.
+      * fairness -- the world accumulates served throughput internally, so the fn
+        returns a CUMULATIVE max-min spread; keep the LAST step's mean over
+        intersections (veh).
+
+    Call `reset()` after `env.reset()`, `step()` after every `env.step()`, and
+    `values()` at rollout end. Metrics the world can't compute are simply absent
+    from `values()` (logged as an empty DTL cell, never a fake 0).
+    """
+
+    def __init__(self, world):
+        self.world = world
+        self.fns = {
+            m: fn for m, fn in RAW_METRIC_FNS.items()
+            if fn in getattr(world, "info_functions", {})
+        }
+        if self.fns:
+            world.subscribe(list(self.fns.values()))
+        self.reset()
+
+    def reset(self):
+        self._totals = {m: 0.0 for m in self.fns}
+
+    def step(self):
+        for m, fn in self.fns.items():
+            vals = self.world.get_info(fn)
+            total = float(sum(vals.values())) if vals else 0.0
+            if m == "fairness":
+                # cumulative world-side state: keep the latest per-intersection mean
+                self._totals[m] = total / max(len(vals), 1) if vals else 0.0
+            else:
+                self._totals[m] += total
+
+    def values(self):
+        out = dict(self._totals)
+        for m in ("emission", "fuel"):
+            if m in out:
+                out[m] /= 1000.0  # accumulated grams -> kg per episode
+        return out
 
 
 def resolve_components(world, extra_components):
@@ -208,6 +340,15 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         w_star = self.feature_bank_real.weight_vector(self.true_reward_weights)
         self.true_reward = TrueReward(w_star, self.components, norm=self.component_norm)
 
+        # Raw-metrics recorders (logging only; see RawMetricsAccumulator). One per
+        # side; the rollout loops pick by env identity and stash the last rollout's
+        # values here for writeLog. `_last_phi_raw` is the raw unnormalized
+        # per-decision phi of the last EVAL rollout (phi_raw column).
+        self._raw_acc_sim = RawMetricsAccumulator(self.world_sim)
+        self._raw_acc_real = RawMetricsAccumulator(self.world_real)
+        self._last_raw_metrics = {}
+        self._last_phi_raw = {}
+
         # Training reward transform: None -> naive (native proxy reward). Method
         # subclasses return a callable `Φ -> per-agent reward`.
         self.reward_transform = self.build_reward_transform(self.feature_bank_sim)
@@ -246,8 +387,10 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         self.world_sim = Registry.mapping["world_mapping"]["cityflow"](
             self.cityflow_path, thread_num
         )
+        # ssm_device: equip vehicles with the SSM device so the real side measures
+        # surrogate-safety conflicts (rewards task only -- costs sim time).
         self.world_real = Registry.mapping["world_mapping"]["sumo"](
-            self.sumo_path, **{"interface": interface}
+            self.sumo_path, **{"interface": interface, "ssm_device": True}
         )
 
     def create_agent_world(self, world):
@@ -350,6 +493,16 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         self.total_decision_num_sim = 0
 
     # ---- feature helpers --------------------------------------------------
+    def _stash_raw(self, raw_acc, feature_bank, phi_sum, decisions):
+        """Stash an eval rollout's raw metrics + raw per-decision phi for the DTL row
+        that follows (writeLog reads these). Shared by every eval loop (base / PT
+        override / reward_inference probes)."""
+        self._last_raw_metrics = raw_acc.values()
+        self._last_phi_raw = {
+            c: float(phi_sum[i]) / decisions
+            for i, c in enumerate(feature_bank.components)
+        }
+
     def _phase_changed(self, agents, last_phase, cur_phase):
         """Per-agent 0/1: did the executed phase change this decision (switches cost)."""
         return [
@@ -359,9 +512,12 @@ class Sim2RealRewardsTrainer(BaseTrainer):
 
     def _feature_matrix(self, feature_bank, agents, last_phase, cur_phase):
         changed = self._phase_changed(agents, last_phase, cur_phase)
-        return np.stack(
+        phi = np.stack(
             [feature_bank.features(i, changed[i]) for i in range(len(agents))]
         )
+        # This decision's interval is consumed; start accumulating the next one.
+        feature_bank.reset_interval()
+        return phi
 
     # ---- rollouts ---------------------------------------------------------
     def run_train_episode(self, *, env, metric, agents, feature_bank, episode, desc):
@@ -369,6 +525,9 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         last_obs = env.reset()
         for agent in agents:
             agent.reset()
+        raw_acc = self._raw_acc_sim if env is self.env_sim else self._raw_acc_real
+        raw_acc.reset()
+        feature_bank.reset_interval()
         episode_loss = []
         shaped_sum, shaped_n = 0.0, 0  # mean reward the agent ACTUALLY trains on
         i = 0
@@ -395,6 +554,8 @@ class Sim2RealRewardsTrainer(BaseTrainer):
                     obs, rewards, dones, _ = env.step(actions.flatten())
                     i += 1
                     rewards_list.append(np.stack(rewards))
+                    raw_acc.step()
+                    feature_bank.step_accumulate()
                 proxy_rewards = np.mean(rewards_list, axis=0)
                 metric.update(proxy_rewards)  # native proxy -> "rewards" column
 
@@ -447,6 +608,9 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         # naive; the LinearReward(w) signal for the shaping methods). Logged separately
         # from the `rewards` column, which always reports the native proxy.
         self._last_train_reward = shaped_sum / shaped_n if shaped_n else 0.0
+        # Raw metrics of THIS rollout for the upcoming DTL row; phi_raw is eval-only.
+        self._last_raw_metrics = raw_acc.values()
+        self._last_phi_raw = {}
         return mean_loss, i
 
     def run_eval_episode(self, *, env, metric, agents, feature_bank, desc,
@@ -462,6 +626,9 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         obs = env.reset()
         for agent in agents:
             agent.reset()
+        raw_acc = self._raw_acc_sim if env is self.env_sim else self._raw_acc_real
+        raw_acc.reset()
+        feature_bank.reset_interval()
         i = 0
         dones = [False] * len(agents)
         phi_sum = np.zeros(len(feature_bank.components))
@@ -482,6 +649,8 @@ class Sim2RealRewardsTrainer(BaseTrainer):
                     obs, rewards, dones, _ = env.step(actions.flatten())
                     i += 1
                     rewards_list.append(np.stack(rewards))
+                    raw_acc.step()
+                    feature_bank.step_accumulate()
                 metric.update(np.mean(rewards_list, axis=0))
                 cur_phase = np.stack([ag.get_phase() for ag in agents])
                 phi = self._feature_matrix(feature_bank, agents, last_phase, cur_phase)
@@ -493,6 +662,7 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         true_reward = float(self.true_reward.reward(phi_sum[None, :])[0]) / decisions
         breakdown = self.true_reward.breakdown(phi_sum[None, :])
         breakdown = {k: v / decisions for k, v in breakdown.items()}
+        self._stash_raw(raw_acc, feature_bank, phi_sum, decisions)
         return true_reward, breakdown
 
     # ---- logging ----------------------------------------------------------
@@ -538,6 +708,9 @@ class Sim2RealRewardsTrainer(BaseTrainer):
             if breakdown:
                 msg += ", components:%s"
                 args.append({k: round(v, 3) for k, v in breakdown.items()})
+        if self._last_raw_metrics:
+            msg += ", raw_metrics:%s"
+            args.append({k: round(v, 3) for k, v in self._last_raw_metrics.items()})
         if detail:
             msg += ", %s"
             args.append(detail)
@@ -669,6 +842,16 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         )
         # `rewards` is the native proxy; `train_reward` is what the agent trained on.
         train_str = "%.2f" % train_reward if train_reward is not None else ""
+        # Raw benchmark metrics of the rollout this row reports (units in the
+        # DTL_COLUMNS comment). Empty cell = this side's simulator can't compute the
+        # metric (cityflow: all but fairness) -- distinct from a genuine 0.
+        raw = self._last_raw_metrics
+        raw_cols = ["%.4f" % raw[m] if m in raw else "" for m in RAW_METRIC_COLUMNS]
+        # Raw UNNORMALIZED per-decision phi (eval rows only) -- the numbers behind
+        # the weighted `components` column.
+        phi_str = ";".join(
+            f"{k}={round(float(v), 4)}" for k, v in self._last_phi_raw.items()
+        )
         res = (
             self.exp_name
             + "\t" + mode
@@ -683,6 +866,8 @@ class Sim2RealRewardsTrainer(BaseTrainer):
             + "\t" + "%.4f" % true_reward
             + "\t" + comp_str
             + "\t" + (detail or "")
+            + "\t" + "\t".join(raw_cols)
+            + "\t" + phi_str
         )
         with open(self.log_file, "a") as f:
             f.write(res + "\n")

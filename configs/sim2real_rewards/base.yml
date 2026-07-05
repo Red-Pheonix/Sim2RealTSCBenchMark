@@ -51,6 +51,7 @@ sim2real:
     emission: 10.0
     fuel: 1.0
     emergency_stops: 1.0
+    ssm_conflicts: 10.0   # SSM (TTC < SSM_TTC_THRESHOLD, 1.5s SSAM std) conflicts; frequent -> larger norm
     collisions: 1.0
     safety: 1.0
 

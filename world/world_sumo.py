@@ -29,6 +29,15 @@ import traci
 from world.throughput_fairness import ThroughputFairness
 
 
+# TTC threshold (s) below which an encounter counts as a surrogate-safety conflict.
+# 1.5 s = the FHWA SSAM default (Gettman & Head 2003, TRR 1840; Gettman et al. 2008),
+# the citable standard for vehicle-vehicle conflicts. (Early 2026-07-04 tempe_1x1
+# runs used a looser 3.0 s screening value -- ~80% of vehicles conflicted; their
+# ssm_conflicts columns are NOT comparable with 1.5 s runs.) This constant feeds
+# BOTH the --device.ssm.thresholds flag and the counting rule, change here only.
+SSM_TTC_THRESHOLD = 1.5
+
+
 def resolve_sumo_additional_files(base_dir, combined_file, sumo_add):
     use_default_add = not sumo_add
     if not sumo_add:
@@ -462,6 +471,28 @@ class World(object):
                          '--no-warnings', str(sumo_dict['no_warning'])]
         if sumo_add:
             sumo_cmd += ['-a', sumo_add]
+        # Collision DETECTION without changing dynamics: check-junctions makes sumo
+        # register junction-conflict collisions (the kind unsafe signal control
+        # causes; off by default -> getCollisions was ~always empty), and action=warn
+        # only logs them -- vehicles keep driving, physics untouched (the default
+        # teleport would REMOVE colliders and alter dynamics; rear-end collisions,
+        # ~impossible under Krauss anyway, also switch from teleport to warn).
+        # A persisting overlap re-registers every step -> get_intersection_collisions
+        # dedups (collider, victim) pairs per episode.
+        sumo_cmd += ['--collision.check-junctions', 'true',
+                     '--collision.action', 'warn']
+        # Surrogate-safety measurement (standard practice: sumo traffic is
+        # collision-free by construction, so safety is measured via SSM conflicts --
+        # TTC below threshold -- not crashes). Opt-in per task via the `ssm_device`
+        # kwarg because equipping every vehicle costs sim time; the rewards trainers
+        # pass True. The info fn `intersection_ssm_conflicts` is registered only when
+        # enabled, so elsewhere the metric reads as UNAVAILABLE (empty), not 0.
+        self.ssm_enabled = bool(kwargs.get('ssm_device', False))
+        if self.ssm_enabled:
+            sumo_cmd += ['--device.ssm.probability', '1',
+                         '--device.ssm.measures', 'TTC',
+                         '--device.ssm.thresholds', str(SSM_TTC_THRESHOLD),
+                         '--device.ssm.file', os.devnull]
         self.net = os.path.join(sumo_dict['dir'], sumo_dict['roadnetFile'])
         self.route = os.path.join(sumo_dict['dir'], sumo_dict['flowFile'])
         self.sumo_cmd = sumo_cmd
@@ -569,7 +600,18 @@ class World(object):
             # throughput-based fairness (cross-sim: cityflow registers it too)
             "intersection_fairness": self.get_intersection_fairness,
         }
+        if self.ssm_enabled:
+            # only when the SSM device is actually on -- otherwise the fn would
+            # report a fake 0 (metric must read as unavailable instead)
+            self.info_functions["intersection_ssm_conflicts"] = (
+                self.get_intersection_ssm_conflicts
+            )
         self._fairness = ThroughputFairness()
+        # (collider, victim) pairs already counted this episode -- with
+        # collision.action=warn an overlap persists across steps and would recount.
+        self._collision_seen = set()
+        # vehicles already counted as SSM-conflicted this episode
+        self._ssm_conflicted = set()
         self.fns = []
         self.info = {}
         # test generate observation information
@@ -707,6 +749,8 @@ class World(object):
         self.id2idx = {i: idx for idx,i in enumerate(self.id2intersection)}
         self._build_lane_intersection_index()
         self._fairness.reset()  # new episode: clear cumulative served-throughput state
+        self._collision_seen = set()
+        self._ssm_conflicted = set()
 
         for intsec in self.intersections:
             intsec.observe(self.step_length, self.max_distance)
@@ -1205,8 +1249,11 @@ class World(object):
         return counts
 
     def get_intersection_collisions(self):
-        """Per-intersection collision count this step, attributed by the collision's
-        lane (sumo-only; cityflow has no collision detection)."""
+        """Per-intersection NEW collision count this step, attributed by the
+        collision's lane (sumo-only; cityflow has no collision detection). Junction
+        collisions are detected via --collision.check-junctions with action=warn
+        (see sumo_cmd); warn keeps colliders driving, so the same (collider, victim)
+        pair can re-register while they overlap -- counted ONCE per episode."""
         counts = {i.id: 0.0 for i in self.intersections}
         try:
             cols = self.eng.simulation.getCollisions()
@@ -1216,7 +1263,55 @@ class World(object):
             lane = getattr(c, "lane", None)
             if lane is None:
                 continue
+            pair = (getattr(c, "collider", None), getattr(c, "victim", None))
+            if pair in self._collision_seen:
+                continue
+            self._collision_seen.add(pair)
             inter = self.lane2inter.get(lane)
+            if inter is None and lane.startswith(":"):
+                # junction collision: it happens on an INTERNAL lane
+                # ":<junction>_<link>_<lane>", absent from lane2inter -- the junction
+                # id embedded in the lane id IS the intersection (for signalized
+                # junctions the tls id == junction id).
+                jid = lane[1:].rsplit("_", 2)[0]
+                inter = jid if jid in counts else None
+            if inter is not None:
+                counts[inter] += 1.0
+        return counts
+
+    def get_intersection_ssm_conflicts(self):
+        """Per-intersection count of vehicles that ENTERED a surrogate-safety
+        conflict this step: their SSM-device minTTC dropped below SSM_TTC_THRESHOLD
+        for the first time this episode (each vehicle counted once, attributed to
+        the intersection controlling its current lane; internal ":junction" lanes
+        attribute to that junction). Standard-practice safety measure: sumo traffic
+        is collision-free by construction, so near-crash conflicts (TTC), not
+        crashes, carry the safety signal. Registered only when the SSM device is on
+        (ssm_device kwarg -> --device.ssm.*)."""
+        counts = {i.id: 0.0 for i in self.intersections}
+        try:
+            vids = self.eng.vehicle.getIDList()
+        except Exception:
+            return counts
+        for v in vids:
+            if v in self._ssm_conflicted:
+                continue
+            try:
+                raw = self.eng.vehicle.getParameter(v, "device.ssm.minTTC")
+                ttc = float(raw)
+            except Exception:
+                continue
+            if not 0.0 < ttc < SSM_TTC_THRESHOLD:
+                continue
+            self._ssm_conflicted.add(v)
+            try:
+                lane = self.eng.vehicle.getLaneID(v)
+            except Exception:
+                continue
+            inter = self.lane2inter.get(lane)
+            if inter is None and lane.startswith(":"):
+                jid = lane[1:].rsplit("_", 2)[0]
+                inter = jid if jid in counts else None
             if inter is not None:
                 counts[inter] += 1.0
         return counts

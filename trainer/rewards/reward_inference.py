@@ -105,6 +105,8 @@ class Sim2RealRewardsInferenceTrainer(Sim2RealRewardsTrainer):
         obs = self.env_real.reset()
         for ag in self.agents_real:
             ag.reset()
+        self._raw_acc_real.reset()
+        self.feature_bank_real.reset_interval()
         i = 0
         dones = [False] * len(self.agents_real)
         while i < self.test_steps:
@@ -121,6 +123,8 @@ class Sim2RealRewardsInferenceTrainer(Sim2RealRewardsTrainer):
                     obs, rewards, dones, _ = self.env_real.step(actions.flatten())
                     i += 1
                     rewards_list.append(np.stack(rewards))
+                    self._raw_acc_real.step()
+                    self.feature_bank_real.step_accumulate()
                 self.metric_real.update(np.mean(rewards_list, axis=0))
                 cur_phase = np.stack([ag.get_phase() for ag in self.agents_real])
                 phi = self._feature_matrix(
@@ -130,6 +134,10 @@ class Sim2RealRewardsInferenceTrainer(Sim2RealRewardsTrainer):
             if all(dones):
                 break
         r_real = float(self.true_reward.reward(phi_sum[None, :])[0])
+        # Stash raw metrics + phi for the probe's REAL_TRAIN DTL row (logged by the
+        # caller right after this returns).
+        decisions = max(int(self.test_steps / self.action_interval), 1)
+        self._stash_raw(self._raw_acc_real, self.feature_bank_real, phi_sum, decisions)
         return phi_sum, r_real
 
     def _train_sim(self, episodes, transform, tag):

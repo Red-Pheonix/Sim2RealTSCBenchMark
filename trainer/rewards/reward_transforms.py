@@ -41,6 +41,9 @@ DEFAULT_COMPONENT_NORM = {
     "emission": 10.0,
     "fuel": 1.0,
     "emergency_stops": 1.0,
+    # SSM conflicts are frequent (10s of vehicles/decision network-wide under a bad
+    # policy) -- normalize so the weighted term stays O(1) like the others (rough).
+    "ssm_conflicts": 10.0,
     "collisions": 1.0,
     "safety": 1.0,
 }

@@ -100,7 +100,7 @@ class _PhaseTransitionRewardTrainer(Sim2RealRewardsTrainer):
         # single sumo instance (sequential train-then-eval is fine).
         interface = Registry.mapping["command_mapping"]["setting"].param["interface"]
         self.world_real = Registry.mapping["world_mapping"]["sumo"](
-            self.sumo_path, **{"interface": interface}
+            self.sumo_path, **{"interface": interface, "ssm_device": True}
         )
         self.world_sim = self.world_real
 
@@ -123,6 +123,9 @@ class _PhaseTransitionRewardTrainer(Sim2RealRewardsTrainer):
             ag.reset()
         init_phase = np.stack([ag.get_phase() for ag in agents])
         pt.reset(agents, init_phase)
+        raw_acc = self._raw_acc_sim if env is self.env_sim else self._raw_acc_real
+        raw_acc.reset()
+        feature_bank.reset_interval()
         i, dones = 0, [False] * len(agents)
         episode_loss = []
         pbar = tqdm(total=int(self.steps / self.action_interval), desc=desc)
@@ -150,6 +153,8 @@ class _PhaseTransitionRewardTrainer(Sim2RealRewardsTrainer):
                     obs, rewards, dones, _ = env.step(executed.flatten())
                     i += 1
                     rewards_list.append(np.stack(rewards))
+                    raw_acc.step()
+                    feature_bank.step_accumulate()
                 proxy_rewards = np.mean(rewards_list, axis=0)
                 metric.update(proxy_rewards)
                 cur_phase = np.stack([ag.get_phase() for ag in agents])
@@ -176,6 +181,8 @@ class _PhaseTransitionRewardTrainer(Sim2RealRewardsTrainer):
             if all(dones):
                 break
         pbar.close()
+        self._last_raw_metrics = raw_acc.values()
+        self._last_phi_raw = {}
         return (np.mean(np.array(episode_loss)) if episode_loss else 0), i
 
     def run_eval_episode(self, *, env, metric, agents, feature_bank, desc,
@@ -190,6 +197,9 @@ class _PhaseTransitionRewardTrainer(Sim2RealRewardsTrainer):
         init_phase = np.stack([ag.get_phase() for ag in agents])
         pt.reset(agents, init_phase)
         pt.reset_stats()
+        raw_acc = self._raw_acc_sim if env is self.env_sim else self._raw_acc_real
+        raw_acc.reset()
+        feature_bank.reset_interval()
         i, dones = 0, [False] * len(agents)
         phi_sum = np.zeros(len(feature_bank.components))
         pbar = tqdm(total=int(self.test_steps / self.action_interval), desc=desc)
@@ -213,6 +223,8 @@ class _PhaseTransitionRewardTrainer(Sim2RealRewardsTrainer):
                     obs, rewards, dones, _ = env.step(executed.flatten())
                     i += 1
                     rewards_list.append(np.stack(rewards))
+                    raw_acc.step()
+                    feature_bank.step_accumulate()
                 metric.update(np.mean(rewards_list, axis=0))
                 cur_phase = np.stack([ag.get_phase() for ag in agents])
                 phi_sum += self._feature_matrix_pt(
@@ -227,6 +239,7 @@ class _PhaseTransitionRewardTrainer(Sim2RealRewardsTrainer):
         decisions = max(int(self.test_steps / self.action_interval), 1)
         true_reward = float(self.true_reward.reward(phi_sum[None, :])[0]) / decisions
         breakdown = {k: v_ / decisions for k, v_ in self.true_reward.breakdown(phi_sum[None, :]).items()}
+        self._stash_raw(raw_acc, feature_bank, phi_sum, decisions)
         return true_reward, breakdown
 
 
