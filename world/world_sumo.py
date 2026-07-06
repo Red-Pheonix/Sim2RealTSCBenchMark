@@ -33,8 +33,13 @@ from world.throughput_fairness import ThroughputFairness
 # 1.5 s = the FHWA SSAM default (Gettman & Head 2003, TRR 1840; Gettman et al. 2008),
 # the citable standard for vehicle-vehicle conflicts. (Early 2026-07-04 tempe_1x1
 # runs used a looser 3.0 s screening value -- ~80% of vehicles conflicted; their
-# ssm_conflicts columns are NOT comparable with 1.5 s runs.) This constant feeds
-# BOTH the --device.ssm.thresholds flag and the counting rule, change here only.
+# ssm_conflicts columns are NOT comparable with 1.5 s runs.) TTC is computed
+# directly per step from the lane observations (gap / closing speed for each
+# leader-follower pair; see get_intersection_ssm_conflicts) -- NOT via sumo's SSM
+# device: the device buffers every open encounter's full time series until the
+# encounter closes, and in queued traffic encounters never close -- measured
+# 15-20 GB RSS for ONE hour-long episode on a single intersection (SUMO 1.26,
+# range 50; still ~10 GB at range 25), which OOM-killed cluster jobs.
 SSM_TTC_THRESHOLD = 1.5
 
 
@@ -482,17 +487,16 @@ class World(object):
         sumo_cmd += ['--collision.check-junctions', 'true',
                      '--collision.action', 'warn']
         # Surrogate-safety measurement (standard practice: sumo traffic is
-        # collision-free by construction, so safety is measured via SSM conflicts --
-        # TTC below threshold -- not crashes). Opt-in per task via the `ssm_device`
-        # kwarg because equipping every vehicle costs sim time; the rewards trainers
-        # pass True. The info fn `intersection_ssm_conflicts` is registered only when
-        # enabled, so elsewhere the metric reads as UNAVAILABLE (empty), not 0.
+        # collision-free by construction, so safety is measured via TTC conflicts,
+        # not crashes). Opt-in per task via the `ssm_device` kwarg; the rewards
+        # trainers pass True. The info fn `intersection_ssm_conflicts` is registered
+        # only when enabled, so elsewhere the metric reads as UNAVAILABLE (empty),
+        # not 0. NOTE: despite the kwarg name, this no longer arms sumo's
+        # --device.ssm.* -- TTC is computed in get_intersection_ssm_conflicts from
+        # the per-lane observations. The device kept every open encounter's full
+        # time series in memory (15-20 GB per congested hour-long episode; see the
+        # SSM_TTC_THRESHOLD comment) and OOM-killed cluster jobs.
         self.ssm_enabled = bool(kwargs.get('ssm_device', False))
-        if self.ssm_enabled:
-            sumo_cmd += ['--device.ssm.probability', '1',
-                         '--device.ssm.measures', 'TTC',
-                         '--device.ssm.thresholds', str(SSM_TTC_THRESHOLD),
-                         '--device.ssm.file', os.devnull]
         self.net = os.path.join(sumo_dict['dir'], sumo_dict['roadnetFile'])
         self.route = os.path.join(sumo_dict['dir'], sumo_dict['flowFile'])
         self.sumo_cmd = sumo_cmd
@@ -612,6 +616,8 @@ class World(object):
         self._collision_seen = set()
         # vehicles already counted as SSM-conflicted this episode
         self._ssm_conflicted = set()
+        # vehicle minGap cache for TTC gap computation (one TraCI call per vehicle)
+        self._veh_mingap = {}
         self.fns = []
         self.info = {}
         # test generate observation information
@@ -751,6 +757,7 @@ class World(object):
         self._fairness.reset()  # new episode: clear cumulative served-throughput state
         self._collision_seen = set()
         self._ssm_conflicted = set()
+        self._veh_mingap = {}
 
         for intsec in self.intersections:
             intsec.observe(self.step_length, self.max_distance)
@@ -1281,13 +1288,26 @@ class World(object):
 
     def get_intersection_ssm_conflicts(self):
         """Per-intersection count of vehicles that ENTERED a surrogate-safety
-        conflict this step: their SSM-device minTTC dropped below SSM_TTC_THRESHOLD
-        for the first time this episode (each vehicle counted once, attributed to
-        the intersection controlling its current lane; internal ":junction" lanes
-        attribute to that junction). Standard-practice safety measure: sumo traffic
-        is collision-free by construction, so near-crash conflicts (TTC), not
-        crashes, carry the safety signal. Registered only when the SSM device is on
-        (ssm_device kwarg -> --device.ssm.*)."""
+        conflict this step: their car-following time-to-collision dropped below
+        SSM_TTC_THRESHOLD, counted once per vehicle per episode and attributed to
+        the intersection controlling their current lane (internal ":junction"
+        lanes attribute to that junction, like collisions).
+
+        TTC definition (Hayward 1972; Minderhoud & Bovy 2001, AAP 33(1), eq. 1;
+        same quantity sumo's SSM device reports for follow situations):
+            TTC = gap / (v_follower - v_leader),   defined when v_f > v_l
+        where gap is the bumper-to-bumper distance. The leader and gap come from
+        sumo's own car-following lookup `vehicle.getLeader` (follows across lane
+        boundaries and through junctions); its returned dist excludes the ego's
+        minGap, so minGap is added back to get the true bumper-to-bumper gap.
+
+        Computed per step rather than via sumo's SSM device: the device's
+        open-encounter buffers grow O(steps x vehicle pairs) and OOM long
+        congested episodes (see the SSM_TTC_THRESHOLD comment). Scope: rear-end
+        (car-following) conflicts -- the mode signal control actually induces;
+        crossing/merging geometries are not evaluated. Standard-practice measure:
+        sumo traffic is collision-free by construction, so near-crash conflicts,
+        not crashes, carry the safety signal."""
         counts = {i.id: 0.0 for i in self.intersections}
         try:
             vids = self.eng.vehicle.getIDList()
@@ -1297,11 +1317,27 @@ class World(object):
             if v in self._ssm_conflicted:
                 continue
             try:
-                raw = self.eng.vehicle.getParameter(v, "device.ssm.minTTC")
-                ttc = float(raw)
+                lead = self.eng.vehicle.getLeader(v)
             except Exception:
                 continue
-            if not 0.0 < ttc < SSM_TTC_THRESHOLD:
+            if not lead or not lead[0]:
+                continue
+            leader_id, dist = lead
+            try:
+                closing = self.eng.vehicle.getSpeed(v) - self.eng.vehicle.getSpeed(leader_id)
+            except Exception:
+                continue
+            if closing <= 0.0:
+                continue
+            min_gap = self._veh_mingap.get(v)
+            if min_gap is None:
+                try:
+                    min_gap = self.eng.vehicle.getMinGap(v)
+                except Exception:
+                    min_gap = 2.5
+                self._veh_mingap[v] = min_gap
+            gap = max(dhist + min_gap, 0.0)
+            if gap / closing >= SSM_TTC_THRESHOLD:
                 continue
             self._ssm_conflicted.add(v)
             try:

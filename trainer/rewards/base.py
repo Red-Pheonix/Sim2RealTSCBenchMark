@@ -47,10 +47,12 @@ EXTRA_INFO_FN = {
     "fuel": "lane_fuel",                   # sumo-only
     "emergency_stops": "intersection_emergency_stops",  # sumo-only
     "collisions": "intersection_collisions",            # sumo-only
-    # surrogate-safety conflicts (TTC < SSM_TTC_THRESHOLD, 1.5s SSAM standard); registered on
-    # the sumo world only when the device is enabled (rewards create_world passes
-    # ssm_device=True), so availability resolution handles it like the other extras
-    "ssm_conflicts": "intersection_ssm_conflicts",       # sumo-only, device-gated
+    # surrogate-safety conflicts (leader-follower TTC < SSM_TTC_THRESHOLD, 1.5s SSAM
+    # standard; computed per step from lane observations -- NOT sumo's SSM device,
+    # whose open-encounter buffers OOM long episodes); registered on the sumo world
+    # only when enabled (rewards create_world passes ssm_device=True), so
+    # availability resolution handles it like the other extras
+    "ssm_conflicts": "intersection_ssm_conflicts",       # sumo-only, opt-in gated
 }
 
 # DTL `mode` values (column 2) -- the repo-wide canonical four:
@@ -87,10 +89,15 @@ EXTRA_INFO_FN = {
 #                           (e.g. caught at the stop bar by a phase switch); one
 #                           event per occurrence, attributed to the controlling
 #                           intersection.
-#   ssm_conflicts    count  episode-total vehicles whose SSM-device min TTC dropped
-#                           below SSM_TTC_THRESHOLD (world_sumo.py; 1.5 s = the FHWA
-#                           SSAM standard since 2026-07-05, earlier runs used a 3.0 s
-#                           screening value -- counts NOT comparable across the two).
+#   ssm_conflicts    count  episode-total vehicles whose leader-follower TTC (gap /
+#                           closing speed, same-lane) dropped below SSM_TTC_THRESHOLD
+#                           (world_sumo.py; 1.5 s = the FHWA SSAM standard since
+#                           2026-07-05, earlier runs used a 3.0 s screening value --
+#                           counts NOT comparable across the two; 2026-07-06 the
+#                           sumo SSM DEVICE was replaced by directly computed TTC
+#                           after the device's open-encounter buffers OOMed cluster
+#                           jobs -- computed counts run ~15% below device counts,
+#                           which also saw crossing/merging encounters).
 #                           Each vehicle counted once per episode. The STANDARD
 #                           surrogate-safety measure; sumo traffic is collision-free
 #                           by construction so near-crash conflicts, not crashes,
@@ -141,7 +148,7 @@ RAW_METRIC_FNS = {
     "fuel": "lane_fuel",                                 # sumo-only
     "emergency_stops": "intersection_emergency_stops",   # sumo-only
     "collisions": "intersection_collisions",             # sumo-only
-    "ssm_conflicts": "intersection_ssm_conflicts",       # sumo-only, device-gated
+    "ssm_conflicts": "intersection_ssm_conflicts",       # sumo-only, opt-in gated
 }
 
 
@@ -387,8 +394,9 @@ class Sim2RealRewardsTrainer(BaseTrainer):
         self.world_sim = Registry.mapping["world_mapping"]["cityflow"](
             self.cityflow_path, thread_num
         )
-        # ssm_device: equip vehicles with the SSM device so the real side measures
-        # surrogate-safety conflicts (rewards task only -- costs sim time).
+        # ssm_device: enable surrogate-safety conflict measurement on the real side
+        # (rewards task only). Despite the name this no longer arms sumo's SSM
+        # device -- TTC is computed from lane observations (see world_sumo.py).
         self.world_real = Registry.mapping["world_mapping"]["sumo"](
             self.sumo_path, **{"interface": interface, "ssm_device": True}
         )
