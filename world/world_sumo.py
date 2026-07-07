@@ -1336,7 +1336,7 @@ class World(object):
                 except Exception:
                     min_gap = 2.5
                 self._veh_mingap[v] = min_gap
-            gap = max(dhist + min_gap, 0.0)
+            gap = max(dist + min_gap, 0.0)
             if gap / closing >= SSM_TTC_THRESHOLD:
                 continue
             self._ssm_conflicted.add(v)
