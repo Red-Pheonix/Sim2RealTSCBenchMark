@@ -22,6 +22,8 @@ timing (flexible) and only noisily on structure (barrier); gating (ugat) keeps i
 plain gat can gridlock on barrier. Deploys plain (no runtime shield); real rewards unused.
 """
 
+import os
+
 import numpy as np
 import torch
 
@@ -55,8 +57,15 @@ class Sim2RealActionsGATTrainer(Sim2RealActionsTrainer):
             world_real=self.world_real,
             agents_real=self.agents_real,
             dataset_dir=(
+                # The grounding pickles are per-run scratch (rewritten every episode),
+                # so the dir must be unique per run: without the agent + pid, parallel
+                # or sequential jobs sharing network/setting/prefix read each other's
+                # data -- an agent with a different obs layout (presslight in+out vs
+                # dqn in-only) crashes the model train; a same-agent sibling (other
+                # seed, gat vs ugat) silently cross-contaminates it.
                 "collected/gat_"
-                f"{cmd['network']}_{cmd.get('real_setting', 'default')}_{cmd.get('prefix', '')}"
+                f"{cmd['agent']}_{cmd['network']}_{cmd.get('real_setting', 'default')}"
+                f"_{cmd.get('prefix', '')}_p{os.getpid()}"
             ),
         )
         self._gat_ready = False
