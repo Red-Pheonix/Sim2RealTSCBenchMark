@@ -2,7 +2,7 @@
 # -action set at real eval) -> 0 violations by construction; measures whether ugat training
 # helps travel time over naive+shield. Same trainer as ugat.yml; real-side mode = shield.
 trainer:
-  episodes: 40
+  episodes: 100
   real_eval_interval: 1
   eval_sim: false
 

@@ -3,7 +3,7 @@
 # question is whether GAT training improves travel time over naive+shield. Same trainer as
 # gat.yml; only the real-side mode flips to shield.
 trainer:
-  episodes: 40
+  episodes: 100
   real_eval_interval: 1
   eval_sim: false
 
