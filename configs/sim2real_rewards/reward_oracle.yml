@@ -1,0 +1,15 @@
+# reward_oracle: known-w skyline reference (NOT a mitigation method -- the yardstick).
+# Trains DIRECTLY in the real simulator (sumo) on the true hidden objective
+# LinearReward(w*) over the REAL feature bank (every component measurable there),
+# following the PRETRAINING convention rather than the 300-sim/100-real method budget:
+# from scratch, oracle_episodes = 200 (the tsc pretraining count). The real budget cap
+# does not apply to a reference run; the DTL logs all training rollouts as REAL_TRAIN
+# (count == real rollouts used) plus the usual budget-exempt REAL_TEST scoring curve.
+sim2real:
+  method: reward_oracle
+  oracle_episodes: 200
+  oracle_from_scratch: True
+  reward_scale: 1.0
+
+trainer:
+  real_eval_interval: 2   # 200 eps / every 2nd -> ~100 REAL_TEST scoring rows

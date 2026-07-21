@@ -44,7 +44,7 @@ parser.add_argument(
     "--reward_model",
     type=str,
     default="naive",
-    help="reward-gap method (naive, reward_shaping, reward_random, reward_inference, dynamic_reward_shaping, morl_grid, shield)",
+    help="reward-gap method (naive, reward_shaping, reward_random, reward_inference, dynamic_reward_shaping, morl_grid, shield, reward_oracle)",
 )
 
 parser.add_argument(

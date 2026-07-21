@@ -21,6 +21,7 @@ class Sim2RealRewardsTask(BaseTask):
         "pt_naive": "sim2real_rewards_pt_naive",
         "morl_grid": "sim2real_rewards_morl_grid",
         "dynamic_reward_shaping": "sim2real_rewards_dynamic_reward_shaping",
+        "reward_oracle": "sim2real_rewards_reward_oracle",
     }
 
     def __init__(self, logger, method=None, gpu=0, cpu=False, name="sim2real_rewards"):
