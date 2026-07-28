@@ -4,14 +4,14 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
     <input>
-        <node-files value="/home/local/ASURITE/jturnau/UGAT/data/raw_data/hangzhou_1x3/hangzhou_1x3.nod.xml"/>
-        <edge-files value="/home/local/ASURITE/jturnau/UGAT/data/raw_data/hangzhou_1x3/hangzhou_1x3.edg.xml"/>
-        <connection-files value="/home/local/ASURITE/jturnau/UGAT/data/raw_data/hangzhou_1x3/hangzhou_1x3.con.xml"/>
-        <tllogic-files value="/home/local/ASURITE/jturnau/UGAT/data/raw_data/hangzhou_1x3/hangzhou_1x3.tll.xml"/>
+        <node-files value="data/raw_data/hangzhou_1x3/hangzhou_1x3.nod.xml"/>
+        <edge-files value="data/raw_data/hangzhou_1x3/hangzhou_1x3.edg.xml"/>
+        <connection-files value="data/raw_data/hangzhou_1x3/hangzhou_1x3.con.xml"/>
+        <tllogic-files value="data/raw_data/hangzhou_1x3/hangzhou_1x3.tll.xml"/>
     </input>
 
     <output>
-        <output-file value="/home/local/ASURITE/jturnau/UGAT/data/raw_data/hangzhou_1x3/hangzhou_1x3.net.xml"/>
+        <output-file value="data/raw_data/hangzhou_1x3/hangzhou_1x3.net.xml"/>
     </output>
 
     <report>

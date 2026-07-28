@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Read log file
-log_file = "/Users/khoavo2003/PycharmProjects/UGAT/data/output_data/2025_03_09-18_21_24_BRF.log"
+log_file = "data/output_data/2025_03_09-18_21_24_BRF.log"
 
 # Refined regular expressions for extracting values
 sim_pattern = re.compile(
