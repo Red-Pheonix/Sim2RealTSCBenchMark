@@ -1,3 +1,14 @@
+# Budget: 100 episodes x (1 sim eval rollout + 1 real posterior-conditioning rollout) + 91 sim
+# train episodes (10-episode posterior warm-up) = ~291 episodes + 100 real rows, per the policy in
+# notes/experiments/README.md. real_eval_interval stays 0 ON PURPOSE: the 100 REAL_TRAIN rollouts
+# already ARE the real curve (each is a full eval of the current checkpoint), so adding a REAL_TEST
+# curve would spend 200 real rows, double every other method. Analysis scores DA from its
+# REAL_TRAIN rows, same top-K rule as gat/ugat; the single terminal REAL_TEST is the LAST
+# checkpoint (this trainer has no keep-best), not a promoted best.
+trainer:
+  episodes: 100
+  real_eval_interval: 0
+
 sim2real:
   method: "domain_adaptation"
   sim_rollouts: 1

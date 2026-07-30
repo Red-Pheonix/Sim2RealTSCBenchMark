@@ -635,6 +635,10 @@ class TransitionDomainAdaptationTrainer(TransitionTrainer):
             collect_trajectory=True,
         )
         summary_metric = self.compute_summary_metric(trajectory)
+        # REAL_TRAIN per the canonical mode taxonomy (the rollout FEEDS the method: it is the
+        # posterior query). It is nonetheless a full greedy eval of the current checkpoint, so
+        # these rows -- not the single terminal REAL_TEST, which is the LAST checkpoint (no
+        # keep-best here) -- are this method's real transfer curve for analysis.
         self.log_metrics("REAL_TRAIN", episode, self.metric_real, 0)
         return {
             "episode": episode,
