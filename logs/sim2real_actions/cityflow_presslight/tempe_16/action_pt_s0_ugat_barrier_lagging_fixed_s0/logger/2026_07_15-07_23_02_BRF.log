@@ -1,0 +1,203 @@
+Policy training episode: 0, grounded actions taken: 0, last two uncertainties: {0: [0.0], 1: [0.0], 2: [0.0], 3: [0.0], 4: [0.0], 5: [0.0], 6: [0.0], 7: [0.0], 8: [0.0], 9: [0.0], 10: [0.0], 11: [0.0], 12: [0.0], 13: [0.0], 14: [0.0], 15: [0.0]}, avg agent uncertainties: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], grounded actions by agent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+REAL_TRAIN step:0, travel time:169.74060849148896, q_loss:100, rewards:-261.2685112847222, queue:28.11684027777778, delay:0.2739298078748915, throughput:19309, violation_rate:0.3399, forceoff_rate:0.1049, violations:1958, force_offs:604
+REAL_TRAIN_PER_INT step:0 int:0 id:104 violations:82 force_offs:32 decisions:360 violation_rate:0.2278 forceoff_rate:0.0889 queue:0.9000
+REAL_TRAIN_PER_INT step:0 int:1 id:105 violations:80 force_offs:22 decisions:360 violation_rate:0.2222 forceoff_rate:0.0611 queue:1.4111
+REAL_TRAIN_PER_INT step:0 int:2 id:109 violations:69 force_offs:20 decisions:360 violation_rate:0.1917 forceoff_rate:0.0556 queue:1.3250
+REAL_TRAIN_PER_INT step:0 int:3 id:110 violations:121 force_offs:59 decisions:360 violation_rate:0.3361 forceoff_rate:0.1639 queue:0.0000
+REAL_TRAIN_PER_INT step:0 int:4 id:111 violations:156 force_offs:51 decisions:360 violation_rate:0.4333 forceoff_rate:0.1417 queue:0.0000
+REAL_TRAIN_PER_INT step:0 int:5 id:117 violations:48 force_offs:44 decisions:360 violation_rate:0.1333 forceoff_rate:0.1222 queue:1.4917
+REAL_TRAIN_PER_INT step:0 int:6 id:120 violations:179 force_offs:16 decisions:360 violation_rate:0.4972 forceoff_rate:0.0444 queue:24.1833
+REAL_TRAIN_PER_INT step:0 int:7 id:121 violations:98 force_offs:36 decisions:360 violation_rate:0.2722 forceoff_rate:0.1000 queue:3.1444
+REAL_TRAIN_PER_INT step:0 int:8 id:122 violations:86 force_offs:34 decisions:360 violation_rate:0.2389 forceoff_rate:0.0944 queue:36.3694
+REAL_TRAIN_PER_INT step:0 int:9 id:123 violations:80 force_offs:70 decisions:360 violation_rate:0.2222 forceoff_rate:0.1944 queue:54.4056
+REAL_TRAIN_PER_INT step:0 int:10 id:124 violations:226 force_offs:114 decisions:360 violation_rate:0.6278 forceoff_rate:0.3167 queue:291.1500
+REAL_TRAIN_PER_INT step:0 int:11 id:86 violations:191 force_offs:21 decisions:360 violation_rate:0.5306 forceoff_rate:0.0583 queue:13.0889
+REAL_TRAIN_PER_INT step:0 int:12 id:87 violations:50 force_offs:42 decisions:360 violation_rate:0.1389 forceoff_rate:0.1167 queue:0.8944
+REAL_TRAIN_PER_INT step:0 int:13 id:88 violations:140 force_offs:1 decisions:360 violation_rate:0.3889 forceoff_rate:0.0028 queue:2.0861
+REAL_TRAIN_PER_INT step:0 int:14 id:89 violations:150 force_offs:7 decisions:360 violation_rate:0.4167 forceoff_rate:0.0194 queue:1.6917
+REAL_TRAIN_PER_INT step:0 int:15 id:91 violations:202 force_offs:35 decisions:360 violation_rate:0.5611 forceoff_rate:0.0972 queue:17.7278
+forward model: training agent 0.
+Epoch 0: forward train average loss 0.0754165036810769.
+epoch 0: forward test average loss 0.11737952629725139.
+Epoch 99: forward train average loss 0.011645851035912832.
+epoch 99: forward test average loss 0.017379354271623824.
+inverse model, training agent 0.
+epoch 0: inverse train average loss 0.03640773561265734.
+epoch 0: inverse test average loss 0.058288888798819646.
+epoch 99: inverse train average loss 0.022300354722473357.
+epoch 99: inverse test average loss 0.035432466202312045.
+forward model: training agent 1.
+Epoch 0: forward train average loss 0.07066209117571513.
+epoch 0: forward test average loss 0.11014802257219951.
+Epoch 99: forward train average loss 0.006243913434445858.
+epoch 99: forward test average loss 0.010526332590315077.
+inverse model, training agent 1.
+epoch 0: inverse train average loss 0.028474362360106573.
+epoch 0: inverse test average loss 0.045016267233424716.
+epoch 99: inverse train average loss 0.02105292719271448.
+epoch 99: inverse test average loss 0.033531078033977084.
+forward model: training agent 2.
+Epoch 0: forward train average loss 0.0631315451529291.
+epoch 0: forward test average loss 0.09742152690887451.
+Epoch 99: forward train average loss 0.004810891010695034.
+epoch 99: forward test average loss 0.007531412773662143.
+inverse model, training agent 2.
+epoch 0: inverse train average loss 0.02698749883307351.
+epoch 0: inverse test average loss 0.042954148517714605.
+epoch 99: inverse train average loss 0.01663580226401488.
+epoch 99: inverse test average loss 0.027218422955936857.
+forward model: training agent 3.
+Epoch 0: forward train average loss 0.0002474338495327781.
+epoch 0: forward test average loss 0.0003865924793192082.
+Epoch 99: forward train average loss 3.240074875066057e-05.
+epoch 99: forward test average loss 5.120369638057632e-05.
+inverse model, training agent 3.
+epoch 0: inverse train average loss 0.014148562318748899.
+epoch 0: inverse test average loss 0.022624793152014416.
+epoch 99: inverse train average loss 0.013088497643669447.
+epoch 99: inverse test average loss 0.020934606591860454.
+forward model: training agent 4.
+Epoch 0: forward train average loss 1.0706602070066664.
+epoch 0: forward test average loss 1.5325671301947699.
+Epoch 99: forward train average loss 0.13172846204704708.
+epoch 99: forward test average loss 0.16800779766506618.
+inverse model, training agent 4.
+epoch 0: inverse train average loss 0.012022352053059472.
+epoch 0: inverse test average loss 0.019269467227988772.
+epoch 99: inverse train average loss 0.011647402826282714.
+epoch 99: inverse test average loss 0.018407403594917722.
+forward model: training agent 5.
+Epoch 0: forward train average loss 0.1702592803372277.
+epoch 0: forward test average loss 0.2817857265472412.
+Epoch 99: forward train average loss 0.010676960564321943.
+epoch 99: forward test average loss 0.018613930377695296.
+inverse model, training agent 5.
+epoch 0: inverse train average loss 0.01163629980550872.
+epoch 0: inverse test average loss 0.018534726566738553.
+epoch 99: inverse train average loss 0.004440683302366071.
+epoch 99: inverse test average loss 0.006630956505735715.
+forward model: training agent 6.
+Epoch 0: forward train average loss 0.2260504828559028.
+epoch 0: forward test average loss 0.36307859420776367.
+Epoch 99: forward train average loss 0.028859642644723255.
+epoch 99: forward test average loss 0.045594745212131076.
+inverse model, training agent 6.
+epoch 0: inverse train average loss 0.03593136535750495.
+epoch 0: inverse test average loss 0.057799571090274386.
+epoch 99: inverse train average loss 0.03219542735152774.
+epoch 99: inverse test average loss 0.052296055687798396.
+forward model: training agent 7.
+Epoch 0: forward train average loss 0.9979515473047892.
+epoch 0: forward test average loss 1.6108476850721571.
+Epoch 99: forward train average loss 0.038967433075110115.
+epoch 99: forward test average loss 0.06837800476286146.
+inverse model, training agent 7.
+epoch 0: inverse train average loss 0.03866224322054121.
+epoch 0: inverse test average loss 0.06174875299135844.
+epoch 99: inverse train average loss 0.03181019673744837.
+epoch 99: inverse test average loss 0.052843241227997675.
+forward model: training agent 8.
+Epoch 0: forward train average loss 2.0263139141930475.
+epoch 0: forward test average loss 2.7346522013346353.
+Epoch 99: forward train average loss 0.07033274985022014.
+epoch 99: forward test average loss 0.09119716617796156.
+inverse model, training agent 8.
+epoch 0: inverse train average loss 0.01367860266731845.
+epoch 0: inverse test average loss 0.021590133508046467.
+epoch 99: inverse train average loss 0.006192380458944374.
+epoch 99: inverse test average loss 0.007314445036980841.
+forward model: training agent 9.
+Epoch 0: forward train average loss 4.6837699678209095.
+epoch 0: forward test average loss 5.269295692443848.
+Epoch 99: forward train average loss 0.15023191107643974.
+epoch 99: forward test average loss 0.2919851541519165.
+inverse model, training agent 9.
+epoch 0: inverse train average loss 0.020444883240593806.
+epoch 0: inverse test average loss 0.031626431478394404.
+epoch 99: inverse train average loss 0.015033707022666931.
+epoch 99: inverse test average loss 0.023772642844253115.
+forward model: training agent 10.
+Epoch 0: forward train average loss 6.380627208285862.
+epoch 0: forward test average loss 8.54353035820855.
+Epoch 99: forward train average loss 0.4141539865069919.
+epoch 99: forward test average loss 0.5840880076090494.
+inverse model, training agent 10.
+epoch 0: inverse train average loss 0.034042879111237.
+epoch 0: inverse test average loss 0.05423831277423435.
+epoch 99: inverse train average loss 0.030983303156163957.
+epoch 99: inverse test average loss 0.050774003068606056.
+forward model: training agent 11.
+Epoch 0: forward train average loss 0.06531868709458245.
+epoch 0: forward test average loss 0.10782673292689854.
+Epoch 99: forward train average loss 0.014154084854655795.
+epoch 99: forward test average loss 0.02424713472525279.
+inverse model, training agent 11.
+epoch 0: inverse train average loss 0.0360011069311036.
+epoch 0: inverse test average loss 0.057542542616526283.
+epoch 99: inverse train average loss 0.032757505774497986.
+epoch 99: inverse test average loss 0.05330438084072537.
+forward model: training agent 12.
+Epoch 0: forward train average loss 0.050042750106917486.
+epoch 0: forward test average loss 0.07558238506317139.
+Epoch 99: forward train average loss 0.002553907274785969.
+epoch 99: forward test average loss 0.0047988055480851066.
+inverse model, training agent 12.
+epoch 0: inverse train average loss 0.012934215366840363.
+epoch 0: inverse test average loss 0.020646014147334628.
+epoch 99: inverse train average loss 0.005803968964351548.
+epoch 99: inverse test average loss 0.009274030725161234.
+forward model: training agent 13.
+Epoch 0: forward train average loss 0.055276898874176875.
+epoch 0: forward test average loss 0.0928977992799547.
+Epoch 99: forward train average loss 0.0054231783789065145.
+epoch 99: forward test average loss 0.00824941818912824.
+inverse model, training agent 13.
+epoch 0: inverse train average loss 0.03376087836093373.
+epoch 0: inverse test average loss 0.05405098034275903.
+epoch 99: inverse train average loss 0.020580347213480208.
+epoch 99: inverse test average loss 0.03459353744983673.
+forward model: training agent 14.
+Epoch 0: forward train average loss 0.23080970181359184.
+epoch 0: forward test average loss 0.3611898289786445.
+Epoch 99: forward train average loss 0.010241231984562345.
+epoch 99: forward test average loss 0.014011075927151574.
+inverse model, training agent 14.
+epoch 0: inverse train average loss 0.01139381155371666.
+epoch 0: inverse test average loss 0.018316629860136244.
+epoch 99: inverse train average loss 0.008563701891236834.
+epoch 99: inverse test average loss 0.012496458573473824.
+forward model: training agent 15.
+Epoch 0: forward train average loss 0.2508420745531718.
+epoch 0: forward test average loss 0.40462162759568954.
+Epoch 99: forward train average loss 0.025919657200574875.
+epoch 99: forward test average loss 0.049194663763046265.
+inverse model, training agent 15.
+epoch 0: inverse train average loss 0.03649770882394579.
+epoch 0: inverse test average loss 0.057814578215281166.
+epoch 99: inverse train average loss 0.03172853133744664.
+epoch 99: inverse test average loss 0.05283357699712118.
+GAT episode:0/100 grounded:False sim_loss:0.0000
+Policy training episode: 1, grounded actions taken: 0, last two uncertainties: {0: [0.0, 0.0], 1: [0.0, 0.0], 2: [0.0, 0.0], 3: [0.0, 0.0], 4: [0.0, 0.0], 5: [0.0, 0.0], 6: [0.0, 0.0], 7: [0.0, 0.0], 8: [0.0, 0.0], 9: [0.0, 0.0], 10: [0.0, 0.0], 11: [0.0, 0.0], 12: [0.0, 0.0], 13: [0.0, 0.0], 14: [0.0, 0.0], 15: [0.0, 0.0]}, avg agent uncertainties: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], grounded actions by agent: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+REAL_TRAIN step:1, travel time:169.74060849148896, q_loss:100, rewards:-261.2685112847222, queue:28.11684027777778, delay:0.2739298078748915, throughput:19309, violation_rate:0.3399, forceoff_rate:0.1049, violations:1958, force_offs:604
+REAL_TRAIN_PER_INT step:1 int:0 id:104 violations:82 force_offs:32 decisions:360 violation_rate:0.2278 forceoff_rate:0.0889 queue:0.9000
+REAL_TRAIN_PER_INT step:1 int:1 id:105 violations:80 force_offs:22 decisions:360 violation_rate:0.2222 forceoff_rate:0.0611 queue:1.4111
+REAL_TRAIN_PER_INT step:1 int:2 id:109 violations:69 force_offs:20 decisions:360 violation_rate:0.1917 forceoff_rate:0.0556 queue:1.3250
+REAL_TRAIN_PER_INT step:1 int:3 id:110 violations:121 force_offs:59 decisions:360 violation_rate:0.3361 forceoff_rate:0.1639 queue:0.0000
+REAL_TRAIN_PER_INT step:1 int:4 id:111 violations:156 force_offs:51 decisions:360 violation_rate:0.4333 forceoff_rate:0.1417 queue:0.0000
+REAL_TRAIN_PER_INT step:1 int:5 id:117 violations:48 force_offs:44 decisions:360 violation_rate:0.1333 forceoff_rate:0.1222 queue:1.4917
+REAL_TRAIN_PER_INT step:1 int:6 id:120 violations:179 force_offs:16 decisions:360 violation_rate:0.4972 forceoff_rate:0.0444 queue:24.1833
+REAL_TRAIN_PER_INT step:1 int:7 id:121 violations:98 force_offs:36 decisions:360 violation_rate:0.2722 forceoff_rate:0.1000 queue:3.1444
+REAL_TRAIN_PER_INT step:1 int:8 id:122 violations:86 force_offs:34 decisions:360 violation_rate:0.2389 forceoff_rate:0.0944 queue:36.3694
+REAL_TRAIN_PER_INT step:1 int:9 id:123 violations:80 force_offs:70 decisions:360 violation_rate:0.2222 forceoff_rate:0.1944 queue:54.4056
+REAL_TRAIN_PER_INT step:1 int:10 id:124 violations:226 force_offs:114 decisions:360 violation_rate:0.6278 forceoff_rate:0.3167 queue:291.1500
+REAL_TRAIN_PER_INT step:1 int:11 id:86 violations:191 force_offs:21 decisions:360 violation_rate:0.5306 forceoff_rate:0.0583 queue:13.0889
+REAL_TRAIN_PER_INT step:1 int:12 id:87 violations:50 force_offs:42 decisions:360 violation_rate:0.1389 forceoff_rate:0.1167 queue:0.8944
+REAL_TRAIN_PER_INT step:1 int:13 id:88 violations:140 force_offs:1 decisions:360 violation_rate:0.3889 forceoff_rate:0.0028 queue:2.0861
+REAL_TRAIN_PER_INT step:1 int:14 id:89 violations:150 force_offs:7 decisions:360 violation_rate:0.4167 forceoff_rate:0.0194 queue:1.6917
+REAL_TRAIN_PER_INT step:1 int:15 id:91 violations:202 force_offs:35 decisions:360 violation_rate:0.5611 forceoff_rate:0.0972 queue:17.7278
+forward model: training agent 0.
+Epoch 0: forward train average loss 0.011185003858473565.
+epoch 0: forward test average loss 0.01813937971989314.
+Epoch 99: forward train average loss 0.006452864967286587.
+epoch 99: forward test average loss 0.009729035612609651.
+inverse model, training agent 0.

@@ -1,0 +1,1078 @@
+interactive is False
+platform is linux
+domain_adaptation_episode:0/100
+Episode 0 sim randomization params: {'headwayTime': 2.322542491335306, 'minGap': 2.852442249215131, 'usualPosAcc': 3.5009748046028637, 'usualNegAcc': 3.863644182758742, 'length': 4.7}
+SIM_TEST step:0, travel time:88.31049250535332, q_loss:0, rewards:-20.570138888888888, queue:3.577777777777778, delay:0.20950710155345775, throughput:2736
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:0, travel time:257.2250589159466, q_loss:0, rewards:-65.33249240451389, queue:13.225925925925926, delay:0.5434346516927083, throughput:2338
+Collected real summary metric with shape (95,) from rollout 0
+Skipping policy training until posterior samples reach 10 (current:1)
+domain_adaptation_episode:1/100
+Episode 1 sim randomization params: {'headwayTime': 2.740023247189788, 'minGap': 3.369440016246849, 'usualPosAcc': 3.9180301098557693, 'usualNegAcc': 2.6021730321410916, 'length': 4.7}
+SIM_TEST step:1, travel time:73.34987504462691, q_loss:0, rewards:-14.85763888888889, queue:2.6314814814814813, delay:0.18929867214626736, throughput:2771
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:1, travel time:257.2250589159466, q_loss:0, rewards:-65.33249240451389, queue:13.225925925925926, delay:0.5434346516927083, throughput:2338
+Collected real summary metric with shape (95,) from rollout 1
+Skipping policy training until posterior samples reach 10 (current:2)
+domain_adaptation_episode:2/100
+Episode 2 sim randomization params: {'headwayTime': 0.9968042013088867, 'minGap': 2.9148773525650076, 'usualPosAcc': 0.1, 'usualNegAcc': 3.358685004265229, 'length': 4.7}
+SIM_TEST step:2, travel time:103.68464285714286, q_loss:0, rewards:-21.680973307291666, queue:3.7203703703703703, delay:0.216704347398546, throughput:2713
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:2, travel time:257.2250589159466, q_loss:0, rewards:-65.33249240451389, queue:13.225925925925926, delay:0.5434346516927083, throughput:2338
+Collected real summary metric with shape (95,) from rollout 2
+Skipping policy training until posterior samples reach 10 (current:3)
+domain_adaptation_episode:3/100
+Episode 3 sim randomization params: {'headwayTime': 0.8038867821748907, 'minGap': 2.704066766171368, 'usualPosAcc': 2.1998317873379496, 'usualNegAcc': 4.342143636743647, 'length': 5.0}
+SIM_TEST step:3, travel time:85.25535714285714, q_loss:0, rewards:-19.784998914930554, queue:3.5453703703703705, delay:0.1841859323007089, throughput:2721
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:3, travel time:257.2250589159466, q_loss:0, rewards:-65.33249240451389, queue:13.225925925925926, delay:0.5434346516927083, throughput:2338
+Collected real summary metric with shape (95,) from rollout 3
+Skipping policy training until posterior samples reach 10 (current:4)
+domain_adaptation_episode:4/100
+Episode 4 sim randomization params: {'headwayTime': 1.8724936465890594, 'minGap': 3.391926849397887, 'usualPosAcc': 1.7253352440582055, 'usualNegAcc': 4.248355709345111, 'length': 5.0}
+SIM_TEST step:4, travel time:106.37058193502321, q_loss:0, rewards:-34.5344482421875, queue:5.478703703703704, delay:0.22096775196216725, throughput:2645
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:4, travel time:257.2250589159466, q_loss:0, rewards:-65.33249240451389, queue:13.225925925925926, delay:0.5434346516927083, throughput:2338
+Collected real summary metric with shape (95,) from rollout 4
+Skipping policy training until posterior samples reach 10 (current:5)
+domain_adaptation_episode:5/100
+Episode 5 sim randomization params: {'headwayTime': 2.266401767036748, 'minGap': 2.632340270232629, 'usualPosAcc': 1.3764534882885493, 'usualNegAcc': 2.985947711958951, 'length': 5.0}
+SIM_TEST step:5, travel time:74.45860099928622, q_loss:0, rewards:-17.1316650390625, queue:3.073148148148148, delay:0.18501704180682146, throughput:2759
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:5, travel time:257.2250589159466, q_loss:0, rewards:-65.33249240451389, queue:13.225925925925926, delay:0.5434346516927083, throughput:2338
+Collected real summary metric with shape (95,) from rollout 5
+Skipping policy training until posterior samples reach 10 (current:6)
+domain_adaptation_episode:6/100
+Episode 6 sim randomization params: {'headwayTime': 0.5, 'minGap': 2.8246967930461833, 'usualPosAcc': 2.41345398651631, 'usualNegAcc': 4.54371911210986, 'length': 5.0}
+SIM_TEST step:6, travel time:88.15101749375224, q_loss:0, rewards:-22.439028591579863, queue:3.8648148148148147, delay:0.20707530268916377, throughput:2706
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:6, travel time:257.2250589159466, q_loss:0, rewards:-65.33249240451389, queue:13.225925925925926, delay:0.5434346516927083, throughput:2338
+Collected real summary metric with shape (95,) from rollout 6
+Skipping policy training until posterior samples reach 10 (current:7)
+domain_adaptation_episode:7/100
+Episode 7 sim randomization params: {'headwayTime': 2.729009695000661, 'minGap': 2.6646217006093975, 'usualPosAcc': 2.4537254581778334, 'usualNegAcc': 4.923001733295674, 'length': 5.0}
+SIM_TEST step:7, travel time:91.87, q_loss:0, rewards:-19.463890245225695, queue:3.487037037037037, delay:0.2018739205819589, throughput:2710
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:7, travel time:257.2250589159466, q_loss:0, rewards:-65.33249240451389, queue:13.225925925925926, delay:0.5434346516927083, throughput:2338
+Collected real summary metric with shape (95,) from rollout 7
+Skipping policy training until posterior samples reach 10 (current:8)
+domain_adaptation_episode:8/100
+Episode 8 sim randomization params: {'headwayTime': 0.5, 'minGap': 3.4450125589060625, 'usualPosAcc': 4.460390576343935, 'usualNegAcc': 4.9188457850926675, 'length': 5.0}
+SIM_TEST step:8, travel time:96.6395431834404, q_loss:0, rewards:-29.079722764756944, queue:4.8351851851851855, delay:0.21184528492115162, throughput:2688
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:8, travel time:257.2250589159466, q_loss:0, rewards:-65.33249240451389, queue:13.225925925925926, delay:0.5434346516927083, throughput:2338
+Collected real summary metric with shape (95,) from rollout 8
+Skipping policy training until posterior samples reach 10 (current:9)
+domain_adaptation_episode:9/100
+Episode 9 sim randomization params: {'headwayTime': 1.5443566182705228, 'minGap': 3.424887446073305, 'usualPosAcc': 5.295951310371953, 'usualNegAcc': 6.510550396991155, 'length': 5.0}
+SIM_TEST step:9, travel time:67.95573009639415, q_loss:0, rewards:-17.526806640625, queue:3.1564814814814817, delay:0.1843404840540003, throughput:2785
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:9, travel time:257.2250589159466, q_loss:0, rewards:-65.33249240451389, queue:13.225925925925926, delay:0.5434346516927083, throughput:2338
+Collected real summary metric with shape (95,) from rollout 9
+Episode 9 sim randomization params: {'headwayTime': 4.311976909637451, 'minGap': 2.8886938095092773, 'usualPosAcc': 7.0, 'usualNegAcc': 3.740884780883789, 'length': 4.7}
+SIM_TRAIN step:9, travel time:650.1832142857143, q_loss:0, rewards:-116.4470703125, queue:17.99537037037037, delay:0.47939809163411456, throughput:1733
+Posterior-sampled train parameters for episode 9: {'headwayTime': 4.311976909637451, 'minGap': 2.8886938095092773, 'usualPosAcc': 7.0, 'usualNegAcc': 3.740884780883789, 'length': 4.7}
+training_episode:9/100, sim_loss:0
+domain_adaptation_episode:10/100
+Episode 10 sim randomization params: {'headwayTime': 2.732563326866352, 'minGap': 2.465005292378418, 'usualPosAcc': 2.623942378956687, 'usualNegAcc': 4.724100898719084, 'length': 4.7}
+SIM_TEST step:10, travel time:93.53821428571429, q_loss:0, rewards:-25.959166124131944, queue:4.378703703703704, delay:0.21263888323748553, throughput:2699
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:10, travel time:257.2250589159466, q_loss:0, rewards:-65.33249240451389, queue:13.225925925925926, delay:0.5434346516927083, throughput:2338
+Collected real summary metric with shape (95,) from rollout 10
+Episode 10 sim randomization params: {'headwayTime': 4.333858966827393, 'minGap': 2.1640772819519043, 'usualPosAcc': 7.0, 'usualNegAcc': 3.6038284301757812, 'length': 4.7}
+SIM_TRAIN step:10, travel time:1232.655, q_loss:0, rewards:-185.9577690972222, queue:30.090740740740742, delay:0.5723023026077836, throughput:1013
+Posterior-sampled train parameters for episode 10: {'headwayTime': 4.333858966827393, 'minGap': 2.1640772819519043, 'usualPosAcc': 7.0, 'usualNegAcc': 3.6038284301757812, 'length': 4.7}
+training_episode:10/100, sim_loss:0
+domain_adaptation_episode:11/100
+Episode 11 sim randomization params: {'headwayTime': 2.7993660465221546, 'minGap': 3.0547509301360027, 'usualPosAcc': 3.5766181045895014, 'usualNegAcc': 1.8527759718587853, 'length': 4.7}
+SIM_TEST step:11, travel time:81.75722956087112, q_loss:0, rewards:-17.76750217013889, queue:3.1259259259259258, delay:0.20594055740921585, throughput:2751
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:11, travel time:257.2250589159466, q_loss:0, rewards:-65.33249240451389, queue:13.225925925925926, delay:0.5434346516927083, throughput:2338
+Collected real summary metric with shape (95,) from rollout 11
+Episode 11 sim randomization params: {'headwayTime': 4.34099817276001, 'minGap': 1.9435926675796509, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+SIM_TRAIN step:11, travel time:426.3142857142857, q_loss:583.0007, rewards:-92.80777994791667, queue:13.183333333333334, delay:0.438264889187283, throughput:2133
+Posterior-sampled train parameters for episode 11: {'headwayTime': 4.34099817276001, 'minGap': 1.9435926675796509, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+training_episode:11/100, sim_loss:583.0007
+domain_adaptation_episode:12/100
+Episode 12 sim randomization params: {'headwayTime': 1.3275096125564985, 'minGap': 2.478871313201769, 'usualPosAcc': 4.995540312896982, 'usualNegAcc': 2.9263792636302433, 'length': 5.0}
+SIM_TEST step:12, travel time:592.83, q_loss:0, rewards:-120.0677734375, queue:19.644444444444446, delay:0.4940899319118924, throughput:1664
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:12, travel time:797.5640362225097, q_loss:0, rewards:-236.27860243055557, queue:33.43425925925926, delay:0.7215326379846644, throughput:1060
+Collected real summary metric with shape (95,) from rollout 12
+Episode 12 sim randomization params: {'headwayTime': 4.358271598815918, 'minGap': 1.9383189678192139, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:12, travel time:273.89785714285716, q_loss:729.95935, rewards:-47.46944444444444, queue:8.718518518518518, delay:0.38292063960322625, throughput:2277
+Posterior-sampled train parameters for episode 12: {'headwayTime': 4.358271598815918, 'minGap': 1.9383189678192139, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:12/100, sim_loss:729.95935
+domain_adaptation_episode:13/100
+Episode 13 sim randomization params: {'headwayTime': 1.6423265945111547, 'minGap': 3.4700502363687638, 'usualPosAcc': 4.425690942431301, 'usualNegAcc': 4.688030091606868, 'length': 4.7}
+SIM_TEST step:13, travel time:67.44448411281685, q_loss:0, rewards:-23.751942274305556, queue:3.433333333333333, delay:0.21728196320710358, throughput:2783
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:13, travel time:879.4622441778405, q_loss:0, rewards:-321.8640407986111, queue:46.528703703703705, delay:0.8651097050419561, throughput:913
+Collected real summary metric with shape (95,) from rollout 13
+Episode 13 sim randomization params: {'headwayTime': 4.500837326049805, 'minGap': 1.9590822458267212, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:13, travel time:552.9110714285714, q_loss:717.10925, rewards:-67.72222222222223, queue:13.514814814814814, delay:0.3923917982313368, throughput:1766
+Posterior-sampled train parameters for episode 13: {'headwayTime': 4.500837326049805, 'minGap': 1.9590822458267212, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:13/100, sim_loss:717.10925
+domain_adaptation_episode:14/100
+Episode 14 sim randomization params: {'headwayTime': 2.192091284439999, 'minGap': 3.1461270286795524, 'usualPosAcc': 3.9953877431453506, 'usualNegAcc': 2.736065010256143, 'length': 5.0}
+SIM_TEST step:14, travel time:82.32321428571429, q_loss:0, rewards:-27.375550672743056, queue:3.7064814814814815, delay:0.247686767578125, throughput:2755
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:14, travel time:981.4163483575248, q_loss:0, rewards:-332.1023871527778, queue:48.70740740740741, delay:0.8953780562789352, throughput:793
+Collected real summary metric with shape (95,) from rollout 14
+Episode 14 sim randomization params: {'headwayTime': 4.3989362716674805, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:14, travel time:1382.3964285714285, q_loss:625.28217, rewards:-160.76264105902777, queue:27.02314814814815, delay:0.6486111676251447, throughput:746
+Posterior-sampled train parameters for episode 14: {'headwayTime': 4.3989362716674805, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:14/100, sim_loss:625.28217
+domain_adaptation_episode:15/100
+Episode 15 sim randomization params: {'headwayTime': 0.5, 'minGap': 2.661849912146521, 'usualPosAcc': 3.90166798383507, 'usualNegAcc': 3.7765251975674863, 'length': 5.0}
+SIM_TEST step:15, travel time:63.476258479114605, q_loss:0, rewards:-12.877361382378472, queue:1.9583333333333333, delay:0.18430814389829284, throughput:2779
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:15, travel time:746.4086479902558, q_loss:0, rewards:-249.47180989583333, queue:35.375, delay:0.758116771556713, throughput:1126
+Collected real summary metric with shape (95,) from rollout 15
+Episode 15 sim randomization params: {'headwayTime': 4.3503522872924805, 'minGap': 1.9381023645401, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:15, travel time:140.1342377722242, q_loss:680.10455, rewards:-28.125694444444445, queue:4.493518518518519, delay:0.35410919189453127, throughput:2760
+Posterior-sampled train parameters for episode 15: {'headwayTime': 4.3503522872924805, 'minGap': 1.9381023645401, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:15/100, sim_loss:680.10455
+domain_adaptation_episode:16/100
+Episode 16 sim randomization params: {'headwayTime': 2.433678970747064, 'minGap': 2.6720501275307984, 'usualPosAcc': 2.1165136328833807, 'usualNegAcc': 1.9978120565140551, 'length': 4.7}
+SIM_TEST step:16, travel time:78.91003213138166, q_loss:0, rewards:-21.20333523220486, queue:3.1481481481481484, delay:0.2205354478624132, throughput:2763
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:16, travel time:613.0005592841163, q_loss:0, rewards:-265.14053819444445, queue:37.76759259259259, delay:0.7982042100694444, throughput:1309
+Collected real summary metric with shape (95,) from rollout 16
+Episode 16 sim randomization params: {'headwayTime': 4.538033962249756, 'minGap': 1.9540315866470337, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:16, travel time:507.79464285714283, q_loss:662.66064, rewards:-63.686664496527776, queue:12.48611111111111, delay:0.3884235523365162, throughput:1833
+Posterior-sampled train parameters for episode 16: {'headwayTime': 4.538033962249756, 'minGap': 1.9540315866470337, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:16/100, sim_loss:662.66064
+domain_adaptation_episode:17/100
+Episode 17 sim randomization params: {'headwayTime': 3.2158283386597706, 'minGap': 3.10921969246861, 'usualPosAcc': 4.390599994439919, 'usualNegAcc': 2.522814965634508, 'length': 5.0}
+SIM_TEST step:17, travel time:69.44860813704497, q_loss:0, rewards:-5.05388929578993, queue:0.9814814814814815, delay:0.1821905771891276, throughput:2787
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:17, travel time:868.0400552486187, q_loss:0, rewards:-323.14874131944447, queue:46.87407407407407, delay:0.8722124452944156, throughput:936
+Collected real summary metric with shape (95,) from rollout 17
+Episode 17 sim randomization params: {'headwayTime': 4.506099700927734, 'minGap': 1.9547613859176636, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:17, travel time:1190.6325, q_loss:623.35895, rewards:-129.08500434027778, queue:22.965740740740742, delay:0.4809637564199942, throughput:1016
+Posterior-sampled train parameters for episode 17: {'headwayTime': 4.506099700927734, 'minGap': 1.9547613859176636, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:17/100, sim_loss:623.35895
+domain_adaptation_episode:18/100
+Episode 18 sim randomization params: {'headwayTime': 1.5913237571786607, 'minGap': 3.466786980384051, 'usualPosAcc': 2.041411247831668, 'usualNegAcc': 2.5526460639460513, 'length': 5.0}
+SIM_TEST step:18, travel time:83.78928571428571, q_loss:0, rewards:-21.030689832899306, queue:3.1462962962962964, delay:0.22278746145742911, throughput:2733
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:18, travel time:919.9116607773851, q_loss:0, rewards:-326.08374565972224, queue:47.43796296296296, delay:0.8413298430266204, throughput:930
+Collected real summary metric with shape (95,) from rollout 18
+Episode 18 sim randomization params: {'headwayTime': 4.48475980758667, 'minGap': 1.9620860815048218, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:18, travel time:92.97359971459151, q_loss:596.0122, rewards:-15.716391330295139, queue:2.675, delay:0.255818204526548, throughput:2759
+Posterior-sampled train parameters for episode 18: {'headwayTime': 4.48475980758667, 'minGap': 1.9620860815048218, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:18/100, sim_loss:596.0122
+domain_adaptation_episode:19/100
+Episode 19 sim randomization params: {'headwayTime': 3.925671960218966, 'minGap': 2.957963447617524, 'usualPosAcc': 1.833680799192262, 'usualNegAcc': 1.6076972460403964, 'length': 4.7}
+SIM_TEST step:19, travel time:89.84261241970022, q_loss:0, rewards:-20.58472357855903, queue:3.1666666666666665, delay:0.2504815560800058, throughput:2745
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:19, travel time:243.97866455946266, q_loss:0, rewards:-71.3595703125, queue:13.439814814814815, delay:0.5581419768156829, throughput:2378
+Collected real summary metric with shape (95,) from rollout 19
+Episode 19 sim randomization params: {'headwayTime': 4.329159259796143, 'minGap': 2.357405424118042, 'usualPosAcc': 7.0, 'usualNegAcc': 4.973665714263916, 'length': 4.7}
+SIM_TRAIN step:19, travel time:111.72616922527669, q_loss:580.40765, rewards:-22.600279405381944, queue:3.7462962962962965, delay:0.2846900092230903, throughput:2744
+Posterior-sampled train parameters for episode 19: {'headwayTime': 4.329159259796143, 'minGap': 2.357405424118042, 'usualPosAcc': 7.0, 'usualNegAcc': 4.973665714263916, 'length': 4.7}
+training_episode:19/100, sim_loss:580.40765
+domain_adaptation_episode:20/100
+Episode 20 sim randomization params: {'headwayTime': 2.9897486442785124, 'minGap': 3.2562966919828895, 'usualPosAcc': 2.4065593540296044, 'usualNegAcc': 2.0239908211636424, 'length': 5.0}
+SIM_TEST step:20, travel time:98.46428571428571, q_loss:0, rewards:-26.25930447048611, queue:4.232407407407408, delay:0.24554878517433448, throughput:2695
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:20, travel time:309.69370860927154, q_loss:0, rewards:-93.57218967013888, queue:16.951851851851853, delay:0.5950734456380208, throughput:2154
+Collected real summary metric with shape (95,) from rollout 20
+Episode 20 sim randomization params: {'headwayTime': 4.328216075897217, 'minGap': 2.4018328189849854, 'usualPosAcc': 7.0, 'usualNegAcc': 2.9482994079589844, 'length': 4.7}
+SIM_TRAIN step:20, travel time:100.00392576730907, q_loss:565.19214, rewards:-17.10666775173611, queue:3.001851851851852, delay:0.2720879448784722, throughput:2785
+Posterior-sampled train parameters for episode 20: {'headwayTime': 4.328216075897217, 'minGap': 2.4018328189849854, 'usualPosAcc': 7.0, 'usualNegAcc': 2.9482994079589844, 'length': 4.7}
+training_episode:20/100, sim_loss:565.19214
+domain_adaptation_episode:21/100
+Episode 21 sim randomization params: {'headwayTime': 0.5, 'minGap': 2.643295485778662, 'usualPosAcc': 3.474584280814534, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TEST step:21, travel time:80.88892857142856, q_loss:0, rewards:-20.320414225260418, queue:3.037962962962963, delay:0.21227922792787904, throughput:2745
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:21, travel time:246.72529245663574, q_loss:0, rewards:-64.59014756944444, queue:11.94537037037037, delay:0.5484634964554398, throughput:2332
+Collected real summary metric with shape (95,) from rollout 21
+Episode 21 sim randomization params: {'headwayTime': 4.332887172698975, 'minGap': 2.2812910079956055, 'usualPosAcc': 7.0, 'usualNegAcc': 4.563136100769043, 'length': 4.7}
+SIM_TRAIN step:21, travel time:103.71892857142858, q_loss:526.35547, rewards:-24.83486328125, queue:3.838888888888889, delay:0.2830796418366609, throughput:2730
+Posterior-sampled train parameters for episode 21: {'headwayTime': 4.332887172698975, 'minGap': 2.2812910079956055, 'usualPosAcc': 7.0, 'usualNegAcc': 4.563136100769043, 'length': 4.7}
+training_episode:21/100, sim_loss:526.35547
+domain_adaptation_episode:22/100
+Episode 22 sim randomization params: {'headwayTime': 1.0704957195551794, 'minGap': 2.939340691092013, 'usualPosAcc': 2.5270459243396806, 'usualNegAcc': 4.015298456268577, 'length': 5.0}
+SIM_TEST step:22, travel time:76.71535714285714, q_loss:0, rewards:-20.82208251953125, queue:3.2055555555555557, delay:0.20569661458333333, throughput:2752
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:22, travel time:996.6461780929866, q_loss:0, rewards:-183.54680989583332, queue:29.69537037037037, delay:0.622624828197338, throughput:737
+Collected real summary metric with shape (95,) from rollout 22
+Episode 22 sim randomization params: {'headwayTime': 4.34821081161499, 'minGap': 1.938758373260498, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:22, travel time:641.8714285714286, q_loss:498.31876, rewards:-85.42568901909722, queue:16.8, delay:0.39848813657407406, throughput:1739
+Posterior-sampled train parameters for episode 22: {'headwayTime': 4.34821081161499, 'minGap': 1.938758373260498, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:22/100, sim_loss:498.31876
+domain_adaptation_episode:23/100
+Episode 23 sim randomization params: {'headwayTime': 0.7576855409098158, 'minGap': 3.4115535280322895, 'usualPosAcc': 3.6174875529689605, 'usualNegAcc': 5.016222953193099, 'length': 5.0}
+SIM_TEST step:23, travel time:79.175, q_loss:0, rewards:-24.033330620659722, queue:3.737962962962963, delay:0.20133753176088687, throughput:2739
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:23, travel time:293.7028714107366, q_loss:0, rewards:-78.63737521701388, queue:13.816666666666666, delay:0.5674890023690683, throughput:2130
+Collected real summary metric with shape (95,) from rollout 23
+Episode 23 sim randomization params: {'headwayTime': 4.348557472229004, 'minGap': 1.938265323638916, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:23, travel time:151.13923598714746, q_loss:462.3938, rewards:-13.601666937934027, queue:2.4324074074074074, delay:0.3097441496672454, throughput:2749
+Posterior-sampled train parameters for episode 23: {'headwayTime': 4.348557472229004, 'minGap': 1.938265323638916, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:23/100, sim_loss:462.3938
+domain_adaptation_episode:24/100
+Episode 24 sim randomization params: {'headwayTime': 3.4940311524193888, 'minGap': 3.203868325008293, 'usualPosAcc': 2.7328073106103234, 'usualNegAcc': 1.474232792456018, 'length': 4.913571135976311}
+SIM_TEST step:24, travel time:101.7529453766512, q_loss:0, rewards:-28.94541286892361, queue:4.461111111111111, delay:0.2670232702184607, throughput:2684
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:24, travel time:246.00913423351867, q_loss:0, rewards:-62.56999782986111, queue:11.556481481481482, delay:0.5522814715350116, throughput:2359
+Collected real summary metric with shape (95,) from rollout 24
+Episode 24 sim randomization params: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+SIM_TRAIN step:24, travel time:1283.1671428571428, q_loss:428.12424, rewards:-157.30348307291666, queue:25.76851851851852, delay:0.553560158058449, throughput:923
+Posterior-sampled train parameters for episode 24: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+training_episode:24/100, sim_loss:428.12424
+domain_adaptation_episode:25/100
+Episode 25 sim randomization params: {'headwayTime': 0.737959086887231, 'minGap': 2.387812963334451, 'usualPosAcc': 2.981495795641663, 'usualNegAcc': 2.813062851529678, 'length': 4.7}
+SIM_TEST step:25, travel time:88.08639771510175, q_loss:0, rewards:-23.040557183159724, queue:3.691666666666667, delay:0.20662064728913485, throughput:2727
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:25, travel time:248.76916900843034, q_loss:0, rewards:-64.92069769965278, queue:11.809259259259258, delay:0.5611421373155382, throughput:2336
+Collected real summary metric with shape (95,) from rollout 25
+Episode 25 sim randomization params: {'headwayTime': 4.390268325805664, 'minGap': 2.395702838897705, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:25, travel time:602.7085714285714, q_loss:407.27917, rewards:-77.62917751736111, queue:14.976851851851851, delay:0.41954082912868923, throughput:1688
+Posterior-sampled train parameters for episode 25: {'headwayTime': 4.390268325805664, 'minGap': 2.395702838897705, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:25/100, sim_loss:407.27917
+domain_adaptation_episode:26/100
+Episode 26 sim randomization params: {'headwayTime': 0.5, 'minGap': 2.996630148695209, 'usualPosAcc': 3.1177938508716685, 'usualNegAcc': 5.76303365283626, 'length': 4.99109461214458}
+SIM_TEST step:26, travel time:69.54694751874331, q_loss:0, rewards:-27.118888346354165, queue:4.472222222222222, delay:0.23130996138961227, throughput:2768
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:26, travel time:485.85896829152864, q_loss:0, rewards:-209.8456814236111, queue:31.060185185185187, delay:0.7138954445167824, throughput:1636
+Collected real summary metric with shape (95,) from rollout 26
+Episode 26 sim randomization params: {'headwayTime': 4.29597806930542, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:26, travel time:150.3517857142857, q_loss:419.88742, rewards:-38.46292317708333, queue:6.162037037037037, delay:0.33414060804578993, throughput:2634
+Posterior-sampled train parameters for episode 26: {'headwayTime': 4.29597806930542, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:26/100, sim_loss:419.88742
+domain_adaptation_episode:27/100
+Episode 27 sim randomization params: {'headwayTime': 3.944056373806695, 'minGap': 3.404815337638108, 'usualPosAcc': 4.194225265163581, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TEST step:27, travel time:103.74937522313459, q_loss:0, rewards:-25.93972439236111, queue:3.9694444444444446, delay:0.29876683553059896, throughput:2725
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:27, travel time:750.1571152607855, q_loss:0, rewards:-281.4430338541667, queue:41.56018518518518, delay:0.7532784356011285, throughput:1052
+Collected real summary metric with shape (95,) from rollout 27
+Episode 27 sim randomization params: {'headwayTime': 4.2823805809021, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:27, travel time:698.3325, q_loss:392.7945, rewards:-84.76332465277778, queue:15.8, delay:0.49388190375434027, throughput:1532
+Posterior-sampled train parameters for episode 27: {'headwayTime': 4.2823805809021, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:27/100, sim_loss:392.7945
+domain_adaptation_episode:28/100
+Episode 28 sim randomization params: {'headwayTime': 2.7011274146000974, 'minGap': 3.052557687027205, 'usualPosAcc': 3.134869288121312, 'usualNegAcc': 4.297101170022387, 'length': 5.0}
+SIM_TEST step:28, travel time:95.86357142857143, q_loss:0, rewards:-29.465972222222224, queue:4.711111111111111, delay:0.23415295636212385, throughput:2688
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:28, travel time:597.9241706161138, q_loss:0, rewards:-203.14388020833334, queue:28.803703703703704, delay:0.6293924402307581, throughput:1376
+Collected real summary metric with shape (95,) from rollout 28
+Episode 28 sim randomization params: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:28, travel time:114.75945753033548, q_loss:383.00034, rewards:-31.083192274305556, queue:5.6722222222222225, delay:0.2401937414098669, throughput:2780
+Posterior-sampled train parameters for episode 28: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:28/100, sim_loss:383.00034
+domain_adaptation_episode:29/100
+Episode 29 sim randomization params: {'headwayTime': 1.4647234438866419, 'minGap': 2.215411292584642, 'usualPosAcc': 2.481875970045904, 'usualNegAcc': 2.4461783163077446, 'length': 5.0}
+SIM_TEST step:29, travel time:101.00321313816494, q_loss:0, rewards:-33.079584418402774, queue:5.069444444444445, delay:0.21577849211516203, throughput:2662
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:29, travel time:303.3009068425392, q_loss:0, rewards:-74.224169921875, queue:13.462037037037037, delay:0.5605491355613426, throughput:2154
+Collected real summary metric with shape (95,) from rollout 29
+Episode 29 sim randomization params: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+SIM_TRAIN step:29, travel time:241.4225, q_loss:386.3772, rewards:-52.84513888888889, queue:10.202777777777778, delay:0.3336044876663773, throughput:2201
+Posterior-sampled train parameters for episode 29: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+training_episode:29/100, sim_loss:386.3772
+domain_adaptation_episode:30/100
+Episode 30 sim randomization params: {'headwayTime': 1.588883284388182, 'minGap': 2.9300511281985235, 'usualPosAcc': 1.4745359003702052, 'usualNegAcc': 2.9034289500789225, 'length': 4.992618840520584}
+SIM_TEST step:30, travel time:89.80399857193859, q_loss:0, rewards:-24.366807725694443, queue:3.8759259259259258, delay:0.19558320222077547, throughput:2703
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:30, travel time:283.8341420379356, q_loss:0, rewards:-155.7859592013889, queue:23.12037037037037, delay:0.6683687563295717, throughput:2113
+Collected real summary metric with shape (95,) from rollout 30
+Episode 30 sim randomization params: {'headwayTime': 4.4063801765441895, 'minGap': 2.181208848953247, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:30, travel time:355.7003571428571, q_loss:407.0769, rewards:-48.685970052083334, queue:8.954629629629629, delay:0.3395241066261574, throughput:2148
+Posterior-sampled train parameters for episode 30: {'headwayTime': 4.4063801765441895, 'minGap': 2.181208848953247, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:30/100, sim_loss:407.0769
+domain_adaptation_episode:31/100
+Episode 31 sim randomization params: {'headwayTime': 0.5, 'minGap': 3.0082466411460578, 'usualPosAcc': 2.4857417353110587, 'usualNegAcc': 1.8502771041918353, 'length': 4.7}
+SIM_TEST step:31, travel time:56.223134594787574, q_loss:0, rewards:-5.472361924913194, queue:1.0194444444444444, delay:0.16024627685546874, throughput:2783
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:31, travel time:637.3654883163571, q_loss:0, rewards:-300.66805555555555, queue:42.23240740740741, delay:0.7881871541341146, throughput:1177
+Collected real summary metric with shape (95,) from rollout 31
+Episode 31 sim randomization params: {'headwayTime': 4.299406051635742, 'minGap': 1.9427433013916016, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+SIM_TRAIN step:31, travel time:137.3325, q_loss:369.59045, rewards:-23.454443359375, queue:4.026851851851852, delay:0.3129892419885706, throughput:2748
+Posterior-sampled train parameters for episode 31: {'headwayTime': 4.299406051635742, 'minGap': 1.9427433013916016, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+training_episode:31/100, sim_loss:369.59045
+domain_adaptation_episode:32/100
+Episode 32 sim randomization params: {'headwayTime': 3.00810227696814, 'minGap': 2.792869745980401, 'usualPosAcc': 1.9091885580233043, 'usualNegAcc': 3.3315987774294107, 'length': 5.0}
+SIM_TEST step:32, travel time:80.89293361884368, q_loss:0, rewards:-15.495973036024306, queue:2.7222222222222223, delay:0.1905604327166522, throughput:2760
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:32, travel time:359.9977467327625, q_loss:0, rewards:-171.97277560763888, queue:26.863888888888887, delay:0.7044384991681134, throughput:1951
+Collected real summary metric with shape (95,) from rollout 32
+Episode 32 sim randomization params: {'headwayTime': 4.3643951416015625, 'minGap': 2.354947090148926, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:32, travel time:110.04816268283982, q_loss:352.2342, rewards:-18.462638346354165, queue:3.352777777777778, delay:0.2602413883915654, throughput:2756
+Posterior-sampled train parameters for episode 32: {'headwayTime': 4.3643951416015625, 'minGap': 2.354947090148926, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:32/100, sim_loss:352.2342
+domain_adaptation_episode:33/100
+Episode 33 sim randomization params: {'headwayTime': 2.011852284764432, 'minGap': 2.931182934675875, 'usualPosAcc': 0.6075808972414585, 'usualNegAcc': 6.269848943515516, 'length': 5.0}
+SIM_TEST step:33, travel time:57.805069617993574, q_loss:0, rewards:-7.140973578559028, queue:1.2546296296296295, delay:0.14218391135886863, throughput:2781
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:33, travel time:778.0478260869565, q_loss:0, rewards:-252.88582899305555, queue:36.410185185185185, delay:0.7682523374204282, throughput:1096
+Collected real summary metric with shape (95,) from rollout 33
+Episode 33 sim randomization params: {'headwayTime': 4.3242011070251465, 'minGap': 1.9389965534210205, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:33, travel time:1121.7578571428571, q_loss:342.58536, rewards:-143.0216796875, queue:25.630555555555556, delay:0.4585175125687211, throughput:1223
+Posterior-sampled train parameters for episode 33: {'headwayTime': 4.3242011070251465, 'minGap': 1.9389965534210205, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:33/100, sim_loss:342.58536
+domain_adaptation_episode:34/100
+Episode 34 sim randomization params: {'headwayTime': 3.988474714599167, 'minGap': 2.9171621832362047, 'usualPosAcc': 3.87665051280145, 'usualNegAcc': 4.27867706274728, 'length': 5.0}
+SIM_TEST step:34, travel time:104.57071428571429, q_loss:0, rewards:-24.090421549479167, queue:3.912962962962963, delay:0.2425887213812934, throughput:2688
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:34, travel time:593.0586637696904, q_loss:0, rewards:-199.8744357638889, queue:30.142592592592592, delay:0.703562757703993, throughput:1321
+Collected real summary metric with shape (95,) from rollout 34
+Episode 34 sim randomization params: {'headwayTime': 4.334320545196533, 'minGap': 2.218034267425537, 'usualPosAcc': 7.0, 'usualNegAcc': 3.021493911743164, 'length': 4.7}
+SIM_TRAIN step:34, travel time:115.42428571428572, q_loss:333.87326, rewards:-23.75625, queue:3.801851851851852, delay:0.27782807526765047, throughput:2711
+Posterior-sampled train parameters for episode 34: {'headwayTime': 4.334320545196533, 'minGap': 2.218034267425537, 'usualPosAcc': 7.0, 'usualNegAcc': 3.021493911743164, 'length': 4.7}
+training_episode:34/100, sim_loss:333.87326
+domain_adaptation_episode:35/100
+Episode 35 sim randomization params: {'headwayTime': 1.8306184636173262, 'minGap': 2.3694003387048945, 'usualPosAcc': 4.029241913012329, 'usualNegAcc': 1.0, 'length': 4.846440530394857}
+SIM_TEST step:35, travel time:65.35189150606709, q_loss:0, rewards:-5.997918023003472, queue:1.0916666666666666, delay:0.1822273819534867, throughput:2781
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:35, travel time:343.12272534913245, q_loss:0, rewards:-112.65221354166667, queue:20.216666666666665, delay:0.6195476390697338, throughput:2066
+Collected real summary metric with shape (95,) from rollout 35
+Episode 35 sim randomization params: {'headwayTime': 4.328131198883057, 'minGap': 2.3909971714019775, 'usualPosAcc': 7.0, 'usualNegAcc': 2.544567108154297, 'length': 4.7}
+SIM_TRAIN step:35, travel time:108.68689753659407, q_loss:334.2358, rewards:-16.536390516493057, queue:2.897222222222222, delay:0.26352177372685187, throughput:2761
+Posterior-sampled train parameters for episode 35: {'headwayTime': 4.328131198883057, 'minGap': 2.3909971714019775, 'usualPosAcc': 7.0, 'usualNegAcc': 2.544567108154297, 'length': 4.7}
+training_episode:35/100, sim_loss:334.2358
+domain_adaptation_episode:36/100
+Episode 36 sim randomization params: {'headwayTime': 1.7379951955326005, 'minGap': 2.5245703492455784, 'usualPosAcc': 3.4638474654177482, 'usualNegAcc': 3.3874856658010737, 'length': 4.72040427161774}
+SIM_TEST step:36, travel time:87.9043540328337, q_loss:0, rewards:-24.166805013020834, queue:3.7907407407407407, delay:0.18702189127604166, throughput:2715
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:36, travel time:1326.8971153846153, q_loss:0, rewards:-243.11375868055555, queue:37.736111111111114, delay:0.8018090142144098, throughput:503
+Collected real summary metric with shape (95,) from rollout 36
+Episode 36 sim randomization params: {'headwayTime': 4.369768142700195, 'minGap': 1.9384913444519043, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:36, travel time:893.8335714285714, q_loss:335.85117, rewards:-123.923046875, queue:21.97037037037037, delay:0.47434477629484956, throughput:1460
+Posterior-sampled train parameters for episode 36: {'headwayTime': 4.369768142700195, 'minGap': 1.9384913444519043, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:36/100, sim_loss:335.85117
+domain_adaptation_episode:37/100
+Episode 37 sim randomization params: {'headwayTime': 3.020119863830425, 'minGap': 2.728431545398971, 'usualPosAcc': 4.5190127657801, 'usualNegAcc': 4.24826991885221, 'length': 4.7}
+SIM_TEST step:37, travel time:84.45538900785154, q_loss:0, rewards:-15.376665581597223, queue:2.702777777777778, delay:0.19311099582248265, throughput:2755
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:37, travel time:262.3477208551835, q_loss:0, rewards:-85.12568901909722, queue:17.022222222222222, delay:0.6285818594473379, throughput:2296
+Collected real summary metric with shape (95,) from rollout 37
+Episode 37 sim randomization params: {'headwayTime': 4.338185787200928, 'minGap': 2.067430257797241, 'usualPosAcc': 7.0, 'usualNegAcc': 4.597111701965332, 'length': 4.7}
+SIM_TRAIN step:37, travel time:1177.2596428571428, q_loss:325.1544, rewards:-148.7604275173611, queue:25.919444444444444, delay:0.5112357810691551, throughput:1026
+Posterior-sampled train parameters for episode 37: {'headwayTime': 4.338185787200928, 'minGap': 2.067430257797241, 'usualPosAcc': 7.0, 'usualNegAcc': 4.597111701965332, 'length': 4.7}
+training_episode:37/100, sim_loss:325.1544
+domain_adaptation_episode:38/100
+Episode 38 sim randomization params: {'headwayTime': 0.5, 'minGap': 2.4292088491155868, 'usualPosAcc': 4.108089867284974, 'usualNegAcc': 3.621057661546306, 'length': 4.818799957965098}
+SIM_TEST step:38, travel time:66.38793718772305, q_loss:0, rewards:-14.659305826822917, queue:2.484259259259259, delay:0.18685831140588832, throughput:2782
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:38, travel time:553.6473928755807, q_loss:0, rewards:-175.44069010416666, queue:26.826851851851853, delay:0.6696765475802952, throughput:1440
+Collected real summary metric with shape (95,) from rollout 38
+Episode 38 sim randomization params: {'headwayTime': 4.271059036254883, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:38, travel time:116.36594073545163, q_loss:349.19992, rewards:-26.578195529513888, queue:4.270370370370371, delay:0.28553856743706596, throughput:2672
+Posterior-sampled train parameters for episode 38: {'headwayTime': 4.271059036254883, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:38/100, sim_loss:349.19992
+domain_adaptation_episode:39/100
+Episode 39 sim randomization params: {'headwayTime': 5.0, 'minGap': 2.4382462721333966, 'usualPosAcc': 1.8335053922157512, 'usualNegAcc': 2.962763224256765, 'length': 5.0}
+SIM_TEST step:39, travel time:109.2790863668808, q_loss:0, rewards:-18.928339301215278, queue:3.225925925925926, delay:0.27376474451135707, throughput:2732
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:39, travel time:512.4953905870937, q_loss:0, rewards:-128.78860677083333, queue:21.18148148148148, delay:0.5785449557834201, throughput:1600
+Collected real summary metric with shape (95,) from rollout 39
+Episode 39 sim randomization params: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+SIM_TRAIN step:39, travel time:79.03712959657265, q_loss:324.03018, rewards:-8.277501085069444, queue:1.4796296296296296, delay:0.21706403096516927, throughput:2782
+Posterior-sampled train parameters for episode 39: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+training_episode:39/100, sim_loss:324.03018
+domain_adaptation_episode:40/100
+Episode 40 sim randomization params: {'headwayTime': 0.9255426990018369, 'minGap': 2.6791695744989497, 'usualPosAcc': 0.4469968202362451, 'usualNegAcc': 4.837785070267857, 'length': 5.0}
+SIM_TEST step:40, travel time:100.5670949321913, q_loss:0, rewards:-28.608336046006944, queue:4.496296296296296, delay:0.20098243995949075, throughput:2689
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:40, travel time:244.07290836653385, q_loss:0, rewards:-77.74305555555556, queue:15.619444444444444, delay:0.5863622029622396, throughput:2332
+Collected real summary metric with shape (95,) from rollout 40
+Episode 40 sim randomization params: {'headwayTime': 4.373440265655518, 'minGap': 2.3293628692626953, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:40, travel time:1261.4157142857143, q_loss:289.95355, rewards:-162.0839084201389, queue:26.93425925925926, delay:0.5878442269784433, throughput:922
+Posterior-sampled train parameters for episode 40: {'headwayTime': 4.373440265655518, 'minGap': 2.3293628692626953, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:40/100, sim_loss:289.95355
+domain_adaptation_episode:41/100
+Episode 41 sim randomization params: {'headwayTime': 1.2568131570999435, 'minGap': 2.9588023803948675, 'usualPosAcc': 0.8720012730472952, 'usualNegAcc': 2.963971478604193, 'length': 5.0}
+SIM_TEST step:41, travel time:64.30014275517487, q_loss:0, rewards:-6.864860026041667, queue:1.25, delay:0.16254823472764757, throughput:2785
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:41, travel time:1192.0898100172712, q_loss:0, rewards:-216.8220920138889, queue:34.95740740740741, delay:0.7783279984085648, throughput:609
+Collected real summary metric with shape (95,) from rollout 41
+Episode 41 sim randomization params: {'headwayTime': 4.356812953948975, 'minGap': 1.9385366439819336, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:41, travel time:144.37821428571428, q_loss:289.03558, rewards:-23.23569607204861, queue:4.097222222222222, delay:0.3283075968424479, throughput:2754
+Posterior-sampled train parameters for episode 41: {'headwayTime': 4.356812953948975, 'minGap': 1.9385366439819336, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:41/100, sim_loss:289.03558
+domain_adaptation_episode:42/100
+Episode 42 sim randomization params: {'headwayTime': 2.340243399298828, 'minGap': 3.7317308552465196, 'usualPosAcc': 1.5594178706662654, 'usualNegAcc': 4.60524369008992, 'length': 4.874876270186815}
+SIM_TEST step:42, travel time:508.27, q_loss:0, rewards:-68.05694444444444, queue:13.22037037037037, delay:0.3210609718605324, throughput:1871
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:42, travel time:534.5238341968912, q_loss:0, rewards:-205.50944010416666, queue:34.513888888888886, delay:0.7236553050853588, throughput:1416
+Collected real summary metric with shape (95,) from rollout 42
+Episode 42 sim randomization params: {'headwayTime': 4.306482791900635, 'minGap': 1.9354281425476074, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+SIM_TRAIN step:42, travel time:258.75714285714287, q_loss:272.59613, rewards:-41.26569552951389, queue:8.098148148148148, delay:0.3299485383210359, throughput:2348
+Posterior-sampled train parameters for episode 42: {'headwayTime': 4.306482791900635, 'minGap': 1.9354281425476074, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+training_episode:42/100, sim_loss:272.59613
+domain_adaptation_episode:43/100
+Episode 43 sim randomization params: {'headwayTime': 3.101497588885725, 'minGap': 2.8974039105228475, 'usualPosAcc': 1.8667705698435433, 'usualNegAcc': 2.346517847658144, 'length': 5.0}
+SIM_TEST step:43, travel time:78.21242413423778, q_loss:0, rewards:-17.065416124131943, queue:2.8583333333333334, delay:0.20995003029152198, throughput:2756
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:43, travel time:566.1027027027027, q_loss:0, rewards:-203.941796875, queue:30.525, delay:0.6868277655707465, throughput:1333
+Collected real summary metric with shape (95,) from rollout 43
+Episode 43 sim randomization params: {'headwayTime': 4.329608917236328, 'minGap': 2.416325807571411, 'usualPosAcc': 7.0, 'usualNegAcc': 5.317180633544922, 'length': 4.7}
+SIM_TRAIN step:43, travel time:462.6485714285714, q_loss:281.5508, rewards:-54.32861328125, queue:9.850925925925926, delay:0.37755488642939816, throughput:2017
+Posterior-sampled train parameters for episode 43: {'headwayTime': 4.329608917236328, 'minGap': 2.416325807571411, 'usualPosAcc': 7.0, 'usualNegAcc': 5.317180633544922, 'length': 4.7}
+training_episode:43/100, sim_loss:281.5508
+domain_adaptation_episode:44/100
+Episode 44 sim randomization params: {'headwayTime': 1.9630992442881376, 'minGap': 2.1740021515160315, 'usualPosAcc': 1.7479031732514647, 'usualNegAcc': 4.7577419743134355, 'length': 4.7}
+SIM_TEST step:44, travel time:94.9982149232417, q_loss:0, rewards:-26.59111056857639, queue:4.20462962962963, delay:0.20428119235568576, throughput:2695
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:44, travel time:516.3501016260162, q_loss:0, rewards:-229.51597222222222, queue:35.56944444444444, delay:0.7522223578559027, throughput:1469
+Collected real summary metric with shape (95,) from rollout 44
+Episode 44 sim randomization params: {'headwayTime': 4.318972110748291, 'minGap': 1.9425421953201294, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+SIM_TRAIN step:44, travel time:252.59142857142857, q_loss:264.62802, rewards:-28.260698784722223, queue:5.811111111111111, delay:0.3015188146520544, throughput:2357
+Posterior-sampled train parameters for episode 44: {'headwayTime': 4.318972110748291, 'minGap': 1.9425421953201294, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+training_episode:44/100, sim_loss:264.62802
+domain_adaptation_episode:45/100
+Episode 45 sim randomization params: {'headwayTime': 4.5079897783989065, 'minGap': 3.2608633782238248, 'usualPosAcc': 2.422819455279039, 'usualNegAcc': 2.9633431292693726, 'length': 4.7}
+SIM_TEST step:45, travel time:101.44392857142857, q_loss:0, rewards:-19.329857042100695, queue:3.311111111111111, delay:0.2639201976634838, throughput:2744
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:45, travel time:492.463556851312, q_loss:0, rewards:-197.3407986111111, queue:32.30277777777778, delay:0.7042044180410879, throughput:1568
+Collected real summary metric with shape (95,) from rollout 45
+Episode 45 sim randomization params: {'headwayTime': 4.358041763305664, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:45, travel time:1263.8185714285714, q_loss:255.91255, rewards:-157.49917534722223, queue:25.61574074074074, delay:0.6274471706814236, throughput:888
+Posterior-sampled train parameters for episode 45: {'headwayTime': 4.358041763305664, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:45/100, sim_loss:255.91255
+domain_adaptation_episode:46/100
+Episode 46 sim randomization params: {'headwayTime': 0.8610592201054155, 'minGap': 2.3696684931203746, 'usualPosAcc': 4.267978956484995, 'usualNegAcc': 6.181493227916657, 'length': 4.7}
+SIM_TEST step:46, travel time:78.72591006423983, q_loss:0, rewards:-26.30278049045139, queue:4.632407407407407, delay:0.19693945425528067, throughput:2762
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:46, travel time:530.2711606690319, q_loss:0, rewards:-202.23472222222222, queue:33.45092592592592, delay:0.7102684868706597, throughput:1480
+Collected real summary metric with shape (95,) from rollout 46
+Episode 46 sim randomization params: {'headwayTime': 4.278128623962402, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:46, travel time:504.3975, q_loss:267.1581, rewards:-64.54180772569444, queue:11.954629629629629, delay:0.3872897395381221, throughput:1820
+Posterior-sampled train parameters for episode 46: {'headwayTime': 4.278128623962402, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:46/100, sim_loss:267.1581
+domain_adaptation_episode:47/100
+Episode 47 sim randomization params: {'headwayTime': 0.5, 'minGap': 2.2633357314487097, 'usualPosAcc': 1.319158246204243, 'usualNegAcc': 1.0, 'length': 4.7}
+SIM_TEST step:47, travel time:87.39329050678087, q_loss:0, rewards:-23.89111328125, queue:3.762037037037037, delay:0.21627163357204862, throughput:2728
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:47, travel time:266.5289052890529, q_loss:0, rewards:-89.61319444444445, queue:16.636111111111113, delay:0.6185705679434317, throughput:2292
+Collected real summary metric with shape (95,) from rollout 47
+Episode 47 sim randomization params: {'headwayTime': 4.319093227386475, 'minGap': 2.6486992835998535, 'usualPosAcc': 7.0, 'usualNegAcc': 3.2440521717071533, 'length': 4.7}
+SIM_TRAIN step:47, travel time:455.55357142857144, q_loss:277.52557, rewards:-47.54055989583333, queue:9.046296296296296, delay:0.31649274472837097, throughput:2025
+Posterior-sampled train parameters for episode 47: {'headwayTime': 4.319093227386475, 'minGap': 2.6486992835998535, 'usualPosAcc': 7.0, 'usualNegAcc': 3.2440521717071533, 'length': 4.7}
+training_episode:47/100, sim_loss:277.52557
+domain_adaptation_episode:48/100
+Episode 48 sim randomization params: {'headwayTime': 4.395540257646927, 'minGap': 2.7755578893927924, 'usualPosAcc': 3.7922345594006353, 'usualNegAcc': 2.9372082604064103, 'length': 5.0}
+SIM_TEST step:48, travel time:108.74330596215637, q_loss:0, rewards:-26.116389973958334, queue:4.162037037037037, delay:0.2731083905255353, throughput:2694
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:48, travel time:581.6052773290253, q_loss:0, rewards:-182.17515190972222, queue:27.830555555555556, delay:0.6880251283998843, throughput:1342
+Collected real summary metric with shape (95,) from rollout 48
+Episode 48 sim randomization params: {'headwayTime': 4.331501007080078, 'minGap': 2.295393943786621, 'usualPosAcc': 7.0, 'usualNegAcc': 2.8136210441589355, 'length': 4.7}
+SIM_TRAIN step:48, travel time:911.0235714285715, q_loss:292.47455, rewards:-124.21916232638888, queue:22.53240740740741, delay:0.4622120044849537, throughput:1393
+Posterior-sampled train parameters for episode 48: {'headwayTime': 4.331501007080078, 'minGap': 2.295393943786621, 'usualPosAcc': 7.0, 'usualNegAcc': 2.8136210441589355, 'length': 4.7}
+training_episode:48/100, sim_loss:292.47455
+domain_adaptation_episode:49/100
+Episode 49 sim randomization params: {'headwayTime': 2.452615829934527, 'minGap': 2.762479174828347, 'usualPosAcc': 6.10129667450467, 'usualNegAcc': 3.193823904194715, 'length': 4.7}
+SIM_TEST step:49, travel time:67.64405569439486, q_loss:0, rewards:-9.423334418402778, queue:1.6398148148148148, delay:0.1832087481463397, throughput:2782
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:49, travel time:267.02092736971684, q_loss:0, rewards:-78.50334201388888, queue:13.963888888888889, delay:0.5961369267216435, throughput:2300
+Collected real summary metric with shape (95,) from rollout 49
+Episode 49 sim randomization params: {'headwayTime': 4.359954833984375, 'minGap': 1.938176155090332, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:49, travel time:110.03, q_loss:286.1596, rewards:-12.18721923828125, queue:2.0824074074074073, delay:0.2988696063006366, throughput:2769
+Posterior-sampled train parameters for episode 49: {'headwayTime': 4.359954833984375, 'minGap': 1.938176155090332, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:49/100, sim_loss:286.1596
+domain_adaptation_episode:50/100
+Episode 50 sim randomization params: {'headwayTime': 2.4573807034693944, 'minGap': 2.886019386119091, 'usualPosAcc': 4.08020139230611, 'usualNegAcc': 2.2622510777834144, 'length': 5.0}
+SIM_TEST step:50, travel time:61.564798286326315, q_loss:0, rewards:-5.940833875868056, queue:0.975, delay:0.16509179009331598, throughput:2789
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:50, travel time:267.8982135438305, q_loss:0, rewards:-129.73485243055555, queue:19.88425925925926, delay:0.649567950213397, throughput:2223
+Collected real summary metric with shape (95,) from rollout 50
+Episode 50 sim randomization params: {'headwayTime': 4.355545520782471, 'minGap': 1.9384645223617554, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:50, travel time:156.15958586219207, q_loss:271.41086, rewards:-14.149998643663194, queue:2.77037037037037, delay:0.310705170808015, throughput:2717
+Posterior-sampled train parameters for episode 50: {'headwayTime': 4.355545520782471, 'minGap': 1.9384645223617554, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:50/100, sim_loss:271.41086
+domain_adaptation_episode:51/100
+Episode 51 sim randomization params: {'headwayTime': 3.6093647929164954, 'minGap': 2.6596325749033745, 'usualPosAcc': 2.8520118477828413, 'usualNegAcc': 2.4040269473072335, 'length': 5.0}
+SIM_TEST step:51, travel time:70.58086397715101, q_loss:0, rewards:-8.326943630642361, queue:1.4361111111111111, delay:0.2006084583423756, throughput:2780
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:51, travel time:561.762339055794, q_loss:0, rewards:-162.24708116319445, queue:24.873148148148147, delay:0.598226476598669, throughput:1405
+Collected real summary metric with shape (95,) from rollout 51
+Episode 51 sim randomization params: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+SIM_TRAIN step:51, travel time:579.5057142857142, q_loss:265.34543, rewards:-73.941796875, queue:14.367592592592592, delay:0.3684143631546586, throughput:1759
+Posterior-sampled train parameters for episode 51: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+training_episode:51/100, sim_loss:265.34543
+domain_adaptation_episode:52/100
+Episode 52 sim randomization params: {'headwayTime': 0.8536729747641045, 'minGap': 2.7368932002792628, 'usualPosAcc': 1.1804602901298102, 'usualNegAcc': 3.1600508107298495, 'length': 4.996239342913981}
+SIM_TEST step:52, travel time:66.53535714285714, q_loss:0, rewards:-13.9718017578125, queue:2.412037037037037, delay:0.16823914139359086, throughput:2777
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:52, travel time:354.9641313742437, q_loss:0, rewards:-142.0737521701389, queue:21.197222222222223, delay:0.6458639074254919, throughput:1986
+Collected real summary metric with shape (95,) from rollout 52
+Episode 52 sim randomization params: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:52, travel time:93.10817565155301, q_loss:258.09906, rewards:-28.337361653645832, queue:4.489814814814815, delay:0.21084521258318867, throughput:2736
+Posterior-sampled train parameters for episode 52: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:52/100, sim_loss:258.09906
+domain_adaptation_episode:53/100
+Episode 53 sim randomization params: {'headwayTime': 3.458986769560095, 'minGap': 2.680224807416348, 'usualPosAcc': 2.3773474162066432, 'usualNegAcc': 1.4902765883940945, 'length': 4.7}
+SIM_TEST step:53, travel time:76.71071428571429, q_loss:0, rewards:-16.636107042100694, queue:2.816666666666667, delay:0.23955032913773147, throughput:2783
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:53, travel time:302.86257180733537, q_loss:0, rewards:-156.5466796875, queue:23.421296296296298, delay:0.6755437215169271, throughput:2078
+Collected real summary metric with shape (95,) from rollout 53
+Episode 53 sim randomization params: {'headwayTime': 4.361330032348633, 'minGap': 1.9385879039764404, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:53, travel time:255.8892857142857, q_loss:270.94156, rewards:-39.23736436631945, queue:7.62962962962963, delay:0.34036458333333336, throughput:2329
+Posterior-sampled train parameters for episode 53: {'headwayTime': 4.361330032348633, 'minGap': 1.9385879039764404, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:53/100, sim_loss:270.94156
+domain_adaptation_episode:54/100
+Episode 54 sim randomization params: {'headwayTime': 5.0, 'minGap': 3.2748475490101265, 'usualPosAcc': 1.5672633033188514, 'usualNegAcc': 1.6136603032158656, 'length': 4.7}
+SIM_TEST step:54, travel time:107.33285714285714, q_loss:0, rewards:-11.473190646701388, queue:2.2055555555555557, delay:0.27522701687282985, throughput:2780
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:54, travel time:477.4180845892076, q_loss:0, rewards:-143.17803819444444, queue:22.925925925925927, delay:0.6322040134006076, throughput:1622
+Collected real summary metric with shape (95,) from rollout 54
+Episode 54 sim randomization params: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+SIM_TRAIN step:54, travel time:111.54678571428572, q_loss:249.46997, rewards:-25.630278862847224, queue:4.155555555555556, delay:0.2711280257613571, throughput:2709
+Posterior-sampled train parameters for episode 54: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+training_episode:54/100, sim_loss:249.46997
+domain_adaptation_episode:55/100
+Episode 55 sim randomization params: {'headwayTime': 2.061607178660689, 'minGap': 2.9125020038093083, 'usualPosAcc': 1.6176695827340355, 'usualNegAcc': 1.6929438318892753, 'length': 5.0}
+SIM_TEST step:55, travel time:85.58571428571429, q_loss:0, rewards:-19.882225206163195, queue:3.4138888888888888, delay:0.20281199702510128, throughput:2747
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:55, travel time:492.4752086401571, q_loss:0, rewards:-147.9318142361111, queue:21.787037037037038, delay:0.5779090598777489, throughput:1574
+Collected real summary metric with shape (95,) from rollout 55
+Episode 55 sim randomization params: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+SIM_TRAIN step:55, travel time:91.33904354032833, q_loss:253.53848, rewards:-9.205830891927084, queue:1.613888888888889, delay:0.22013318097149884, throughput:2781
+Posterior-sampled train parameters for episode 55: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+training_episode:55/100, sim_loss:253.53848
+domain_adaptation_episode:56/100
+Episode 56 sim randomization params: {'headwayTime': 2.89948324879232, 'minGap': 2.7651555129555434, 'usualPosAcc': 2.329900757370122, 'usualNegAcc': 2.8739324837639564, 'length': 4.7}
+SIM_TEST step:56, travel time:66.3375, q_loss:0, rewards:-14.678891330295139, queue:2.4953703703703702, delay:0.18451337461118344, throughput:2775
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:56, travel time:301.55394736842106, q_loss:0, rewards:-161.0495551215278, queue:24.298148148148147, delay:0.7007820411964699, throughput:2089
+Collected real summary metric with shape (95,) from rollout 56
+Episode 56 sim randomization params: {'headwayTime': 4.316295623779297, 'minGap': 1.938986897468567, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:56, travel time:113.20778293466618, q_loss:258.75687, rewards:-11.03166775173611, queue:1.987962962962963, delay:0.28574371337890625, throughput:2777
+Posterior-sampled train parameters for episode 56: {'headwayTime': 4.316295623779297, 'minGap': 1.938986897468567, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:56/100, sim_loss:258.75687
+domain_adaptation_episode:57/100
+Episode 57 sim randomization params: {'headwayTime': 2.304721433953948, 'minGap': 2.5146040125095244, 'usualPosAcc': 1.2663493533153651, 'usualNegAcc': 2.701190647591017, 'length': 5.0}
+SIM_TEST step:57, travel time:63.338928571428575, q_loss:0, rewards:-14.944167751736112, queue:2.5546296296296296, delay:0.1813013995135272, throughput:2785
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:57, travel time:305.5938612099644, q_loss:0, rewards:-150.50335286458332, queue:21.846296296296295, delay:0.659139562536169, throughput:2090
+Collected real summary metric with shape (95,) from rollout 57
+Episode 57 sim randomization params: {'headwayTime': 4.358095169067383, 'minGap': 1.9384700059890747, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:57, travel time:122.13714285714286, q_loss:228.92146, rewards:-19.96958550347222, queue:3.5074074074074075, delay:0.3073907640245226, throughput:2774
+Posterior-sampled train parameters for episode 57: {'headwayTime': 4.358095169067383, 'minGap': 1.9384700059890747, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:57/100, sim_loss:228.92146
+domain_adaptation_episode:58/100
+Episode 58 sim randomization params: {'headwayTime': 0.5, 'minGap': 2.3836586745173163, 'usualPosAcc': 3.5001988222344345, 'usualNegAcc': 4.8768154912377, 'length': 4.7}
+SIM_TEST step:58, travel time:87.7797215280257, q_loss:0, rewards:-27.128057183159722, queue:4.2212962962962965, delay:0.18966043260362414, throughput:2723
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:58, travel time:349.86919642857146, q_loss:0, rewards:-154.88543836805556, queue:22.830555555555556, delay:0.6400241993091724, throughput:1964
+Collected real summary metric with shape (95,) from rollout 58
+Episode 58 sim randomization params: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+SIM_TRAIN step:58, travel time:106.19071428571428, q_loss:229.09462, rewards:-24.048337131076387, queue:3.716666666666667, delay:0.24417812206127026, throughput:2707
+Posterior-sampled train parameters for episode 58: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+training_episode:58/100, sim_loss:229.09462
+domain_adaptation_episode:59/100
+Episode 59 sim randomization params: {'headwayTime': 3.095443888808538, 'minGap': 2.7950123250506893, 'usualPosAcc': 3.0397573601128416, 'usualNegAcc': 1.732901963097767, 'length': 5.0}
+SIM_TEST step:59, travel time:82.17714285714285, q_loss:0, rewards:-15.356388346354167, queue:2.577777777777778, delay:0.20506134033203124, throughput:2766
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:59, travel time:865.9081701553005, q_loss:0, rewards:-253.79622395833334, queue:37.76481481481481, delay:0.737696612322772, throughput:979
+Collected real summary metric with shape (95,) from rollout 59
+Episode 59 sim randomization params: {'headwayTime': 4.354169845581055, 'minGap': 1.937916874885559, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:59, travel time:149.13964285714286, q_loss:208.17209, rewards:-28.87624240451389, queue:4.711111111111111, delay:0.3318122016059028, throughput:2721
+Posterior-sampled train parameters for episode 59: {'headwayTime': 4.354169845581055, 'minGap': 1.937916874885559, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:59/100, sim_loss:208.17209
+domain_adaptation_episode:60/100
+Episode 60 sim randomization params: {'headwayTime': 4.229768348786202, 'minGap': 3.129346364825426, 'usualPosAcc': 3.389342347905395, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TEST step:60, travel time:1193.8357142857142, q_loss:0, rewards:-137.98068576388889, queue:24.375, delay:0.45667453342013886, throughput:1025
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:60, travel time:314.02455357142856, q_loss:0, rewards:-152.01112196180554, queue:22.09351851851852, delay:0.6543396561234086, throughput:2031
+Collected real summary metric with shape (95,) from rollout 60
+Episode 60 sim randomization params: {'headwayTime': 4.538712978363037, 'minGap': 1.958778738975525, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:60, travel time:147.40607142857144, q_loss:211.1509, rewards:-27.994721137152776, queue:5.068518518518519, delay:0.3060823793764468, throughput:2715
+Posterior-sampled train parameters for episode 60: {'headwayTime': 4.538712978363037, 'minGap': 1.958778738975525, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:60/100, sim_loss:211.1509
+domain_adaptation_episode:61/100
+Episode 61 sim randomization params: {'headwayTime': 2.054961789454198, 'minGap': 2.84706361753532, 'usualPosAcc': 1.7724139336394127, 'usualNegAcc': 3.786369360865144, 'length': 5.0}
+SIM_TEST step:61, travel time:73.54087825776509, q_loss:0, rewards:-15.203472222222222, queue:2.6287037037037035, delay:0.17656357376663773, throughput:2767
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:61, travel time:498.33100349475785, q_loss:0, rewards:-204.00542534722223, queue:32.93981481481482, delay:0.7187493218315972, throughput:1524
+Collected real summary metric with shape (95,) from rollout 61
+Episode 61 sim randomization params: {'headwayTime': 4.280170440673828, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:61, travel time:117.49607142857143, q_loss:206.05312, rewards:-29.595277235243056, queue:4.586111111111111, delay:0.2856745967158565, throughput:2660
+Posterior-sampled train parameters for episode 61: {'headwayTime': 4.280170440673828, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:61/100, sim_loss:206.05312
+domain_adaptation_episode:62/100
+Episode 62 sim randomization params: {'headwayTime': 1.6330949558430938, 'minGap': 2.7332033097044466, 'usualPosAcc': 4.302465182877409, 'usualNegAcc': 1.9756273126601647, 'length': 5.0}
+SIM_TEST step:62, travel time:83.85082084225553, q_loss:0, rewards:-22.953336588541667, queue:3.5231481481481484, delay:0.20186219391999422, throughput:2726
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:62, travel time:563.0077348066299, q_loss:0, rewards:-151.85291883680554, queue:24.99074074074074, delay:0.6730659767433449, throughput:1379
+Collected real summary metric with shape (95,) from rollout 62
+Episode 62 sim randomization params: {'headwayTime': 4.375272274017334, 'minGap': 1.937952995300293, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:62, travel time:295.84285714285716, q_loss:189.07867, rewards:-39.05902777777778, queue:7.597222222222222, delay:0.33053244131582754, throughput:2239
+Posterior-sampled train parameters for episode 62: {'headwayTime': 4.375272274017334, 'minGap': 1.937952995300293, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:62/100, sim_loss:189.07867
+domain_adaptation_episode:63/100
+Episode 63 sim randomization params: {'headwayTime': 2.412958060803029, 'minGap': 2.610449967698326, 'usualPosAcc': 2.235624621345733, 'usualNegAcc': 2.264809979612973, 'length': 5.0}
+SIM_TEST step:63, travel time:80.20464285714286, q_loss:0, rewards:-18.29916720920139, queue:3.1694444444444443, delay:0.1972229286476418, throughput:2756
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:63, travel time:981.0440956651719, q_loss:0, rewards:-252.66766493055556, queue:38.86574074074074, delay:0.7629282068323207, throughput:791
+Collected real summary metric with shape (95,) from rollout 63
+Episode 63 sim randomization params: {'headwayTime': 4.364233016967773, 'minGap': 1.9379539489746094, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:63, travel time:150.89964285714285, q_loss:185.08, rewards:-19.812223307291667, queue:3.5037037037037035, delay:0.3016448974609375, throughput:2763
+Posterior-sampled train parameters for episode 63: {'headwayTime': 4.364233016967773, 'minGap': 1.9379539489746094, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:63/100, sim_loss:185.08
+domain_adaptation_episode:64/100
+Episode 64 sim randomization params: {'headwayTime': 2.715786118687735, 'minGap': 2.6995533769448548, 'usualPosAcc': 1.1309831132862564, 'usualNegAcc': 4.17067710586167, 'length': 5.0}
+SIM_TEST step:64, travel time:62.06392857142857, q_loss:0, rewards:-7.082501220703125, queue:1.2481481481481482, delay:0.16119968273021557, throughput:2783
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:64, travel time:245.5040192926045, q_loss:0, rewards:-82.18999565972223, queue:14.73611111111111, delay:0.6199464020905672, throughput:2321
+Collected real summary metric with shape (95,) from rollout 64
+Episode 64 sim randomization params: {'headwayTime': 4.343504905700684, 'minGap': 1.9382240772247314, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:64, travel time:1110.7182142857143, q_loss:213.72395, rewards:-143.49067925347222, queue:26.235185185185184, delay:0.47018328066225407, throughput:1194
+Posterior-sampled train parameters for episode 64: {'headwayTime': 4.343504905700684, 'minGap': 1.9382240772247314, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:64/100, sim_loss:213.72395
+domain_adaptation_episode:65/100
+Episode 65 sim randomization params: {'headwayTime': 1.89850966159407, 'minGap': 3.0506069003201204, 'usualPosAcc': 2.1186030752523495, 'usualNegAcc': 3.8054079613747067, 'length': 4.81357893670804}
+SIM_TEST step:65, travel time:86.12714285714286, q_loss:0, rewards:-23.002362738715277, queue:3.6055555555555556, delay:0.19885578861942999, throughput:2721
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:65, travel time:252.4366935483871, q_loss:0, rewards:-69.15263129340278, queue:12.571296296296296, delay:0.607539141619647, throughput:2342
+Collected real summary metric with shape (95,) from rollout 65
+Episode 65 sim randomization params: {'headwayTime': 1.0995540618896484, 'minGap': 2.9832353591918945, 'usualPosAcc': 3.5014612674713135, 'usualNegAcc': 4.795938014984131, 'length': 4.988414764404297}
+SIM_TRAIN step:65, travel time:88.82827561585148, q_loss:210.63155, rewards:-27.595833333333335, queue:4.316666666666666, delay:0.19852235582139757, throughput:2714
+Posterior-sampled train parameters for episode 65: {'headwayTime': 1.0995540618896484, 'minGap': 2.9832353591918945, 'usualPosAcc': 3.5014612674713135, 'usualNegAcc': 4.795938014984131, 'length': 4.988414764404297}
+training_episode:65/100, sim_loss:210.63155
+domain_adaptation_episode:66/100
+Episode 66 sim randomization params: {'headwayTime': 2.6204545930657153, 'minGap': 2.3564818953071383, 'usualPosAcc': 3.5060991115379774, 'usualNegAcc': 3.3413053286988292, 'length': 5.0}
+SIM_TEST step:66, travel time:89.20385576579793, q_loss:0, rewards:-21.957640245225694, queue:3.3833333333333333, delay:0.20327705100730614, throughput:2720
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:66, travel time:276.6216216216216, q_loss:0, rewards:-140.46512586805557, queue:20.500925925925927, delay:0.6522859926576967, throughput:2164
+Collected real summary metric with shape (95,) from rollout 66
+Episode 66 sim randomization params: {'headwayTime': 4.345478534698486, 'minGap': 1.938632607460022, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:66, travel time:276.9975, q_loss:201.16365, rewards:-31.767637803819444, queue:6.400925925925926, delay:0.3132430182562934, throughput:2264
+Posterior-sampled train parameters for episode 66: {'headwayTime': 4.345478534698486, 'minGap': 1.938632607460022, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:66/100, sim_loss:201.16365
+domain_adaptation_episode:67/100
+Episode 67 sim randomization params: {'headwayTime': 1.4976510743848102, 'minGap': 3.0153300281746773, 'usualPosAcc': 1.1713145863846666, 'usualNegAcc': 5.555080883482001, 'length': 4.7}
+SIM_TEST step:67, travel time:64.74304068522484, q_loss:0, rewards:-21.02777777777778, queue:3.5481481481481483, delay:0.17082002427842882, throughput:2784
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:67, travel time:265.4499785315586, q_loss:0, rewards:-141.3177734375, queue:20.299074074074074, delay:0.648471917046441, throughput:2165
+Collected real summary metric with shape (95,) from rollout 67
+Episode 67 sim randomization params: {'headwayTime': 4.357120990753174, 'minGap': 1.9383082389831543, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:67, travel time:141.08535714285713, q_loss:176.67966, rewards:-23.240692816840276, queue:4.020370370370371, delay:0.3073909053096065, throughput:2777
+Posterior-sampled train parameters for episode 67: {'headwayTime': 4.357120990753174, 'minGap': 1.9383082389831543, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:67/100, sim_loss:176.67966
+domain_adaptation_episode:68/100
+Episode 68 sim randomization params: {'headwayTime': 0.5, 'minGap': 2.9848397850342683, 'usualPosAcc': 4.619465507851025, 'usualNegAcc': 4.133877030820528, 'length': 4.841338588621385}
+SIM_TEST step:68, travel time:83.3344039971449, q_loss:0, rewards:-23.6120849609375, queue:3.6944444444444446, delay:0.18748176009566694, throughput:2727
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:68, travel time:289.2597955706985, q_loss:0, rewards:-147.29889322916668, queue:22.037037037037038, delay:0.66781655770761, throughput:2154
+Collected real summary metric with shape (95,) from rollout 68
+Episode 68 sim randomization params: {'headwayTime': 4.333110809326172, 'minGap': 1.9390912055969238, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:68, travel time:612.9503571428571, q_loss:198.00092, rewards:-85.29639756944445, queue:16.81574074074074, delay:0.4325532418710214, throughput:1777
+Posterior-sampled train parameters for episode 68: {'headwayTime': 4.333110809326172, 'minGap': 1.9390912055969238, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:68/100, sim_loss:198.00092
+domain_adaptation_episode:69/100
+Episode 69 sim randomization params: {'headwayTime': 0.5, 'minGap': 2.831140400805152, 'usualPosAcc': 2.602967264982752, 'usualNegAcc': 6.33728708672946, 'length': 5.0}
+SIM_TEST step:69, travel time:57.56067094932191, q_loss:0, rewards:-7.103055826822916, queue:1.250925925925926, delay:0.15105169790762443, throughput:2786
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:69, travel time:331.5890816758358, q_loss:0, rewards:-175.34677734375, queue:26.89351851851852, delay:0.6976303665726273, throughput:2121
+Collected real summary metric with shape (95,) from rollout 69
+Episode 69 sim randomization params: {'headwayTime': 4.3403425216674805, 'minGap': 1.9385199546813965, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:69, travel time:557.7664285714286, q_loss:195.2724, rewards:-79.70694444444445, queue:15.700925925925926, delay:0.38367060908564815, throughput:1810
+Posterior-sampled train parameters for episode 69: {'headwayTime': 4.3403425216674805, 'minGap': 1.9385199546813965, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:69/100, sim_loss:195.2724
+domain_adaptation_episode:70/100
+Episode 70 sim randomization params: {'headwayTime': 0.5, 'minGap': 3.6296404742875494, 'usualPosAcc': 2.092786569321641, 'usualNegAcc': 2.3280428450612662, 'length': 5.0}
+SIM_TEST step:70, travel time:94.72035714285714, q_loss:0, rewards:-23.51458062065972, queue:3.6574074074074074, delay:0.19548297458224825, throughput:2680
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:70, travel time:278.26803672933977, q_loss:0, rewards:-150.57098524305556, queue:22.528703703703705, delay:0.6585089789496528, throughput:2096
+Collected real summary metric with shape (95,) from rollout 70
+Episode 70 sim randomization params: {'headwayTime': 4.424606800079346, 'minGap': 1.957515835762024, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:70, travel time:1267.1375, q_loss:206.75272, rewards:-161.21944444444443, queue:26.841666666666665, delay:0.5708230477792245, throughput:907
+Posterior-sampled train parameters for episode 70: {'headwayTime': 4.424606800079346, 'minGap': 1.957515835762024, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:70/100, sim_loss:206.75272
+domain_adaptation_episode:71/100
+Episode 71 sim randomization params: {'headwayTime': 2.0119323042743664, 'minGap': 2.7677350642238845, 'usualPosAcc': 2.9275489449519143, 'usualNegAcc': 5.018026497386117, 'length': 5.0}
+SIM_TEST step:71, travel time:56.07035714285714, q_loss:0, rewards:-7.172500271267361, queue:1.2851851851851852, delay:0.15775683367693866, throughput:2785
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:71, travel time:361.779531324725, q_loss:0, rewards:-161.78943142361112, queue:25.30185185185185, delay:0.7005413479275173, throughput:1760
+Collected real summary metric with shape (95,) from rollout 71
+Episode 71 sim randomization params: {'headwayTime': 4.375027656555176, 'minGap': 1.937873125076294, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:71, travel time:185.82714285714286, q_loss:262.26956, rewards:-22.671805826822915, queue:4.644444444444445, delay:0.3034279434769242, throughput:2512
+Posterior-sampled train parameters for episode 71: {'headwayTime': 4.375027656555176, 'minGap': 1.937873125076294, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:71/100, sim_loss:262.26956
+domain_adaptation_episode:72/100
+Episode 72 sim randomization params: {'headwayTime': 0.5, 'minGap': 3.6194533292978224, 'usualPosAcc': 3.9177317596740506, 'usualNegAcc': 3.108446343259484, 'length': 4.7}
+SIM_TEST step:72, travel time:88.1324526954659, q_loss:0, rewards:-25.294585503472224, queue:3.962962962962963, delay:0.20264934963650175, throughput:2707
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:72, travel time:292.00616522811345, q_loss:0, rewards:-123.18334418402777, queue:20.79074074074074, delay:0.6699289957682292, throughput:2222
+Collected real summary metric with shape (95,) from rollout 72
+Episode 72 sim randomization params: {'headwayTime': 4.406345367431641, 'minGap': 2.2076473236083984, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:72, travel time:118.24241342377722, q_loss:287.10272, rewards:-27.641248914930557, queue:4.527777777777778, delay:0.2687006632486979, throughput:2678
+Posterior-sampled train parameters for episode 72: {'headwayTime': 4.406345367431641, 'minGap': 2.2076473236083984, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:72/100, sim_loss:287.10272
+domain_adaptation_episode:73/100
+Episode 73 sim randomization params: {'headwayTime': 0.5, 'minGap': 2.9444162375274257, 'usualPosAcc': 1.7486978399021074, 'usualNegAcc': 2.5067966141530285, 'length': 5.0}
+SIM_TEST step:73, travel time:88.64762584791146, q_loss:0, rewards:-24.768611653645834, queue:3.8555555555555556, delay:0.21316316392686632, throughput:2707
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:73, travel time:533.9541375872383, q_loss:0, rewards:-189.36417100694445, queue:27.956481481481482, delay:0.6797571252893518, throughput:1512
+Collected real summary metric with shape (95,) from rollout 73
+Episode 73 sim randomization params: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:73, travel time:76.53464285714286, q_loss:272.0148, rewards:-21.457503255208334, queue:3.5009259259259258, delay:0.1828582763671875, throughput:2772
+Posterior-sampled train parameters for episode 73: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:73/100, sim_loss:272.0148
+domain_adaptation_episode:74/100
+Episode 74 sim randomization params: {'headwayTime': 2.7452841985725924, 'minGap': 2.757954346967464, 'usualPosAcc': 3.628576730812107, 'usualNegAcc': 5.833110657036847, 'length': 4.7}
+SIM_TEST step:74, travel time:57.258479114601926, q_loss:0, rewards:-4.637222629123264, queue:0.8148148148148148, delay:0.14844430994104457, throughput:2790
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:74, travel time:299.03187772925764, q_loss:0, rewards:-175.51193576388889, queue:25.764814814814816, delay:0.6946468211986401, throughput:2093
+Collected real summary metric with shape (95,) from rollout 74
+Episode 74 sim randomization params: {'headwayTime': 4.3435893058776855, 'minGap': 2.1434638500213623, 'usualPosAcc': 7.0, 'usualNegAcc': 3.5013678073883057, 'length': 4.7}
+SIM_TRAIN step:74, travel time:483.90035714285716, q_loss:246.50659, rewards:-70.03597547743055, queue:13.662037037037036, delay:0.35482903939706306, throughput:1921
+Posterior-sampled train parameters for episode 74: {'headwayTime': 4.3435893058776855, 'minGap': 2.1434638500213623, 'usualPosAcc': 7.0, 'usualNegAcc': 3.5013678073883057, 'length': 4.7}
+training_episode:74/100, sim_loss:246.50659
+domain_adaptation_episode:75/100
+Episode 75 sim randomization params: {'headwayTime': 1.0321733650682217, 'minGap': 3.2393438624791555, 'usualPosAcc': 3.6077591695084736, 'usualNegAcc': 4.053650216043268, 'length': 5.0}
+SIM_TEST step:75, travel time:91.99357601713062, q_loss:0, rewards:-25.493329535590277, queue:3.936111111111111, delay:0.20335444697627314, throughput:2687
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:75, travel time:264.290768605124, q_loss:0, rewards:-99.34347873263889, queue:18.024074074074075, delay:0.6404336999963831, throughput:2253
+Collected real summary metric with shape (95,) from rollout 75
+Episode 75 sim randomization params: {'headwayTime': 4.374516010284424, 'minGap': 2.2928764820098877, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:75, travel time:1129.8025, q_loss:250.11235, rewards:-121.35653211805555, queue:21.175925925925927, delay:0.4574378402144821, throughput:1062
+Posterior-sampled train parameters for episode 75: {'headwayTime': 4.374516010284424, 'minGap': 2.2928764820098877, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:75/100, sim_loss:250.11235
+domain_adaptation_episode:76/100
+Episode 76 sim randomization params: {'headwayTime': 0.5, 'minGap': 2.367510379842402, 'usualPosAcc': 1.4515499941034185, 'usualNegAcc': 3.8911687890362225, 'length': 4.7}
+SIM_TEST step:76, travel time:62.85581727337616, q_loss:0, rewards:-14.914165581597222, queue:2.5953703703703703, delay:0.16570652149341725, throughput:2784
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:76, travel time:259.7885551948052, q_loss:0, rewards:-111.55930989583334, queue:19.432407407407407, delay:0.6634707980685763, throughput:2319
+Collected real summary metric with shape (95,) from rollout 76
+Episode 76 sim randomization params: {'headwayTime': 4.3535566329956055, 'minGap': 1.938401699066162, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:76, travel time:477.9707142857143, q_loss:245.869, rewards:-70.92195095486112, queue:13.664814814814815, delay:0.3837719104908131, throughput:1933
+Posterior-sampled train parameters for episode 76: {'headwayTime': 4.3535566329956055, 'minGap': 1.938401699066162, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:76/100, sim_loss:245.869
+domain_adaptation_episode:77/100
+Episode 77 sim randomization params: {'headwayTime': 1.2376238631282959, 'minGap': 2.5489999571238915, 'usualPosAcc': 1.786216363350932, 'usualNegAcc': 2.132531938370929, 'length': 5.0}
+SIM_TEST step:77, travel time:89.03605855051767, q_loss:0, rewards:-25.673055013020832, queue:4.020370370370371, delay:0.19702861927173757, throughput:2703
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:77, travel time:261.59546925566343, q_loss:0, rewards:-98.39097222222222, queue:16.61111111111111, delay:0.6115280151367187, throughput:2328
+Collected real summary metric with shape (95,) from rollout 77
+Episode 77 sim randomization params: {'headwayTime': 4.388293266296387, 'minGap': 2.1994400024414062, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:77, travel time:103.69071428571428, q_loss:266.2617, rewards:-24.37819552951389, queue:3.7490740740740742, delay:0.26262370921947337, throughput:2710
+Posterior-sampled train parameters for episode 77: {'headwayTime': 4.388293266296387, 'minGap': 2.1994400024414062, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:77/100, sim_loss:266.2617
+domain_adaptation_episode:78/100
+Episode 78 sim randomization params: {'headwayTime': 3.506957190330298, 'minGap': 2.727039461773444, 'usualPosAcc': 2.3481185181598776, 'usualNegAcc': 2.7935891868814124, 'length': 5.0}
+SIM_TEST step:78, travel time:64.00107066381156, q_loss:0, rewards:-4.816805691189236, queue:0.8546296296296296, delay:0.18130770082826966, throughput:2789
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:78, travel time:278.042525208242, q_loss:0, rewards:-144.87259114583333, queue:21.473148148148148, delay:0.6368693033854167, throughput:2130
+Collected real summary metric with shape (95,) from rollout 78
+Episode 78 sim randomization params: {'headwayTime': 4.356386661529541, 'minGap': 1.938470482826233, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:78, travel time:541.1139285714286, q_loss:259.9536, rewards:-62.67264539930556, queue:11.928703703703704, delay:0.38076946117259836, throughput:1909
+Posterior-sampled train parameters for episode 78: {'headwayTime': 4.356386661529541, 'minGap': 1.938470482826233, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:78/100, sim_loss:259.9536
+domain_adaptation_episode:79/100
+Episode 79 sim randomization params: {'headwayTime': 2.257629188568419, 'minGap': 3.473896484121757, 'usualPosAcc': 1.140158030172954, 'usualNegAcc': 4.265503898738035, 'length': 5.0}
+SIM_TEST step:79, travel time:74.98179221706533, q_loss:0, rewards:-15.219443088107639, queue:2.6277777777777778, delay:0.17754584418402777, throughput:2761
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:79, travel time:254.58893752487066, q_loss:0, rewards:-109.2134982638889, queue:18.497222222222224, delay:0.6747408831561054, throughput:2369
+Collected real summary metric with shape (95,) from rollout 79
+Episode 79 sim randomization params: {'headwayTime': 4.3693342208862305, 'minGap': 1.9385584592819214, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:79, travel time:1157.135, q_loss:279.84576, rewards:-150.9304144965278, queue:26.852777777777778, delay:0.48806417959707754, throughput:1154
+Posterior-sampled train parameters for episode 79: {'headwayTime': 4.3693342208862305, 'minGap': 1.9385584592819214, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:79/100, sim_loss:279.84576
+domain_adaptation_episode:80/100
+Episode 80 sim randomization params: {'headwayTime': 1.4620208973461106, 'minGap': 3.1100722858577874, 'usualPosAcc': 0.6736091973730036, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TEST step:80, travel time:65.09996429846484, q_loss:0, rewards:-19.494443088107637, queue:3.362037037037037, delay:0.16132204974139178, throughput:2783
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:80, travel time:274.21157684630737, q_loss:0, rewards:-130.06932508680555, queue:22.408333333333335, delay:0.7423989755135996, throughput:2312
+Collected real summary metric with shape (95,) from rollout 80
+Episode 80 sim randomization params: {'headwayTime': 4.324811935424805, 'minGap': 2.2909488677978516, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+SIM_TRAIN step:80, travel time:253.32, q_loss:256.16965, rewards:-36.39805772569444, queue:7.075, delay:0.31859170419198496, throughput:2351
+Posterior-sampled train parameters for episode 80: {'headwayTime': 4.324811935424805, 'minGap': 2.2909488677978516, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+training_episode:80/100, sim_loss:256.16965
+domain_adaptation_episode:81/100
+Episode 81 sim randomization params: {'headwayTime': 3.728058851200029, 'minGap': 2.49639583558188, 'usualPosAcc': 4.195200922475184, 'usualNegAcc': 3.0997525184899564, 'length': 5.0}
+SIM_TEST step:81, travel time:76.35642857142857, q_loss:0, rewards:-7.527501085069445, queue:1.3435185185185186, delay:0.20902681703920717, throughput:2782
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:81, travel time:303.319587628866, q_loss:0, rewards:-132.60876736111112, queue:22.733333333333334, delay:0.7268374972873264, throughput:2267
+Collected real summary metric with shape (95,) from rollout 81
+Episode 81 sim randomization params: {'headwayTime': 4.323564529418945, 'minGap': 2.5448946952819824, 'usualPosAcc': 7.0, 'usualNegAcc': 3.24165678024292, 'length': 4.7}
+SIM_TRAIN step:81, travel time:835.8446428571428, q_loss:258.44583, rewards:-93.88055555555556, queue:17.525, delay:0.37476580584490743, throughput:1407
+Posterior-sampled train parameters for episode 81: {'headwayTime': 4.323564529418945, 'minGap': 2.5448946952819824, 'usualPosAcc': 7.0, 'usualNegAcc': 3.24165678024292, 'length': 4.7}
+training_episode:81/100, sim_loss:258.44583
+domain_adaptation_episode:82/100
+Episode 82 sim randomization params: {'headwayTime': 2.1944184476009205, 'minGap': 3.296264274208926, 'usualPosAcc': 2.19269546780562, 'usualNegAcc': 1.0, 'length': 4.7}
+SIM_TEST step:82, travel time:83.15071428571429, q_loss:0, rewards:-17.973752170138887, queue:3.0814814814814815, delay:0.2250261942545573, throughput:2746
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:82, travel time:359.55449591280654, q_loss:0, rewards:-178.59224175347222, queue:27.632407407407406, delay:0.7235973216869213, throughput:1988
+Collected real summary metric with shape (95,) from rollout 82
+Episode 82 sim randomization params: {'headwayTime': 4.3268046379089355, 'minGap': 1.9387903213500977, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:82, travel time:132.08035714285714, q_loss:262.47763, rewards:-18.44125027126736, queue:3.1925925925925926, delay:0.3100591023763021, throughput:2750
+Posterior-sampled train parameters for episode 82: {'headwayTime': 4.3268046379089355, 'minGap': 1.9387903213500977, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:82/100, sim_loss:262.47763
+domain_adaptation_episode:83/100
+Episode 83 sim randomization params: {'headwayTime': 2.4251708118674387, 'minGap': 2.7414314462467058, 'usualPosAcc': 3.676956357796285, 'usualNegAcc': 5.283910113720172, 'length': 4.905426041664122}
+SIM_TEST step:83, travel time:65.64334166369154, q_loss:0, rewards:-7.250554741753472, queue:1.3185185185185184, delay:0.16634878935637298, throughput:2783
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:83, travel time:516.0284289276808, q_loss:0, rewards:-234.63893229166666, queue:35.50185185185185, delay:0.7548249421296296, throughput:1528
+Collected real summary metric with shape (95,) from rollout 83
+Episode 83 sim randomization params: {'headwayTime': 4.289993762969971, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:83, travel time:98.19171724384148, q_loss:256.9247, rewards:-17.26722412109375, queue:2.938888888888889, delay:0.24748602973090278, throughput:2741
+Posterior-sampled train parameters for episode 83: {'headwayTime': 4.289993762969971, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:83/100, sim_loss:256.9247
+domain_adaptation_episode:84/100
+Episode 84 sim randomization params: {'headwayTime': 0.5, 'minGap': 3.398299439602123, 'usualPosAcc': 4.102952760145272, 'usualNegAcc': 3.233261830543443, 'length': 5.0}
+SIM_TEST step:84, travel time:62.8875, q_loss:0, rewards:-6.201250542534722, queue:1.1064814814814814, delay:0.15691428007902922, throughput:2785
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:84, travel time:294.2464057507987, q_loss:0, rewards:-132.70469835069446, queue:22.473148148148148, delay:0.685173260724103, throughput:2251
+Collected real summary metric with shape (95,) from rollout 84
+Episode 84 sim randomization params: {'headwayTime': 4.333745002746582, 'minGap': 1.935241937637329, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+SIM_TRAIN step:84, travel time:1137.1228571428571, q_loss:241.29854, rewards:-146.35028211805556, queue:26.50462962962963, delay:0.4638079042787905, throughput:1225
+Posterior-sampled train parameters for episode 84: {'headwayTime': 4.333745002746582, 'minGap': 1.935241937637329, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+training_episode:84/100, sim_loss:241.29854
+domain_adaptation_episode:85/100
+Episode 85 sim randomization params: {'headwayTime': 1.482490435635984, 'minGap': 2.4906369006493847, 'usualPosAcc': 2.4180121300986324, 'usualNegAcc': 5.3814205961890025, 'length': 4.7}
+SIM_TEST step:85, travel time:66.60392857142857, q_loss:0, rewards:-19.762364366319446, queue:3.3361111111111112, delay:0.16970507303873697, throughput:2787
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:85, travel time:316.253051261188, q_loss:0, rewards:-137.27085503472222, queue:23.08240740740741, delay:0.7284929063585069, throughput:2194
+Collected real summary metric with shape (95,) from rollout 85
+Episode 85 sim randomization params: {'headwayTime': 4.326459884643555, 'minGap': 1.9352917671203613, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+SIM_TRAIN step:85, travel time:468.81357142857144, q_loss:217.42323, rewards:-51.12903645833333, queue:10.15, delay:0.3400793852629485, throughput:2039
+Posterior-sampled train parameters for episode 85: {'headwayTime': 4.326459884643555, 'minGap': 1.9352917671203613, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+training_episode:85/100, sim_loss:217.42323
+domain_adaptation_episode:86/100
+Episode 86 sim randomization params: {'headwayTime': 5.0, 'minGap': 2.5772505627540596, 'usualPosAcc': 3.928014295878487, 'usualNegAcc': 4.549361303756957, 'length': 4.901403481866993}
+SIM_TEST step:86, travel time:1179.4435714285714, q_loss:0, rewards:-160.18597005208332, queue:26.80462962962963, delay:0.6143677322952835, throughput:976
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:86, travel time:282.03201280512206, q_loss:0, rewards:-102.40473090277777, queue:18.550925925925927, delay:0.6454549153645833, throughput:2293
+Collected real summary metric with shape (95,) from rollout 86
+Episode 86 sim randomization params: {'headwayTime': 4.3801984786987305, 'minGap': 2.3305041790008545, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:86, travel time:89.46714285714286, q_loss:200.76633, rewards:-7.983333333333333, queue:1.423148148148148, delay:0.21882479632342303, throughput:2786
+Posterior-sampled train parameters for episode 86: {'headwayTime': 4.3801984786987305, 'minGap': 2.3305041790008545, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:86/100, sim_loss:200.76633
+domain_adaptation_episode:87/100
+Episode 87 sim randomization params: {'headwayTime': 4.0125433723304305, 'minGap': 2.36007243600745, 'usualPosAcc': 4.476297630229137, 'usualNegAcc': 3.6006529148064237, 'length': 4.7}
+SIM_TEST step:87, travel time:75.83178571428572, q_loss:0, rewards:-12.1665283203125, queue:2.10462962962963, delay:0.22385852955005786, throughput:2783
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:87, travel time:296.5831655255739, q_loss:0, rewards:-140.81653645833333, queue:22.862962962962964, delay:0.6652659098307292, throughput:2239
+Collected real summary metric with shape (95,) from rollout 87
+Episode 87 sim randomization params: {'headwayTime': 4.335866451263428, 'minGap': 2.213421583175659, 'usualPosAcc': 7.0, 'usualNegAcc': 3.6395676136016846, 'length': 4.7}
+SIM_TRAIN step:87, travel time:1249.2232142857142, q_loss:205.55533, rewards:-170.94610460069444, queue:28.19074074074074, delay:0.5576489483868634, throughput:963
+Posterior-sampled train parameters for episode 87: {'headwayTime': 4.335866451263428, 'minGap': 2.213421583175659, 'usualPosAcc': 7.0, 'usualNegAcc': 3.6395676136016846, 'length': 4.7}
+training_episode:87/100, sim_loss:205.55533
+domain_adaptation_episode:88/100
+Episode 88 sim randomization params: {'headwayTime': 3.426038065030944, 'minGap': 3.2815636448957277, 'usualPosAcc': 3.6769217856481182, 'usualNegAcc': 6.819225960830179, 'length': 5.0}
+SIM_TEST step:88, travel time:100.52, q_loss:0, rewards:-20.646112738715278, queue:3.2916666666666665, delay:0.22430316783763743, throughput:2689
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:88, travel time:524.7096944151739, q_loss:0, rewards:-160.93485243055557, queue:26.824074074074073, delay:0.710400786223235, throughput:1479
+Collected real summary metric with shape (95,) from rollout 88
+Episode 88 sim randomization params: {'headwayTime': 4.354557037353516, 'minGap': 1.938672423362732, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:88, travel time:251.20314173509462, q_loss:240.25612, rewards:-20.99667019314236, queue:3.5027777777777778, delay:0.275906174271195, throughput:2462
+Posterior-sampled train parameters for episode 88: {'headwayTime': 4.354557037353516, 'minGap': 1.938672423362732, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:88/100, sim_loss:240.25612
+domain_adaptation_episode:89/100
+Episode 89 sim randomization params: {'headwayTime': 4.371806739384119, 'minGap': 2.7056489826164545, 'usualPosAcc': 2.77487233680436, 'usualNegAcc': 4.578252828427816, 'length': 4.988644968509892}
+SIM_TEST step:89, travel time:90.87821428571428, q_loss:0, rewards:-15.096390787760416, queue:2.6222222222222222, delay:0.23263578061704282, throughput:2760
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:89, travel time:475.42762148337596, q_loss:0, rewards:-149.08333333333334, queue:24.874074074074073, delay:0.6795954951533565, throughput:1560
+Collected real summary metric with shape (95,) from rollout 89
+Episode 89 sim randomization params: {'headwayTime': 4.424948692321777, 'minGap': 2.0480716228485107, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:89, travel time:107.43270260621206, q_loss:248.66322, rewards:-21.385970052083334, queue:3.6953703703703704, delay:0.2678126299822772, throughput:2728
+Posterior-sampled train parameters for episode 89: {'headwayTime': 4.424948692321777, 'minGap': 2.0480716228485107, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:89/100, sim_loss:248.66322
+domain_adaptation_episode:90/100
+Episode 90 sim randomization params: {'headwayTime': 2.6338943627166276, 'minGap': 3.0533977158084444, 'usualPosAcc': 3.778171728046888, 'usualNegAcc': 3.541490130398763, 'length': 4.776128502149196}
+SIM_TEST step:90, travel time:80.93181006783291, q_loss:0, rewards:-17.27236328125, queue:2.960185185185185, delay:0.19551628960503473, throughput:2756
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:90, travel time:810.3038156947445, q_loss:0, rewards:-165.94486762152778, queue:28.316666666666666, delay:0.6859303227177372, throughput:890
+Collected real summary metric with shape (95,) from rollout 90
+Episode 90 sim randomization params: {'headwayTime': 4.333673477172852, 'minGap': 1.9387342929840088, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:90, travel time:286.9142857142857, q_loss:250.86354, rewards:-39.93805881076389, queue:7.767592592592592, delay:0.33025874385127313, throughput:2239
+Posterior-sampled train parameters for episode 90: {'headwayTime': 4.333673477172852, 'minGap': 1.9387342929840088, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:90/100, sim_loss:250.86354
+domain_adaptation_episode:91/100
+Episode 91 sim randomization params: {'headwayTime': 0.6338812991167055, 'minGap': 2.578976362588782, 'usualPosAcc': 4.224533669191, 'usualNegAcc': 3.5681464787161743, 'length': 5.0}
+SIM_TEST step:91, travel time:66.8343448768297, q_loss:0, rewards:-17.537635633680555, queue:2.986111111111111, delay:0.19109638355396413, throughput:2783
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:91, travel time:297.47713476325373, q_loss:0, rewards:-127.79789496527778, queue:21.61111111111111, delay:0.7148210313585069, throughput:2293
+Collected real summary metric with shape (95,) from rollout 91
+Episode 91 sim randomization params: {'headwayTime': 4.445788383483887, 'minGap': 1.9511994123458862, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:91, travel time:75.72545519457337, q_loss:241.84125, rewards:-8.253887939453126, queue:1.450925925925926, delay:0.22269934195059318, throughput:2783
+Posterior-sampled train parameters for episode 91: {'headwayTime': 4.445788383483887, 'minGap': 1.9511994123458862, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:91/100, sim_loss:241.84125
+domain_adaptation_episode:92/100
+Episode 92 sim randomization params: {'headwayTime': 0.5, 'minGap': 2.202259481177894, 'usualPosAcc': 1.2032359258400496, 'usualNegAcc': 5.488738069314828, 'length': 5.0}
+SIM_TEST step:92, travel time:77.24027133166726, q_loss:0, rewards:-21.004026963975694, queue:3.574074074074074, delay:0.16164543716995805, throughput:2761
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:92, travel time:347.23962344886604, q_loss:0, rewards:-121.83846571180555, queue:21.253703703703703, delay:0.6263345223885995, throughput:1941
+Collected real summary metric with shape (95,) from rollout 92
+Episode 92 sim randomization params: {'headwayTime': 4.330976963043213, 'minGap': 2.4044554233551025, 'usualPosAcc': 7.0, 'usualNegAcc': 5.681826114654541, 'length': 4.7}
+SIM_TRAIN step:92, travel time:127.14464285714286, q_loss:227.174, rewards:-21.54569634331597, queue:3.761111111111111, delay:0.26227459377712675, throughput:2726
+Posterior-sampled train parameters for episode 92: {'headwayTime': 4.330976963043213, 'minGap': 2.4044554233551025, 'usualPosAcc': 7.0, 'usualNegAcc': 5.681826114654541, 'length': 4.7}
+training_episode:92/100, sim_loss:227.174
+domain_adaptation_episode:93/100
+Episode 93 sim randomization params: {'headwayTime': 2.687708335898191, 'minGap': 2.6112187459424145, 'usualPosAcc': 2.452108407470438, 'usualNegAcc': 3.2354936515136656, 'length': 4.779217058498998}
+SIM_TEST step:93, travel time:62.41913602284898, q_loss:0, rewards:-4.669585164388021, queue:0.8333333333333334, delay:0.15460200839572483, throughput:2788
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:93, travel time:350.90534286916284, q_loss:0, rewards:-120.30651041666667, queue:19.260185185185186, delay:0.6115169949001736, throughput:1964
+Collected real summary metric with shape (95,) from rollout 93
+Episode 93 sim randomization params: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+SIM_TRAIN step:93, travel time:107.44769725098179, q_loss:220.1617, rewards:-25.387776692708332, queue:4.071296296296296, delay:0.2558291399920428, throughput:2700
+Posterior-sampled train parameters for episode 93: {'headwayTime': 0.5, 'minGap': 4.0, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 4.7}
+training_episode:93/100, sim_loss:220.1617
+domain_adaptation_episode:94/100
+Episode 94 sim randomization params: {'headwayTime': 0.5, 'minGap': 2.591146501053609, 'usualPosAcc': 2.37145192907216, 'usualNegAcc': 6.065627352106867, 'length': 5.0}
+SIM_TEST step:94, travel time:65.58836129953588, q_loss:0, rewards:-17.157222493489584, queue:2.8796296296296298, delay:0.17409872832121673, throughput:2784
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:94, travel time:254.61448220064725, q_loss:0, rewards:-95.944140625, queue:16.730555555555554, delay:0.6256663004557291, throughput:2312
+Collected real summary metric with shape (95,) from rollout 94
+Episode 94 sim randomization params: {'headwayTime': 4.323537826538086, 'minGap': 2.559208869934082, 'usualPosAcc': 7.0, 'usualNegAcc': 4.188282489776611, 'length': 4.7}
+SIM_TRAIN step:94, travel time:213.99964285714285, q_loss:218.73763, rewards:-47.626247829861114, queue:9.550925925925926, delay:0.3469940185546875, throughput:2292
+Posterior-sampled train parameters for episode 94: {'headwayTime': 4.323537826538086, 'minGap': 2.559208869934082, 'usualPosAcc': 7.0, 'usualNegAcc': 4.188282489776611, 'length': 4.7}
+training_episode:94/100, sim_loss:218.73763
+domain_adaptation_episode:95/100
+Episode 95 sim randomization params: {'headwayTime': 4.579572266685171, 'minGap': 2.758265512846599, 'usualPosAcc': 2.286343529502981, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TEST step:95, travel time:95.45964285714285, q_loss:0, rewards:-16.52152642144097, queue:2.8194444444444446, delay:0.26546416106047455, throughput:2757
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:95, travel time:666.9210977701543, q_loss:0, rewards:-221.20555555555555, queue:31.55462962962963, delay:0.7168346828884549, throughput:1233
+Collected real summary metric with shape (95,) from rollout 95
+Episode 95 sim randomization params: {'headwayTime': 4.523185729980469, 'minGap': 1.9589722156524658, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+SIM_TRAIN step:95, travel time:103.49464285714286, q_loss:227.07747, rewards:-19.99611273871528, queue:3.425925925925926, delay:0.2564811423972801, throughput:2727
+Posterior-sampled train parameters for episode 95: {'headwayTime': 4.523185729980469, 'minGap': 1.9589722156524658, 'usualPosAcc': 7.0, 'usualNegAcc': 7.0, 'length': 4.7}
+training_episode:95/100, sim_loss:227.07747
+domain_adaptation_episode:96/100
+Episode 96 sim randomization params: {'headwayTime': 3.0683593205706208, 'minGap': 3.5349532650413744, 'usualPosAcc': 1.9680047533217522, 'usualNegAcc': 3.846880483667393, 'length': 4.7}
+SIM_TEST step:96, travel time:79.64107142857142, q_loss:0, rewards:-16.456111653645834, queue:2.811111111111111, delay:0.19576601099084925, throughput:2752
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:96, travel time:239.40238095238095, q_loss:0, rewards:-87.10999348958333, queue:15.837962962962964, delay:0.5995704933449074, throughput:2345
+Collected real summary metric with shape (95,) from rollout 96
+Episode 96 sim randomization params: {'headwayTime': 4.338188648223877, 'minGap': 2.0855648517608643, 'usualPosAcc': 7.0, 'usualNegAcc': 3.647474527359009, 'length': 4.7}
+SIM_TRAIN step:96, travel time:905.7321428571429, q_loss:214.002, rewards:-114.47930772569444, queue:20.666666666666668, delay:0.44512642754448783, throughput:1410
+Posterior-sampled train parameters for episode 96: {'headwayTime': 4.338188648223877, 'minGap': 2.0855648517608643, 'usualPosAcc': 7.0, 'usualNegAcc': 3.647474527359009, 'length': 4.7}
+training_episode:96/100, sim_loss:214.002
+domain_adaptation_episode:97/100
+Episode 97 sim randomization params: {'headwayTime': 0.5, 'minGap': 2.643281131974695, 'usualPosAcc': 2.160802007243329, 'usualNegAcc': 5.814483324724909, 'length': 5.0}
+SIM_TEST step:97, travel time:64.26097822206354, q_loss:0, rewards:-15.857221137152777, queue:2.6935185185185184, delay:0.16823302374945748, throughput:2789
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:97, travel time:339.5900957136912, q_loss:0, rewards:-134.17469618055554, queue:22.46388888888889, delay:0.679372716833044, throughput:2065
+Collected real summary metric with shape (95,) from rollout 97
+Episode 97 sim randomization params: {'headwayTime': 4.365487098693848, 'minGap': 1.9385522603988647, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:97, travel time:260.2628571428571, q_loss:226.75868, rewards:-37.26431206597222, queue:7.234259259259259, delay:0.3345825760452836, throughput:2345
+Posterior-sampled train parameters for episode 97: {'headwayTime': 4.365487098693848, 'minGap': 1.9385522603988647, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:97/100, sim_loss:226.75868
+domain_adaptation_episode:98/100
+Episode 98 sim randomization params: {'headwayTime': 0.7007356868878603, 'minGap': 2.951076018167024, 'usualPosAcc': 2.9258970435616467, 'usualNegAcc': 2.6450779926790613, 'length': 5.0}
+SIM_TEST step:98, travel time:92.48554087825777, q_loss:0, rewards:-24.358610026041667, queue:3.8287037037037037, delay:0.1881082888002749, throughput:2683
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:98, travel time:333.6754716981132, q_loss:0, rewards:-146.97886284722222, queue:23.578703703703702, delay:0.6611711290147569, throughput:2088
+Collected real summary metric with shape (95,) from rollout 98
+Episode 98 sim randomization params: {'headwayTime': 4.3566203117370605, 'minGap': 1.9386770725250244, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:98, travel time:139.99357142857144, q_loss:243.69931, rewards:-22.477501085069445, queue:3.9046296296296297, delay:0.3164337158203125, throughput:2743
+Posterior-sampled train parameters for episode 98: {'headwayTime': 4.3566203117370605, 'minGap': 1.9386770725250244, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:98/100, sim_loss:243.69931
+domain_adaptation_episode:99/100
+Episode 99 sim randomization params: {'headwayTime': 0.5, 'minGap': 2.8231239338901246, 'usualPosAcc': 3.534489849255774, 'usualNegAcc': 1.612045269616107, 'length': 5.0}
+SIM_TEST step:99, travel time:97.70178571428572, q_loss:0, rewards:-27.474443901909723, queue:4.235185185185185, delay:0.2310853746202257, throughput:2686
+sim_rollout:1/1
+Trained posterior estimator with theta shape (1, 5) and summary shape (1, 95)
+REAL_TRAIN step:99, travel time:277.38505494505495, q_loss:0, rewards:-156.46705729166666, queue:22.876851851851853, delay:0.6695074010778357, throughput:2117
+Collected real summary metric with shape (95,) from rollout 99
+Episode 99 sim randomization params: {'headwayTime': 4.356260776519775, 'minGap': 1.9383560419082642, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+SIM_TRAIN step:99, travel time:109.98857142857143, q_loss:225.23775, rewards:-9.546805148654514, queue:1.6592592592592592, delay:0.2950795491536458, throughput:2776
+Posterior-sampled train parameters for episode 99: {'headwayTime': 4.356260776519775, 'minGap': 1.9383560419082642, 'usualPosAcc': 7.0, 'usualNegAcc': 1.0, 'length': 5.0}
+training_episode:99/100, sim_loss:225.23775
+Saved SBI posterior to data/output_data/sim2real_transitions/cityflow_dqn/cologne3/baseline_v1_domain_adaptation_setting4_s0/model/cologne3_setting4_dqn_domain_adaptation/sbi_posterior.pkl
+REAL_TEST step:100, travel time:339.33318243549115, q_loss:100, rewards:-177.82864583333333, queue:27.553703703703704, delay:0.7306130868417245, throughput:1916
+Total time taken: 6761.4261865615845

@@ -1,0 +1,703 @@
+REAL_TRAIN step:0, travel time:1499.7339170156072, q_loss:0, rewards:-248.02553, queue:246.8676, delay:0.7827697, throughput:1068, raw_metrics:{'fairness': 306.0, 'emission': 5948.528, 'fuel': 1928.475, 'emergency_stops': 2.0, 'collisions': 0.0, 'ssm_conflicts': 1527.0}
+real step:3600/3600
+episode:0/200, oracle_loss:0
+REAL_TRAIN step:1, travel time:1532.4397520340954, q_loss:0, rewards:-282.4964, queue:259.3426, delay:0.7613843, throughput:917, raw_metrics:{'fairness': 245.333, 'emission': 5990.766, 'fuel': 1942.169, 'emergency_stops': 1.0, 'collisions': 0.0, 'ssm_conflicts': 1542.0}
+real step:3600/3600
+episode:1/200, oracle_loss:0
+REAL_TRAIN step:2, travel time:1208.5907692307692, q_loss:0.1525755, rewards:-266.81976, queue:231.36203, delay:0.78275305, throughput:2347, raw_metrics:{'fairness': 430.333, 'emission': 5423.91, 'fuel': 1758.394, 'emergency_stops': 1.0, 'collisions': 0.0, 'ssm_conflicts': 1651.0}
+real step:3600/3600
+episode:2/200, oracle_loss:0.1525755
+REAL_TEST step:2, travel time:1297.2681242807826, q_loss:100, rewards:-362.58395, queue:243.46574, delay:0.8539004, throughput:831, R_real:-4.9816, components:{'queue': 4.028, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.954, 'collisions': 0.0}, raw_metrics:{'fairness': 225.0, 'emission': 5239.673, 'fuel': 1698.67, 'emergency_stops': 4.0, 'collisions': 0.0, 'ssm_conflicts': 1717.0}
+REAL_TRAIN step:3, travel time:367.4736842105263, q_loss:0.06431354, rewards:-96.76026, queue:60.394444, delay:0.68677396, throughput:3369, raw_metrics:{'fairness': 513.0, 'emission': 2490.743, 'fuel': 807.476, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 2004.0}
+real step:3600/3600
+episode:3/200, oracle_loss:0.06431354
+REAL_TRAIN step:4, travel time:212.74575103353237, q_loss:0.051887386, rewards:-63.403336, queue:26.557407, delay:0.66496325, throughput:4137, raw_metrics:{'fairness': 626.333, 'emission': 1682.003, 'fuel': 545.288, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 987.0}
+real step:3600/3600
+episode:4/200, oracle_loss:0.051887386
+REAL_TEST step:4, travel time:230.65855421686746, q_loss:100, rewards:-89.77664, queue:39.297222, delay:0.7410555, throughput:3814, R_real:-0.9184, components:{'queue': 0.741, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.177, 'collisions': 0.0}, raw_metrics:{'fairness': 685.667, 'emission': 1723.308, 'fuel': 558.68, 'emergency_stops': 2.0, 'collisions': 0.0, 'ssm_conflicts': 319.0}
+REAL_TRAIN step:5, travel time:205.19715352309845, q_loss:0.0443348, rewards:-71.36307, queue:30.230556, delay:0.7049693, throughput:3998, raw_metrics:{'fairness': 625.333, 'emission': 1616.456, 'fuel': 524.039, 'emergency_stops': 5.0, 'collisions': 0.0, 'ssm_conflicts': 578.0}
+real step:3600/3600
+episode:5/200, oracle_loss:0.0443348
+REAL_TRAIN step:6, travel time:221.53392259914, q_loss:0.03609668, rewards:-88.982216, queue:34.752777, delay:0.7153545, throughput:3852, raw_metrics:{'fairness': 707.333, 'emission': 1682.755, 'fuel': 545.533, 'emergency_stops': 4.0, 'collisions': 0.0, 'ssm_conflicts': 384.0}
+real step:3600/3600
+episode:6/200, oracle_loss:0.03609668
+REAL_TEST step:6, travel time:209.69562113279392, q_loss:100, rewards:-94.81502, queue:29.183332, delay:0.7563132, throughput:3936, R_real:-1.0658, components:{'queue': 0.555, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.511, 'collisions': 0.0}, raw_metrics:{'fairness': 483.333, 'emission': 1617.989, 'fuel': 524.536, 'emergency_stops': 3.0, 'collisions': 1.0, 'ssm_conflicts': 920.0}
+REAL_TRAIN step:7, travel time:188.71722302854377, q_loss:0.035455182, rewards:-85.029724, queue:22.131481, delay:0.7086928, throughput:3905, raw_metrics:{'fairness': 466.333, 'emission': 1456.454, 'fuel': 472.167, 'emergency_stops': 7.0, 'collisions': 0.0, 'ssm_conflicts': 362.0}
+real step:3600/3600
+episode:7/200, oracle_loss:0.035455182
+REAL_TRAIN step:8, travel time:226.75314009661835, q_loss:0.03172737, rewards:-89.940285, queue:37.170372, delay:0.7162448, throughput:3821, raw_metrics:{'fairness': 700.333, 'emission': 1696.776, 'fuel': 550.078, 'emergency_stops': 2.0, 'collisions': 0.0, 'ssm_conflicts': 260.0}
+real step:3600/3600
+episode:8/200, oracle_loss:0.03172737
+REAL_TEST step:8, travel time:240.73820754716982, q_loss:100, rewards:-99.2811, queue:39.08889, delay:0.7748977, throughput:3912, R_real:-1.1150, components:{'queue': 0.682, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.433, 'collisions': 0.0}, raw_metrics:{'fairness': 532.667, 'emission': 1824.727, 'fuel': 591.559, 'emergency_stops': 8.0, 'collisions': 0.0, 'ssm_conflicts': 779.0}
+REAL_TRAIN step:9, travel time:206.89587800810102, q_loss:0.03069424, rewards:-91.670845, queue:28.896296, delay:0.73157847, throughput:3931, raw_metrics:{'fairness': 486.667, 'emission': 1596.312, 'fuel': 517.508, 'emergency_stops': 6.0, 'collisions': 0.0, 'ssm_conflicts': 598.0}
+real step:3600/3600
+episode:9/200, oracle_loss:0.03069424
+REAL_TRAIN step:10, travel time:229.30666348220683, q_loss:0.027837388, rewards:-87.6461, queue:38.787964, delay:0.71068126, throughput:3841, raw_metrics:{'fairness': 688.667, 'emission': 1730.947, 'fuel': 561.156, 'emergency_stops': 4.0, 'collisions': 0.0, 'ssm_conflicts': 297.0}
+real step:3600/3600
+episode:10/200, oracle_loss:0.027837388
+REAL_TEST step:10, travel time:234.9352449223417, q_loss:100, rewards:-92.39334, queue:40.72222, delay:0.7132383, throughput:3841, R_real:-0.9145, components:{'queue': 0.762, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.152, 'collisions': 0.0}, raw_metrics:{'fairness': 695.667, 'emission': 1767.483, 'fuel': 573.001, 'emergency_stops': 8.0, 'collisions': 0.0, 'ssm_conflicts': 274.0}
+REAL_TRAIN step:11, travel time:224.75591115357057, q_loss:0.03122059, rewards:-86.71525, queue:36.985184, delay:0.69483584, throughput:3862, raw_metrics:{'fairness': 691.0, 'emission': 1702.603, 'fuel': 551.967, 'emergency_stops': 2.0, 'collisions': 0.0, 'ssm_conflicts': 301.0}
+real step:3600/3600
+episode:11/200, oracle_loss:0.03122059
+REAL_TRAIN step:12, travel time:209.05353369335523, q_loss:0.026155729, rewards:-69.137505, queue:31.374075, delay:0.6766469, throughput:3948, raw_metrics:{'fairness': 401.333, 'emission': 1630.989, 'fuel': 528.75, 'emergency_stops': 4.0, 'collisions': 0.0, 'ssm_conflicts': 386.0}
+real step:3600/3600
+episode:12/200, oracle_loss:0.026155729
+REAL_TEST step:12, travel time:228.65500118231262, q_loss:100, rewards:-80.365265, queue:36.87037, delay:0.6744836, throughput:3908, R_real:-0.9666, components:{'queue': 0.632, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.335, 'collisions': 0.0}, raw_metrics:{'fairness': 484.667, 'emission': 1747.571, 'fuel': 566.546, 'emergency_stops': 6.0, 'collisions': 0.0, 'ssm_conflicts': 603.0}
+REAL_TRAIN step:13, travel time:216.76923076923077, q_loss:0.026497813, rewards:-83.29333, queue:33.646297, delay:0.71676636, throughput:3974, raw_metrics:{'fairness': 467.0, 'emission': 1675.158, 'fuel': 543.07, 'emergency_stops': 4.0, 'collisions': 0.0, 'ssm_conflicts': 446.0}
+real step:3600/3600
+episode:13/200, oracle_loss:0.026497813
+REAL_TRAIN step:14, travel time:182.50735294117646, q_loss:0.023941262, rewards:-73.28027, queue:20.446297, delay:0.7004104, throughput:3997, raw_metrics:{'fairness': 558.0, 'emission': 1445.444, 'fuel': 468.598, 'emergency_stops': 1.0, 'collisions': 0.0, 'ssm_conflicts': 361.0}
+real step:3600/3600
+episode:14/200, oracle_loss:0.023941262
+REAL_TEST step:14, travel time:230.4223930802499, q_loss:100, rewards:-90.344185, queue:38.819443, delay:0.71855676, throughput:3818, R_real:-0.8482, components:{'queue': 0.684, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.164, 'collisions': 0.0}, raw_metrics:{'fairness': 479.333, 'emission': 1729.179, 'fuel': 560.583, 'emergency_stops': 5.0, 'collisions': 0.0, 'ssm_conflicts': 296.0}
+REAL_TRAIN step:15, travel time:189.8816848083294, q_loss:0.019595152, rewards:-75.26304, queue:23.703703, delay:0.6924721, throughput:3995, raw_metrics:{'fairness': 706.333, 'emission': 1493.911, 'fuel': 484.311, 'emergency_stops': 4.0, 'collisions': 1.0, 'ssm_conflicts': 351.0}
+real step:3600/3600
+episode:15/200, oracle_loss:0.019595152
+REAL_TRAIN step:16, travel time:183.01046871282418, q_loss:0.014631349, rewards:-71.148605, queue:20.32963, delay:0.66511625, throughput:3979, raw_metrics:{'fairness': 713.333, 'emission': 1444.818, 'fuel': 468.395, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 348.0}
+real step:3600/3600
+episode:16/200, oracle_loss:0.014631349
+REAL_TEST step:16, travel time:206.00071701720842, q_loss:100, rewards:-89.5789, queue:29.26389, delay:0.6982838, throughput:3926, R_real:-0.7091, components:{'queue': 0.552, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.157, 'collisions': 0.0}, raw_metrics:{'fairness': 721.0, 'emission': 1583.969, 'fuel': 513.507, 'emergency_stops': 6.0, 'collisions': 0.0, 'ssm_conflicts': 283.0}
+REAL_TRAIN step:17, travel time:169.41653008663076, q_loss:0.010256594, rewards:-66.836945, queue:16.069445, delay:0.6682634, throughput:4061, raw_metrics:{'fairness': 461.667, 'emission': 1376.383, 'fuel': 446.208, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 446.0}
+real step:3600/3600
+episode:17/200, oracle_loss:0.010256594
+REAL_TRAIN step:18, travel time:172.42634560906515, q_loss:0.007974044, rewards:-66.906654, queue:16.955555, delay:0.6774577, throughput:4022, raw_metrics:{'fairness': 551.333, 'emission': 1385.541, 'fuel': 449.178, 'emergency_stops': 11.0, 'collisions': 0.0, 'ssm_conflicts': 355.0}
+real step:3600/3600
+episode:18/200, oracle_loss:0.007974044
+REAL_TEST step:18, travel time:187.43104693140793, q_loss:100, rewards:-77.695, queue:21.87037, delay:0.6791468, throughput:3922, R_real:-0.5982, components:{'queue': 0.434, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.164, 'collisions': 0.0}, raw_metrics:{'fairness': 248.0, 'emission': 1456.267, 'fuel': 472.107, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 295.0}
+REAL_TRAIN step:19, travel time:171.07330338141404, q_loss:0.006874097, rewards:-67.36388, queue:16.280556, delay:0.6742397, throughput:4024, raw_metrics:{'fairness': 474.333, 'emission': 1375.408, 'fuel': 445.893, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 334.0}
+real step:3600/3600
+episode:19/200, oracle_loss:0.006874097
+REAL_TRAIN step:20, travel time:170.69704719832598, q_loss:0.0066348943, rewards:-64.3425, queue:16.404629, delay:0.6585255, throughput:4105, raw_metrics:{'fairness': 397.667, 'emission': 1395.489, 'fuel': 452.402, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 492.0}
+real step:3600/3600
+episode:20/200, oracle_loss:0.0066348943
+REAL_TEST step:20, travel time:180.35237406604, q_loss:100, rewards:-72.84585, queue:19.075926, delay:0.6644216, throughput:3933, R_real:-0.5256, components:{'queue': 0.369, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.157, 'collisions': 0.0}, raw_metrics:{'fairness': 667.333, 'emission': 1410.731, 'fuel': 457.344, 'emergency_stops': 6.0, 'collisions': 0.0, 'ssm_conflicts': 282.0}
+REAL_TRAIN step:21, travel time:174.46096920506088, q_loss:0.006333583, rewards:-69.04334, queue:16.943518, delay:0.6597208, throughput:3988, raw_metrics:{'fairness': 316.0, 'emission': 1386.653, 'fuel': 449.538, 'emergency_stops': 5.0, 'collisions': 0.0, 'ssm_conflicts': 303.0}
+real step:3600/3600
+episode:21/200, oracle_loss:0.006333583
+REAL_TRAIN step:22, travel time:172.2339405560882, q_loss:0.0060140314, rewards:-68.49721, queue:16.252777, delay:0.6567291, throughput:3974, raw_metrics:{'fairness': 303.0, 'emission': 1365.534, 'fuel': 442.691, 'emergency_stops': 8.0, 'collisions': 0.0, 'ssm_conflicts': 316.0}
+real step:3600/3600
+episode:22/200, oracle_loss:0.0060140314
+REAL_TEST step:22, travel time:172.29928229665072, q_loss:100, rewards:-68.7561, queue:15.988889, delay:0.65427333, throughput:3969, R_real:-0.5075, components:{'queue': 0.301, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.207, 'collisions': 0.0}, raw_metrics:{'fairness': 410.667, 'emission': 1368.794, 'fuel': 443.748, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 372.0}
+REAL_TRAIN step:23, travel time:172.97096232301416, q_loss:0.005889451, rewards:-64.99778, queue:16.524075, delay:0.642773, throughput:3964, raw_metrics:{'fairness': 302.333, 'emission': 1368.579, 'fuel': 443.679, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 294.0}
+real step:3600/3600
+episode:23/200, oracle_loss:0.005889451
+REAL_TRAIN step:24, travel time:175.57231503579953, q_loss:0.0055190395, rewards:-65.687225, queue:17.397223, delay:0.6265047, throughput:3992, raw_metrics:{'fairness': 472.0, 'emission': 1393.743, 'fuel': 451.837, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 284.0}
+real step:3600/3600
+episode:24/200, oracle_loss:0.0055190395
+REAL_TEST step:24, travel time:175.13399857448326, q_loss:100, rewards:-66.43807, queue:17.197222, delay:0.6152287, throughput:4000, R_real:-0.4800, components:{'queue': 0.307, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.173, 'collisions': 0.0}, raw_metrics:{'fairness': 323.667, 'emission': 1397.908, 'fuel': 453.187, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 311.0}
+REAL_TRAIN step:25, travel time:173.4988055422838, q_loss:0.0050417334, rewards:-63.281387, queue:16.713888, delay:0.6211858, throughput:3980, raw_metrics:{'fairness': 716.333, 'emission': 1378.909, 'fuel': 447.027, 'emergency_stops': 4.0, 'collisions': 0.0, 'ssm_conflicts': 282.0}
+real step:3600/3600
+episode:25/200, oracle_loss:0.0050417334
+REAL_TRAIN step:26, travel time:170.89975961538462, q_loss:0.0049366252, rewards:-61.53444, queue:15.488889, delay:0.6059065, throughput:3961, raw_metrics:{'fairness': 215.0, 'emission': 1354.966, 'fuel': 439.265, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 293.0}
+real step:3600/3600
+episode:26/200, oracle_loss:0.0049366252
+REAL_TEST step:26, travel time:173.85076068582467, q_loss:100, rewards:-61.399166, queue:16.571297, delay:0.61918694, throughput:3933, R_real:-0.4394, components:{'queue': 0.295, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.144, 'collisions': 0.0}, raw_metrics:{'fairness': 464.0, 'emission': 1367.003, 'fuel': 443.168, 'emergency_stops': 5.0, 'collisions': 0.0, 'ssm_conflicts': 260.0}
+REAL_TRAIN step:27, travel time:171.06042654028437, q_loss:0.0046852045, rewards:-61.08861, queue:16.101852, delay:0.60112995, throughput:3998, raw_metrics:{'fairness': 375.667, 'emission': 1373.389, 'fuel': 445.238, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 325.0}
+real step:3600/3600
+episode:27/200, oracle_loss:0.0046852045
+REAL_TRAIN step:28, travel time:170.88249343205158, q_loss:0.0043863677, rewards:-61.184715, queue:15.575926, delay:0.5920442, throughput:3978, raw_metrics:{'fairness': 389.0, 'emission': 1363.494, 'fuel': 442.03, 'emergency_stops': 5.0, 'collisions': 0.0, 'ssm_conflicts': 243.0}
+real step:3600/3600
+episode:28/200, oracle_loss:0.0043863677
+REAL_TEST step:28, travel time:175.3315700889637, q_loss:100, rewards:-63.744183, queue:17.209259, delay:0.6114164, throughput:3947, R_real:-0.4496, components:{'queue': 0.301, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.149, 'collisions': 0.0}, raw_metrics:{'fairness': 251.667, 'emission': 1382.115, 'fuel': 448.067, 'emergency_stops': 2.0, 'collisions': 0.0, 'ssm_conflicts': 268.0}
+REAL_TRAIN step:29, travel time:166.48246646269712, q_loss:0.004126668, rewards:-60.29194, queue:14.135185, delay:0.60105205, throughput:4048, raw_metrics:{'fairness': 231.667, 'emission': 1354.623, 'fuel': 439.154, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 284.0}
+real step:3600/3600
+episode:29/200, oracle_loss:0.004126668
+REAL_TRAIN step:30, travel time:170.0705097665555, q_loss:0.0039289757, rewards:-60.797234, queue:15.360186, delay:0.5984884, throughput:3985, raw_metrics:{'fairness': 222.667, 'emission': 1360.956, 'fuel': 441.207, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 289.0}
+real step:3600/3600
+episode:30/200, oracle_loss:0.0039289757
+REAL_TEST step:30, travel time:173.5115174542864, q_loss:100, rewards:-62.163616, queue:16.768518, delay:0.6152049, throughput:3992, R_real:-0.4303, components:{'queue': 0.294, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.137, 'collisions': 0.0}, raw_metrics:{'fairness': 483.667, 'emission': 1388.386, 'fuel': 450.1, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 246.0}
+REAL_TRAIN step:31, travel time:160.74613220815752, q_loss:0.0040076785, rewards:-56.802223, queue:12.130555, delay:0.6038678, throughput:4080, raw_metrics:{'fairness': 565.667, 'emission': 1321.454, 'fuel': 428.401, 'emergency_stops': 5.0, 'collisions': 0.0, 'ssm_conflicts': 300.0}
+real step:3600/3600
+episode:31/200, oracle_loss:0.0040076785
+REAL_TRAIN step:32, travel time:166.34441015903158, q_loss:0.0037527685, rewards:-55.195, queue:14.09537, delay:0.58055204, throughput:4004, raw_metrics:{'fairness': 379.0, 'emission': 1341.403, 'fuel': 434.868, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 283.0}
+real step:3600/3600
+episode:32/200, oracle_loss:0.0037527685
+REAL_TEST step:32, travel time:170.92154065620542, q_loss:100, rewards:-57.912216, queue:15.538889, delay:0.55574334, throughput:4001, R_real:-0.4336, components:{'queue': 0.269, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.165, 'collisions': 0.0}, raw_metrics:{'fairness': 155.667, 'emission': 1369.68, 'fuel': 444.035, 'emergency_stops': 11.0, 'collisions': 0.0, 'ssm_conflicts': 297.0}
+REAL_TRAIN step:33, travel time:166.60353475041796, q_loss:0.003659975, rewards:-58.294174, queue:14.080556, delay:0.5790895, throughput:3972, raw_metrics:{'fairness': 382.667, 'emission': 1334.615, 'fuel': 432.668, 'emergency_stops': 5.0, 'collisions': 0.0, 'ssm_conflicts': 270.0}
+real step:3600/3600
+episode:33/200, oracle_loss:0.003659975
+REAL_TRAIN step:34, travel time:155.18782444549316, q_loss:0.003781929, rewards:-50.92722, queue:10.009259, delay:0.5525423, throughput:4045, raw_metrics:{'fairness': 316.667, 'emission': 1276.539, 'fuel': 413.84, 'emergency_stops': 6.0, 'collisions': 0.0, 'ssm_conflicts': 354.0}
+real step:3600/3600
+episode:34/200, oracle_loss:0.003781929
+REAL_TEST step:34, travel time:169.51277154452137, q_loss:100, rewards:-57.745846, queue:15.090741, delay:0.5717442, throughput:3985, R_real:-0.4148, components:{'queue': 0.261, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.154, 'collisions': 0.0}, raw_metrics:{'fairness': 222.667, 'emission': 1355.322, 'fuel': 439.381, 'emergency_stops': 8.0, 'collisions': 0.0, 'ssm_conflicts': 277.0}
+REAL_TRAIN step:35, travel time:164.84533396494552, q_loss:0.0036856167, rewards:-57.856396, queue:13.360186, delay:0.5900972, throughput:4020, raw_metrics:{'fairness': 323.0, 'emission': 1336.296, 'fuel': 433.212, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 282.0}
+real step:3600/3600
+episode:35/200, oracle_loss:0.0036856167
+REAL_TRAIN step:36, travel time:137.16720257234726, q_loss:0.0037180057, rewards:-33.21112, queue:3.2990742, delay:0.51152676, throughput:4179, raw_metrics:{'fairness': 308.333, 'emission': 1191.668, 'fuel': 386.325, 'emergency_stops': 19.0, 'collisions': 0.0, 'ssm_conflicts': 396.0}
+real step:3600/3600
+episode:36/200, oracle_loss:0.0037180057
+REAL_TEST step:36, travel time:156.0692057594055, q_loss:100, rewards:-53.66585, queue:10.519444, delay:0.5611914, throughput:4117, R_real:-0.4987, components:{'queue': 0.195, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.304, 'collisions': 0.0}, raw_metrics:{'fairness': 563.333, 'emission': 1302.692, 'fuel': 422.318, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 547.0}
+REAL_TRAIN step:37, travel time:138.4432183908046, q_loss:0.0036881457, rewards:-34.349445, queue:3.785185, delay:0.5419844, throughput:4181, raw_metrics:{'fairness': 392.667, 'emission': 1198.923, 'fuel': 388.677, 'emergency_stops': 17.0, 'collisions': 1.0, 'ssm_conflicts': 431.0}
+real step:3600/3600
+episode:37/200, oracle_loss:0.0036881457
+REAL_TRAIN step:38, travel time:137.70704289974765, q_loss:0.0037018824, rewards:-33.6611, queue:3.5907407, delay:0.538666, throughput:4194, raw_metrics:{'fairness': 177.333, 'emission': 1196.991, 'fuel': 388.05, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 381.0}
+real step:3600/3600
+episode:38/200, oracle_loss:0.0037018824
+REAL_TEST step:38, travel time:140.00230627306274, q_loss:100, rewards:-36.62583, queue:4.5814815, delay:0.5593732, throughput:4161, R_real:-0.2978, components:{'queue': 0.091, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.207, 'collisions': 0.0}, raw_metrics:{'fairness': 375.667, 'emission': 1205.314, 'fuel': 390.749, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 373.0}
+REAL_TRAIN step:39, travel time:137.33609958506224, q_loss:0.0037642575, rewards:-33.574177, queue:3.4083333, delay:0.53203917, throughput:4176, raw_metrics:{'fairness': 404.0, 'emission': 1188.679, 'fuel': 385.356, 'emergency_stops': 18.0, 'collisions': 0.0, 'ssm_conflicts': 334.0}
+real step:3600/3600
+episode:39/200, oracle_loss:0.0037642575
+REAL_TRAIN step:40, travel time:141.93691213581096, q_loss:0.0037138038, rewards:-38.401108, queue:5.040741, delay:0.53704745, throughput:4198, raw_metrics:{'fairness': 279.333, 'emission': 1224.897, 'fuel': 397.097, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 444.0}
+real step:3600/3600
+episode:40/200, oracle_loss:0.0037138038
+REAL_TEST step:40, travel time:140.61602019738353, q_loss:100, rewards:-37.915825, queue:4.6935186, delay:0.5625102, throughput:4190, R_real:-0.2940, components:{'queue': 0.09, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.204, 'collisions': 0.0}, raw_metrics:{'fairness': 161.667, 'emission': 1215.649, 'fuel': 394.099, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 367.0}
+REAL_TRAIN step:41, travel time:136.23699953980673, q_loss:0.0036848346, rewards:-32.18415, queue:2.9092593, delay:0.5047236, throughput:4189, raw_metrics:{'fairness': 0.0, 'emission': 1184.043, 'fuel': 383.853, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 334.0}
+real step:3600/3600
+episode:41/200, oracle_loss:0.0036848346
+REAL_TRAIN step:42, travel time:137.08233670653175, q_loss:0.0036737013, rewards:-33.503326, queue:3.238889, delay:0.5219968, throughput:4185, raw_metrics:{'fairness': 452.0, 'emission': 1190.673, 'fuel': 386.002, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 358.0}
+real step:3600/3600
+episode:42/200, oracle_loss:0.0036737013
+REAL_TEST step:42, travel time:136.9400507263085, q_loss:100, rewards:-33.667217, queue:3.3018517, delay:0.52728474, throughput:4178, R_real:-0.2332, components:{'queue': 0.065, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.168, 'collisions': 0.0}, raw_metrics:{'fairness': 146.667, 'emission': 1186.281, 'fuel': 384.578, 'emergency_stops': 11.0, 'collisions': 0.0, 'ssm_conflicts': 303.0}
+REAL_TRAIN step:43, travel time:136.40568654646324, q_loss:0.0035891817, rewards:-32.556946, queue:3.0018518, delay:0.51341915, throughput:4174, raw_metrics:{'fairness': 147.333, 'emission': 1179.161, 'fuel': 382.27, 'emergency_stops': 8.0, 'collisions': 0.0, 'ssm_conflicts': 319.0}
+real step:3600/3600
+episode:43/200, oracle_loss:0.0035891817
+REAL_TRAIN step:44, travel time:136.6818181818182, q_loss:0.0035716223, rewards:-32.49167, queue:3.0444446, delay:0.50442684, throughput:4195, raw_metrics:{'fairness': 279.333, 'emission': 1189.378, 'fuel': 385.582, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 361.0}
+real step:3600/3600
+episode:44/200, oracle_loss:0.0035716223
+REAL_TEST step:44, travel time:138.8666204345816, q_loss:100, rewards:-33.85138, queue:3.973148, delay:0.53771085, throughput:4170, R_real:-0.2555, components:{'queue': 0.069, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.187, 'collisions': 0.0}, raw_metrics:{'fairness': 225.0, 'emission': 1195.318, 'fuel': 387.508, 'emergency_stops': 19.0, 'collisions': 0.0, 'ssm_conflicts': 336.0}
+REAL_TRAIN step:45, travel time:137.3957807842238, q_loss:0.003706439, rewards:-33.56029, queue:3.2925925, delay:0.49701855, throughput:4203, raw_metrics:{'fairness': 0.0, 'emission': 1196.11, 'fuel': 387.765, 'emergency_stops': 18.0, 'collisions': 1.0, 'ssm_conflicts': 360.0}
+real step:3600/3600
+episode:45/200, oracle_loss:0.003706439
+REAL_TRAIN step:46, travel time:136.38976014760146, q_loss:0.0035916178, rewards:-32.112507, queue:2.9398148, delay:0.50360096, throughput:4181, raw_metrics:{'fairness': 279.333, 'emission': 1182.357, 'fuel': 383.306, 'emergency_stops': 7.0, 'collisions': 0.0, 'ssm_conflicts': 310.0}
+real step:3600/3600
+episode:46/200, oracle_loss:0.0035916178
+REAL_TEST step:46, travel time:135.85419058553387, q_loss:100, rewards:-31.840834, queue:2.7666667, delay:0.50217795, throughput:4204, R_real:-0.2067, components:{'queue': 0.053, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.154, 'collisions': 0.0}, raw_metrics:{'fairness': 119.667, 'emission': 1183.571, 'fuel': 383.7, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 277.0}
+REAL_TRAIN step:47, travel time:136.9530570185482, q_loss:0.0036292598, rewards:-32.99888, queue:3.1944444, delay:0.5110047, throughput:4206, raw_metrics:{'fairness': 119.667, 'emission': 1194.875, 'fuel': 387.364, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 301.0}
+real step:3600/3600
+episode:47/200, oracle_loss:0.0036292598
+REAL_TRAIN step:48, travel time:136.06368843069873, q_loss:0.0035141516, rewards:-31.676102, queue:2.839815, delay:0.49642578, throughput:4207, raw_metrics:{'fairness': 177.333, 'emission': 1188.627, 'fuel': 385.339, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 302.0}
+real step:3600/3600
+episode:48/200, oracle_loss:0.0035141516
+REAL_TEST step:48, travel time:136.22798524665745, q_loss:100, rewards:-32.090553, queue:2.9675925, delay:0.512864, throughput:4178, R_real:-0.2327, components:{'queue': 0.055, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.178, 'collisions': 0.0}, raw_metrics:{'fairness': 245.333, 'emission': 1181.311, 'fuel': 382.967, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 320.0}
+REAL_TRAIN step:49, travel time:135.97887485648678, q_loss:0.0035300162, rewards:-31.508045, queue:2.7583334, delay:0.49915433, throughput:4199, raw_metrics:{'fairness': 73.667, 'emission': 1184.883, 'fuel': 384.125, 'emergency_stops': 6.0, 'collisions': 0.0, 'ssm_conflicts': 314.0}
+real step:3600/3600
+episode:49/200, oracle_loss:0.0035300162
+REAL_TRAIN step:50, travel time:135.66567095588235, q_loss:0.0034482982, rewards:-31.46388, queue:2.6527777, delay:0.49228537, throughput:4198, raw_metrics:{'fairness': 0.0, 'emission': 1182.291, 'fuel': 383.285, 'emergency_stops': 18.0, 'collisions': 0.0, 'ssm_conflicts': 305.0}
+real step:3600/3600
+episode:50/200, oracle_loss:0.0034482982
+REAL_TEST step:50, travel time:141.43193473193475, q_loss:100, rewards:-37.755, queue:4.9666667, delay:0.5289761, throughput:4127, R_real:-0.3061, components:{'queue': 0.169, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.137, 'collisions': 0.0}, raw_metrics:{'fairness': 379.333, 'emission': 1202.49, 'fuel': 389.833, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 246.0}
+REAL_TRAIN step:51, travel time:135.55251666283613, q_loss:0.0035221016, rewards:-31.243626, queue:2.6462963, delay:0.48926437, throughput:4191, raw_metrics:{'fairness': 191.333, 'emission': 1180.685, 'fuel': 382.764, 'emergency_stops': 12.0, 'collisions': 2.0, 'ssm_conflicts': 323.0}
+real step:3600/3600
+episode:51/200, oracle_loss:0.0035221016
+REAL_TRAIN step:52, travel time:135.64221453287198, q_loss:0.0034420516, rewards:-31.577509, queue:2.6953704, delay:0.50189495, throughput:4176, raw_metrics:{'fairness': 67.333, 'emission': 1177.041, 'fuel': 381.583, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 303.0}
+real step:3600/3600
+episode:52/200, oracle_loss:0.0034420516
+REAL_TEST step:52, travel time:137.83671119299862, q_loss:100, rewards:-34.00306, queue:3.6546297, delay:0.5090088, throughput:4177, R_real:-0.2430, components:{'queue': 0.066, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.177, 'collisions': 0.0}, raw_metrics:{'fairness': 307.667, 'emission': 1193.056, 'fuel': 386.775, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 319.0}
+REAL_TRAIN step:53, travel time:135.30446798710273, q_loss:0.003381606, rewards:-30.93806, queue:2.5305555, delay:0.48848876, throughput:4188, raw_metrics:{'fairness': 363.667, 'emission': 1176.705, 'fuel': 381.474, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 284.0}
+real step:3600/3600
+episode:53/200, oracle_loss:0.003381606
+REAL_TRAIN step:54, travel time:136.42526364053185, q_loss:0.0032869212, rewards:-32.051674, queue:2.8962963, delay:0.5193759, throughput:4208, raw_metrics:{'fairness': 0.0, 'emission': 1189.914, 'fuel': 385.756, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 346.0}
+real step:3600/3600
+episode:54/200, oracle_loss:0.0032869212
+REAL_TEST step:54, travel time:135.189611583544, q_loss:100, rewards:-30.766375, queue:2.5564816, delay:0.48677808, throughput:4189, R_real:-0.2006, components:{'queue': 0.047, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.154, 'collisions': 0.0}, raw_metrics:{'fairness': 244.0, 'emission': 1177.789, 'fuel': 381.825, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 277.0}
+REAL_TRAIN step:55, travel time:135.8132170720514, q_loss:0.0032854583, rewards:-31.40612, queue:2.6527777, delay:0.4950696, throughput:4206, raw_metrics:{'fairness': 306.667, 'emission': 1184.632, 'fuel': 384.044, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 314.0}
+real step:3600/3600
+episode:55/200, oracle_loss:0.0032854583
+REAL_TRAIN step:56, travel time:135.59086737035338, q_loss:0.0031899808, rewards:-31.523329, queue:2.7212963, delay:0.49943176, throughput:4200, raw_metrics:{'fairness': 0.0, 'emission': 1183.041, 'fuel': 383.528, 'emergency_stops': 19.0, 'collisions': 0.0, 'ssm_conflicts': 313.0}
+real step:3600/3600
+episode:56/200, oracle_loss:0.0031899808
+REAL_TEST step:56, travel time:136.06616126809098, q_loss:100, rewards:-32.562782, queue:3.000926, delay:0.5382342, throughput:4182, R_real:-0.2143, components:{'queue': 0.056, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.158, 'collisions': 0.0}, raw_metrics:{'fairness': 623.333, 'emission': 1184.561, 'fuel': 384.021, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 284.0}
+REAL_TRAIN step:57, travel time:136.10863060989644, q_loss:0.0032361096, rewards:-32.091114, queue:2.9842594, delay:0.5074405, throughput:4175, raw_metrics:{'fairness': 234.667, 'emission': 1182.031, 'fuel': 383.201, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 311.0}
+real step:3600/3600
+episode:57/200, oracle_loss:0.0032361096
+REAL_TRAIN step:58, travel time:135.46353211009173, q_loss:0.0032126387, rewards:-31.280548, queue:2.625926, delay:0.49507853, throughput:4200, raw_metrics:{'fairness': 279.333, 'emission': 1183.102, 'fuel': 383.548, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 303.0}
+real step:3600/3600
+episode:58/200, oracle_loss:0.0032126387
+REAL_TEST step:58, travel time:136.7018790100825, q_loss:100, rewards:-32.926105, queue:3.050926, delay:0.5178204, throughput:4205, R_real:-0.2237, components:{'queue': 0.057, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.167, 'collisions': 0.0}, raw_metrics:{'fairness': 0.0, 'emission': 1191.912, 'fuel': 386.404, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 300.0}
+REAL_TRAIN step:59, travel time:135.74626522638474, q_loss:0.0031894217, rewards:-31.671385, queue:2.6962962, delay:0.50768036, throughput:4200, raw_metrics:{'fairness': 279.667, 'emission': 1182.032, 'fuel': 383.201, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 304.0}
+real step:3600/3600
+episode:59/200, oracle_loss:0.0031894217
+REAL_TRAIN step:60, travel time:135.94147349093413, q_loss:0.003228306, rewards:-31.628336, queue:2.7129629, delay:0.50186837, throughput:4207, raw_metrics:{'fairness': 27.333, 'emission': 1185.02, 'fuel': 384.169, 'emergency_stops': 11.0, 'collisions': 0.0, 'ssm_conflicts': 318.0}
+real step:3600/3600
+episode:60/200, oracle_loss:0.003228306
+REAL_TEST step:60, travel time:134.60146755331346, q_loss:100, rewards:-30.468891, queue:2.2305555, delay:0.4730711, throughput:4204, R_real:-0.1975, components:{'queue': 0.042, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.155, 'collisions': 0.0}, raw_metrics:{'fairness': 523.333, 'emission': 1177.77, 'fuel': 381.819, 'emergency_stops': 21.0, 'collisions': 0.0, 'ssm_conflicts': 279.0}
+REAL_TRAIN step:61, travel time:135.5276172868038, q_loss:0.003198471, rewards:-31.742214, queue:2.687963, delay:0.49995932, throughput:4167, raw_metrics:{'fairness': 64.667, 'emission': 1174.257, 'fuel': 380.68, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 317.0}
+real step:3600/3600
+episode:61/200, oracle_loss:0.003198471
+REAL_TRAIN step:62, travel time:135.47521798990363, q_loss:0.0031954793, rewards:-31.181103, queue:2.5824075, delay:0.4942079, throughput:4193, raw_metrics:{'fairness': 381.333, 'emission': 1182.581, 'fuel': 383.379, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 301.0}
+real step:3600/3600
+episode:62/200, oracle_loss:0.0031954793
+REAL_TEST step:62, travel time:143.13281069863962, q_loss:100, rewards:-38.337517, queue:5.4342594, delay:0.53402996, throughput:4166, R_real:-0.3088, components:{'queue': 0.098, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.211, 'collisions': 0.0}, raw_metrics:{'fairness': 481.667, 'emission': 1228.46, 'fuel': 398.253, 'emergency_stops': 20.0, 'collisions': 0.0, 'ssm_conflicts': 379.0}
+REAL_TRAIN step:63, travel time:135.55196145905023, q_loss:0.0031702132, rewards:-31.699715, queue:2.7092593, delay:0.4977838, throughput:4195, raw_metrics:{'fairness': 524.667, 'emission': 1182.606, 'fuel': 383.387, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 332.0}
+real step:3600/3600
+episode:63/200, oracle_loss:0.0031702132
+REAL_TRAIN step:64, travel time:135.92215843857636, q_loss:0.0031891435, rewards:-32.041943, queue:2.8296297, delay:0.5177952, throughput:4188, raw_metrics:{'fairness': 403.0, 'emission': 1184.755, 'fuel': 384.084, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 336.0}
+real step:3600/3600
+episode:64/200, oracle_loss:0.0031891435
+REAL_TEST step:64, travel time:135.6192236598891, q_loss:100, rewards:-31.640009, queue:2.7685184, delay:0.5131738, throughput:4167, R_real:-0.2110, components:{'queue': 0.052, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.159, 'collisions': 0.0}, raw_metrics:{'fairness': 160.333, 'emission': 1174.656, 'fuel': 380.81, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 287.0}
+REAL_TRAIN step:65, travel time:135.63087864189035, q_loss:0.0032155367, rewards:-31.246666, queue:2.6027777, delay:0.5055321, throughput:4210, raw_metrics:{'fairness': 207.0, 'emission': 1183.168, 'fuel': 383.569, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 301.0}
+real step:3600/3600
+episode:65/200, oracle_loss:0.0032155367
+REAL_TRAIN step:66, travel time:135.25827205882354, q_loss:0.0032230427, rewards:-31.255564, queue:2.6046295, delay:0.50123924, throughput:4197, raw_metrics:{'fairness': 119.667, 'emission': 1179.442, 'fuel': 382.361, 'emergency_stops': 18.0, 'collisions': 0.0, 'ssm_conflicts': 294.0}
+real step:3600/3600
+episode:66/200, oracle_loss:0.0032230427
+REAL_TEST step:66, travel time:134.8804422944022, q_loss:100, rewards:-30.837221, queue:2.425, delay:0.48404938, throughput:4185, R_real:-0.2002, components:{'queue': 0.044, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.156, 'collisions': 0.0}, raw_metrics:{'fairness': 474.333, 'emission': 1173.249, 'fuel': 380.353, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 281.0}
+REAL_TRAIN step:67, travel time:135.28046821207252, q_loss:0.0031832526, rewards:-31.32416, queue:2.600926, delay:0.4951677, throughput:4188, raw_metrics:{'fairness': 74.0, 'emission': 1180.758, 'fuel': 382.788, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 290.0}
+real step:3600/3600
+episode:67/200, oracle_loss:0.0031832526
+REAL_TRAIN step:68, travel time:135.24362801377725, q_loss:0.003071718, rewards:-30.995012, queue:2.524074, delay:0.49610233, throughput:4199, raw_metrics:{'fairness': 404.333, 'emission': 1179.991, 'fuel': 382.539, 'emergency_stops': 8.0, 'collisions': 0.0, 'ssm_conflicts': 278.0}
+real step:3600/3600
+episode:68/200, oracle_loss:0.003071718
+REAL_TEST step:68, travel time:134.67385815928392, q_loss:100, rewards:-30.655273, queue:2.3185184, delay:0.47167024, throughput:4198, R_real:-0.2070, components:{'queue': 0.044, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.163, 'collisions': 0.0}, raw_metrics:{'fairness': 233.667, 'emission': 1176.87, 'fuel': 381.527, 'emergency_stops': 14.0, 'collisions': 1.0, 'ssm_conflicts': 294.0}
+REAL_TRAIN step:69, travel time:135.29995406522738, q_loss:0.0031509274, rewards:-31.303898, queue:2.5481482, delay:0.49223801, throughput:4194, raw_metrics:{'fairness': 72.0, 'emission': 1180.903, 'fuel': 382.835, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 294.0}
+real step:3600/3600
+episode:69/200, oracle_loss:0.0031509274
+REAL_TRAIN step:70, travel time:135.1366032546413, q_loss:0.0030772525, rewards:-30.890001, queue:2.462037, delay:0.4849868, throughput:4207, raw_metrics:{'fairness': 159.667, 'emission': 1182.342, 'fuel': 383.301, 'emergency_stops': 19.0, 'collisions': 0.0, 'ssm_conflicts': 318.0}
+real step:3600/3600
+episode:70/200, oracle_loss:0.0030772525
+REAL_TEST step:70, travel time:135.061867525299, q_loss:100, rewards:-31.04805, queue:2.4712963, delay:0.48458126, throughput:4193, R_real:-0.2042, components:{'queue': 0.045, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.159, 'collisions': 0.0}, raw_metrics:{'fairness': 231.333, 'emission': 1176.957, 'fuel': 381.555, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 287.0}
+REAL_TRAIN step:71, travel time:135.37904150424214, q_loss:0.0031714651, rewards:-31.214174, queue:2.5546296, delay:0.49625504, throughput:4196, raw_metrics:{'fairness': 119.667, 'emission': 1182.612, 'fuel': 383.389, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 307.0}
+real step:3600/3600
+episode:71/200, oracle_loss:0.0031714651
+REAL_TRAIN step:72, travel time:135.16383272058823, q_loss:0.003145052, rewards:-30.962229, queue:2.4212964, delay:0.47490612, throughput:4195, raw_metrics:{'fairness': 174.333, 'emission': 1178.687, 'fuel': 382.116, 'emergency_stops': 22.0, 'collisions': 0.0, 'ssm_conflicts': 322.0}
+real step:3600/3600
+episode:72/200, oracle_loss:0.003145052
+REAL_TEST step:72, travel time:134.96974558789825, q_loss:100, rewards:-30.492222, queue:2.3425925, delay:0.47932458, throughput:4206, R_real:-0.1982, components:{'queue': 0.044, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.154, 'collisions': 0.0}, raw_metrics:{'fairness': 404.667, 'emission': 1180.819, 'fuel': 382.807, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 278.0}
+REAL_TRAIN step:73, travel time:134.88625374165323, q_loss:0.0031537723, rewards:-30.740267, queue:2.3925927, delay:0.48560137, throughput:4187, raw_metrics:{'fairness': 160.0, 'emission': 1173.738, 'fuel': 380.512, 'emergency_stops': 18.0, 'collisions': 0.0, 'ssm_conflicts': 286.0}
+real step:3600/3600
+episode:73/200, oracle_loss:0.0031537723
+REAL_TRAIN step:74, travel time:135.67880184331798, q_loss:0.0030766793, rewards:-31.422499, queue:2.6972222, delay:0.5095671, throughput:4180, raw_metrics:{'fairness': 313.667, 'emission': 1179.118, 'fuel': 382.256, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 331.0}
+real step:3600/3600
+episode:74/200, oracle_loss:0.0030766793
+REAL_TEST step:74, travel time:134.46345400046116, q_loss:100, rewards:-30.589443, queue:2.3064816, delay:0.467537, throughput:4174, R_real:-0.1973, components:{'queue': 0.043, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.154, 'collisions': 0.0}, raw_metrics:{'fairness': 65.333, 'emission': 1170.064, 'fuel': 379.321, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 278.0}
+REAL_TRAIN step:75, travel time:134.6273922065944, q_loss:0.003135404, rewards:-30.755833, queue:2.3351853, delay:0.46960732, throughput:4178, raw_metrics:{'fairness': 472.667, 'emission': 1171.154, 'fuel': 379.674, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 292.0}
+real step:3600/3600
+episode:75/200, oracle_loss:0.003135404
+REAL_TRAIN step:76, travel time:135.2082659893789, q_loss:0.0031971938, rewards:-30.838617, queue:2.4518518, delay:0.48606607, throughput:4180, raw_metrics:{'fairness': 225.667, 'emission': 1173.272, 'fuel': 380.361, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 340.0}
+real step:3600/3600
+episode:76/200, oracle_loss:0.0031971938
+REAL_TEST step:76, travel time:135.01628440366972, q_loss:100, rewards:-31.10723, queue:2.5305555, delay:0.49119815, throughput:4192, R_real:-0.2094, components:{'queue': 0.047, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.162, 'collisions': 0.0}, raw_metrics:{'fairness': 336.333, 'emission': 1179.371, 'fuel': 382.338, 'emergency_stops': 18.0, 'collisions': 0.0, 'ssm_conflicts': 292.0}
+REAL_TRAIN step:77, travel time:134.90632911392404, q_loss:0.0032135164, rewards:-30.61028, queue:2.3888888, delay:0.4781249, throughput:4185, raw_metrics:{'fairness': 230.333, 'emission': 1175.15, 'fuel': 380.97, 'emergency_stops': 19.0, 'collisions': 0.0, 'ssm_conflicts': 299.0}
+real step:3600/3600
+episode:77/200, oracle_loss:0.0032135164
+REAL_TRAIN step:78, travel time:135.09625173530773, q_loss:0.0031705857, rewards:-30.926943, queue:2.5222223, delay:0.4875776, throughput:4166, raw_metrics:{'fairness': 307.333, 'emission': 1169.767, 'fuel': 379.225, 'emergency_stops': 11.0, 'collisions': 0.0, 'ssm_conflicts': 311.0}
+real step:3600/3600
+episode:78/200, oracle_loss:0.0031705857
+REAL_TEST step:78, travel time:136.0356649792913, q_loss:100, rewards:-32.167503, queue:2.8490741, delay:0.510906, throughput:4193, R_real:-0.2275, components:{'queue': 0.053, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.175, 'collisions': 0.0}, raw_metrics:{'fairness': 159.667, 'emission': 1182.381, 'fuel': 383.314, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 315.0}
+REAL_TRAIN step:79, travel time:135.14661134163208, q_loss:0.003226968, rewards:-30.974724, queue:2.5472221, delay:0.4895044, throughput:4178, raw_metrics:{'fairness': 0.0, 'emission': 1174.504, 'fuel': 380.76, 'emergency_stops': 11.0, 'collisions': 0.0, 'ssm_conflicts': 305.0}
+real step:3600/3600
+episode:79/200, oracle_loss:0.003226968
+REAL_TRAIN step:80, travel time:135.14095805638323, q_loss:0.0033541357, rewards:-30.879444, queue:2.4509258, delay:0.47717562, throughput:4205, raw_metrics:{'fairness': 356.0, 'emission': 1182.054, 'fuel': 383.208, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 308.0}
+real step:3600/3600
+episode:80/200, oracle_loss:0.0033541357
+REAL_TEST step:80, travel time:135.14624596959925, q_loss:100, rewards:-31.268053, queue:2.5555556, delay:0.5001758, throughput:4179, R_real:-0.1876, components:{'queue': 0.048, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.14, 'collisions': 0.0}, raw_metrics:{'fairness': 635.333, 'emission': 1175.279, 'fuel': 381.012, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 252.0}
+REAL_TRAIN step:81, travel time:135.3504608294931, q_loss:0.0031518952, rewards:-30.877218, queue:2.4425926, delay:0.4802588, throughput:4190, raw_metrics:{'fairness': 70.0, 'emission': 1177.324, 'fuel': 381.674, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 299.0}
+real step:3600/3600
+episode:81/200, oracle_loss:0.0031518952
+REAL_TRAIN step:82, travel time:135.25868814729574, q_loss:0.0032903305, rewards:-30.939455, queue:2.5277777, delay:0.49218896, throughput:4185, raw_metrics:{'fairness': 391.667, 'emission': 1177.37, 'fuel': 381.69, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 303.0}
+real step:3600/3600
+episode:82/200, oracle_loss:0.0032903305
+REAL_TEST step:82, travel time:134.8676335174954, q_loss:100, rewards:-30.774723, queue:2.3925927, delay:0.48270807, throughput:4190, R_real:-0.2048, components:{'queue': 0.045, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.16, 'collisions': 0.0}, raw_metrics:{'fairness': 709.0, 'emission': 1174.722, 'fuel': 380.831, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 288.0}
+REAL_TRAIN step:83, travel time:134.90509259259258, q_loss:0.003303616, rewards:-30.625557, queue:2.4222221, delay:0.47584647, throughput:4162, raw_metrics:{'fairness': 147.0, 'emission': 1167.029, 'fuel': 378.337, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 299.0}
+real step:3600/3600
+episode:83/200, oracle_loss:0.003303616
+REAL_TRAIN step:84, travel time:135.43057149414736, q_loss:0.0033256176, rewards:-30.99694, queue:2.5305555, delay:0.4798497, throughput:4201, raw_metrics:{'fairness': 177.0, 'emission': 1181.927, 'fuel': 383.167, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 294.0}
+real step:3600/3600
+episode:84/200, oracle_loss:0.0033256176
+REAL_TEST step:84, travel time:152.61849047946777, q_loss:100, rewards:-39.01306, queue:8.050926, delay:0.5412385, throughput:3934, R_real:-0.4624, components:{'queue': 0.134, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.328, 'collisions': 0.0}, raw_metrics:{'fairness': 561.667, 'emission': 1290.844, 'fuel': 418.477, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 591.0}
+REAL_TRAIN step:85, travel time:135.32589696412143, q_loss:0.0033252917, rewards:-31.04694, queue:2.5138888, delay:0.4911465, throughput:4191, raw_metrics:{'fairness': 279.667, 'emission': 1178.897, 'fuel': 382.185, 'emergency_stops': 8.0, 'collisions': 0.0, 'ssm_conflicts': 320.0}
+real step:3600/3600
+episode:85/200, oracle_loss:0.0033252917
+REAL_TRAIN step:86, travel time:134.75412844036697, q_loss:0.0033507722, rewards:-30.889727, queue:2.3685186, delay:0.4737384, throughput:4199, raw_metrics:{'fairness': 234.333, 'emission': 1178.104, 'fuel': 381.927, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 296.0}
+real step:3600/3600
+episode:86/200, oracle_loss:0.0033507722
+REAL_TEST step:86, travel time:135.18215186969488, q_loss:100, rewards:-30.943329, queue:2.5138888, delay:0.4926477, throughput:4199, R_real:-0.1957, components:{'queue': 0.047, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.149, 'collisions': 0.0}, raw_metrics:{'fairness': 252.0, 'emission': 1180.697, 'fuel': 382.768, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 268.0}
+REAL_TRAIN step:87, travel time:135.37060849598163, q_loss:0.0032303117, rewards:-31.116396, queue:2.5712962, delay:0.49977383, throughput:4201, raw_metrics:{'fairness': 478.333, 'emission': 1181.143, 'fuel': 382.913, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 290.0}
+real step:3600/3600
+episode:87/200, oracle_loss:0.0032303117
+REAL_TRAIN step:88, travel time:134.93308890925755, q_loss:0.0033185796, rewards:-30.467772, queue:2.3888888, delay:0.4642697, throughput:4196, raw_metrics:{'fairness': 76.333, 'emission': 1180.464, 'fuel': 382.693, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 310.0}
+real step:3600/3600
+episode:88/200, oracle_loss:0.0033185796
+REAL_TEST step:88, travel time:135.68012849931162, q_loss:100, rewards:-31.13583, queue:2.612037, delay:0.49404612, throughput:4199, R_real:-0.2172, components:{'queue': 0.048, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.169, 'collisions': 0.0}, raw_metrics:{'fairness': 74.667, 'emission': 1184.446, 'fuel': 383.983, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 305.0}
+REAL_TRAIN step:89, travel time:135.4719229887692, q_loss:0.0032720177, rewards:-31.05362, queue:2.5657408, delay:0.49786943, throughput:4201, raw_metrics:{'fairness': 234.333, 'emission': 1184.548, 'fuel': 384.016, 'emergency_stops': 11.0, 'collisions': 0.0, 'ssm_conflicts': 317.0}
+real step:3600/3600
+episode:89/200, oracle_loss:0.0032720177
+REAL_TRAIN step:90, travel time:134.8921028466483, q_loss:0.0031961622, rewards:-30.671104, queue:2.3203704, delay:0.4778349, throughput:4197, raw_metrics:{'fairness': 551.667, 'emission': 1178.31, 'fuel': 381.994, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 280.0}
+real step:3600/3600
+episode:90/200, oracle_loss:0.0031961622
+REAL_TEST step:90, travel time:134.5441817764517, q_loss:100, rewards:-30.353895, queue:2.2981482, delay:0.47657, throughput:4193, R_real:-0.1950, components:{'queue': 0.042, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.153, 'collisions': 0.0}, raw_metrics:{'fairness': 233.333, 'emission': 1175.423, 'fuel': 381.058, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 275.0}
+REAL_TRAIN step:91, travel time:134.73032673722963, q_loss:0.0031207546, rewards:-30.31555, queue:2.3138888, delay:0.47224528, throughput:4190, raw_metrics:{'fairness': 473.667, 'emission': 1174.699, 'fuel': 380.824, 'emergency_stops': 11.0, 'collisions': 0.0, 'ssm_conflicts': 293.0}
+real step:3600/3600
+episode:91/200, oracle_loss:0.0031207546
+REAL_TRAIN step:92, travel time:134.73299632352942, q_loss:0.0031023666, rewards:-30.732224, queue:2.3925927, delay:0.47648638, throughput:4186, raw_metrics:{'fairness': 524.667, 'emission': 1175.537, 'fuel': 381.095, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 302.0}
+real step:3600/3600
+episode:92/200, oracle_loss:0.0031023666
+REAL_TEST step:92, travel time:134.58486660533578, q_loss:100, rewards:-30.087786, queue:2.3027778, delay:0.46437192, throughput:4188, R_real:-0.2032, components:{'queue': 0.042, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.162, 'collisions': 0.0}, raw_metrics:{'fairness': 159.667, 'emission': 1174.02, 'fuel': 380.603, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 291.0}
+REAL_TRAIN step:93, travel time:135.0332492547581, q_loss:0.0031215532, rewards:-30.646666, queue:2.3425925, delay:0.48819172, throughput:4208, raw_metrics:{'fairness': 245.333, 'emission': 1180.998, 'fuel': 382.866, 'emergency_stops': 20.0, 'collisions': 0.0, 'ssm_conflicts': 293.0}
+real step:3600/3600
+episode:93/200, oracle_loss:0.0031215532
+REAL_TRAIN step:94, travel time:134.96490825688073, q_loss:0.0030903178, rewards:-30.429438, queue:2.348148, delay:0.47754997, throughput:4202, raw_metrics:{'fairness': 480.0, 'emission': 1180.563, 'fuel': 382.724, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 295.0}
+real step:3600/3600
+episode:94/200, oracle_loss:0.0030903178
+REAL_TEST step:94, travel time:134.70263459335624, q_loss:100, rewards:-30.424723, queue:2.2675927, delay:0.47785085, throughput:4204, R_real:-0.2049, components:{'queue': 0.042, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.163, 'collisions': 0.0}, raw_metrics:{'fairness': 235.667, 'emission': 1178.881, 'fuel': 382.179, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 293.0}
+REAL_TRAIN step:95, travel time:134.81117755289787, q_loss:0.003042132, rewards:-30.389442, queue:2.3583333, delay:0.47447544, throughput:4192, raw_metrics:{'fairness': 247.667, 'emission': 1175.134, 'fuel': 380.965, 'emergency_stops': 23.0, 'collisions': 0.0, 'ssm_conflicts': 281.0}
+real step:3600/3600
+episode:95/200, oracle_loss:0.003042132
+REAL_TRAIN step:96, travel time:135.04786010124252, q_loss:0.0030379584, rewards:-30.479166, queue:2.4185185, delay:0.48267233, throughput:4188, raw_metrics:{'fairness': 245.333, 'emission': 1175.967, 'fuel': 381.234, 'emergency_stops': 11.0, 'collisions': 0.0, 'ssm_conflicts': 299.0}
+real step:3600/3600
+episode:96/200, oracle_loss:0.0030379584
+REAL_TEST step:96, travel time:134.87087155963303, q_loss:100, rewards:-30.488878, queue:2.350926, delay:0.48279363, throughput:4204, R_real:-0.2026, components:{'queue': 0.043, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.159, 'collisions': 0.0}, raw_metrics:{'fairness': 598.333, 'emission': 1178.499, 'fuel': 382.055, 'emergency_stops': 11.0, 'collisions': 0.0, 'ssm_conflicts': 287.0}
+REAL_TRAIN step:97, travel time:134.7813504823151, q_loss:0.0030360713, rewards:-30.301666, queue:2.275, delay:0.4759879, throughput:4193, raw_metrics:{'fairness': 159.667, 'emission': 1177.101, 'fuel': 381.602, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 309.0}
+real step:3600/3600
+episode:97/200, oracle_loss:0.0030360713
+REAL_TRAIN step:98, travel time:134.9324386857936, q_loss:0.00299172, rewards:-30.65222, queue:2.3611112, delay:0.46740508, throughput:4179, raw_metrics:{'fairness': 160.0, 'emission': 1169.03, 'fuel': 378.986, 'emergency_stops': 25.0, 'collisions': 0.0, 'ssm_conflicts': 314.0}
+real step:3600/3600
+episode:98/200, oracle_loss:0.00299172
+REAL_TEST step:98, travel time:134.78499079189686, q_loss:100, rewards:-30.442488, queue:2.3333333, delay:0.47984675, throughput:4191, R_real:-0.1926, components:{'queue': 0.044, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.148, 'collisions': 0.0}, raw_metrics:{'fairness': 119.667, 'emission': 1174.591, 'fuel': 380.789, 'emergency_stops': 11.0, 'collisions': 0.0, 'ssm_conflicts': 267.0}
+REAL_TRAIN step:99, travel time:134.87514371119798, q_loss:0.003041497, rewards:-30.761936, queue:2.4833333, delay:0.48557797, throughput:4184, raw_metrics:{'fairness': 475.333, 'emission': 1175.494, 'fuel': 381.081, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 283.0}
+real step:3600/3600
+episode:99/200, oracle_loss:0.003041497
+REAL_TRAIN step:100, travel time:134.56873563218392, q_loss:0.0030437468, rewards:-30.34943, queue:2.2981482, delay:0.48623505, throughput:4191, raw_metrics:{'fairness': 244.0, 'emission': 1174.369, 'fuel': 380.716, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 272.0}
+real step:3600/3600
+episode:100/200, oracle_loss:0.0030437468
+REAL_TEST step:100, travel time:134.2444342437457, q_loss:100, rewards:-29.423616, queue:2.1537037, delay:0.4333208, throughput:4196, R_real:-0.1966, components:{'queue': 0.037, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.16, 'collisions': 0.0}, raw_metrics:{'fairness': 0.0, 'emission': 1174.157, 'fuel': 380.648, 'emergency_stops': 18.0, 'collisions': 0.0, 'ssm_conflicts': 288.0}
+REAL_TRAIN step:101, travel time:134.67790004585052, q_loss:0.0030688655, rewards:-30.4625, queue:2.3148148, delay:0.4752324, throughput:4199, raw_metrics:{'fairness': 103.667, 'emission': 1177.884, 'fuel': 381.856, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 291.0}
+real step:3600/3600
+episode:101/200, oracle_loss:0.0030688655
+REAL_TRAIN step:102, travel time:134.599218211083, q_loss:0.0029732035, rewards:-30.118069, queue:2.2416666, delay:0.46088764, throughput:4201, raw_metrics:{'fairness': 232.667, 'emission': 1174.693, 'fuel': 380.821, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 291.0}
+real step:3600/3600
+episode:102/200, oracle_loss:0.0029732035
+REAL_TEST step:102, travel time:134.63148233134464, q_loss:100, rewards:-30.214443, queue:2.3268518, delay:0.4715098, throughput:4205, R_real:-0.1908, components:{'queue': 0.044, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.147, 'collisions': 0.0}, raw_metrics:{'fairness': 404.333, 'emission': 1176.673, 'fuel': 381.463, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 264.0}
+REAL_TRAIN step:103, travel time:134.41624482282558, q_loss:0.0030078376, rewards:-30.03278, queue:2.1888888, delay:0.46816802, throughput:4187, raw_metrics:{'fairness': 594.667, 'emission': 1172.052, 'fuel': 379.965, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 275.0}
+real step:3600/3600
+episode:103/200, oracle_loss:0.0030078376
+REAL_TRAIN step:104, travel time:134.7246376811594, q_loss:0.002919388, rewards:-30.507769, queue:2.387037, delay:0.4744343, throughput:4190, raw_metrics:{'fairness': 244.333, 'emission': 1173.959, 'fuel': 380.583, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 292.0}
+real step:3600/3600
+episode:104/200, oracle_loss:0.002919388
+REAL_TEST step:104, travel time:135.74339535952217, q_loss:100, rewards:-31.458616, queue:2.762037, delay:0.5096713, throughput:4191, R_real:-0.2156, components:{'queue': 0.051, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.165, 'collisions': 0.0}, raw_metrics:{'fairness': 477.0, 'emission': 1182.645, 'fuel': 383.399, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 297.0}
+REAL_TRAIN step:105, travel time:134.66054624741795, q_loss:0.0029318486, rewards:-30.686388, queue:2.336111, delay:0.47174066, throughput:4194, raw_metrics:{'fairness': 478.667, 'emission': 1177.284, 'fuel': 381.661, 'emergency_stops': 19.0, 'collisions': 0.0, 'ssm_conflicts': 285.0}
+real step:3600/3600
+episode:105/200, oracle_loss:0.0029318486
+REAL_TRAIN step:106, travel time:134.74965548920534, q_loss:0.0029694608, rewards:-30.630281, queue:2.3851852, delay:0.47643697, throughput:4190, raw_metrics:{'fairness': 0.0, 'emission': 1176.414, 'fuel': 381.38, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 284.0}
+real step:3600/3600
+episode:106/200, oracle_loss:0.0029694608
+REAL_TEST step:106, travel time:134.42132097334877, q_loss:100, rewards:-30.472218, queue:2.2805555, delay:0.4644048, throughput:4160, R_real:-0.1869, components:{'queue': 0.042, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.145, 'collisions': 0.0}, raw_metrics:{'fairness': 404.333, 'emission': 1163.635, 'fuel': 377.237, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 261.0}
+REAL_TRAIN step:107, travel time:134.88968053321076, q_loss:0.0029988615, rewards:-30.41306, queue:2.3888888, delay:0.48050866, throughput:4191, raw_metrics:{'fairness': 246.333, 'emission': 1176.08, 'fuel': 381.271, 'emergency_stops': 18.0, 'collisions': 1.0, 'ssm_conflicts': 298.0}
+real step:3600/3600
+episode:107/200, oracle_loss:0.0029988615
+REAL_TRAIN step:108, travel time:134.7033470884915, q_loss:0.002915288, rewards:-30.361938, queue:2.3, delay:0.46550822, throughput:4197, raw_metrics:{'fairness': 481.0, 'emission': 1178.359, 'fuel': 382.01, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 279.0}
+real step:3600/3600
+episode:108/200, oracle_loss:0.002915288
+REAL_TEST step:108, travel time:135.62743748566186, q_loss:100, rewards:-31.244167, queue:2.6462963, delay:0.4826838, throughput:4200, R_real:-0.2023, components:{'queue': 0.049, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.153, 'collisions': 0.0}, raw_metrics:{'fairness': 0.0, 'emission': 1183.9, 'fuel': 383.807, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 276.0}
+REAL_TRAIN step:109, travel time:135.28811220970337, q_loss:0.003006459, rewards:-30.90194, queue:2.4953704, delay:0.4841794, throughput:4197, raw_metrics:{'fairness': 408.667, 'emission': 1179.317, 'fuel': 382.321, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 322.0}
+real step:3600/3600
+episode:109/200, oracle_loss:0.003006459
+REAL_TRAIN step:110, travel time:135.0947562097516, q_loss:0.002987987, rewards:-30.751932, queue:2.4166667, delay:0.48435116, throughput:4194, raw_metrics:{'fairness': 0.0, 'emission': 1177.322, 'fuel': 381.674, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 288.0}
+real step:3600/3600
+episode:110/200, oracle_loss:0.002987987
+REAL_TEST step:110, travel time:134.55823569951758, q_loss:100, rewards:-30.603882, queue:2.276852, delay:0.4692244, throughput:4194, R_real:-0.1934, components:{'queue': 0.042, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.152, 'collisions': 0.0}, raw_metrics:{'fairness': 477.333, 'emission': 1175.045, 'fuel': 380.936, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 273.0}
+REAL_TRAIN step:111, travel time:134.8916685792977, q_loss:0.0029832316, rewards:-30.503603, queue:2.3472223, delay:0.48216602, throughput:4200, raw_metrics:{'fairness': 245.333, 'emission': 1178.319, 'fuel': 381.997, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 260.0}
+real step:3600/3600
+episode:111/200, oracle_loss:0.0029832316
+REAL_TRAIN step:112, travel time:134.9344487737795, q_loss:0.0029327052, rewards:-30.406403, queue:2.3592594, delay:0.4761122, throughput:4205, raw_metrics:{'fairness': 405.0, 'emission': 1180.476, 'fuel': 382.696, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 299.0}
+real step:3600/3600
+episode:112/200, oracle_loss:0.0029327052
+REAL_TEST step:112, travel time:134.48408671586716, q_loss:100, rewards:-30.342209, queue:2.300926, delay:0.47621748, throughput:4180, R_real:-0.2016, components:{'queue': 0.044, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.158, 'collisions': 0.0}, raw_metrics:{'fairness': 471.667, 'emission': 1169.645, 'fuel': 379.185, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 284.0}
+REAL_TRAIN step:113, travel time:135.1564579031888, q_loss:0.0030230854, rewards:-30.676676, queue:2.4481483, delay:0.4872848, throughput:4204, raw_metrics:{'fairness': 479.333, 'emission': 1181.361, 'fuel': 382.983, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 285.0}
+real step:3600/3600
+episode:113/200, oracle_loss:0.0030230854
+REAL_TRAIN step:114, travel time:134.91161499305878, q_loss:0.002977523, rewards:-30.61695, queue:2.411111, delay:0.47883222, throughput:4165, raw_metrics:{'fairness': 245.333, 'emission': 1168.815, 'fuel': 378.916, 'emergency_stops': 8.0, 'collisions': 0.0, 'ssm_conflicts': 320.0}
+real step:3600/3600
+episode:114/200, oracle_loss:0.002977523
+REAL_TEST step:114, travel time:135.60925627446466, q_loss:100, rewards:-31.137777, queue:2.636111, delay:0.49759707, throughput:4189, R_real:-0.2162, components:{'queue': 0.049, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.167, 'collisions': 0.0}, raw_metrics:{'fairness': 190.0, 'emission': 1179.803, 'fuel': 382.478, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 301.0}
+REAL_TRAIN step:115, travel time:135.12282309807517, q_loss:0.0030045032, rewards:-30.809994, queue:2.4037037, delay:0.4836749, throughput:4212, raw_metrics:{'fairness': 0.0, 'emission': 1181.733, 'fuel': 383.104, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 287.0}
+real step:3600/3600
+episode:115/200, oracle_loss:0.0030045032
+REAL_TRAIN step:116, travel time:134.84656329553343, q_loss:0.0029340675, rewards:-30.674177, queue:2.4175925, delay:0.47837886, throughput:4162, raw_metrics:{'fairness': 244.0, 'emission': 1168.231, 'fuel': 378.727, 'emergency_stops': 21.0, 'collisions': 0.0, 'ssm_conflicts': 290.0}
+real step:3600/3600
+episode:116/200, oracle_loss:0.0029340675
+REAL_TEST step:116, travel time:134.5108870043548, q_loss:100, rewards:-30.361664, queue:2.2527778, delay:0.47322303, throughput:4197, R_real:-0.1857, components:{'queue': 0.042, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.143, 'collisions': 0.0}, raw_metrics:{'fairness': 236.667, 'emission': 1177.818, 'fuel': 381.835, 'emergency_stops': 18.0, 'collisions': 0.0, 'ssm_conflicts': 258.0}
+REAL_TRAIN step:117, travel time:134.80561306648264, q_loss:0.0030119724, rewards:-30.705292, queue:2.3888888, delay:0.48160464, throughput:4184, raw_metrics:{'fairness': 247.333, 'emission': 1175.35, 'fuel': 381.034, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 292.0}
+real step:3600/3600
+episode:117/200, oracle_loss:0.0030119724
+REAL_TRAIN step:118, travel time:135.04022988505747, q_loss:0.0030861215, rewards:-30.694733, queue:2.412963, delay:0.4796137, throughput:4196, raw_metrics:{'fairness': 147.333, 'emission': 1177.292, 'fuel': 381.664, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 283.0}
+real step:3600/3600
+episode:118/200, oracle_loss:0.0030861215
+REAL_TEST step:118, travel time:134.77550080589455, q_loss:100, rewards:-30.606375, queue:2.425, delay:0.4865048, throughput:4179, R_real:-0.1988, components:{'queue': 0.045, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.154, 'collisions': 0.0}, raw_metrics:{'fairness': 418.333, 'emission': 1173.536, 'fuel': 380.447, 'emergency_stops': 19.0, 'collisions': 0.0, 'ssm_conflicts': 277.0}
+REAL_TRAIN step:119, travel time:135.01650997477643, q_loss:0.0030487091, rewards:-30.948057, queue:2.4546297, delay:0.49078974, throughput:4199, raw_metrics:{'fairness': 159.667, 'emission': 1179.437, 'fuel': 382.36, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 286.0}
+real step:3600/3600
+episode:119/200, oracle_loss:0.0030487091
+REAL_TRAIN step:120, travel time:134.7182805639011, q_loss:0.0030674418, rewards:-30.424723, queue:2.3185184, delay:0.46808922, throughput:4171, raw_metrics:{'fairness': 448.667, 'emission': 1169.094, 'fuel': 379.007, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 313.0}
+real step:3600/3600
+episode:120/200, oracle_loss:0.0030674418
+REAL_TEST step:120, travel time:134.66527970411465, q_loss:100, rewards:-30.36611, queue:2.4064815, delay:0.47084782, throughput:4164, R_real:-0.1938, components:{'queue': 0.044, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.15, 'collisions': 0.0}, raw_metrics:{'fairness': 0.0, 'emission': 1168.661, 'fuel': 378.866, 'emergency_stops': 7.0, 'collisions': 0.0, 'ssm_conflicts': 270.0}
+REAL_TRAIN step:121, travel time:134.31216685979143, q_loss:0.0030005558, rewards:-30.293888, queue:2.288889, delay:0.47451422, throughput:4158, raw_metrics:{'fairness': 0.0, 'emission': 1162.537, 'fuel': 376.881, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 255.0}
+real step:3600/3600
+episode:121/200, oracle_loss:0.0030005558
+REAL_TRAIN step:122, travel time:135.18365937859608, q_loss:0.0030293227, rewards:-30.774729, queue:2.473148, delay:0.4703468, throughput:4194, raw_metrics:{'fairness': 230.0, 'emission': 1177.236, 'fuel': 381.646, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 273.0}
+real step:3600/3600
+episode:122/200, oracle_loss:0.0030293227
+REAL_TEST step:122, travel time:134.49930875576038, q_loss:100, rewards:-30.395557, queue:2.3185184, delay:0.47098187, throughput:4175, R_real:-0.1988, components:{'queue': 0.044, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.155, 'collisions': 0.0}, raw_metrics:{'fairness': 559.667, 'emission': 1171.199, 'fuel': 379.689, 'emergency_stops': 18.0, 'collisions': 0.0, 'ssm_conflicts': 279.0}
+REAL_TRAIN step:123, travel time:134.68737060041408, q_loss:0.003049238, rewards:-30.389997, queue:2.2759259, delay:0.47812822, throughput:4189, raw_metrics:{'fairness': 404.0, 'emission': 1173.984, 'fuel': 380.592, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 298.0}
+real step:3600/3600
+episode:123/200, oracle_loss:0.003049238
+REAL_TRAIN step:124, travel time:134.57076673615936, q_loss:0.0030196938, rewards:-30.43612, queue:2.3018517, delay:0.47802582, throughput:4160, raw_metrics:{'fairness': 159.667, 'emission': 1164.933, 'fuel': 377.658, 'emergency_stops': 21.0, 'collisions': 0.0, 'ssm_conflicts': 314.0}
+real step:3600/3600
+episode:124/200, oracle_loss:0.0030196938
+REAL_TEST step:124, travel time:135.0419821059876, q_loss:100, rewards:-31.046097, queue:2.463889, delay:0.49531195, throughput:4202, R_real:-0.1868, components:{'queue': 0.046, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.141, 'collisions': 0.0}, raw_metrics:{'fairness': 337.0, 'emission': 1180.035, 'fuel': 382.554, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 253.0}
+REAL_TRAIN step:125, travel time:135.01632934682613, q_loss:0.0031234592, rewards:-30.620548, queue:2.3425925, delay:0.4672391, throughput:4195, raw_metrics:{'fairness': 159.667, 'emission': 1176.728, 'fuel': 381.481, 'emergency_stops': 18.0, 'collisions': 0.0, 'ssm_conflicts': 313.0}
+real step:3600/3600
+episode:125/200, oracle_loss:0.0031234592
+REAL_TRAIN step:126, travel time:134.4732842008291, q_loss:0.0030868445, rewards:-30.327219, queue:2.2222223, delay:0.46615577, throughput:4187, raw_metrics:{'fairness': 160.0, 'emission': 1171.507, 'fuel': 379.789, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 281.0}
+real step:3600/3600
+episode:126/200, oracle_loss:0.0030868445
+REAL_TEST step:126, travel time:135.00435081291505, q_loss:100, rewards:-30.713898, queue:2.4305556, delay:0.46596962, throughput:4207, R_real:-0.1992, components:{'queue': 0.043, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.157, 'collisions': 0.0}, raw_metrics:{'fairness': 366.667, 'emission': 1182.013, 'fuel': 383.194, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 282.0}
+REAL_TRAIN step:127, travel time:134.60041218227616, q_loss:0.0030897604, rewards:-30.441957, queue:2.276852, delay:0.46934402, throughput:4209, raw_metrics:{'fairness': 244.667, 'emission': 1179.728, 'fuel': 382.454, 'emergency_stops': 12.0, 'collisions': 1.0, 'ssm_conflicts': 260.0}
+real step:3600/3600
+episode:127/200, oracle_loss:0.0030897604
+REAL_TRAIN step:128, travel time:134.6809195402299, q_loss:0.0030334424, rewards:-30.463598, queue:2.2601852, delay:0.46035773, throughput:4197, raw_metrics:{'fairness': 0.0, 'emission': 1174.927, 'fuel': 380.898, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 285.0}
+real step:3600/3600
+episode:128/200, oracle_loss:0.0030334424
+REAL_TEST step:128, travel time:134.54136029411765, q_loss:100, rewards:-30.7475, queue:2.3175926, delay:0.4766367, throughput:4185, R_real:-0.1997, components:{'queue': 0.043, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.157, 'collisions': 0.0}, raw_metrics:{'fairness': 249.0, 'emission': 1174.861, 'fuel': 380.876, 'emergency_stops': 19.0, 'collisions': 0.0, 'ssm_conflicts': 282.0}
+REAL_TRAIN step:129, travel time:135.62884703720718, q_loss:0.0030964804, rewards:-31.216959, queue:2.5259259, delay:0.47279155, throughput:4204, raw_metrics:{'fairness': 0.0, 'emission': 1182.594, 'fuel': 383.383, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 324.0}
+real step:3600/3600
+episode:129/200, oracle_loss:0.0030964804
+REAL_TRAIN step:130, travel time:134.67172413793102, q_loss:0.003143666, rewards:-30.709446, queue:2.3379629, delay:0.47495845, throughput:4192, raw_metrics:{'fairness': 247.667, 'emission': 1175.157, 'fuel': 380.972, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 275.0}
+real step:3600/3600
+episode:130/200, oracle_loss:0.003143666
+REAL_TEST step:130, travel time:134.01615136132904, q_loss:100, rewards:-30.15667, queue:2.0768518, delay:0.44370112, throughput:4179, R_real:-0.1904, components:{'queue': 0.038, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.153, 'collisions': 0.0}, raw_metrics:{'fairness': 0.0, 'emission': 1166.018, 'fuel': 378.009, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 275.0}
+REAL_TRAIN step:131, travel time:134.6709588411129, q_loss:0.0031211611, rewards:-30.60527, queue:2.3055556, delay:0.46233806, throughput:4184, raw_metrics:{'fairness': 231.0, 'emission': 1174.751, 'fuel': 380.84, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 315.0}
+real step:3600/3600
+episode:131/200, oracle_loss:0.0031211611
+REAL_TRAIN step:132, travel time:134.83695150115474, q_loss:0.0031726235, rewards:-30.793886, queue:2.449074, delay:0.48183006, throughput:4163, raw_metrics:{'fairness': 0.0, 'emission': 1170.44, 'fuel': 379.443, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 301.0}
+real step:3600/3600
+episode:132/200, oracle_loss:0.0031726235
+REAL_TEST step:132, travel time:134.90667278147214, q_loss:100, rewards:-30.66027, queue:2.3, delay:0.48093987, throughput:4207, R_real:-0.2044, components:{'queue': 0.043, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.162, 'collisions': 0.0}, raw_metrics:{'fairness': 0.0, 'emission': 1180.275, 'fuel': 382.631, 'emergency_stops': 18.0, 'collisions': 0.0, 'ssm_conflicts': 291.0}
+REAL_TRAIN step:133, travel time:142.10558863948694, q_loss:0.0032267123, rewards:-32.11584, queue:5.2148147, delay:0.4766098, throughput:4186, raw_metrics:{'fairness': 0.0, 'emission': 1228.323, 'fuel': 398.208, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 419.0}
+real step:3600/3600
+episode:133/200, oracle_loss:0.0032267123
+REAL_TRAIN step:134, travel time:134.71958525345622, q_loss:0.0033993819, rewards:-30.579443, queue:2.3324075, delay:0.47018588, throughput:4182, raw_metrics:{'fairness': 0.0, 'emission': 1172.185, 'fuel': 380.008, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 263.0}
+real step:3600/3600
+episode:134/200, oracle_loss:0.0033993819
+REAL_TEST step:134, travel time:134.66497929130236, q_loss:100, rewards:-30.772219, queue:2.3648148, delay:0.47414374, throughput:4184, R_real:-0.1945, components:{'queue': 0.044, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.15, 'collisions': 0.0}, raw_metrics:{'fairness': 159.667, 'emission': 1173.777, 'fuel': 380.525, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 270.0}
+REAL_TRAIN step:135, travel time:134.98575040220638, q_loss:0.0032556348, rewards:-30.665821, queue:2.462037, delay:0.48185307, throughput:4191, raw_metrics:{'fairness': 0.0, 'emission': 1177.055, 'fuel': 381.587, 'emergency_stops': 16.0, 'collisions': 1.0, 'ssm_conflicts': 290.0}
+real step:3600/3600
+episode:135/200, oracle_loss:0.0032556348
+REAL_TRAIN step:136, travel time:134.9290144727774, q_loss:0.0032865487, rewards:-30.80306, queue:2.4296296, delay:0.4821993, throughput:4195, raw_metrics:{'fairness': 332.0, 'emission': 1177.033, 'fuel': 381.58, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 304.0}
+real step:3600/3600
+episode:136/200, oracle_loss:0.0032865487
+REAL_TEST step:136, travel time:134.85905112851222, q_loss:100, rewards:-31.19278, queue:2.4305556, delay:0.47356573, throughput:4184, R_real:-0.1981, components:{'queue': 0.044, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.154, 'collisions': 0.0}, raw_metrics:{'fairness': 160.0, 'emission': 1173.601, 'fuel': 380.468, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 278.0}
+REAL_TRAIN step:137, travel time:134.52015664593412, q_loss:0.0032854574, rewards:-30.460268, queue:2.2824075, delay:0.47129822, throughput:4180, raw_metrics:{'fairness': 244.667, 'emission': 1171.783, 'fuel': 379.878, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 272.0}
+real step:3600/3600
+episode:137/200, oracle_loss:0.0032854574
+REAL_TRAIN step:138, travel time:134.74415941365095, q_loss:0.0031850422, rewards:-30.720015, queue:2.3268518, delay:0.48252246, throughput:4210, raw_metrics:{'fairness': 159.667, 'emission': 1180.009, 'fuel': 382.545, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 282.0}
+real step:3600/3600
+episode:138/200, oracle_loss:0.0031850422
+REAL_TEST step:138, travel time:134.7120934493816, q_loss:100, rewards:-30.86611, queue:2.3342593, delay:0.4778673, throughput:4202, R_real:-0.1958, components:{'queue': 0.044, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.152, 'collisions': 0.0}, raw_metrics:{'fairness': 263.667, 'emission': 1179.835, 'fuel': 382.489, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 273.0}
+REAL_TRAIN step:139, travel time:135.08459422283357, q_loss:0.003234434, rewards:-31.00555, queue:2.464815, delay:0.4789285, throughput:4202, raw_metrics:{'fairness': 177.333, 'emission': 1181.548, 'fuel': 383.044, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 292.0}
+real step:3600/3600
+episode:139/200, oracle_loss:0.003234434
+REAL_TRAIN step:140, travel time:134.6095041322314, q_loss:0.0031567644, rewards:-30.629997, queue:2.3111112, delay:0.47272572, throughput:4198, raw_metrics:{'fairness': 159.667, 'emission': 1176.187, 'fuel': 381.306, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 308.0}
+real step:3600/3600
+episode:140/200, oracle_loss:0.0031567644
+REAL_TEST step:140, travel time:134.69193548387096, q_loss:100, rewards:-30.441671, queue:2.339815, delay:0.45833358, throughput:4184, R_real:-0.1984, components:{'queue': 0.042, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.156, 'collisions': 0.0}, raw_metrics:{'fairness': 229.0, 'emission': 1172.362, 'fuel': 380.066, 'emergency_stops': 11.0, 'collisions': 1.0, 'ssm_conflicts': 281.0}
+REAL_TRAIN step:141, travel time:134.79272224781207, q_loss:0.0031761762, rewards:-30.737776, queue:2.413889, delay:0.47590518, throughput:4186, raw_metrics:{'fairness': 177.0, 'emission': 1173.418, 'fuel': 380.408, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 285.0}
+real step:3600/3600
+episode:141/200, oracle_loss:0.0031761762
+REAL_TRAIN step:142, travel time:134.94394670342294, q_loss:0.0030452716, rewards:-30.806944, queue:2.4555554, delay:0.4899857, throughput:4193, raw_metrics:{'fairness': 465.667, 'emission': 1177.453, 'fuel': 381.716, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 282.0}
+real step:3600/3600
+episode:142/200, oracle_loss:0.0030452716
+REAL_TEST step:142, travel time:135.15446779034866, q_loss:100, rewards:-30.996674, queue:2.5712962, delay:0.4932655, throughput:4175, R_real:-0.2036, components:{'queue': 0.051, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.153, 'collisions': 0.0}, raw_metrics:{'fairness': 589.667, 'emission': 1172.28, 'fuel': 380.039, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 275.0}
+REAL_TRAIN step:143, travel time:134.9355504587156, q_loss:0.0030796472, rewards:-30.886106, queue:2.4574075, delay:0.4743202, throughput:4200, raw_metrics:{'fairness': 120.0, 'emission': 1179.717, 'fuel': 382.45, 'emergency_stops': 20.0, 'collisions': 0.0, 'ssm_conflicts': 289.0}
+real step:3600/3600
+episode:143/200, oracle_loss:0.0030796472
+REAL_TRAIN step:144, travel time:135.0, q_loss:0.003081473, rewards:-30.961393, queue:2.4407408, delay:0.47846285, throughput:4203, raw_metrics:{'fairness': 337.0, 'emission': 1179.726, 'fuel': 382.453, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 285.0}
+real step:3600/3600
+episode:144/200, oracle_loss:0.003081473
+REAL_TEST step:144, travel time:134.8191636029412, q_loss:100, rewards:-30.370562, queue:2.3305554, delay:0.4764888, throughput:4198, R_real:-0.2055, components:{'queue': 0.044, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.161, 'collisions': 0.0}, raw_metrics:{'fairness': 0.0, 'emission': 1176.922, 'fuel': 381.544, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 290.0}
+REAL_TRAIN step:145, travel time:135.29837043837503, q_loss:0.0029988687, rewards:-31.072502, queue:2.500926, delay:0.4914405, throughput:4199, raw_metrics:{'fairness': 441.333, 'emission': 1181.239, 'fuel': 382.944, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 297.0}
+real step:3600/3600
+episode:145/200, oracle_loss:0.0029988687
+REAL_TRAIN step:146, travel time:134.64795213989876, q_loss:0.0030138479, rewards:-30.847225, queue:2.3814814, delay:0.46977967, throughput:4186, raw_metrics:{'fairness': 351.0, 'emission': 1173.443, 'fuel': 380.416, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 267.0}
+real step:3600/3600
+episode:146/200, oracle_loss:0.0030138479
+REAL_TEST step:146, travel time:135.3949792722248, q_loss:100, rewards:-31.099447, queue:2.6277778, delay:0.5030011, throughput:4177, R_real:-0.2275, components:{'queue': 0.049, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.178, 'collisions': 0.0}, raw_metrics:{'fairness': 592.667, 'emission': 1177.728, 'fuel': 381.805, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 321.0}
+REAL_TRAIN step:147, travel time:134.76565377532228, q_loss:0.0029679607, rewards:-30.544992, queue:2.3685186, delay:0.4691309, throughput:4190, raw_metrics:{'fairness': 177.0, 'emission': 1174.238, 'fuel': 380.674, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 283.0}
+real step:3600/3600
+episode:147/200, oracle_loss:0.0029679607
+REAL_TRAIN step:148, travel time:134.67010545621275, q_loss:0.0029044556, rewards:-30.625835, queue:2.3268518, delay:0.47753838, throughput:4195, raw_metrics:{'fairness': 403.667, 'emission': 1177.257, 'fuel': 381.653, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 290.0}
+real step:3600/3600
+episode:148/200, oracle_loss:0.0029044556
+REAL_TEST step:148, travel time:135.16035788024777, q_loss:100, rewards:-31.048326, queue:2.4324074, delay:0.48050222, throughput:4206, R_real:-0.2042, components:{'queue': 0.045, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.159, 'collisions': 0.0}, raw_metrics:{'fairness': 159.667, 'emission': 1180.719, 'fuel': 382.775, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 286.0}
+REAL_TRAIN step:149, travel time:135.4475011462632, q_loss:0.0029210462, rewards:-31.421112, queue:2.6555555, delay:0.50676125, throughput:4199, raw_metrics:{'fairness': 243.333, 'emission': 1183.232, 'fuel': 383.59, 'emergency_stops': 17.0, 'collisions': 1.0, 'ssm_conflicts': 290.0}
+real step:3600/3600
+episode:149/200, oracle_loss:0.0029210462
+REAL_TRAIN step:150, travel time:135.93952632789146, q_loss:0.002860189, rewards:-31.071953, queue:2.8296297, delay:0.48381516, throughput:4193, raw_metrics:{'fairness': 159.667, 'emission': 1183.887, 'fuel': 383.802, 'emergency_stops': 8.0, 'collisions': 0.0, 'ssm_conflicts': 285.0}
+real step:3600/3600
+episode:150/200, oracle_loss:0.002860189
+REAL_TEST step:150, travel time:134.3774622079707, q_loss:100, rewards:-30.425562, queue:2.2277777, delay:0.46433774, throughput:4207, R_real:-0.2029, components:{'queue': 0.041, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.162, 'collisions': 0.0}, raw_metrics:{'fairness': 160.0, 'emission': 1177.46, 'fuel': 381.719, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 291.0}
+REAL_TRAIN step:151, travel time:134.66536607757632, q_loss:0.0028769858, rewards:-30.565554, queue:2.2481482, delay:0.4800335, throughput:4206, raw_metrics:{'fairness': 159.667, 'emission': 1176.823, 'fuel': 381.512, 'emergency_stops': 18.0, 'collisions': 0.0, 'ssm_conflicts': 288.0}
+real step:3600/3600
+episode:151/200, oracle_loss:0.0028769858
+REAL_TRAIN step:152, travel time:134.70363552692132, q_loss:0.0029087106, rewards:-30.747776, queue:2.3222222, delay:0.47406211, throughput:4187, raw_metrics:{'fairness': 159.667, 'emission': 1173.535, 'fuel': 380.446, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 283.0}
+real step:3600/3600
+episode:152/200, oracle_loss:0.0029087106
+REAL_TEST step:152, travel time:134.7290322580645, q_loss:100, rewards:-30.772493, queue:2.3435185, delay:0.4781315, throughput:4192, R_real:-0.1977, components:{'queue': 0.044, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.154, 'collisions': 0.0}, raw_metrics:{'fairness': 0.0, 'emission': 1172.461, 'fuel': 380.098, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 277.0}
+REAL_TRAIN step:153, travel time:134.59366391184574, q_loss:0.0028796566, rewards:-30.499441, queue:2.2981482, delay:0.46381903, throughput:4202, raw_metrics:{'fairness': 159.667, 'emission': 1176.723, 'fuel': 381.48, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 257.0}
+real step:3600/3600
+episode:153/200, oracle_loss:0.0028796566
+REAL_TRAIN step:154, travel time:135.14986251145737, q_loss:0.002797796, rewards:-30.954159, queue:2.45, delay:0.47768918, throughput:4211, raw_metrics:{'fairness': 159.667, 'emission': 1181.495, 'fuel': 383.027, 'emergency_stops': 11.0, 'collisions': 0.0, 'ssm_conflicts': 304.0}
+real step:3600/3600
+episode:154/200, oracle_loss:0.002797796
+REAL_TEST step:154, travel time:134.5782578717536, q_loss:100, rewards:-30.651115, queue:2.2953703, delay:0.47383225, throughput:4193, R_real:-0.1919, components:{'queue': 0.044, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.148, 'collisions': 0.0}, raw_metrics:{'fairness': 174.333, 'emission': 1174.694, 'fuel': 380.822, 'emergency_stops': 8.0, 'collisions': 1.0, 'ssm_conflicts': 266.0}
+REAL_TRAIN step:155, travel time:134.8184963099631, q_loss:0.002902869, rewards:-30.77668, queue:2.3666666, delay:0.47956666, throughput:4184, raw_metrics:{'fairness': 87.667, 'emission': 1171.902, 'fuel': 379.917, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 292.0}
+real step:3600/3600
+episode:155/200, oracle_loss:0.002902869
+REAL_TRAIN step:156, travel time:134.56539792387542, q_loss:0.0029222812, rewards:-30.623875, queue:2.348148, delay:0.47099954, throughput:4173, raw_metrics:{'fairness': 243.333, 'emission': 1169.538, 'fuel': 379.15, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 288.0}
+real step:3600/3600
+episode:156/200, oracle_loss:0.0029222812
+REAL_TEST step:156, travel time:134.21345975948196, q_loss:100, rewards:-30.281685, queue:2.2564814, delay:0.45713755, throughput:4166, R_real:-0.1965, components:{'queue': 0.041, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.155, 'collisions': 0.0}, raw_metrics:{'fairness': 159.667, 'emission': 1164.391, 'fuel': 377.482, 'emergency_stops': 6.0, 'collisions': 0.0, 'ssm_conflicts': 279.0}
+REAL_TRAIN step:157, travel time:134.4919540229885, q_loss:0.0029236325, rewards:-30.517784, queue:2.2287037, delay:0.45777574, throughput:4197, raw_metrics:{'fairness': 0.0, 'emission': 1173.758, 'fuel': 380.518, 'emergency_stops': 18.0, 'collisions': 0.0, 'ssm_conflicts': 303.0}
+real step:3600/3600
+episode:157/200, oracle_loss:0.0029236325
+REAL_TRAIN step:158, travel time:134.13159714219867, q_loss:0.002888059, rewards:-30.165266, queue:2.1574075, delay:0.44702443, throughput:4176, raw_metrics:{'fairness': 227.333, 'emission': 1168.316, 'fuel': 378.754, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 304.0}
+real step:3600/3600
+episode:158/200, oracle_loss:0.002888059
+REAL_TEST step:158, travel time:134.96154731752245, q_loss:100, rewards:-30.838327, queue:2.3583333, delay:0.47477716, throughput:4197, R_real:-0.1910, components:{'queue': 0.044, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.147, 'collisions': 0.0}, raw_metrics:{'fairness': 159.667, 'emission': 1174.648, 'fuel': 380.807, 'emergency_stops': 8.0, 'collisions': 0.0, 'ssm_conflicts': 265.0}
+REAL_TRAIN step:159, travel time:140.39022140221402, q_loss:0.0029478944, rewards:-36.905003, queue:4.499074, delay:0.5186688, throughput:4165, raw_metrics:{'fairness': 416.0, 'emission': 1208.937, 'fuel': 391.923, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 282.0}
+real step:3600/3600
+episode:159/200, oracle_loss:0.0029478944
+REAL_TRAIN step:160, travel time:134.7606151021345, q_loss:0.002966671, rewards:-30.742773, queue:2.3305554, delay:0.47977057, throughput:4197, raw_metrics:{'fairness': 0.0, 'emission': 1177.748, 'fuel': 381.812, 'emergency_stops': 11.0, 'collisions': 0.0, 'ssm_conflicts': 276.0}
+real step:3600/3600
+episode:160/200, oracle_loss:0.002966671
+REAL_TEST step:160, travel time:134.70716582452917, q_loss:100, rewards:-30.627504, queue:2.2824075, delay:0.4733475, throughput:4199, R_real:-0.2108, components:{'queue': 0.042, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.168, 'collisions': 0.0}, raw_metrics:{'fairness': 160.0, 'emission': 1176.462, 'fuel': 381.395, 'emergency_stops': 19.0, 'collisions': 0.0, 'ssm_conflicts': 303.0}
+REAL_TRAIN step:161, travel time:134.51593671176335, q_loss:0.0029236472, rewards:-30.674463, queue:2.2944446, delay:0.46283418, throughput:4195, raw_metrics:{'fairness': 405.0, 'emission': 1176.383, 'fuel': 381.37, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 313.0}
+real step:3600/3600
+episode:161/200, oracle_loss:0.0029236472
+REAL_TRAIN step:162, travel time:134.62660550458716, q_loss:0.0029974221, rewards:-30.8725, queue:2.324074, delay:0.4725578, throughput:4198, raw_metrics:{'fairness': 27.333, 'emission': 1177.138, 'fuel': 381.614, 'emergency_stops': 11.0, 'collisions': 0.0, 'ssm_conflicts': 289.0}
+real step:3600/3600
+episode:162/200, oracle_loss:0.0029974221
+REAL_TEST step:162, travel time:135.737686139748, q_loss:100, rewards:-31.916107, queue:2.6907408, delay:0.4948059, throughput:4207, R_real:-0.2255, components:{'queue': 0.049, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.177, 'collisions': 0.0}, raw_metrics:{'fairness': 404.667, 'emission': 1186.056, 'fuel': 384.505, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 318.0}
+REAL_TRAIN step:163, travel time:134.63128876636802, q_loss:0.002981189, rewards:-30.638615, queue:2.3185184, delay:0.47798535, throughput:4192, raw_metrics:{'fairness': 404.0, 'emission': 1175.737, 'fuel': 381.16, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 300.0}
+real step:3600/3600
+episode:163/200, oracle_loss:0.002981189
+REAL_TRAIN step:164, travel time:135.1465041398344, q_loss:0.0030013856, rewards:-31.169718, queue:2.476852, delay:0.4805185, throughput:4197, raw_metrics:{'fairness': 0.0, 'emission': 1177.315, 'fuel': 381.672, 'emergency_stops': 20.0, 'collisions': 0.0, 'ssm_conflicts': 271.0}
+real step:3600/3600
+episode:164/200, oracle_loss:0.0030013856
+REAL_TEST step:164, travel time:134.54259471871413, q_loss:100, rewards:-30.60861, queue:2.2675927, delay:0.4747167, throughput:4193, R_real:-0.2045, components:{'queue': 0.043, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.162, 'collisions': 0.0}, raw_metrics:{'fairness': 478.0, 'emission': 1174.841, 'fuel': 380.869, 'emergency_stops': 8.0, 'collisions': 0.0, 'ssm_conflicts': 291.0}
+REAL_TRAIN step:165, travel time:135.2486225895317, q_loss:0.00301303, rewards:-31.357218, queue:2.5101852, delay:0.4937473, throughput:4205, raw_metrics:{'fairness': 0.0, 'emission': 1180.645, 'fuel': 382.751, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 302.0}
+real step:3600/3600
+episode:165/200, oracle_loss:0.00301303
+REAL_TRAIN step:166, travel time:134.6908546417876, q_loss:0.0030265832, rewards:-30.823318, queue:2.3564816, delay:0.46813062, throughput:4177, raw_metrics:{'fairness': 228.667, 'emission': 1172.11, 'fuel': 379.984, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 281.0}
+real step:3600/3600
+episode:166/200, oracle_loss:0.0030265832
+REAL_TEST step:166, travel time:135.25057260650482, q_loss:100, rewards:-31.739735, queue:2.5935185, delay:0.5033587, throughput:4201, R_real:-0.2225, components:{'queue': 0.049, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.173, 'collisions': 0.0}, raw_metrics:{'fairness': 0.0, 'emission': 1183.633, 'fuel': 383.72, 'emergency_stops': 18.0, 'collisions': 0.0, 'ssm_conflicts': 312.0}
+REAL_TRAIN step:167, travel time:134.88023814975955, q_loss:0.0029597704, rewards:-31.043056, queue:2.412963, delay:0.48441896, throughput:4202, raw_metrics:{'fairness': 160.667, 'emission': 1180.657, 'fuel': 382.755, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 290.0}
+real step:3600/3600
+episode:167/200, oracle_loss:0.0029597704
+REAL_TRAIN step:168, travel time:134.85231193926847, q_loss:0.0030001733, rewards:-30.691093, queue:2.3166666, delay:0.47419903, throughput:4197, raw_metrics:{'fairness': 405.0, 'emission': 1175.449, 'fuel': 381.067, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 291.0}
+real step:3600/3600
+episode:168/200, oracle_loss:0.0030001733
+REAL_TEST step:168, travel time:135.2294591484465, q_loss:100, rewards:-31.456404, queue:2.524074, delay:0.49375057, throughput:4186, R_real:-0.2179, components:{'queue': 0.047, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.171, 'collisions': 0.0}, raw_metrics:{'fairness': 405.0, 'emission': 1177.446, 'fuel': 381.714, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 308.0}
+REAL_TRAIN step:169, travel time:135.00735970561178, q_loss:0.0030258002, rewards:-30.802208, queue:2.4074075, delay:0.47569433, throughput:4194, raw_metrics:{'fairness': 159.667, 'emission': 1176.854, 'fuel': 381.522, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 284.0}
+real step:3600/3600
+episode:169/200, oracle_loss:0.0030258002
+REAL_TRAIN step:170, travel time:134.95218390804598, q_loss:0.0029900002, rewards:-30.92751, queue:2.4175925, delay:0.48027784, throughput:4196, raw_metrics:{'fairness': 27.333, 'emission': 1177.099, 'fuel': 381.602, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 298.0}
+real step:3600/3600
+episode:170/200, oracle_loss:0.0029900002
+REAL_TEST step:170, travel time:145.7248106495295, q_loss:100, rewards:-44.944717, queue:6.8425927, delay:0.54813194, throughput:4160, R_real:-0.3154, components:{'queue': 0.111, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.204, 'collisions': 0.0}, raw_metrics:{'fairness': 408.0, 'emission': 1248.323, 'fuel': 404.692, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 368.0}
+REAL_TRAIN step:171, travel time:134.11911865962819, q_loss:0.0030249022, rewards:-30.342484, queue:2.1888888, delay:0.47001925, throughput:4195, raw_metrics:{'fairness': 0.0, 'emission': 1173.175, 'fuel': 380.329, 'emergency_stops': 19.0, 'collisions': 0.0, 'ssm_conflicts': 259.0}
+real step:3600/3600
+episode:171/200, oracle_loss:0.0030249022
+REAL_TRAIN step:172, travel time:135.05199267063674, q_loss:0.0028693618, rewards:-30.978336, queue:2.4240742, delay:0.4871139, throughput:4206, raw_metrics:{'fairness': 159.667, 'emission': 1182.434, 'fuel': 383.331, 'emergency_stops': 22.0, 'collisions': 0.0, 'ssm_conflicts': 275.0}
+real step:3600/3600
+episode:172/200, oracle_loss:0.0028693618
+REAL_TEST step:172, travel time:137.6559263521289, q_loss:100, rewards:-33.851383, queue:3.5472221, delay:0.52745515, throughput:4171, R_real:-0.2553, components:{'queue': 0.064, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.192, 'collisions': 0.0}, raw_metrics:{'fairness': 236.333, 'emission': 1192.632, 'fuel': 386.637, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 345.0}
+REAL_TRAIN step:173, travel time:134.8411279229711, q_loss:0.002845331, rewards:-30.431667, queue:2.3657408, delay:0.4792976, throughput:4205, raw_metrics:{'fairness': 367.0, 'emission': 1179.042, 'fuel': 382.231, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 311.0}
+real step:3600/3600
+episode:173/200, oracle_loss:0.002845331
+REAL_TRAIN step:174, travel time:134.90346250859895, q_loss:0.0029224185, rewards:-30.96778, queue:2.4037037, delay:0.47389802, throughput:4209, raw_metrics:{'fairness': 159.667, 'emission': 1179.423, 'fuel': 382.355, 'emergency_stops': 7.0, 'collisions': 0.0, 'ssm_conflicts': 299.0}
+real step:3600/3600
+episode:174/200, oracle_loss:0.0029224185
+REAL_TEST step:174, travel time:134.55960568546539, q_loss:100, rewards:-30.798063, queue:2.2962964, delay:0.4708214, throughput:4194, R_real:-0.2113, components:{'queue': 0.043, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.168, 'collisions': 0.0}, raw_metrics:{'fairness': 411.667, 'emission': 1177.4, 'fuel': 381.699, 'emergency_stops': 18.0, 'collisions': 0.0, 'ssm_conflicts': 303.0}
+REAL_TRAIN step:175, travel time:134.52860096485182, q_loss:0.002975241, rewards:-30.860826, queue:2.2898147, delay:0.46648836, throughput:4195, raw_metrics:{'fairness': 159.667, 'emission': 1174.286, 'fuel': 380.69, 'emergency_stops': 20.0, 'collisions': 0.0, 'ssm_conflicts': 274.0}
+real step:3600/3600
+episode:175/200, oracle_loss:0.002975241
+REAL_TRAIN step:176, travel time:135.17572837806836, q_loss:0.00284118, rewards:-30.947227, queue:2.4861112, delay:0.4781984, throughput:4200, raw_metrics:{'fairness': 159.667, 'emission': 1180.495, 'fuel': 382.702, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 305.0}
+real step:3600/3600
+episode:176/200, oracle_loss:0.00284118
+REAL_TEST step:176, travel time:145.6362589265146, q_loss:100, rewards:-44.02112, queue:7.0055556, delay:0.5213564, throughput:4135, R_real:-0.3074, components:{'queue': 0.11, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.198, 'collisions': 0.0}, raw_metrics:{'fairness': 243.333, 'emission': 1242.667, 'fuel': 402.859, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 356.0}
+REAL_TRAIN step:177, travel time:134.6603079751781, q_loss:0.0029008249, rewards:-30.749723, queue:2.2601852, delay:0.47111827, throughput:4196, raw_metrics:{'fairness': 159.667, 'emission': 1175.08, 'fuel': 380.947, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 279.0}
+real step:3600/3600
+episode:177/200, oracle_loss:0.0029008249
+REAL_TRAIN step:178, travel time:140.361174850849, q_loss:0.002972274, rewards:-37.809998, queue:4.608333, delay:0.50677127, throughput:4172, raw_metrics:{'fairness': 407.667, 'emission': 1214.23, 'fuel': 393.639, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 377.0}
+real step:3600/3600
+episode:178/200, oracle_loss:0.002972274
+REAL_TEST step:178, travel time:135.4318600368324, q_loss:100, rewards:-30.87917, queue:2.6175926, delay:0.48631948, throughput:4186, R_real:-0.2170, components:{'queue': 0.046, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.171, 'collisions': 0.0}, raw_metrics:{'fairness': 472.333, 'emission': 1178.276, 'fuel': 381.983, 'emergency_stops': 16.0, 'collisions': 0.0, 'ssm_conflicts': 307.0}
+REAL_TRAIN step:179, travel time:134.8117269812185, q_loss:0.0030860712, rewards:-30.92806, queue:2.351852, delay:0.467288, throughput:4199, raw_metrics:{'fairness': 159.667, 'emission': 1180.056, 'fuel': 382.56, 'emergency_stops': 7.0, 'collisions': 0.0, 'ssm_conflicts': 303.0}
+real step:3600/3600
+episode:179/200, oracle_loss:0.0030860712
+REAL_TRAIN step:180, travel time:134.78798342541435, q_loss:0.003032273, rewards:-30.628613, queue:2.362037, delay:0.4732483, throughput:4179, raw_metrics:{'fairness': 98.333, 'emission': 1173.864, 'fuel': 380.553, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 326.0}
+real step:3600/3600
+episode:180/200, oracle_loss:0.003032273
+REAL_TEST step:180, travel time:135.44324696170602, q_loss:100, rewards:-31.234444, queue:2.6203704, delay:0.49529248, throughput:4202, R_real:-0.2115, components:{'queue': 0.049, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.163, 'collisions': 0.0}, raw_metrics:{'fairness': 0.0, 'emission': 1183.434, 'fuel': 383.655, 'emergency_stops': 9.0, 'collisions': 0.0, 'ssm_conflicts': 293.0}
+REAL_TRAIN step:181, travel time:134.68105238864527, q_loss:0.0031412386, rewards:-30.695557, queue:2.362963, delay:0.47735348, throughput:4178, raw_metrics:{'fairness': 337.333, 'emission': 1170.159, 'fuel': 379.352, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 288.0}
+real step:3600/3600
+episode:181/200, oracle_loss:0.0031412386
+REAL_TRAIN step:182, travel time:135.11269221941703, q_loss:0.0030883276, rewards:-30.835278, queue:2.4351852, delay:0.48677933, throughput:4199, raw_metrics:{'fairness': 236.0, 'emission': 1180.542, 'fuel': 382.718, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 275.0}
+real step:3600/3600
+episode:182/200, oracle_loss:0.0030883276
+REAL_TEST step:182, travel time:135.1319715400505, q_loss:100, rewards:-30.84472, queue:2.4703703, delay:0.47961608, throughput:4199, R_real:-0.2170, components:{'queue': 0.045, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.172, 'collisions': 0.0}, raw_metrics:{'fairness': 0.0, 'emission': 1179.423, 'fuel': 382.355, 'emergency_stops': 8.0, 'collisions': 0.0, 'ssm_conflicts': 309.0}
+REAL_TRAIN step:183, travel time:135.05184331797236, q_loss:0.003030936, rewards:-31.144716, queue:2.4333334, delay:0.4923761, throughput:4189, raw_metrics:{'fairness': 204.667, 'emission': 1174.431, 'fuel': 380.737, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 265.0}
+real step:3600/3600
+episode:183/200, oracle_loss:0.003030936
+REAL_TRAIN step:184, travel time:134.79203132197145, q_loss:0.0030351616, rewards:-31.094997, queue:2.425926, delay:0.48210126, throughput:4182, raw_metrics:{'fairness': 228.333, 'emission': 1173.374, 'fuel': 380.394, 'emergency_stops': 5.0, 'collisions': 0.0, 'ssm_conflicts': 314.0}
+real step:3600/3600
+episode:184/200, oracle_loss:0.0030351616
+REAL_TEST step:184, travel time:135.533211177279, q_loss:100, rewards:-31.70389, queue:2.648148, delay:0.5012181, throughput:4208, R_real:-0.2102, components:{'queue': 0.049, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.161, 'collisions': 0.0}, raw_metrics:{'fairness': 0.0, 'emission': 1184.856, 'fuel': 384.116, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 290.0}
+REAL_TRAIN step:185, travel time:134.85312427945584, q_loss:0.0030964927, rewards:-30.949715, queue:2.4083333, delay:0.48563018, throughput:4179, raw_metrics:{'fairness': 0.0, 'emission': 1172.752, 'fuel': 380.192, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 293.0}
+real step:3600/3600
+episode:185/200, oracle_loss:0.0030964927
+REAL_TRAIN step:186, travel time:134.95744191396366, q_loss:0.0030927875, rewards:-30.804996, queue:2.398148, delay:0.4723298, throughput:4191, raw_metrics:{'fairness': 432.667, 'emission': 1175.702, 'fuel': 381.149, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 291.0}
+real step:3600/3600
+episode:186/200, oracle_loss:0.0030927875
+REAL_TEST step:186, travel time:135.40326286764707, q_loss:100, rewards:-31.369448, queue:2.6425927, delay:0.49905363, throughput:4189, R_real:-0.2142, components:{'queue': 0.049, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.165, 'collisions': 0.0}, raw_metrics:{'fairness': 0.0, 'emission': 1180.737, 'fuel': 382.781, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 297.0}
+REAL_TRAIN step:187, travel time:135.12885283893394, q_loss:0.0031036513, rewards:-31.211964, queue:2.5953703, delay:0.49053815, throughput:4159, raw_metrics:{'fairness': 337.0, 'emission': 1167.62, 'fuel': 378.529, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 294.0}
+real step:3600/3600
+episode:187/200, oracle_loss:0.0031036513
+REAL_TRAIN step:188, travel time:134.94036697247705, q_loss:0.003052875, rewards:-30.6264, queue:2.387037, delay:0.47591755, throughput:4196, raw_metrics:{'fairness': 336.0, 'emission': 1179.472, 'fuel': 382.371, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 288.0}
+real step:3600/3600
+episode:188/200, oracle_loss:0.003052875
+REAL_TEST step:188, travel time:135.30224564619616, q_loss:100, rewards:-31.381382, queue:2.562963, delay:0.4883208, throughput:4207, R_real:-0.2133, components:{'queue': 0.048, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.166, 'collisions': 0.0}, raw_metrics:{'fairness': 0.0, 'emission': 1183.297, 'fuel': 383.611, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 298.0}
+REAL_TRAIN step:189, travel time:135.26731078904993, q_loss:0.0030956378, rewards:-30.970268, queue:2.500926, delay:0.49167684, throughput:4194, raw_metrics:{'fairness': 0.0, 'emission': 1178.105, 'fuel': 381.928, 'emergency_stops': 11.0, 'collisions': 0.0, 'ssm_conflicts': 286.0}
+real step:3600/3600
+episode:189/200, oracle_loss:0.0030956378
+REAL_TRAIN step:190, travel time:135.27932063346339, q_loss:0.0031067734, rewards:-30.86194, queue:2.526852, delay:0.49287295, throughput:4202, raw_metrics:{'fairness': 0.0, 'emission': 1180.99, 'fuel': 382.863, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 279.0}
+real step:3600/3600
+episode:190/200, oracle_loss:0.0031067734
+REAL_TEST step:190, travel time:134.30735531473368, q_loss:100, rewards:-30.100008, queue:2.0731483, delay:0.45917314, throughput:4187, R_real:-0.1867, components:{'queue': 0.039, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.147, 'collisions': 0.0}, raw_metrics:{'fairness': 245.333, 'emission': 1169.368, 'fuel': 379.095, 'emergency_stops': 7.0, 'collisions': 0.0, 'ssm_conflicts': 265.0}
+REAL_TRAIN step:191, travel time:135.13232253618193, q_loss:0.0030405375, rewards:-30.785555, queue:2.5166667, delay:0.4873818, throughput:4197, raw_metrics:{'fairness': 431.333, 'emission': 1178.53, 'fuel': 382.065, 'emergency_stops': 13.0, 'collisions': 0.0, 'ssm_conflicts': 281.0}
+real step:3600/3600
+episode:191/200, oracle_loss:0.0030405375
+REAL_TRAIN step:192, travel time:134.7054604349838, q_loss:0.00307206, rewards:-30.569998, queue:2.3805556, delay:0.47861153, throughput:4166, raw_metrics:{'fairness': 0.0, 'emission': 1167.231, 'fuel': 378.402, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 296.0}
+real step:3600/3600
+episode:192/200, oracle_loss:0.00307206
+REAL_TEST step:192, travel time:135.46251149954003, q_loss:100, rewards:-31.339165, queue:2.637963, delay:0.49226752, throughput:4190, R_real:-0.2034, components:{'queue': 0.047, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.156, 'collisions': 0.0}, raw_metrics:{'fairness': 244.333, 'emission': 1179.838, 'fuel': 382.489, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 281.0}
+REAL_TRAIN step:193, travel time:135.08671713695801, q_loss:0.0030152914, rewards:-30.784983, queue:2.4444444, delay:0.48764557, throughput:4204, raw_metrics:{'fairness': 0.0, 'emission': 1180.144, 'fuel': 382.589, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 317.0}
+real step:3600/3600
+episode:193/200, oracle_loss:0.0030152914
+REAL_TRAIN step:194, travel time:134.8240698208544, q_loss:0.0029782972, rewards:-30.826115, queue:2.3685186, delay:0.47780162, throughput:4194, raw_metrics:{'fairness': 478.333, 'emission': 1177.366, 'fuel': 381.688, 'emergency_stops': 12.0, 'collisions': 0.0, 'ssm_conflicts': 304.0}
+real step:3600/3600
+episode:194/200, oracle_loss:0.0029782972
+REAL_TEST step:194, travel time:134.94689655172414, q_loss:100, rewards:-30.88445, queue:2.4361112, delay:0.4864311, throughput:4190, R_real:-0.2034, components:{'queue': 0.046, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.158, 'collisions': 0.0}, raw_metrics:{'fairness': 245.333, 'emission': 1176.313, 'fuel': 381.347, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 284.0}
+REAL_TRAIN step:195, travel time:135.0554918596652, q_loss:0.0030326927, rewards:-31.076094, queue:2.4851851, delay:0.4928901, throughput:4199, raw_metrics:{'fairness': 120.0, 'emission': 1180.325, 'fuel': 382.647, 'emergency_stops': 14.0, 'collisions': 0.0, 'ssm_conflicts': 301.0}
+real step:3600/3600
+episode:195/200, oracle_loss:0.0030326927
+REAL_TRAIN step:196, travel time:134.9172984148863, q_loss:0.0029352289, rewards:-30.738327, queue:2.4185185, delay:0.47671238, throughput:4191, raw_metrics:{'fairness': 0.0, 'emission': 1177.217, 'fuel': 381.64, 'emergency_stops': 18.0, 'collisions': 0.0, 'ssm_conflicts': 321.0}
+real step:3600/3600
+episode:196/200, oracle_loss:0.0029352289
+REAL_TEST step:196, travel time:135.0951724137931, q_loss:100, rewards:-30.917215, queue:2.5055556, delay:0.48189142, throughput:4195, R_real:-0.1940, components:{'queue': 0.046, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.148, 'collisions': 0.0}, raw_metrics:{'fairness': 438.333, 'emission': 1178.079, 'fuel': 381.919, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 267.0}
+REAL_TRAIN step:197, travel time:134.94006888633754, q_loss:0.003025491, rewards:-30.659737, queue:2.3833334, delay:0.4787382, throughput:4198, raw_metrics:{'fairness': 233.333, 'emission': 1178.219, 'fuel': 381.965, 'emergency_stops': 17.0, 'collisions': 0.0, 'ssm_conflicts': 303.0}
+real step:3600/3600
+episode:197/200, oracle_loss:0.003025491
+REAL_TRAIN step:198, travel time:134.438132474701, q_loss:0.0029554733, rewards:-30.366951, queue:2.2212963, delay:0.45643944, throughput:4188, raw_metrics:{'fairness': 0.0, 'emission': 1172.546, 'fuel': 380.125, 'emergency_stops': 15.0, 'collisions': 0.0, 'ssm_conflicts': 276.0}
+real step:3600/3600
+episode:198/200, oracle_loss:0.0029554733
+REAL_TEST step:198, travel time:141.10875576036867, q_loss:100, rewards:-37.56944, queue:5.025926, delay:0.5225718, throughput:4158, R_real:-0.2599, components:{'queue': 0.088, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.172, 'collisions': 0.0}, raw_metrics:{'fairness': 472.0, 'emission': 1214.364, 'fuel': 393.683, 'emergency_stops': 10.0, 'collisions': 0.0, 'ssm_conflicts': 310.0}
+REAL_TRAIN step:199, travel time:134.76206896551724, q_loss:0.0030217944, rewards:-30.948885, queue:2.337037, delay:0.46957892, throughput:4188, raw_metrics:{'fairness': 264.667, 'emission': 1175.478, 'fuel': 381.076, 'emergency_stops': 17.0, 'collisions': 1.0, 'ssm_conflicts': 300.0}
+real step:3600/3600
+episode:199/200, oracle_loss:0.0030217944
+Saved method state to data/output_data/sim2real_rewards/cityflow_presslight/bullhead_3/oracle_v1_reward_oracle_physical_safety_heavy_s0/model/bullhead_3_physical_safety_heavy_presslight_reward_oracle/method_state.json
+real rollouts used: 200/200
+REAL_TEST step:0, travel time:135.07952194897726, q_loss:100, rewards:-30.874422, queue:2.4509258, delay:0.49546018, throughput:4193, R_real:-0.2103, components:{'queue': 0.048, 'delay': 0.0, 'waiting': 0.0, 'pressure': 0.0, 'switches': 0.0, 'ssm_conflicts': 0.162, 'collisions': 0.0}, raw_metrics:{'fairness': 159.667, 'emission': 1178.491, 'fuel': 382.053, 'emergency_stops': 20.0, 'collisions': 0.0, 'ssm_conflicts': 292.0}
+Total time taken: 3699.770168066025

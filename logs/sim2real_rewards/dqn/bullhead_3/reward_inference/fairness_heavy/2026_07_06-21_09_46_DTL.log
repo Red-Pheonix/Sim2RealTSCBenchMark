@@ -1,0 +1,308 @@
+exp_name	mode	step	travel_time	loss	rewards	queue	delay	throughput	train_reward	R_real	components	detail	fairness	emission	fuel	emergency_stops	ssm_conflicts	collisions	phi_raw
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	0	808.8	0.1	-529.57	140.93	0.64	3248	-1.47	0.0000			819.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	1	159.5	0.0	-63.61	14.60	0.76	4260	-0.17	0.0000			193.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	2	154.5	0.0	-51.12	12.44	0.73	4266	-0.14	0.0000			204.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	1	757.0	100.0	-578.32	145.95	0.80	1882		-420.8156	queue=2.4181;delay=0.0;waiting=392.1961;pressure=0.0;switches=0.0;fairness=26.2014	probe[queue]	324.0000	3872.5578	1255.4576	7.0000	1630.0000	0.0000	queue=48.362;delay=2.3867;waiting=39219.6089;pressure=370.4472;switches=1.1056;fairness=655.0361
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	3	962.9	0.1	-710.93	192.93	0.60	2250	-0.60	0.0000			1162.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	4	677.9	0.0	-471.69	131.61	0.58	3435	-0.58	0.0000			1679.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	5	402.3	0.0	-270.79	75.47	0.53	3728	-0.53	0.0000			1627.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	2	1713.6	100.0	-1169.57	293.43	0.75	682		-1299.8855	queue=4.882;delay=0.0;waiting=1292.4825;pressure=0.0;switches=0.0;fairness=2.521	probe[delay]	25.0000	5255.0958	1703.6715	1.0000	1102.0000	0.0000	queue=97.64;delay=2.2389;waiting=129248.2456;pressure=825.2778;switches=0.2028;fairness=63.0261
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	6	329.7	1.3	-172.60	51.10	0.63	3882	-2.68	0.0000			1427.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	7	186.4	1.0	-62.57	15.20	0.62	4214	-1.39	0.0000			1666.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	8	174.5	0.8	-53.28	14.42	0.58	4241	-1.17	0.0000			582.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	3	161.1	100.0	-35.35	9.23	0.55	4116		-37.2073	queue=0.1529;delay=0.0;waiting=21.8741;pressure=0.0;switches=0.0;fairness=15.1803	probe[waiting]	190.3333	1347.0114	436.6856	28.0000	1616.0000	1.0000	queue=3.0581;delay=1.6519;waiting=2187.4126;pressure=42.8;switches=2.3278;fairness=379.5067
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	9	587.5	6.0	-334.20	82.26	0.60	3452	-6.24	0.0000			2476.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	10	215.4	1.7	-118.92	23.92	0.78	4128	-1.96	0.0000			2182.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	11	193.3	1.1	-103.09	21.56	0.70	4193	-2.02	0.0000			2782.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	4	928.8	100.0	-598.64	154.23	0.70	1749		-541.2614	queue=2.5011;delay=0.0;waiting=512.8993;pressure=0.0;switches=0.0;fairness=25.8611	probe[pressure]	367.3333	4295.0561	1392.4287	1.0000	1157.0000	0.0000	queue=50.0216;delay=2.1148;waiting=51289.9299;pressure=406.6722;switches=0.4444;fairness=646.5264
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	12	963.2	0.6	-642.93	184.13	0.68	2528	-0.48	0.0000			824.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	13	1083.7	0.0	-744.14	208.98	0.80	2409	-0.20	0.0000			1351.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	14	922.5	0.0	-621.74	173.17	0.82	2252	-0.16	0.0000			1492.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	5	1282.7	100.0	-697.75	186.63	0.85	1326		-718.1943	queue=2.9121;delay=0.0;waiting=707.1701;pressure=0.0;switches=0.0;fairness=8.112	probe[switches]	134.6667	4882.5384	1582.8877	1.0000	1223.0000	0.0000	queue=58.2421;delay=2.5361;waiting=70717.0146;pressure=314.5417;switches=0.0889;fairness=202.8003
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	15	866.5	12.6	-700.26	188.34	0.63	2706	-10.97	0.0000			794.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	16	407.5	20.8	-127.23	30.06	0.69	3462	-13.69	0.0000			934.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	17	487.7	51.8	-145.87	34.10	0.72	3308	-12.16	0.0000			442.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	6	1114.7	100.0	-966.62	241.80	0.72	1414		-1047.8769	queue=4.036;delay=0.0;waiting=1029.1314;pressure=0.0;switches=0.0;fairness=14.7095	probe[fairness]	250.0000	4621.2345	1498.1756	1.0000	1111.0000	1.0000	queue=80.7199;delay=2.1639;waiting=102913.1418;pressure=817.125;switches=0.1417;fairness=367.7367
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	18	880.6	0.1	-592.39	160.52	0.65	3288	-1.64	0.0000			1217.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	19	183.9	0.0	-102.82	22.54	0.79	4270	-0.28	0.0000			1611.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	20	224.8	0.0	-65.66	14.32	0.73	4046	-0.18	0.0000			1573.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	7	355.8	100.0	-222.19	54.60	0.82	3153		-199.0543	queue=0.9283;delay=0.0;waiting=165.471;pressure=0.0;switches=0.0;fairness=32.655	probe[queue]	577.0000	2095.0982	679.2113	6.0000	1375.0000	1.0000	queue=18.5667;delay=2.4485;waiting=16547.1034;pressure=171.0556;switches=1.225;fairness=816.3739
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	21	699.3	0.1	-579.83	150.49	0.59	2918	-0.59	0.0000			811.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	22	397.3	0.0	-315.66	79.82	0.62	3763	-0.62	0.0000			1741.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	23	526.5	0.1	-493.77	132.18	0.57	3482	-0.57	0.0000			1672.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	8	2306.7	100.0	-1285.59	338.64	0.77	220		-1370.3331	queue=5.3662;delay=0.0;waiting=1355.9123;pressure=0.0;switches=0.0;fairness=9.0546	probe[delay]	111.6667	7002.3317	2270.1160	1.0000	1356.0000	0.0000	queue=107.324;delay=2.3223;waiting=135591.2331;pressure=430.6861;switches=0.5222;fairness=226.3639
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	24	553.5	3.3	-262.45	74.01	0.64	3783	-4.16	0.0000			1957.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	25	200.6	2.3	-78.85	16.91	0.70	4202	-2.48	0.0000			1189.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	26	220.1	2.8	-75.68	19.13	0.65	4198	-1.19	0.0000			178.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	9	842.9	100.0	-462.09	127.33	0.79	1769		-462.3916	queue=1.9312;delay=0.0;waiting=432.7729;pressure=0.0;switches=0.0;fairness=27.6876	probe[waiting]	470.3333	3973.8414	1288.2928	4.0000	1235.0000	0.0000	queue=38.6232;delay=2.3821;waiting=43277.2881;pressure=360.5472;switches=0.6667;fairness=692.19
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	27	633.8	5.6	-401.91	103.28	0.63	3452	-6.31	0.0000			1441.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	28	304.4	3.0	-142.80	28.77	0.74	4013	-2.92	0.0000			1865.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	29	174.1	2.5	-95.10	18.97	0.78	4237	-1.90	0.0000			1604.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	10	321.3	100.0	-210.56	55.95	0.74	3411		-174.3286	queue=0.8814;delay=0.0;waiting=144.4413;pressure=0.0;switches=0.0;fairness=29.0059	probe[pressure]	387.0000	2167.5571	702.7022	8.0000	1149.0000	0.0000	queue=17.6281;delay=2.2144;waiting=14444.1346;pressure=160.0083;switches=1.2278;fairness=725.1472
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	30	908.9	0.1	-602.09	168.47	0.63	2171	-0.52	0.0000			382.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	31	540.9	0.0	-436.62	110.82	0.84	3261	-0.21	0.0000			422.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	32	1026.7	0.0	-903.07	232.07	0.81	2136	-0.15	0.0000			417.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	11	1509.7	100.0	-873.17	221.90	0.76	922		-951.9241	queue=3.6454;delay=0.0;waiting=928.9377;pressure=0.0;switches=0.0;fairness=19.341	probe[switches]	257.0000	5260.8561	1705.5385	0.0000	1068.0000	0.0000	queue=72.9078;delay=2.2691;waiting=92893.7742;pressure=547.3194;switches=0.0278;fairness=483.5253
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	33	777.6	26.7	-489.75	131.44	0.63	3034	-13.22	0.0000			1036.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	34	1173.5	21.6	-743.68	184.61	0.66	1814	-2.97	0.0000			133.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	35	886.1	15.7	-625.73	150.58	0.77	2556	-2.26	0.0000			20.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	12	1322.6	100.0	-1028.31	247.39	0.73	1115		-1115.4536	queue=4.293;delay=0.0;waiting=1101.0145;pressure=0.0;switches=0.0;fairness=10.1461	probe[fairness]	175.3333	4789.8438	1552.8383	0.0000	1251.0000	0.0000	queue=85.8601;delay=2.1849;waiting=110101.4503;pressure=800.9;switches=0.2722;fairness=253.6517
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	36	781.6	0.1	-439.79	117.36	0.67	2968	-1.22	0.0000			1381.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	37	201.1	0.0	-119.80	24.57	0.71	4193	-0.33	0.0000			2369.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	38	177.9	0.0	-93.79	19.60	0.72	4278	-0.26	0.0000			1598.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	13	716.0	100.0	-407.68	106.76	0.80	2163		-355.9350	queue=1.7038;delay=0.0;waiting=326.9538;pressure=0.0;switches=0.0;fairness=27.2774	probe[queue]	386.3333	3551.2853	1151.3013	5.0000	1579.0000	0.0000	queue=34.0756;delay=2.4083;waiting=32695.3767;pressure=248.9694;switches=1.2;fairness=681.9361
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	39	770.8	0.1	-724.36	199.96	0.64	2537	-0.64	0.0000			1553.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	40	908.2	0.0	-676.80	191.70	0.63	2534	-0.63	0.0000			1380.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	41	983.7	0.0	-873.02	239.96	0.64	2286	-0.64	0.0000			1096.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	14	1585.6	100.0	-1103.00	294.38	0.79	550		-1066.1053	queue=4.607;delay=0.0;waiting=1047.4958;pressure=0.0;switches=0.0;fairness=14.0025	probe[delay]	143.3333	5665.1006	1836.5925	0.0000	1547.0000	0.0000	queue=92.1392;delay=2.3598;waiting=104749.5794;pressure=330.0833;switches=0.8;fairness=350.0628
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	42	632.0	7.1	-288.77	82.34	0.65	3698	-4.42	0.0000			1787.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	43	201.6	3.8	-65.18	14.69	0.69	4206	-1.27	0.0000			1824.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	44	161.7	2.7	-52.46	11.89	0.65	4282	-0.94	0.0000			1731.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	15	939.9	100.0	-508.56	142.89	0.68	1677		-453.1399	queue=2.1256;delay=0.0;waiting=429.8261;pressure=0.0;switches=0.0;fairness=21.1882	probe[waiting]	361.3333	4281.2089	1387.9393	5.0000	1598.0000	0.0000	queue=42.5114;delay=2.0271;waiting=42982.6123;pressure=187.65;switches=0.7667;fairness=529.7044
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	45	684.7	10.0	-458.62	134.25	0.69	3333	-9.36	0.0000			1631.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	46	281.5	6.7	-186.25	49.80	0.74	4120	-5.08	0.0000			1783.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	47	250.4	5.5	-177.94	42.68	0.77	4242	-3.29	0.0000			1551.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	16	459.8	100.0	-551.96	125.22	0.81	3279		-579.7676	queue=2.3042;delay=0.0;waiting=552.3574;pressure=0.0;switches=0.0;fairness=25.1061	probe[pressure]	418.0000	3025.4412	980.8250	1.0000	912.0000	0.0000	queue=46.0842;delay=2.4367;waiting=55235.7361;pressure=359.2611;switches=0.3917;fairness=627.6519
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	48	660.6	0.1	-418.04	112.47	0.63	2960	-0.51	0.0000			1112.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	49	767.7	0.0	-601.00	174.54	0.80	2626	-0.18	0.0000			2005.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	50	968.9	0.0	-757.34	208.91	0.78	2337	-0.18	0.0000			912.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	17	885.1	100.0	-552.53	149.57	0.78	1816		-585.4352	queue=2.3077;delay=0.0;waiting=555.9084;pressure=0.0;switches=0.0;fairness=27.2191	probe[switches]	486.0000	4195.7744	1360.2425	0.0000	1240.0000	0.0000	queue=46.1547;delay=2.3532;waiting=55590.8391;pressure=294.4583;switches=0.0944;fairness=680.4778
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	51	539.8	30.9	-266.73	78.89	0.65	3536	-12.29	0.0000			1464.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	52	512.3	28.6	-341.65	79.46	0.76	3435	-9.33	0.0000			1164.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	53	794.8	33.9	-588.54	161.85	0.79	2848	-8.74	0.0000			979.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	18	902.7	100.0	-786.26	204.95	0.82	2276		-811.3825	queue=3.2825;delay=0.0;waiting=795.4118;pressure=0.0;switches=0.0;fairness=12.6882	probe[fairness]	70.6667	5025.7476	1629.3147	4.0000	1191.0000	0.0000	queue=65.6501;delay=2.4649;waiting=79541.1804;pressure=485.5861;switches=0.4111;fairness=317.2047
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	0	144.6	100.0	-19.59	5.51	0.46	4189		-23.5957	queue=0.0854;delay=0.0;waiting=3.1054;pressure=0.0;switches=0.0;fairness=20.405	final;warmstart	350.3333	1244.2778	403.3804	13.0000	674.0000	0.0000	queue=1.7083;delay=1.3696;waiting=310.5375;pressure=34.45;switches=1.3083;fairness=510.1239
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	54	162.5	0.0	-34.95	8.26	0.54	4232	-9.65	0.0000			1280.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	55	178.7	0.0	-34.18	8.11	0.53	4188	-10.04	0.0000			172.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	2	144.6	100.0	-19.59	5.51	0.46	4189		-23.5957	queue=0.0854;delay=0.0;waiting=3.1054;pressure=0.0;switches=0.0;fairness=20.405	final;ckpt	350.3333	1244.2778	403.3804	13.0000	674.0000	0.0000	queue=1.7083;delay=1.3696;waiting=310.5375;pressure=34.45;switches=1.3083;fairness=510.1239
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	56	159.7	18.6	-33.23	7.89	0.54	4235	-9.07	0.0000			343.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	57	139.1	15.9	-27.41	6.39	0.58	4285	-7.50	0.0000			671.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	4	169.1	100.0	-66.76	15.74	0.52	4133		-77.4229	queue=0.2821;delay=0.0;waiting=48.3111;pressure=0.0;switches=0.0;fairness=28.8297	final;ckpt	459.0000	1408.1691	456.5131	11.0000	985.0000	0.0000	queue=5.6422;delay=1.5505;waiting=4831.1062;pressure=103.8444;switches=1.4167;fairness=720.7425
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	58	138.5	16.6	-26.27	6.07	0.56	4284	-7.58	0.0000			389.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	59	139.0	17.2	-26.42	6.22	0.54	4300	-7.59	0.0000			158.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	6	218.7	100.0	-100.62	26.36	0.50	3899		-75.1052	queue=0.4241;delay=0.0;waiting=54.0483;pressure=0.0;switches=0.0;fairness=20.6328	final;ckpt	268.3333	1727.6145	560.0749	21.0000	1423.0000	0.0000	queue=8.4822;delay=1.4978;waiting=5404.826;pressure=149.1583;switches=1.3861;fairness=515.82
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	60	139.8	17.4	-27.15	6.42	0.56	4292	-6.56	0.0000			231.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	61	140.5	16.8	-25.22	5.80	0.54	4293	-6.17	0.0000			159.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	8	154.8	100.0	-22.14	6.44	0.49	4190		-20.9099	queue=0.097;delay=0.0;waiting=1.0;pressure=0.0;switches=0.0;fairness=19.8129	final;ckpt	510.0000	1319.0069	427.6066	7.0000	1663.0000	0.0000	queue=1.9409;delay=1.4811;waiting=99.9955;pressure=39.7944;switches=1.8028;fairness=495.3233
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	62	138.2	16.0	-24.86	5.75	0.55	4285	-6.43	0.0000			390.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	63	140.7	15.3	-25.39	5.85	0.55	4290	-5.98	0.0000			362.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	10	148.2	100.0	-21.19	5.96	0.47	4201		-20.6020	queue=0.0941;delay=0.0;waiting=1.8708;pressure=0.0;switches=0.0;fairness=18.6371	final;ckpt	160.0000	1274.0285	413.0251	25.0000	1112.0000	0.0000	queue=1.8827;delay=1.4126;waiting=187.0792;pressure=49.6417;switches=1.9972;fairness=465.9267
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	64	142.0	14.6	-27.04	6.21	0.55	4286	-6.34	0.0000			158.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	65	138.0	14.5	-25.09	5.76	0.55	4283	-6.28	0.0000			895.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	12	148.6	100.0	-21.15	6.05	0.48	4202		-21.1683	queue=0.0936;delay=0.0;waiting=1.9565;pressure=0.0;switches=0.0;fairness=19.1183	final;ckpt	160.3333	1276.5832	413.8533	19.0000	1281.0000	0.0000	queue=1.871;delay=1.4384;waiting=195.6482;pressure=45.8194;switches=2.0194;fairness=477.9564
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	66	145.1	14.2	-26.56	6.06	0.55	4278	-6.04	0.0000			359.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	67	138.3	13.9	-25.04	5.77	0.55	4286	-5.85	0.0000			389.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	14	152.7	100.0	-24.26	6.71	0.48	4192		-20.1866	queue=0.1064;delay=0.0;waiting=2.3076;pressure=0.0;switches=0.0;fairness=17.7725	final;ckpt	324.3333	1302.9001	422.3849	14.0000	1382.0000	0.0000	queue=2.1287;delay=1.4324;waiting=230.7618;pressure=52.7472;switches=2.0111;fairness=444.3136
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	68	149.2	13.5	-26.45	6.06	0.55	4247	-6.12	0.0000			1191.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	69	157.8	13.1	-27.49	6.24	0.55	4233	-7.02	0.0000			0.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	16	155.0	100.0	-26.58	7.40	0.49	4184		-22.6352	queue=0.1159;delay=0.0;waiting=3.1206;pressure=0.0;switches=0.0;fairness=19.3987	final;ckpt	236.6667	1318.3972	427.4090	16.0000	1464.0000	0.0000	queue=2.3175;delay=1.4557;waiting=312.0637;pressure=52.3028;switches=2.0167;fairness=484.9681
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	70	166.0	12.4	-28.29	6.46	0.57	4228	-5.83	0.0000			211.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	71	189.8	12.0	-29.47	6.75	0.53	4142	-5.91	0.0000			154.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	18	150.5	100.0	-25.29	6.89	0.49	4196		-22.4624	queue=0.1104;delay=0.0;waiting=2.9773;pressure=0.0;switches=0.0;fairness=19.3747	final;ckpt	312.0000	1288.4871	417.7125	17.0000	1287.0000	1.0000	queue=2.2081;delay=1.4593;waiting=297.7334;pressure=50.8167;switches=2.0389;fairness=484.3664
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	72	209.6	11.5	-29.21	6.71	0.54	4127	-5.57	0.0000			155.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	73	220.4	10.7	-30.42	6.95	0.53	4066	-5.44	0.0000			373.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	20	148.0	100.0	-23.67	6.46	0.47	4199		-20.9559	queue=0.1037;delay=0.0;waiting=3.0974;pressure=0.0;switches=0.0;fairness=17.7548	final;ckpt	246.6667	1271.4061	412.1750	19.0000	1129.0000	0.0000	queue=2.0734;delay=1.3958;waiting=309.7354;pressure=51.0361;switches=1.9333;fairness=443.8708
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	74	225.3	10.0	-31.14	7.14	0.52	4071	-5.79	0.0000			288.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	75	268.3	9.8	-33.67	7.69	0.52	3963	-5.42	0.0000			797.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	22	168.8	100.0	-63.53	15.57	0.52	4134		-76.9550	queue=0.2684;delay=0.0;waiting=47.623;pressure=0.0;switches=0.0;fairness=29.0636	final;ckpt	458.6667	1407.1844	456.1938	12.0000	961.0000	0.0000	queue=5.3671;delay=1.5561;waiting=4762.3006;pressure=103.6417;switches=1.4444;fairness=726.5911
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	76	252.1	9.7	-34.33	7.90	0.53	3987	-6.37	0.0000			558.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	77	271.4	10.0	-35.57	8.20	0.54	3944	-5.36	0.0000			660.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	24	182.6	100.0	-50.49	14.13	0.55	4153		-31.0624	queue=0.2139;delay=0.0;waiting=4.4338;pressure=0.0;switches=0.0;fairness=26.4148	final;ckpt	281.6667	1489.3106	482.8177	19.0000	1654.0000	0.0000	queue=4.2773;delay=1.6506;waiting=443.3776;pressure=46.2472;switches=1.8944;fairness=660.3692
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	78	238.3	10.0	-32.87	7.53	0.54	4037	-5.57	0.0000			515.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	79	249.8	9.7	-34.42	7.91	0.55	3991	-6.15	0.0000			105.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	26	151.0	100.0	-26.76	7.16	0.49	4187		-23.1580	queue=0.1153;delay=0.0;waiting=2.1297;pressure=0.0;switches=0.0;fairness=20.913	final;ckpt	325.0000	1292.8283	419.1198	23.0000	1397.0000	0.0000	queue=2.3065;delay=1.4731;waiting=212.9672;pressure=42.7111;switches=1.8833;fairness=522.8256
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	80	280.2	9.6	-35.78	8.24	0.55	3914	-4.92	0.0000			156.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	81	296.5	9.3	-39.05	9.11	0.56	3870	-6.03	0.0000			430.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	28	154.9	100.0	-31.82	8.68	0.49	4193		-23.1454	queue=0.1359;delay=0.0;waiting=4.0695;pressure=0.0;switches=0.0;fairness=18.9401	final;ckpt	343.6667	1317.4531	427.1031	18.0000	1453.0000	0.0000	queue=2.7173;delay=1.4613;waiting=406.9506;pressure=50.1306;switches=1.9417;fairness=473.5017
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	82	312.4	9.5	-39.03	9.03	0.58	3848	-5.04	0.0000			216.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	83	342.5	9.0	-39.69	9.14	0.55	3753	-5.01	0.0000			183.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	30	153.7	100.0	-27.94	7.67	0.50	4189		-23.4481	queue=0.1189;delay=0.0;waiting=2.2827;pressure=0.0;switches=0.0;fairness=21.0465	final;ckpt	442.6667	1307.0998	423.7466	13.0000	1454.0000	0.0000	queue=2.3781;delay=1.4966;waiting=228.2705;pressure=38.95;switches=1.5944;fairness=526.1614
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	84	360.7	8.8	-40.85	9.33	0.55	3679	-4.70	0.0000			1.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	85	361.9	8.7	-40.51	9.24	0.55	3702	-5.04	0.0000			165.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	32	218.9	100.0	-99.95	26.14	0.50	4020		-73.9741	queue=0.4206;delay=0.0;waiting=52.6055;pressure=0.0;switches=0.0;fairness=20.948	final;ckpt	229.6667	1730.7304	561.0848	12.0000	1453.0000	0.0000	queue=8.4119;delay=1.5007;waiting=5260.5472;pressure=151.5083;switches=1.5306;fairness=523.7003
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	86	361.6	8.9	-41.86	9.54	0.56	3687	-4.74	0.0000			4.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	87	383.7	8.6	-44.08	10.01	0.57	3636	-5.49	0.0000			12.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	34	199.5	100.0	-82.08	21.13	0.52	4059		-65.4387	queue=0.3464;delay=0.0;waiting=43.522;pressure=0.0;switches=0.0;fairness=21.5704	final;ckpt	272.3333	1604.9818	520.3177	14.0000	1316.0000	0.0000	queue=6.9273;delay=1.5732;waiting=4352.1982;pressure=132.5083;switches=1.5222;fairness=539.2594
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	88	362.2	8.9	-45.35	10.35	0.60	3708	-4.67	0.0000			651.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	89	315.1	8.6	-46.68	10.64	0.61	3816	-5.18	0.0000			232.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	36	203.5	100.0	-76.24	19.62	0.53	3996		-55.2492	queue=0.3215;delay=0.0;waiting=31.5092;pressure=0.0;switches=0.0;fairness=23.4185	final;ckpt	310.0000	1612.8249	522.8604	19.0000	1146.0000	0.0000	queue=6.4305;delay=1.5793;waiting=3150.9246;pressure=125.4917;switches=1.4472;fairness=585.4617
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	90	271.7	8.6	-46.11	10.46	0.62	3948	-5.27	0.0000			282.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	91	332.2	8.1	-51.74	11.72	0.61	3752	-4.91	0.0000			183.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	38	225.7	100.0	-88.53	22.66	0.53	3969		-75.7889	queue=0.3725;delay=0.0;waiting=51.01;pressure=0.0;switches=0.0;fairness=24.4064	final;ckpt	443.3333	1729.5324	560.6956	12.0000	1217.0000	0.0000	queue=7.4497;delay=1.5944;waiting=5101.0042;pressure=157.6667;switches=1.6139;fairness=610.1597
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	92	362.1	8.2	-53.41	12.13	0.61	3704	-4.77	0.0000			200.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	93	363.3	7.9	-54.53	12.40	0.61	3699	-5.58	0.0000			43.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	40	217.9	100.0	-97.55	24.70	0.57	3993		-78.0587	queue=0.4096;delay=0.0;waiting=50.9481;pressure=0.0;switches=0.0;fairness=26.7009	final;ckpt	208.3333	1702.4053	551.9016	10.0000	1328.0000	0.0000	queue=8.1929;delay=1.7004;waiting=5094.8084;pressure=143.2472;switches=1.525;fairness=667.5233
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	94	356.0	7.6	-55.09	12.52	0.61	3736	-4.82	0.0000			178.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	95	303.3	7.8	-52.59	11.87	0.60	3824	-5.80	0.0000			211.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	42	241.3	100.0	-92.26	23.59	0.55	3961		-77.4439	queue=0.3878;delay=0.0;waiting=53.4194;pressure=0.0;switches=0.0;fairness=23.6367	final;ckpt	257.0000	1805.4090	585.2938	14.0000	1183.0000	0.0000	queue=7.7552;delay=1.6528;waiting=5341.9419;pressure=178.1667;switches=1.6528;fairness=590.9175
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	96	323.9	8.1	-50.33	11.40	0.61	3819	-4.89	0.0000			236.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	97	295.8	8.0	-46.04	10.41	0.61	3837	-4.71	0.0000			87.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	44	242.3	100.0	-88.40	22.50	0.54	3930		-75.2503	queue=0.3721;delay=0.0;waiting=51.6994;pressure=0.0;switches=0.0;fairness=23.1788	final;ckpt	236.6667	1802.1850	584.2487	17.0000	1146.0000	0.0000	queue=7.4419;delay=1.6081;waiting=5169.9394;pressure=178.1667;switches=1.8306;fairness=579.4708
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	98	307.8	8.0	-46.97	10.62	0.60	3836	-5.20	0.0000			56.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	99	297.7	7.9	-45.74	10.34	0.61	3893	-4.53	0.0000			100.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	46	248.7	100.0	-81.61	20.95	0.53	3934		-77.4007	queue=0.3442;delay=0.0;waiting=53.584;pressure=0.0;switches=0.0;fairness=23.4725	final;ckpt	444.0000	1829.6470	593.1514	23.0000	1010.0000	0.0000	queue=6.8849;delay=1.5879;waiting=5358.3952;pressure=187.475;switches=1.7806;fairness=586.8117
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	100	299.7	7.8	-44.52	10.20	0.62	3860	-4.86	0.0000			248.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	101	309.8	7.3	-47.72	10.82	0.62	3838	-4.58	0.0000			787.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	48	181.5	100.0	-71.64	18.16	0.61	4037		-36.7548	queue=0.3008;delay=0.0;waiting=7.9437;pressure=0.0;switches=0.0;fairness=28.5103	final;ckpt	398.6667	1459.6394	473.1993	6.0000	1326.0000	0.0000	queue=6.0168;delay=1.8287;waiting=794.3743;pressure=64.3389;switches=1.0944;fairness=712.7564
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	102	323.6	7.4	-52.53	11.93	0.63	3813	-5.07	0.0000			75.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	103	322.7	7.4	-50.43	11.47	0.62	3790	-5.37	0.0000			227.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	50	212.0	100.0	-111.24	26.68	0.59	3548		-48.3250	queue=0.4661;delay=0.0;waiting=29.2799;pressure=0.0;switches=0.0;fairness=18.5789	final;ckpt	40.6667	1500.6778	486.5043	12.0000	1167.0000	0.0000	queue=9.3222;delay=1.784;waiting=2927.9921;pressure=82.9556;switches=1.0;fairness=464.4736
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	104	302.1	7.6	-46.87	10.60	0.61	3850	-4.92	0.0000			217.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	105	278.7	7.6	-46.17	10.48	0.62	3911	-5.09	0.0000			107.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	52	211.9	100.0	-112.48	26.49	0.60	3524		-58.9560	queue=0.4708;delay=0.0;waiting=40.6891;pressure=0.0;switches=0.0;fairness=17.7961	final;ckpt	260.3333	1450.4484	470.2208	6.0000	731.0000	0.0000	queue=9.4154;delay=1.7963;waiting=4068.9088;pressure=90.8417;switches=0.6417;fairness=444.9028
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	106	288.5	7.4	-44.88	10.18	0.61	3924	-5.67	0.0000			237.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	107	237.8	7.6	-40.77	9.35	0.60	3998	-6.20	0.0000			1045.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	54	248.4	100.0	-139.75	34.26	0.67	3387		-136.6172	queue=0.584;delay=0.0;waiting=112.9281;pressure=0.0;switches=0.0;fairness=23.1051	final;ckpt	41.6667	1607.9825	521.2925	7.0000	1021.0000	0.0000	queue=11.6798;delay=2.0135;waiting=11292.8086;pressure=108.8;switches=0.4944;fairness=577.6272
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	108	254.2	7.8	-45.12	10.40	0.62	3949	-5.56	0.0000			277.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	109	244.5	7.9	-43.03	9.89	0.60	3990	-5.43	0.0000			262.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	56	252.8	100.0	-144.34	35.67	0.69	3348		-141.8555	queue=0.603;delay=0.0;waiting=116.7278;pressure=0.0;switches=0.0;fairness=24.5247	final;ckpt	438.0000	1632.1380	529.1236	8.0000	1010.0000	0.0000	queue=12.0606;delay=2.0586;waiting=11672.7826;pressure=111.8917;switches=0.5194;fairness=613.1167
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	110	227.8	7.5	-39.13	9.07	0.61	4047	-5.62	0.0000			311.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	111	212.2	7.5	-38.47	8.87	0.60	4118	-6.72	0.0000			176.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	58	223.6	100.0	-112.22	28.20	0.65	3544		-54.4731	queue=0.4698;delay=0.0;waiting=28.0985;pressure=0.0;switches=0.0;fairness=25.9048	final;ckpt	430.3333	1540.9458	499.5591	16.0000	1044.0000	1.0000	queue=9.3958;delay=1.9447;waiting=2809.8525;pressure=85.0389;switches=1.0917;fairness=647.6192
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	112	261.3	8.2	-43.09	9.90	0.61	3993	-5.28	0.0000			295.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	113	308.4	7.8	-50.01	11.58	0.61	3860	-5.78	0.0000			92.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	60	191.2	100.0	-66.73	18.96	0.60	4144		-37.3884	queue=0.2813;delay=0.0;waiting=8.3197;pressure=0.0;switches=0.0;fairness=28.7874	final;ckpt	398.0000	1558.3327	505.1949	11.0000	1211.0000	0.0000	queue=5.6264;delay=1.8009;waiting=831.966;pressure=69.4806;switches=1.1556;fairness=719.6847
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	114	250.6	8.4	-41.01	9.34	0.60	3988	-5.95	0.0000			288.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	115	270.1	8.7	-43.20	9.82	0.60	3941	-5.48	0.0000			244.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	62	331.0	100.0	-187.50	49.93	0.72	3267		-153.6588	queue=0.7833;delay=0.0;waiting=122.6144;pressure=0.0;switches=0.0;fairness=30.2612	final;ckpt	544.0000	2035.8901	660.0170	4.0000	1262.0000	0.0000	queue=15.665;delay=2.1723;waiting=12261.4369;pressure=125.9722;switches=0.7083;fairness=756.53
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	116	251.2	8.9	-41.00	9.39	0.60	3992	-6.15	0.0000			525.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	117	243.4	9.0	-39.25	8.90	0.59	4000	-5.28	0.0000			265.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	64	234.8	100.0	-107.53	31.60	0.61	3945		-49.3836	queue=0.4511;delay=0.0;waiting=22.6094;pressure=0.0;switches=0.0;fairness=26.3231	final;ckpt	348.6667	1799.6612	583.4323	13.0000	1319.0000	0.0000	queue=9.0218;delay=1.8311;waiting=2260.94;pressure=123.4861;switches=1.125;fairness=658.0783
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	118	215.0	9.0	-36.71	8.37	0.59	4081	-6.30	0.0000			727.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	119	342.7	9.2	-48.47	11.00	0.59	3805	-5.29	0.0000			47.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	66	204.1	100.0	-78.11	23.15	0.60	4149		-39.0996	queue=0.3278;delay=0.0;waiting=11.5877;pressure=0.0;switches=0.0;fairness=27.1841	final;ckpt	232.3333	1641.1735	532.0514	15.0000	1118.0000	0.0000	queue=6.5551;delay=1.7992;waiting=1158.7747;pressure=88.9028;switches=0.85;fairness=679.6022
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	120	343.2	9.3	-57.73	13.08	0.62	3715	-5.19	0.0000			47.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	121	206.6	8.8	-40.26	9.22	0.61	4019	-5.47	0.0000			306.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	68	213.3	100.0	-85.19	24.85	0.60	4137		-43.1808	queue=0.3579;delay=0.0;waiting=13.6216;pressure=0.0;switches=0.0;fairness=29.2013	final;ckpt	395.3333	1698.1228	550.5139	17.0000	1063.0000	0.0000	queue=7.1586;delay=1.7895;waiting=1362.1567;pressure=97.6278;switches=0.9806;fairness=730.0314
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	122	293.8	8.6	-49.34	11.37	0.61	3870	-5.43	0.0000			247.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	123	277.2	8.6	-43.32	9.83	0.60	3938	-5.08	0.0000			521.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	70	180.2	100.0	-48.80	14.60	0.59	4147		-31.4077	queue=0.206;delay=0.0;waiting=4.0261;pressure=0.0;switches=0.0;fairness=27.1756	final;ckpt	489.0000	1487.8853	482.3560	20.0000	1548.0000	2.0000	queue=4.1194;delay=1.777;waiting=402.6136;pressure=40.4361;switches=1.2389;fairness=679.3892
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	124	229.5	8.6	-39.86	9.14	0.61	4073	-5.42	0.0000			26.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	125	244.1	8.6	-45.08	10.64	0.63	3998	-6.03	0.0000			454.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	72	367.3	100.0	-191.24	51.69	0.64	3111		-184.5106	queue=0.7995;delay=0.0;waiting=162.7568;pressure=0.0;switches=0.0;fairness=20.9543	final;ckpt	374.3333	2155.5178	698.7994	13.0000	1021.0000	0.0000	queue=15.9905;delay=1.9315;waiting=16275.6806;pressure=211.2167;switches=0.6;fairness=523.8572
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	126	222.9	8.4	-40.10	9.14	0.61	4070	-5.40	0.0000			317.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	127	239.4	8.5	-40.41	9.37	0.61	4044	-5.86	0.0000			629.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	74	155.4	100.0	-24.56	7.66	0.50	4186		-23.7002	queue=0.1057;delay=0.0;waiting=3.1211;pressure=0.0;switches=0.0;fairness=20.4734	final;ckpt	236.0000	1321.9217	428.5518	11.0000	1187.0000	0.0000	queue=2.1144;delay=1.5041;waiting=312.1088;pressure=37.0167;switches=1.3833;fairness=511.8339
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	128	203.7	8.2	-39.83	9.37	0.64	4116	-5.89	0.0000			174.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	129	221.5	8.2	-36.64	8.49	0.58	4072	-5.50	0.0000			288.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	76	146.9	100.0	-18.29	5.63	0.50	4192		-22.5069	queue=0.0798;delay=0.0;waiting=1.716;pressure=0.0;switches=0.0;fairness=20.7111	final;ckpt	440.0000	1263.4811	409.6058	14.0000	1133.0000	0.0000	queue=1.5964;delay=1.4859;waiting=171.5978;pressure=36.0667;switches=1.4389;fairness=517.7778
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	130	208.1	8.1	-39.11	9.07	0.61	4061	-6.02	0.0000			288.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	131	198.2	8.3	-34.52	8.07	0.58	4127	-5.28	0.0000			310.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	78	143.6	100.0	-14.70	4.71	0.47	4201		-20.0672	queue=0.0654;delay=0.0;waiting=1.7355;pressure=0.0;switches=0.0;fairness=18.2664	final;ckpt	119.0000	1241.4339	402.4583	20.0000	921.0000	0.0000	queue=1.3083;delay=1.3973;waiting=173.5467;pressure=34.4111;switches=1.5056;fairness=456.6592
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	132	178.7	8.1	-34.70	8.13	0.60	4179	-5.85	0.0000			324.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	133	225.4	7.9	-40.13	9.33	0.61	4054	-6.24	0.0000			154.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	80	144.0	100.0	-15.86	4.97	0.48	4204		-22.8349	queue=0.0701;delay=0.0;waiting=2.1041;pressure=0.0;switches=0.0;fairness=20.6607	final;ckpt	235.6667	1242.3894	402.7681	17.0000	831.0000	0.0000	queue=1.4016;delay=1.4448;waiting=210.4121;pressure=35.6306;switches=1.4444;fairness=516.5186
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	134	197.1	8.1	-37.50	8.77	0.59	4164	-6.37	0.0000			319.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	135	172.4	8.6	-33.34	7.80	0.59	4216	-6.50	0.0000			339.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	82	143.8	100.0	-19.22	5.72	0.48	4188		-22.6106	queue=0.0833;delay=0.0;waiting=3.1081;pressure=0.0;switches=0.0;fairness=19.4192	final;ckpt	354.0000	1240.2145	402.0632	8.0000	551.0000	0.0000	queue=1.667;delay=1.4279;waiting=310.81;pressure=38.2417;switches=0.9861;fairness=485.4794
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	136	195.2	8.9	-35.95	8.28	0.60	4169	-5.84	0.0000			195.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	137	242.1	9.1	-40.38	9.23	0.61	4017	-5.83	0.0000			140.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	84	143.2	100.0	-18.38	5.36	0.49	4196		-24.5141	queue=0.0797;delay=0.0;waiting=2.411;pressure=0.0;switches=0.0;fairness=22.0234	final;ckpt	147.0000	1235.2384	400.4499	16.0000	575.0000	0.0000	queue=1.5941;delay=1.4683;waiting=241.098;pressure=38.925;switches=1.1056;fairness=550.5861
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	138	160.1	9.3	-31.48	7.37	0.59	4204	-5.89	0.0000			603.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	139	162.1	9.1	-30.39	7.12	0.59	4242	-6.40	0.0000			349.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	86	143.7	100.0	-19.92	5.69	0.50	4183		-24.4606	queue=0.0858;delay=0.0;waiting=2.5141;pressure=0.0;switches=0.0;fairness=21.8607	final;ckpt	377.0000	1235.8445	400.6464	15.0000	548.0000	0.0000	queue=1.7168;delay=1.5038;waiting=251.4085;pressure=39.0639;switches=0.8917;fairness=546.5181
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	140	151.6	9.3	-30.63	7.09	0.58	4237	-5.90	0.0000			187.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	141	191.1	9.4	-33.97	7.85	0.59	4155	-6.03	0.0000			320.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	88	158.7	100.0	-43.80	11.70	0.54	4133		-49.0025	queue=0.1847;delay=0.0;waiting=23.499;pressure=0.0;switches=0.0;fairness=25.3188	final;ckpt	467.3333	1331.7720	431.7457	15.0000	574.0000	0.0000	queue=3.6943;delay=1.6328;waiting=2349.9031;pressure=51.2389;switches=0.8194;fairness=632.9697
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	142	147.6	9.6	-28.38	6.52	0.57	4216	-7.17	0.0000			179.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	143	137.3	9.9	-25.56	6.02	0.58	4275	-6.74	0.0000			383.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	90	148.0	100.0	-25.33	7.22	0.51	4186		-27.8774	queue=0.1086;delay=0.0;waiting=4.8124;pressure=0.0;switches=0.0;fairness=22.9564	final;ckpt	273.6667	1267.3983	410.8759	16.0000	694.0000	0.0000	queue=2.1726;delay=1.5211;waiting=481.2421;pressure=38.6278;switches=1.1056;fairness=573.9089
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	144	148.5	10.2	-35.42	8.50	0.61	4290	-6.07	0.0000			486.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	145	160.1	10.3	-34.23	7.82	0.58	4197	-6.66	0.0000			0.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	92	151.3	100.0	-30.51	8.65	0.53	4183		-29.6538	queue=0.1301;delay=0.0;waiting=6.7039;pressure=0.0;switches=0.0;fairness=22.8198	final;ckpt	221.0000	1291.2297	418.6020	12.0000	656.0000	0.0000	queue=2.6019;delay=1.5949;waiting=670.3902;pressure=39.9528;switches=1.0194;fairness=570.4956
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	146	265.4	10.5	-55.12	12.52	0.60	3959	-6.28	0.0000			466.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	147	175.2	10.4	-32.56	7.54	0.57	4192	-5.40	0.0000			155.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	94	207.4	100.0	-92.84	24.33	0.54	4037		-76.2903	queue=0.3904;delay=0.0;waiting=53.6476;pressure=0.0;switches=0.0;fairness=22.2523	final;ckpt	386.0000	1649.2275	534.6619	16.0000	1111.0000	0.0000	queue=7.8072;delay=1.6136;waiting=5364.7589;pressure=126.1028;switches=1.0306;fairness=556.3086
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	148	189.4	10.3	-49.21	11.64	0.59	4201	-7.44	0.0000			1074.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	149	149.0	11.1	-41.50	9.90	0.58	4232	-7.55	0.0000			363.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	96	169.6	100.0	-59.21	15.64	0.56	4107		-55.3358	queue=0.2495;delay=0.0;waiting=26.5126;pressure=0.0;switches=0.0;fairness=28.5737	final;ckpt	689.3333	1404.5261	455.3321	5.0000	802.0000	0.0000	queue=4.9903;delay=1.6912;waiting=2651.2555;pressure=61.6167;switches=0.925;fairness=714.3422
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	150	177.8	11.4	-32.14	7.47	0.57	4180	-5.81	0.0000			352.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	151	142.4	11.4	-26.62	6.26	0.57	4298	-7.08	0.0000			650.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	98	205.9	100.0	-77.17	20.60	0.54	3863		-47.9077	queue=0.3245;delay=0.0;waiting=25.3592;pressure=0.0;switches=0.0;fairness=22.2241	final;ckpt	139.0000	1552.6357	503.3482	10.0000	1054.0000	0.0000	queue=6.4897;delay=1.6163;waiting=2535.9208;pressure=83.5583;switches=1.1861;fairness=555.6014
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	152	174.0	11.6	-31.53	7.36	0.57	4232	-6.13	0.0000			344.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	153	179.5	11.9	-34.10	7.96	0.57	4141	-6.96	0.0000			583.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	100	213.5	100.0	-112.11	27.53	0.56	3539		-123.6105	queue=0.4711;delay=0.0;waiting=99.0191;pressure=0.0;switches=0.0;fairness=24.1203	final;ckpt	367.3333	1486.6023	481.9415	13.0000	913.0000	0.0000	queue=9.4223;delay=1.6799;waiting=9901.9134;pressure=72.3889;switches=1.3111;fairness=603.0072
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	154	229.3	12.1	-37.31	8.65	0.58	4066	-6.05	0.0000			130.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	155	176.1	12.4	-33.98	8.01	0.59	4179	-6.95	0.0000			317.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	102	158.5	100.0	-35.31	10.25	0.58	4163		-30.7669	queue=0.1494;delay=0.0;waiting=6.8833;pressure=0.0;switches=0.0;fairness=23.7342	final;ckpt	118.3333	1336.0875	433.1445	12.0000	1045.0000	0.0000	queue=2.9887;delay=1.7254;waiting=688.328;pressure=42.2639;switches=0.8417;fairness=593.3542
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	156	177.4	12.2	-34.36	8.01	0.57	4159	-6.48	0.0000			315.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	157	328.0	12.2	-54.01	12.40	0.61	3769	-6.38	0.0000			234.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	104	202.0	100.0	-75.98	22.05	0.64	4059		-41.8264	queue=0.3191;delay=0.0;waiting=12.547;pressure=0.0;switches=0.0;fairness=28.9603	final;ckpt	384.3333	1618.6962	524.7642	12.0000	1403.0000	0.0000	queue=6.3814;delay=1.934;waiting=1254.7005;pressure=66.8194;switches=0.8861;fairness=724.0072
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	158	318.1	12.3	-49.90	11.56	0.59	3771	-6.35	0.0000			842.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	159	347.9	12.6	-55.96	13.03	0.64	3677	-6.42	0.0000			997.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	106	489.1	100.0	-347.71	90.84	0.74	2449		-200.8062	queue=1.4555;delay=0.0;waiting=169.5879;pressure=0.0;switches=0.0;fairness=29.7628	final;ckpt	467.6667	2926.6460	948.7965	5.0000	1592.0000	0.0000	queue=29.1105;delay=2.2277;waiting=16958.7863;pressure=254.4111;switches=0.8278;fairness=744.0692
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	160	384.9	12.8	-63.46	14.51	0.61	3618	-5.62	0.0000			183.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	161	318.4	12.6	-64.81	14.92	0.62	3675	-6.50	0.0000			207.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	108	203.8	100.0	-81.39	23.31	0.62	4103		-45.3168	queue=0.3412;delay=0.0;waiting=14.3196;pressure=0.0;switches=0.0;fairness=30.6561	final;ckpt	461.3333	1628.7817	528.0341	9.0000	1158.0000	0.0000	queue=6.8242;delay=1.8693;waiting=1431.9551;pressure=80.8083;switches=0.7139;fairness=766.4014
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	162	373.1	12.5	-58.33	13.42	0.61	3651	-5.26	0.0000			159.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	163	362.2	11.5	-52.87	12.20	0.61	3631	-5.15	0.0000			182.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	110	441.0	100.0	-290.08	78.48	0.69	2524		-217.5328	queue=1.2158;delay=0.0;waiting=189.2543;pressure=0.0;switches=0.0;fairness=27.0627	final;ckpt	513.0000	2635.9205	854.5455	6.0000	1356.0000	0.0000	queue=24.3154;delay=2.0601;waiting=18925.4322;pressure=217.2639;switches=0.8306;fairness=676.5675
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	164	347.5	11.1	-53.77	12.40	0.59	3698	-4.94	0.0000			35.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	165	306.1	10.8	-47.29	11.05	0.60	3748	-4.95	0.0000			276.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	112	407.2	100.0	-220.67	62.08	0.67	2736		-204.7488	queue=0.924;delay=0.0;waiting=174.6086;pressure=0.0;switches=0.0;fairness=29.2161	final;ckpt	357.6667	2425.0320	786.1762	10.0000	1236.0000	2.0000	queue=18.4799;delay=2.0065;waiting=17460.8645;pressure=161.1583;switches=1.1583;fairness=730.4028
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	166	353.8	10.8	-54.34	12.73	0.60	3662	-5.33	0.0000			185.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	167	318.9	10.8	-64.76	16.55	0.61	3789	-5.78	0.0000			214.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	114	616.8	100.0	-412.95	110.42	0.75	2038		-304.2987	queue=1.7278;delay=0.0;waiting=272.4883;pressure=0.0;switches=0.0;fairness=30.0826	final;ckpt	461.3333	3284.0502	1064.6662	9.0000	1485.0000	1.0000	queue=34.5562;delay=2.2582;waiting=27248.8318;pressure=243.2278;switches=0.8778;fairness=752.0644
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	168	141.4	11.1	-28.48	7.91	0.57	4294	-7.95	0.0000			363.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	169	360.0	11.1	-48.98	11.29	0.60	3684	-5.04	0.0000			192.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	116	356.8	100.0	-181.68	53.02	0.66	2968		-179.1120	queue=0.7607;delay=0.0;waiting=150.7111;pressure=0.0;switches=0.0;fairness=27.6401	final;ckpt	502.6667	2194.6084	711.4736	8.0000	1221.0000	0.0000	queue=15.2146;delay=1.9898;waiting=15071.1088;pressure=126.55;switches=1.175;fairness=691.0033
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	170	321.4	10.9	-45.63	10.79	0.61	3882	-5.19	0.0000			98.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	171	211.3	10.3	-36.61	8.79	0.60	4147	-6.30	0.0000			269.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	118	557.0	100.0	-345.36	93.63	0.74	2164		-287.8076	queue=1.4436;delay=0.0;waiting=260.1983;pressure=0.0;switches=0.0;fairness=26.1657	final;ckpt	448.3333	2691.1456	872.4495	8.0000	1319.0000	3.0000	queue=28.8717;delay=2.2067;waiting=26019.8291;pressure=226.1389;switches=1.0;fairness=654.1428
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	172	267.8	10.1	-43.96	10.28	0.61	3863	-5.64	0.0000			251.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	173	310.5	9.7	-43.47	10.09	0.60	3840	-5.25	0.0000			240.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	120	476.5	100.0	-266.78	75.08	0.69	2343		-265.0757	queue=1.1155;delay=0.0;waiting=236.6486;pressure=0.0;switches=0.0;fairness=27.3116	final;ckpt	514.0000	2336.0344	757.3241	5.0000	1306.0000	0.0000	queue=22.3093;delay=2.0763;waiting=23664.8645;pressure=153.725;switches=1.2028;fairness=682.79
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	174	328.5	9.8	-45.31	10.42	0.59	3789	-4.76	0.0000			828.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	175	315.4	9.7	-43.87	10.21	0.58	3780	-5.50	0.0000			222.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	122	440.8	100.0	-270.44	73.67	0.74	2398		-208.3800	queue=1.1315;delay=0.0;waiting=179.3053;pressure=0.0;switches=0.0;fairness=27.9433	final;ckpt	509.0000	2313.5684	750.0407	4.0000	1375.0000	2.0000	queue=22.6291;delay=2.2125;waiting=17930.5254;pressure=168.7639;switches=0.675;fairness=698.5828
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	176	308.0	9.7	-48.31	11.19	0.61	3832	-5.79	0.0000			208.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	177	327.2	10.0	-53.79	12.41	0.61	3793	-5.61	0.0000			66.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	124	231.9	100.0	-99.99	25.62	0.55	3431		-114.5695	queue=0.419;delay=0.0;waiting=92.3715;pressure=0.0;switches=0.0;fairness=21.779	final;ckpt	390.3333	1511.0953	489.8816	4.0000	805.0000	0.0000	queue=8.3803;delay=1.6524;waiting=9237.1496;pressure=110.3944;switches=1.0306;fairness=544.4758
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	178	276.8	10.2	-51.24	11.79	0.61	3880	-5.50	0.0000			256.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	179	304.0	10.1	-46.77	10.76	0.60	3832	-4.52	0.0000			213.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	126	386.4	100.0	-191.12	52.47	0.63	3164		-175.5038	queue=0.7988;delay=0.0;waiting=154.2842;pressure=0.0;switches=0.0;fairness=20.4208	final;ckpt	369.0000	2204.8370	714.7877	8.0000	830.0000	0.0000	queue=15.9767;delay=1.8946;waiting=15428.4157;pressure=252.1583;switches=0.8333;fairness=510.5197
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	180	323.5	10.4	-51.43	11.76	0.60	3766	-4.75	0.0000			59.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	181	295.2	10.1	-47.48	10.97	0.61	3856	-5.40	0.0000			248.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	128	208.2	100.0	-90.13	22.89	0.57	3765		-58.1959	queue=0.3774;delay=0.0;waiting=35.8434;pressure=0.0;switches=0.0;fairness=21.9751	final;ckpt	347.0000	1515.0310	491.1572	12.0000	880.0000	0.0000	queue=7.5483;delay=1.7207;waiting=3584.3381;pressure=96.8167;switches=0.9222;fairness=549.3769
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	182	301.6	9.6	-50.32	11.63	0.62	3864	-5.52	0.0000			95.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	183	282.2	9.8	-48.86	11.32	0.61	3921	-6.05	0.0000			83.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	130	208.9	100.0	-81.71	21.67	0.58	3931		-37.5226	queue=0.3433;delay=0.0;waiting=14.0252;pressure=0.0;switches=0.0;fairness=23.1541	final;ckpt	401.0000	1575.9272	510.8987	9.0000	1082.0000	0.0000	queue=6.8659;delay=1.739;waiting=1402.5218;pressure=101.525;switches=1.075;fairness=578.8531
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	184	289.0	10.1	-48.17	11.09	0.61	3842	-5.06	0.0000			86.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	185	296.1	10.0	-48.69	11.16	0.59	3899	-4.88	0.0000			101.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	132	239.0	100.0	-106.26	27.15	0.56	3393		-124.3784	queue=0.4453;delay=0.0;waiting=101.8919;pressure=0.0;switches=0.0;fairness=22.0413	final;ckpt	389.6667	1541.3215	499.6808	9.0000	782.0000	0.0000	queue=8.9053;delay=1.6882;waiting=10189.1922;pressure=115.4167;switches=0.9889;fairness=551.0314
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	186	274.7	9.7	-44.10	10.12	0.59	3908	-5.59	0.0000			265.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	187	275.0	9.9	-45.43	10.47	0.60	3874	-6.01	0.0000			463.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	134	245.5	100.0	-107.95	27.76	0.57	3369		-127.8406	queue=0.4526;delay=0.0;waiting=106.6684;pressure=0.0;switches=0.0;fairness=20.7196	final;ckpt	156.0000	1566.0539	507.6987	10.0000	1066.0000	0.0000	queue=9.052;delay=1.7034;waiting=10666.8446;pressure=107.1889;switches=1.2444;fairness=517.99
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	188	214.4	10.1	-41.25	9.60	0.60	4044	-6.56	0.0000			628.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	189	203.5	10.5	-36.38	8.39	0.57	4046	-5.96	0.0000			310.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	136	252.1	100.0	-114.72	29.77	0.58	3373		-133.2370	queue=0.4806;delay=0.0;waiting=110.5786;pressure=0.0;switches=0.0;fairness=22.1778	final;ckpt	157.0000	1604.1572	520.0516	9.0000	1088.0000	0.0000	queue=9.6127;delay=1.7408;waiting=11057.8622;pressure=105.3944;switches=1.0778;fairness=554.4439
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	190	272.7	10.4	-41.51	9.49	0.59	3907	-4.83	0.0000			234.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	191	267.5	9.8	-46.46	10.74	0.61	3926	-5.13	0.0000			271.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	138	171.3	100.0	-41.00	11.53	0.55	4131		-28.9356	queue=0.174;delay=0.0;waiting=2.943;pressure=0.0;switches=0.0;fairness=25.8186	final;ckpt	466.3333	1411.2279	457.5041	14.0000	1293.0000	0.0000	queue=3.4795;delay=1.6522;waiting=294.2954;pressure=61.6139;switches=1.4139;fairness=645.4661
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	192	227.1	9.8	-37.72	8.68	0.58	3983	-5.44	0.0000			290.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	193	321.8	9.9	-47.88	10.95	0.61	3803	-5.06	0.0000			454.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	140	157.9	100.0	-27.71	8.86	0.52	4169		-24.1908	queue=0.1185;delay=0.0;waiting=3.95;pressure=0.0;switches=0.0;fairness=20.1224	final;ckpt	232.6667	1336.7724	433.3663	13.0000	1206.0000	0.0000	queue=2.3693;delay=1.5594;waiting=395.0006;pressure=33.8528;switches=1.3611;fairness=503.0589
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	194	241.9	10.1	-44.18	10.28	0.57	3888	-5.90	0.0000			338.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	195	242.6	10.2	-42.29	9.80	0.58	3955	-6.26	0.0000			277.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	142	192.3	100.0	-48.23	15.11	0.57	4055		-27.1091	queue=0.2041;delay=0.0;waiting=4.7471;pressure=0.0;switches=0.0;fairness=22.158	final;ckpt	367.0000	1556.4599	504.5874	13.0000	1312.0000	0.0000	queue=4.0814;delay=1.7004;waiting=474.7079;pressure=61.6778;switches=1.2056;fairness=553.9489
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	196	237.3	10.9	-46.36	11.00	0.59	3963	-6.34	0.0000			257.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	197	284.2	10.7	-61.92	14.43	0.63	3846	-6.67	0.0000			98.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	144	209.5	100.0	-100.01	24.58	0.62	3539		-98.6236	queue=0.4193;delay=0.0;waiting=75.2971;pressure=0.0;switches=0.0;fairness=22.9072	final;ckpt	395.6667	1449.4612	469.9005	10.0000	978.0000	0.0000	queue=8.3859;delay=1.8465;waiting=7529.7107;pressure=88.3806;switches=0.9611;fairness=572.6808
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	198	209.2	11.2	-41.79	9.87	0.60	4116	-7.02	0.0000			1231.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	199	309.1	11.4	-53.92	12.52	0.63	3848	-6.37	0.0000			578.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	146	213.4	100.0	-77.57	23.19	0.60	4037		-35.1760	queue=0.3254;delay=0.0;waiting=8.4011;pressure=0.0;switches=0.0;fairness=26.4495	final;ckpt	373.0000	1673.1214	542.4084	10.0000	1355.0000	0.0000	queue=6.5088;delay=1.8014;waiting=840.1065;pressure=64.1694;switches=1.0444;fairness=661.2369
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	200	325.2	11.5	-59.64	13.83	0.61	3733	-5.65	0.0000			205.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	201	296.8	11.5	-66.28	15.25	0.62	3803	-6.04	0.0000			79.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	148	233.5	100.0	-82.50	24.98	0.62	4093		-37.3348	queue=0.3464;delay=0.0;waiting=13.4499;pressure=0.0;switches=0.0;fairness=23.5384	final;ckpt	305.6667	1826.6210	592.1722	15.0000	1446.0000	0.0000	queue=6.9289;delay=1.8584;waiting=1344.9899;pressure=103.2722;switches=1.2361;fairness=588.4603
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	202	222.2	11.4	-50.94	12.03	0.58	3944	-6.66	0.0000			116.0000						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	203	281.4	11.0	-57.00	13.13	0.63	3864	-5.67	0.0000			245.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	150	194.4	100.0	-57.38	18.13	0.58	4154		-30.6249	queue=0.2416;delay=0.0;waiting=8.9793;pressure=0.0;switches=0.0;fairness=21.404	final;ckpt	381.0000	1571.7024	509.5291	13.0000	1220.0000	0.0000	queue=4.8321;delay=1.7532;waiting=897.9307;pressure=51.8861;switches=1.0861;fairness=535.0992
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	204	220.5	11.4	-42.13	9.79	0.59	3980	-5.79	0.0000			102.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	205	297.7	11.6	-58.35	13.71	0.63	3828	-6.29	0.0000			63.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	152	186.5	100.0	-49.01	15.24	0.56	4127		-26.4146	queue=0.2068;delay=0.0;waiting=4.3686;pressure=0.0;switches=0.0;fairness=21.8392	final;ckpt	308.3333	1532.1719	496.7135	13.0000	1414.0000	0.0000	queue=4.1358;delay=1.6912;waiting=436.8642;pressure=54.75;switches=1.1972;fairness=545.9789
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	206	205.4	12.5	-61.81	14.95	0.60	4039	-8.66	0.0000			306.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	207	292.8	13.0	-52.60	12.15	0.63	3870	-5.59	0.0000			259.6667						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	154	207.6	100.0	-55.61	17.75	0.58	4099		-27.8904	queue=0.235;delay=0.0;waiting=5.6529;pressure=0.0;switches=0.0;fairness=22.0026	final;ckpt	283.6667	1638.2237	531.0945	14.0000	1313.0000	0.0000	queue=4.6998;delay=1.7346;waiting=565.2895;pressure=78.5722;switches=1.2194;fairness=550.0642
+bullhead_3_fairness_heavy_dqn_reward_inference	SIM_TRAIN	208	138.7	13.4	-27.82	6.90	0.54	4292	-8.75	0.0000			706.3333						
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TRAIN	155	184.7	100.0	-41.56	13.23	0.56	4141		-25.3087	queue=0.1766;delay=0.0;waiting=3.568;pressure=0.0;switches=0.0;fairness=21.564	final;ckpt	371.6667	1500.4911	486.4426	12.0000	1284.0000	0.0000	queue=3.5323;delay=1.688;waiting=356.8039;pressure=55.9917;switches=1.2833;fairness=539.1006
+bullhead_3_fairness_heavy_dqn_reward_inference	REAL_TEST	0	143.6	100.0	-14.70	4.71	0.47	4201		-20.0672	queue=0.0654;delay=0.0;waiting=1.7355;pressure=0.0;switches=0.0;fairness=18.2664		119.0000	1241.4339	402.4583	20.0000	921.0000	0.0000	queue=1.3083;delay=1.3973;waiting=173.5467;pressure=34.4111;switches=1.5056;fairness=456.6592

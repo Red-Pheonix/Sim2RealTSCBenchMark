@@ -1,0 +1,1002 @@
+PRLight neighbor topology (radius=600): {0: [3, 4, 5, 6], 1: [2, 3, 4], 2: [1, 3, 4], 3: [0, 1, 2, 4], 4: [0, 1, 2, 3, 6], 5: [0, 6], 6: [0, 4, 5]}
+PRLight (one-shot neighbor-aware prediction): m=2 decision(s) of assumed delay (sim_delay=20, real_delay=20)
+SIM_TRAIN step:0, travel time:608.8767803908579, q_loss:0, rewards:-51.72888997395833, queue:13.374603174603175, delay:0.21881219773065477, throughput:2038, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:0/300, sim_loss:0
+SIM_TRAIN step:1, travel time:312.06657833719777, q_loss:0, rewards:-44.711664496527774, queue:9.844444444444445, delay:0.18809113275437128, throughput:2756, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:1/300, sim_loss:0
+SIM_TRAIN step:2, travel time:276.4665562913907, q_loss:94.309906, rewards:-36.03082139756945, queue:7.067063492063492, delay:0.1736372811453683, throughput:2777, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:2/300, sim_loss:94.309906
+SIM_TRAIN step:3, travel time:162.27823782709507, q_loss:78.45914, rewards:-25.00083550347222, queue:4.218253968253968, delay:0.12404367356073288, throughput:2968, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:3/300, sim_loss:78.45914
+REAL_TEST step:3, travel time:368.31478696741857, q_loss:100, rewards:-32.707508680555556, queue:11.512698412698413, delay:0.20280921572730654, throughput:1629, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:4, travel time:132.51935163744625, q_loss:88.4397, rewards:-9.292777506510417, queue:1.4, delay:0.0843930199032738, throughput:2887, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:4/300, sim_loss:88.4397
+SIM_TRAIN step:5, travel time:82.63124793114862, q_loss:82.15888, rewards:-9.767498101128472, queue:1.501984126984127, delay:0.07856176467168899, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:5/300, sim_loss:82.15888
+SIM_TRAIN step:6, travel time:131.9556438265475, q_loss:76.26898, rewards:-13.717499457465278, queue:2.227777777777778, delay:0.08834320552765378, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:6/300, sim_loss:76.26898
+REAL_TEST step:6, travel time:149.44384835479255, q_loss:100, rewards:-25.760828993055554, queue:4.714285714285714, delay:0.17530270531063988, throughput:2688, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:7, travel time:132.43977498345467, q_loss:73.9341, rewards:-14.442499457465278, queue:2.4531746031746033, delay:0.09939951820979043, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:7/300, sim_loss:73.9341
+SIM_TRAIN step:8, travel time:128.2089947089947, q_loss:67.84693, rewards:-13.547498914930555, queue:2.2424603174603175, delay:0.08815738738529266, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:8/300, sim_loss:67.84693
+SIM_TRAIN step:9, travel time:107.6300463269358, q_loss:59.31497, rewards:-10.406391059027778, queue:1.703968253968254, delay:0.08715797908722409, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:9/300, sim_loss:59.31497
+REAL_TEST step:9, travel time:228.31659226190476, q_loss:100, rewards:-30.635004340277778, queue:9.438095238095238, delay:0.2021665300641741, throughput:2494, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:10, travel time:117.58377483443708, q_loss:54.933205, rewards:-12.612224663628472, queue:1.976984126984127, delay:0.0861600603376116, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:10/300, sim_loss:54.933205
+SIM_TRAIN step:11, travel time:146.07452798940045, q_loss:54.39509, rewards:-11.731111653645833, queue:1.8698412698412699, delay:0.08891507103329613, throughput:2992, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:11/300, sim_loss:54.39509
+SIM_TRAIN step:12, travel time:123.59099933818663, q_loss:47.90188, rewards:-13.773055013020834, queue:2.146031746031746, delay:0.09105779254247272, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:12/300, sim_loss:47.90188
+REAL_TEST step:12, travel time:181.33514190317194, q_loss:100, rewards:-24.139171006944444, queue:5.527380952380953, delay:0.17305024162171379, throughput:2225, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:13, travel time:93.8457974851092, q_loss:45.54646, rewards:-9.039164225260416, queue:1.4603174603174602, delay:0.07894905332535032, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:13/300, sim_loss:45.54646
+SIM_TRAIN step:14, travel time:128.95296455780058, q_loss:44.585167, rewards:-11.131663004557291, queue:1.7107142857142856, delay:0.08997044033474393, throughput:2904, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:14/300, sim_loss:44.585167
+SIM_TRAIN step:15, travel time:113.5640940708844, q_loss:37.277607, rewards:-10.8066650390625, queue:1.7956349206349207, delay:0.08960675436352926, throughput:3009, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:15/300, sim_loss:37.277607
+REAL_TEST step:15, travel time:269.67965895249694, q_loss:100, rewards:-42.639439561631946, queue:9.60952380952381, delay:0.218493167937748, throughput:2231, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:16, travel time:219.71608206485772, q_loss:22.488262, rewards:-10.539720323350695, queue:1.6539682539682539, delay:0.086257813468812, throughput:2868, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:16/300, sim_loss:22.488262
+SIM_TRAIN step:17, travel time:116.48824892419728, q_loss:13.242629, rewards:-8.865552435980902, queue:1.488888888888889, delay:0.0858123052687872, throughput:2913, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:17/300, sim_loss:13.242629
+SIM_TRAIN step:18, travel time:148.30937396488903, q_loss:10.623472, rewards:-9.403334554036459, queue:1.4988095238095238, delay:0.08605732993474083, throughput:2827, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:18/300, sim_loss:10.623472
+REAL_TEST step:18, travel time:219.28173116937162, q_loss:100, rewards:-26.349159071180555, queue:8.94920634920635, delay:0.20139438689701142, throughput:2225, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:19, travel time:117.6332340284674, q_loss:9.689902, rewards:-10.525553385416666, queue:1.6527777777777777, delay:0.08737002781459263, throughput:2898, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:19/300, sim_loss:9.689902
+SIM_TRAIN step:20, travel time:115.78436568400133, q_loss:8.3100815, rewards:-9.190554470486111, queue:1.4424603174603174, delay:0.08279764084588914, throughput:2912, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:20/300, sim_loss:8.3100815
+SIM_TRAIN step:21, travel time:149.04041073203047, q_loss:7.884079, rewards:-9.972222222222221, queue:1.5357142857142858, delay:0.0892303708999876, throughput:2861, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:21/300, sim_loss:7.884079
+REAL_TEST step:21, travel time:225.9582971329279, q_loss:100, rewards:-23.552783203125, queue:9.329761904761904, delay:0.20231059240916419, throughput:2063, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:22, travel time:155.01523178807946, q_loss:7.915262, rewards:-11.47221950954861, queue:1.8067460317460318, delay:0.09232842581612723, throughput:2905, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:22/300, sim_loss:7.915262
+SIM_TRAIN step:23, travel time:99.63124793114862, q_loss:7.554596, rewards:-8.2816650390625, queue:1.2797619047619047, delay:0.07954475766136533, throughput:2910, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:23/300, sim_loss:7.554596
+SIM_TRAIN step:24, travel time:103.2787156570672, q_loss:7.0698304, rewards:-8.811391194661459, queue:1.4123015873015874, delay:0.08240997677757626, throughput:2902, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:24/300, sim_loss:7.0698304
+REAL_TEST step:24, travel time:191.8529741863075, q_loss:100, rewards:-31.828900824652777, queue:9.117063492063492, delay:0.2001768808516245, throughput:2452, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:25, travel time:138.86205755871651, q_loss:6.75711, rewards:-9.086390516493056, queue:1.6115079365079366, delay:0.08780833653041295, throughput:2943, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:25/300, sim_loss:6.75711
+SIM_TRAIN step:26, travel time:163.69139072847682, q_loss:7.1808114, rewards:-11.824164496527779, queue:1.9452380952380952, delay:0.09288847787039621, throughput:2969, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:26/300, sim_loss:7.1808114
+SIM_TRAIN step:27, travel time:84.15458457464416, q_loss:7.2230196, rewards:-7.778612603081597, queue:1.4726190476190477, delay:0.07933077736506386, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:27/300, sim_loss:7.2230196
+REAL_TEST step:27, travel time:160.88842105263157, q_loss:100, rewards:-29.149446614583333, queue:6.7595238095238095, delay:0.18619408985925098, throughput:2677, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:28, travel time:100.71423841059602, q_loss:7.876361, rewards:-8.665831163194444, queue:1.4416666666666667, delay:0.08403787764291915, throughput:2966, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:28/300, sim_loss:7.876361
+SIM_TRAIN step:29, travel time:102.44687189672294, q_loss:8.635363, rewards:-9.547219509548611, queue:1.6948412698412698, delay:0.08855435810391865, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:29/300, sim_loss:8.635363
+SIM_TRAIN step:30, travel time:101.4879099039417, q_loss:9.59891, rewards:-9.373609754774305, queue:1.6349206349206349, delay:0.08810702127123636, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:30/300, sim_loss:9.59891
+REAL_TEST step:30, travel time:241.08003266639446, q_loss:100, rewards:-37.556941731770834, queue:8.334523809523809, delay:0.20662810310484872, throughput:2200, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:31, travel time:133.44981782047034, q_loss:9.955447, rewards:-9.571666802300347, queue:1.7341269841269842, delay:0.08998416718982515, throughput:2941, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:31/300, sim_loss:9.955447
+SIM_TRAIN step:32, travel time:96.44072847682119, q_loss:11.536456, rewards:-8.055000813802083, queue:1.5376984126984128, delay:0.08548326038178944, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:32/300, sim_loss:11.536456
+SIM_TRAIN step:33, travel time:114.62264150943396, q_loss:12.574208, rewards:-10.409720865885417, queue:1.6857142857142857, delay:0.08643562680199032, throughput:3004, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:33/300, sim_loss:12.574208
+REAL_TEST step:33, travel time:149.55059732958537, q_loss:100, rewards:-27.5191650390625, queue:6.4071428571428575, delay:0.18088579934740823, throughput:2672, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:34, travel time:118.5696789142668, q_loss:13.738933, rewards:-9.699443901909722, queue:2.178174603174603, delay:0.09241822863382007, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:34/300, sim_loss:13.738933
+SIM_TRAIN step:35, travel time:114.68288646143661, q_loss:16.190104, rewards:-9.277221001519097, queue:1.5202380952380952, delay:0.08326392400832404, throughput:2901, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:35/300, sim_loss:16.190104
+SIM_TRAIN step:36, travel time:126.15425355842436, q_loss:15.19066, rewards:-11.015277099609374, queue:2.1202380952380953, delay:0.09017244974772136, throughput:2982, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:36/300, sim_loss:15.19066
+REAL_TEST step:36, travel time:221.40444603800645, q_loss:100, rewards:-35.207500542534724, queue:9.660714285714286, delay:0.2138909233940972, throughput:2577, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:37, travel time:136.6612582781457, q_loss:13.828928, rewards:-9.410276963975694, queue:1.8793650793650793, delay:0.0941183847094339, throughput:2955, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:37/300, sim_loss:13.828928
+SIM_TRAIN step:38, travel time:107.02779616148246, q_loss:16.206633, rewards:-11.121668836805556, queue:2.9492063492063494, delay:0.10262548053075397, throughput:2984, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:38/300, sim_loss:16.206633
+SIM_TRAIN step:39, travel time:116.95600396956665, q_loss:18.43905, rewards:-9.634444851345487, queue:1.6714285714285715, delay:0.09783391801137772, throughput:2921, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:39/300, sim_loss:18.43905
+REAL_TEST step:39, travel time:181.18151197604791, q_loss:100, rewards:-32.53778211805555, queue:7.405952380952381, delay:0.1848431420704675, throughput:2446, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:40, travel time:143.89785123966942, q_loss:18.209206, rewards:-8.343056911892361, queue:1.59484126984127, delay:0.08911050463479663, throughput:2945, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:40/300, sim_loss:18.209206
+SIM_TRAIN step:41, travel time:78.39424031777557, q_loss:17.605608, rewards:-8.519721137152779, queue:1.4075396825396826, delay:0.08014530000232514, throughput:3011, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:41/300, sim_loss:17.605608
+SIM_TRAIN step:42, travel time:87.76554232804233, q_loss:18.294142, rewards:-7.9602783203125, queue:1.8686507936507937, delay:0.08653216286311075, throughput:3011, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:42/300, sim_loss:18.294142
+REAL_TEST step:42, travel time:173.65691868758915, q_loss:100, rewards:-29.76667751736111, queue:7.221031746031746, delay:0.1994602506122892, throughput:2666, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:43, travel time:138.22509102946043, q_loss:21.06334, rewards:-8.924721950954861, queue:2.1182539682539683, delay:0.09269073728531126, throughput:2950, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:43/300, sim_loss:21.06334
+SIM_TRAIN step:44, travel time:74.47666335650447, q_loss:23.73669, rewards:-7.371668836805555, queue:1.3186507936507936, delay:0.07617903209867932, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:44/300, sim_loss:23.73669
+SIM_TRAIN step:45, travel time:82.85392514077509, q_loss:24.671408, rewards:-8.520277235243055, queue:1.6130952380952381, delay:0.08308434259323846, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:45/300, sim_loss:24.671408
+REAL_TEST step:45, travel time:188.03282357329354, q_loss:100, rewards:-32.89000651041667, queue:8.362698412698412, delay:0.20644649929470485, throughput:2476, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:46, travel time:94.23741721854304, q_loss:25.82179, rewards:-9.408333333333333, queue:1.90515873015873, delay:0.09163590688554067, throughput:3011, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:46/300, sim_loss:25.82179
+SIM_TRAIN step:47, travel time:90.4205298013245, q_loss:28.518806, rewards:-9.661947292751735, queue:1.8107142857142857, delay:0.08677159869481647, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:47/300, sim_loss:28.518806
+SIM_TRAIN step:48, travel time:88.1390268123138, q_loss:28.962736, rewards:-8.950276692708334, queue:1.6801587301587302, delay:0.08900750175354973, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:48/300, sim_loss:28.962736
+REAL_TEST step:48, travel time:228.67959405581732, q_loss:100, rewards:-34.254155815972226, queue:9.868650793650794, delay:0.2186669001503596, throughput:2473, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:49, travel time:98.19496855345912, q_loss:27.856377, rewards:-9.764999728732638, queue:2.0408730158730157, delay:0.09492255922347781, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:49/300, sim_loss:27.856377
+SIM_TRAIN step:50, travel time:128.95528320635972, q_loss:30.596165, rewards:-10.206111653645833, queue:2.274206349206349, delay:0.09894978356739831, throughput:2973, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:50/300, sim_loss:30.596165
+SIM_TRAIN step:51, travel time:87.26406353408339, q_loss:29.977474, rewards:-8.756388346354166, queue:1.7166666666666666, delay:0.08549534025646391, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:51/300, sim_loss:29.977474
+REAL_TEST step:51, travel time:241.6652378911273, q_loss:100, rewards:-31.946397569444443, queue:10.469444444444445, delay:0.2035132998511905, throughput:2105, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:52, travel time:76.54467240238253, q_loss:25.26611, rewards:-7.856667073567708, queue:1.4603174603174602, delay:0.07731150067041791, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:52/300, sim_loss:25.26611
+SIM_TRAIN step:53, travel time:137.31247931148627, q_loss:25.147125, rewards:-8.068886990017361, queue:1.5011904761904762, delay:0.083115477789016, throughput:2934, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:53/300, sim_loss:25.147125
+SIM_TRAIN step:54, travel time:105.41523178807947, q_loss:25.102345, rewards:-8.644166395399306, queue:1.475, delay:0.0819338117327009, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:54/300, sim_loss:25.102345
+REAL_TEST step:54, travel time:449.2877950778503, q_loss:100, rewards:-57.205560980902774, queue:16.807936507936507, delay:0.2655429900638641, throughput:1631, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:55, travel time:109.4182119205298, q_loss:23.49768, rewards:-9.468052842881944, queue:1.6896825396825397, delay:0.08811153230212984, throughput:2981, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:55/300, sim_loss:23.49768
+SIM_TRAIN step:56, travel time:113.66788079470199, q_loss:24.363886, rewards:-9.408335367838541, queue:1.66984126984127, delay:0.088393311273484, throughput:3011, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:56/300, sim_loss:24.363886
+SIM_TRAIN step:57, travel time:137.55084465054654, q_loss:20.90666, rewards:-8.944443766276041, queue:1.4484126984126984, delay:0.08769275725833954, throughput:2908, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:57/300, sim_loss:20.90666
+REAL_TEST step:57, travel time:254.33006134969324, q_loss:100, rewards:-43.8308349609375, queue:10.261111111111111, delay:0.22537740071614584, throughput:2238, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:58, travel time:151.3236267372601, q_loss:17.529257, rewards:-9.331387668185764, queue:1.6234126984126984, delay:0.09127318367125496, throughput:2898, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:58/300, sim_loss:17.529257
+SIM_TRAIN step:59, travel time:104.76986754966887, q_loss:17.52181, rewards:-8.661387803819444, queue:1.440079365079365, delay:0.08294451274569073, throughput:2945, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:59/300, sim_loss:17.52181
+SIM_TRAIN step:60, travel time:95.6901688182721, q_loss:14.721583, rewards:-9.502501085069444, queue:1.6718253968253969, delay:0.0864842308892144, throughput:2995, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:60/300, sim_loss:14.721583
+REAL_TEST step:60, travel time:167.10589060308556, q_loss:100, rewards:-33.025273980034726, queue:6.356746031746032, delay:0.20059412396143353, throughput:2679, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:61, travel time:97.89381409196163, q_loss:15.09406, rewards:-8.251666259765624, queue:1.6416666666666666, delay:0.08263320922851562, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:61/300, sim_loss:15.09406
+SIM_TRAIN step:62, travel time:111.06915949702184, q_loss:14.572551, rewards:-9.955278862847223, queue:1.6738095238095239, delay:0.08801841130332341, throughput:2977, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:62/300, sim_loss:14.572551
+SIM_TRAIN step:63, travel time:135.99238158330573, q_loss:14.221798, rewards:-9.735279676649306, queue:1.7436507936507937, delay:0.09064200265066964, throughput:2969, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:63/300, sim_loss:14.221798
+REAL_TEST step:63, travel time:181.51751105066305, q_loss:100, rewards:-25.596110026041668, queue:7.192460317460317, delay:0.1917962210518973, throughput:2726, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:64, travel time:118.18052335210335, q_loss:13.194519, rewards:-8.568333604600694, queue:1.4904761904761905, delay:0.08519680689251612, throughput:2903, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:64/300, sim_loss:13.194519
+SIM_TRAIN step:65, travel time:88.37417218543047, q_loss:11.387143, rewards:-8.75333251953125, queue:1.509126984126984, delay:0.08521045503162203, throughput:3011, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:65/300, sim_loss:11.387143
+SIM_TRAIN step:66, travel time:103.78027796161483, q_loss:11.283797, rewards:-9.180556233723959, queue:1.440079365079365, delay:0.08426570589580233, throughput:2918, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:66/300, sim_loss:11.283797
+REAL_TEST step:66, travel time:161.07920792079207, q_loss:100, rewards:-26.079999457465277, queue:7.317460317460317, delay:0.18700694735088044, throughput:2571, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:67, travel time:88.79245283018868, q_loss:11.353813, rewards:-8.361942545572917, queue:1.65515873015873, delay:0.08364444308810765, throughput:2990, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:67/300, sim_loss:11.353813
+SIM_TRAIN step:68, travel time:113.37880794701987, q_loss:10.4997, rewards:-10.486943901909722, queue:1.7777777777777777, delay:0.08999960763113839, throughput:2907, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:68/300, sim_loss:10.4997
+SIM_TRAIN step:69, travel time:126.07516556291391, q_loss:11.257504, rewards:-10.196946207682291, queue:2.299206349206349, delay:0.09712825351291232, throughput:3009, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:69/300, sim_loss:11.257504
+REAL_TEST step:69, travel time:177.16635722242853, q_loss:100, rewards:-27.950843641493055, queue:8.114682539682539, delay:0.19671117389012896, throughput:2460, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:70, travel time:91.67483443708609, q_loss:12.496582, rewards:-8.87833251953125, queue:1.5666666666666667, delay:0.08562912713913691, throughput:2954, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:70/300, sim_loss:12.496582
+SIM_TRAIN step:71, travel time:99.01191264063534, q_loss:12.958169, rewards:-9.476943630642362, queue:1.6448412698412698, delay:0.08624417743985616, throughput:2980, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:71/300, sim_loss:12.958169
+SIM_TRAIN step:72, travel time:94.73726009265387, q_loss:13.511578, rewards:-9.000833468967015, queue:1.709126984126984, delay:0.0879424080016121, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:72/300, sim_loss:13.511578
+REAL_TEST step:72, travel time:232.97673516867002, q_loss:100, rewards:-34.43611924913194, queue:9.030555555555555, delay:0.2043337625170511, throughput:2329, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:73, travel time:137.88977159880835, q_loss:14.510936, rewards:-13.9405517578125, queue:3.3115079365079363, delay:0.11407086811368428, throughput:2977, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:73/300, sim_loss:14.510936
+SIM_TRAIN step:74, travel time:114.43491222259026, q_loss:15.194623, rewards:-10.5375, queue:1.8329365079365079, delay:0.09193622649662078, throughput:2911, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:74/300, sim_loss:15.194623
+SIM_TRAIN step:75, travel time:117.88870486916197, q_loss:15.528695, rewards:-9.145833333333334, queue:1.675, delay:0.0870594509064205, throughput:2896, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:75/300, sim_loss:15.528695
+REAL_TEST step:75, travel time:233.33048433048432, q_loss:100, rewards:-31.17195095486111, queue:9.21468253968254, delay:0.20891571044921875, throughput:2229, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:76, travel time:96.68102020536601, q_loss:16.846807, rewards:-9.876388210720487, queue:1.738888888888889, delay:0.0879698011610243, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:76/300, sim_loss:16.846807
+SIM_TRAIN step:77, travel time:83.18437603442568, q_loss:16.724812, rewards:-8.588612196180556, queue:1.6956349206349206, delay:0.08894805908203125, throughput:3008, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:77/300, sim_loss:16.724812
+SIM_TRAIN step:78, travel time:103.04205298013245, q_loss:16.607096, rewards:-9.770276557074652, queue:1.7365079365079366, delay:0.08838102552625868, throughput:2980, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:78/300, sim_loss:16.607096
+REAL_TEST step:78, travel time:195.59531502423263, q_loss:100, rewards:-33.212223307291666, queue:8.073015873015873, delay:0.19530838254898314, throughput:2267, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:79, travel time:108.97617471872933, q_loss:18.831772, rewards:-9.480555555555556, queue:1.517063492063492, delay:0.08511772155761718, throughput:2916, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:79/300, sim_loss:18.831772
+SIM_TRAIN step:80, travel time:123.89271523178807, q_loss:18.893568, rewards:-8.764443630642361, queue:1.3765873015873016, delay:0.08146915133037265, throughput:2917, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:80/300, sim_loss:18.893568
+SIM_TRAIN step:81, travel time:152.83515392254222, q_loss:20.096497, rewards:-10.516945393880208, queue:1.7186507936507935, delay:0.09093868316165984, throughput:2964, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:81/300, sim_loss:20.096497
+REAL_TEST step:81, travel time:198.44771241830065, q_loss:100, rewards:-27.31028103298611, queue:7.5321428571428575, delay:0.18486738659086682, throughput:2201, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:82, travel time:130.17549668874173, q_loss:18.782812, rewards:-8.44527859157986, queue:1.490873015873016, delay:0.08430039542061941, throughput:2882, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:82/300, sim_loss:18.782812
+SIM_TRAIN step:83, travel time:147.96655629139073, q_loss:20.563927, rewards:-10.043886990017361, queue:2.2765873015873015, delay:0.09457066248333644, throughput:3000, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:83/300, sim_loss:20.563927
+SIM_TRAIN step:84, travel time:123.3956953642384, q_loss:19.55922, rewards:-11.075276692708334, queue:1.7380952380952381, delay:0.09144369458395338, throughput:2911, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:84/300, sim_loss:19.55922
+REAL_TEST step:84, travel time:161.64305177111717, q_loss:100, rewards:-27.37639702690972, queue:5.9829365079365076, delay:0.17791910322885665, throughput:2334, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:85, travel time:151.41092715231787, q_loss:18.80887, rewards:-9.305278862847222, queue:1.9857142857142858, delay:0.09317986624581473, throughput:2954, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:85/300, sim_loss:18.80887
+SIM_TRAIN step:86, travel time:105.45960264900663, q_loss:23.366182, rewards:-7.869443766276041, queue:1.5146825396825396, delay:0.08315072438073537, throughput:2996, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:86/300, sim_loss:23.366182
+SIM_TRAIN step:87, travel time:149.10268300761842, q_loss:20.718294, rewards:-10.897222222222222, queue:2.328968253968254, delay:0.0950045873248388, throughput:2980, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:87/300, sim_loss:20.718294
+REAL_TEST step:87, travel time:197.73835668307458, q_loss:100, rewards:-28.65083279079861, queue:6.053174603174603, delay:0.18535547407846603, throughput:2343, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:88, travel time:180.88509933774836, q_loss:22.952673, rewards:-10.163056098090278, queue:3.163095238095238, delay:0.10447118849981399, throughput:2858, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:88/300, sim_loss:22.952673
+SIM_TRAIN step:89, travel time:110.3416087388282, q_loss:27.994656, rewards:-8.527223036024306, queue:1.6793650793650794, delay:0.08454965258401538, throughput:3011, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:89/300, sim_loss:27.994656
+SIM_TRAIN step:90, travel time:148.96622516556292, q_loss:34.310608, rewards:-8.956944444444444, queue:1.7892857142857144, delay:0.08831080482119606, throughput:2944, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:90/300, sim_loss:34.310608
+REAL_TEST step:90, travel time:186.04858593183465, q_loss:100, rewards:-27.029448784722224, queue:8.491666666666667, delay:0.19465780106801836, throughput:2527, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:91, travel time:141.45779543197617, q_loss:30.945461, rewards:-13.105832248263889, queue:2.4285714285714284, delay:0.0959374261280847, throughput:2921, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:91/300, sim_loss:30.945461
+SIM_TRAIN step:92, travel time:430.4279562769129, q_loss:34.110027, rewards:-17.39249810112847, queue:8.522619047619047, delay:0.14952558487180678, throughput:2133, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:92/300, sim_loss:34.110027
+SIM_TRAIN step:93, travel time:107.08910235177211, q_loss:35.381165, rewards:-8.716941324869792, queue:1.4730158730158731, delay:0.0844816177610367, throughput:2901, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:93/300, sim_loss:35.381165
+REAL_TEST step:93, travel time:167.80353918382087, q_loss:100, rewards:-25.192225477430554, queue:6.898412698412699, delay:0.1841631571451823, throughput:2549, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:94, travel time:96.07452798940047, q_loss:32.28499, rewards:-8.461942545572917, queue:1.4083333333333334, delay:0.07714321802532863, throughput:2898, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:94/300, sim_loss:32.28499
+SIM_TRAIN step:95, travel time:134.47418927862344, q_loss:33.465816, rewards:-8.862501356336805, queue:2.1468253968253967, delay:0.09157490805974082, throughput:3000, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:95/300, sim_loss:33.465816
+SIM_TRAIN step:96, travel time:104.73874172185431, q_loss:34.165096, rewards:-9.465279134114583, queue:1.6646825396825398, delay:0.08784869360545325, throughput:2904, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:96/300, sim_loss:34.165096
+REAL_TEST step:96, travel time:192.34278155706727, q_loss:100, rewards:-31.465266927083334, queue:8.049206349206349, delay:0.19499759976826017, throughput:2418, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:97, travel time:106.70298013245034, q_loss:30.022743, rewards:-9.106944444444444, queue:1.730952380952381, delay:0.08737727573939733, throughput:2956, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:97/300, sim_loss:30.022743
+SIM_TRAIN step:98, travel time:180.05695364238412, q_loss:25.888388, rewards:-13.399168565538194, queue:2.454761904761905, delay:0.10068192254929316, throughput:2952, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:98/300, sim_loss:25.888388
+SIM_TRAIN step:99, travel time:115.29592850049653, q_loss:27.588015, rewards:-8.629442003038195, queue:1.4273809523809524, delay:0.08219593593052456, throughput:2915, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:99/300, sim_loss:27.588015
+REAL_TEST step:99, travel time:216.90832049306624, q_loss:100, rewards:-30.069734700520833, queue:10.020238095238096, delay:0.2045745123000372, throughput:2337, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:100, travel time:106.53907284768212, q_loss:26.248999, rewards:-9.263330078125, queue:1.45, delay:0.08480701749286955, throughput:2920, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:100/300, sim_loss:26.248999
+SIM_TRAIN step:101, travel time:161.29900662251654, q_loss:24.773619, rewards:-15.72472195095486, queue:2.532142857142857, delay:0.10022184583875868, throughput:2895, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:101/300, sim_loss:24.773619
+SIM_TRAIN step:102, travel time:152.30506790327922, q_loss:20.398848, rewards:-14.025832790798612, queue:2.28015873015873, delay:0.09616207546657986, throughput:2886, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:102/300, sim_loss:20.398848
+REAL_TEST step:102, travel time:156.86529759832928, q_loss:100, rewards:-28.177775065104168, queue:6.834126984126984, delay:0.18346727159288195, throughput:2756, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:103, travel time:116.19894074809666, q_loss:18.939022, rewards:-13.533889431423612, queue:2.104761904761905, delay:0.08667274353996156, throughput:2928, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:103/300, sim_loss:18.939022
+SIM_TRAIN step:104, travel time:172.31371900826446, q_loss:18.931494, rewards:-15.055276150173611, queue:2.8099206349206347, delay:0.10985394432431175, throughput:3009, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:104/300, sim_loss:18.931494
+SIM_TRAIN step:105, travel time:173.13066490241482, q_loss:18.894468, rewards:-13.106947157118055, queue:2.223809523809524, delay:0.10256668575226315, throughput:2943, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:105/300, sim_loss:18.894468
+REAL_TEST step:105, travel time:215.65810351341142, q_loss:100, rewards:-27.636949327256943, queue:10.174603174603174, delay:0.20992681109716022, throughput:2419, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:106, travel time:185.47019867549668, q_loss:17.992018, rewards:-15.395556640625, queue:2.75, delay:0.11649452088371155, throughput:2969, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:106/300, sim_loss:17.992018
+SIM_TRAIN step:107, travel time:82.13509933774834, q_loss:19.528515, rewards:-8.737778049045138, queue:1.5456349206349207, delay:0.0827984643360925, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:107/300, sim_loss:19.528515
+SIM_TRAIN step:108, travel time:104.03874172185431, q_loss:20.301748, rewards:-11.819444444444445, queue:1.9845238095238096, delay:0.09153492034427703, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:108/300, sim_loss:20.301748
+REAL_TEST step:108, travel time:190.61308881697232, q_loss:100, rewards:-34.57360026041667, queue:8.588888888888889, delay:0.2051180884951637, throughput:2550, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:109, travel time:95.41768797615104, q_loss:20.822668, rewards:-9.630833604600694, queue:1.7666666666666666, delay:0.08790096101306734, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:109/300, sim_loss:20.822668
+SIM_TRAIN step:110, travel time:109.98411647915287, q_loss:19.786858, rewards:-9.792225477430556, queue:1.7952380952380953, delay:0.09212045215425037, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:110/300, sim_loss:19.786858
+SIM_TRAIN step:111, travel time:104.88973509933774, q_loss:19.819696, rewards:-9.245557318793402, queue:1.7793650793650793, delay:0.0883470202249194, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:111/300, sim_loss:19.819696
+REAL_TEST step:111, travel time:206.44695898161245, q_loss:100, rewards:-31.409724934895834, queue:7.2896825396825395, delay:0.21230681888640873, throughput:2562, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:112, travel time:163.16296787015568, q_loss:21.829887, rewards:-13.84721950954861, queue:2.3694444444444445, delay:0.0968756357828776, throughput:2931, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:112/300, sim_loss:21.829887
+SIM_TRAIN step:113, travel time:116.10092653871608, q_loss:22.484941, rewards:-12.712498643663194, queue:2.175, delay:0.0904244619702536, throughput:2919, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:113/300, sim_loss:22.484941
+SIM_TRAIN step:114, travel time:127.54966887417218, q_loss:22.56189, rewards:-10.508336046006944, queue:1.8726190476190476, delay:0.09233512272910466, throughput:2994, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:114/300, sim_loss:22.56189
+REAL_TEST step:114, travel time:275.22420072845, q_loss:100, rewards:-36.877506510416666, queue:9.398412698412699, delay:0.22615944998604912, throughput:2203, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:115, travel time:131.37049288785974, q_loss:22.215275, rewards:-9.336943901909722, queue:1.7702380952380952, delay:0.09025909181625125, throughput:2993, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:115/300, sim_loss:22.215275
+SIM_TRAIN step:116, travel time:85.54569536423841, q_loss:22.953924, rewards:-8.804167344835069, queue:1.4234126984126985, delay:0.08077345348539806, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:116/300, sim_loss:22.953924
+SIM_TRAIN step:117, travel time:87.06823451473998, q_loss:21.473206, rewards:-9.275275336371529, queue:1.528174603174603, delay:0.08207177056206597, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:117/300, sim_loss:21.473206
+REAL_TEST step:117, travel time:168.86682977979729, q_loss:100, rewards:-24.488886176215278, queue:6.06984126984127, delay:0.18978052290659103, throughput:2676, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:118, travel time:95.68894771674388, q_loss:19.784393, rewards:-9.732779947916667, queue:1.7174603174603174, delay:0.08732808430989583, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:118/300, sim_loss:19.784393
+SIM_TRAIN step:119, travel time:106.52302086783703, q_loss:18.679266, rewards:-10.564722357855903, queue:1.9321428571428572, delay:0.09974896264454675, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:119/300, sim_loss:18.679266
+SIM_TRAIN step:120, travel time:264.54885723749584, q_loss:18.985634, rewards:-13.917222764756945, queue:5.75436507936508, delay:0.13728550502232142, throughput:2491, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:120/300, sim_loss:18.985634
+REAL_TEST step:120, travel time:239.91666666666666, q_loss:100, rewards:-33.724986436631944, queue:10.26626984126984, delay:0.21087096683562748, throughput:2230, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:121, travel time:120.95860927152317, q_loss:18.171864, rewards:-11.168054877387153, queue:1.875, delay:0.08942326136997768, throughput:2938, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:121/300, sim_loss:18.171864
+SIM_TRAIN step:122, travel time:104.93143424975158, q_loss:16.795803, rewards:-9.390001085069445, queue:1.6785714285714286, delay:0.0869805653889974, throughput:2951, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:122/300, sim_loss:16.795803
+SIM_TRAIN step:123, travel time:92.64812975835817, q_loss:15.4180155, rewards:-8.959444851345486, queue:1.3908730158730158, delay:0.08560437399243552, throughput:2924, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:123/300, sim_loss:15.4180155
+REAL_TEST step:123, travel time:202.716323296355, q_loss:100, rewards:-31.3716552734375, queue:8.225793650793651, delay:0.20000640626937624, throughput:2336, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:124, travel time:95.33609271523179, q_loss:16.245895, rewards:-9.147500271267361, queue:1.5607142857142857, delay:0.08392392718602741, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:124/300, sim_loss:16.245895
+SIM_TRAIN step:125, travel time:116.57365110890434, q_loss:15.644767, rewards:-10.416668023003472, queue:2.136111111111111, delay:0.10194376385401166, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:125/300, sim_loss:15.644767
+SIM_TRAIN step:126, travel time:100.62835375952302, q_loss:14.74773, rewards:-9.932501220703125, queue:1.7126984126984126, delay:0.09354038541279142, throughput:3009, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:126/300, sim_loss:14.74773
+REAL_TEST step:126, travel time:311.15871675812576, q_loss:100, rewards:-37.95917426215278, queue:11.617857142857142, delay:0.22556053040519594, throughput:1972, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:127, travel time:88.32969215491559, q_loss:13.721045, rewards:-9.571112738715279, queue:1.6484126984126983, delay:0.09011914692227803, throughput:3011, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:127/300, sim_loss:13.721045
+SIM_TRAIN step:128, travel time:170.03972194637538, q_loss:14.883464, rewards:-12.987779405381945, queue:2.302380952380952, delay:0.09692049783373637, throughput:2916, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:128/300, sim_loss:14.883464
+SIM_TRAIN step:129, travel time:89.74337748344371, q_loss:14.111747, rewards:-8.8625, queue:1.4948412698412699, delay:0.08398143223353795, throughput:3009, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:129/300, sim_loss:14.111747
+REAL_TEST step:129, travel time:156.93558951965065, q_loss:100, rewards:-28.434445529513887, queue:6.459126984126984, delay:0.18679155622209823, throughput:2590, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:130, travel time:116.45099337748344, q_loss:14.024796, rewards:-10.660555691189236, queue:1.7103174603174602, delay:0.09298308236258371, throughput:2917, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:130/300, sim_loss:14.024796
+SIM_TRAIN step:131, travel time:148.89506785832506, q_loss:13.365805, rewards:-9.183331298828126, queue:1.7492063492063492, delay:0.0937783922467913, throughput:2956, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:131/300, sim_loss:13.365805
+SIM_TRAIN step:132, travel time:102.49652432969215, q_loss:15.994064, rewards:-9.418332248263889, queue:1.7587301587301587, delay:0.09099465022011409, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:132/300, sim_loss:15.994064
+REAL_TEST step:132, travel time:282.68218298555377, q_loss:100, rewards:-34.875835503472224, queue:11.034126984126985, delay:0.21531585208953374, throughput:2150, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:133, travel time:109.5246443929871, q_loss:14.913691, rewards:-9.809445529513889, queue:1.859920634920635, delay:0.09249377780490452, throughput:2931, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:133/300, sim_loss:14.913691
+SIM_TRAIN step:134, travel time:131.89344804765057, q_loss:13.982903, rewards:-9.567778862847222, queue:1.8, delay:0.09082466609894284, throughput:2955, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:134/300, sim_loss:13.982903
+SIM_TRAIN step:135, travel time:106.55879430274925, q_loss:14.21468, rewards:-10.045831976996528, queue:1.934920634920635, delay:0.09099908859010726, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:135/300, sim_loss:14.21468
+REAL_TEST step:135, travel time:216.35695538057743, q_loss:100, rewards:-32.18721788194444, queue:9.317460317460318, delay:0.2080105978345114, throughput:2373, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:136, travel time:134.92389146260754, q_loss:13.804122, rewards:-10.031669108072917, queue:2.212698412698413, delay:0.0980771988157242, throughput:2992, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:136/300, sim_loss:13.804122
+SIM_TRAIN step:137, travel time:126.92649006622517, q_loss:16.971508, rewards:-9.440831163194444, queue:1.5876984126984126, delay:0.08605471414233011, throughput:2911, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:137/300, sim_loss:16.971508
+SIM_TRAIN step:138, travel time:132.22822126531963, q_loss:20.579056, rewards:-11.6155517578125, queue:2.943650793650794, delay:0.10807353428431919, throughput:2978, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:138/300, sim_loss:20.579056
+REAL_TEST step:138, travel time:224.49886621315193, q_loss:100, rewards:-36.28527560763889, queue:9.707142857142857, delay:0.22445017496744793, throughput:2462, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:139, travel time:146.34635761589405, q_loss:22.895721, rewards:-9.020555962456598, queue:1.875, delay:0.09183829171316964, throughput:2916, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:139/300, sim_loss:22.895721
+SIM_TRAIN step:140, travel time:87.34491890102615, q_loss:23.01734, rewards:-8.615555826822916, queue:1.5126984126984127, delay:0.08440293811616444, throughput:3011, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:140/300, sim_loss:23.01734
+SIM_TRAIN step:141, travel time:130.5749751737835, q_loss:20.593294, rewards:-10.190555826822917, queue:1.8825396825396825, delay:0.09371581910148499, throughput:2970, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:141/300, sim_loss:20.593294
+REAL_TEST step:141, travel time:229.26307448494453, q_loss:100, rewards:-28.499430338541668, queue:11.0, delay:0.21028093610491072, throughput:2319, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:142, travel time:159.1569536423841, q_loss:23.343414, rewards:-11.99638943142361, queue:2.738888888888889, delay:0.11710377042255704, throughput:2899, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:142/300, sim_loss:23.343414
+SIM_TRAIN step:143, travel time:86.32560450480291, q_loss:27.193949, rewards:-9.140276421440973, queue:1.6615079365079366, delay:0.08515001327272445, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:143/300, sim_loss:27.193949
+SIM_TRAIN step:144, travel time:163.0917522358397, q_loss:26.784933, rewards:-10.060274929470486, queue:2.392857142857143, delay:0.09682094029017857, throughput:2937, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:144/300, sim_loss:26.784933
+REAL_TEST step:144, travel time:566.6630295250321, q_loss:100, rewards:-26.118321397569446, queue:14.772619047619047, delay:0.20772864932105656, throughput:1102, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:145, travel time:116.56996361230566, q_loss:30.802368, rewards:-8.677500406901041, queue:1.3888888888888888, delay:0.08732208373054626, throughput:2900, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:145/300, sim_loss:30.802368
+SIM_TRAIN step:146, travel time:86.04372308711494, q_loss:31.459871, rewards:-8.626388888888888, queue:1.6091269841269842, delay:0.08060056898328993, throughput:3006, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:146/300, sim_loss:31.459871
+SIM_TRAIN step:147, travel time:108.68708609271523, q_loss:28.74376, rewards:-8.374442545572917, queue:1.4071428571428573, delay:0.0861524914938306, throughput:2899, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:147/300, sim_loss:28.74376
+REAL_TEST step:147, travel time:267.211038961039, q_loss:100, rewards:-32.25806477864583, queue:9.376587301587302, delay:0.19946617247566345, throughput:2265, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:148, travel time:202.65419012918184, q_loss:31.752787, rewards:-12.162778049045139, queue:4.2932539682539685, delay:0.12022714766245039, throughput:2696, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:148/300, sim_loss:31.752787
+SIM_TRAIN step:149, travel time:161.48974189278624, q_loss:33.429893, rewards:-9.383888075086805, queue:1.5309523809523808, delay:0.09055678352477059, throughput:2860, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:149/300, sim_loss:33.429893
+SIM_TRAIN step:150, travel time:128.50612785690626, q_loss:30.454563, rewards:-10.390829806857639, queue:2.198015873015873, delay:0.09547169397747705, throughput:2913, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:150/300, sim_loss:30.454563
+REAL_TEST step:150, travel time:214.624145785877, q_loss:100, rewards:-27.54526909722222, queue:8.363492063492064, delay:0.18603897094726562, throughput:2387, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:151, travel time:111.00033123550844, q_loss:29.259323, rewards:-8.91000027126736, queue:1.709126984126984, delay:0.0834442380874876, throughput:2895, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:151/300, sim_loss:29.259323
+SIM_TRAIN step:152, travel time:162.38576158940398, q_loss:26.814425, rewards:-8.919720458984376, queue:1.7857142857142858, delay:0.08906204586937314, throughput:2952, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:152/300, sim_loss:26.814425
+SIM_TRAIN step:153, travel time:218.94074809665673, q_loss:24.226526, rewards:-10.011943901909722, queue:1.9301587301587302, delay:0.09144090924944197, throughput:2837, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:153/300, sim_loss:24.226526
+REAL_TEST step:153, travel time:224.5469097376612, q_loss:100, rewards:-27.792784288194444, queue:8.307142857142857, delay:0.192842283703032, throughput:2015, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:154, travel time:175.65352765816496, q_loss:22.349506, rewards:-9.665278455946181, queue:2.4873015873015873, delay:0.09798039027622768, throughput:2962, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:154/300, sim_loss:22.349506
+SIM_TRAIN step:155, travel time:101.73774834437086, q_loss:26.456514, rewards:-9.480835639105903, queue:1.7686507936507936, delay:0.08879251631479415, throughput:3008, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:155/300, sim_loss:26.456514
+SIM_TRAIN step:156, travel time:166.71698113207546, q_loss:21.846739, rewards:-9.403888617621528, queue:1.5837301587301587, delay:0.09048551529172867, throughput:2870, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:156/300, sim_loss:21.846739
+REAL_TEST step:156, travel time:165.3819316929857, q_loss:100, rewards:-25.189453125, queue:6.623809523809523, delay:0.17637079632471478, throughput:2526, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:157, travel time:86.31556291390729, q_loss:22.134281, rewards:-8.429725477430555, queue:1.7126984126984126, delay:0.08361858791775173, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:157/300, sim_loss:22.134281
+SIM_TRAIN step:158, travel time:107.98311258278146, q_loss:21.8037, rewards:-9.212498643663194, queue:1.5496031746031746, delay:0.08607140798417348, throughput:2898, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:158/300, sim_loss:21.8037
+SIM_TRAIN step:159, travel time:102.10092653871608, q_loss:18.999165, rewards:-7.699721950954861, queue:1.3567460317460318, delay:0.08164972577776228, throughput:2900, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:159/300, sim_loss:18.999165
+REAL_TEST step:159, travel time:159.2299295774648, q_loss:100, rewards:-24.6572265625, queue:7.602777777777778, delay:0.1892887902638269, throughput:2625, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:160, travel time:100.75952302086783, q_loss:19.52567, rewards:-8.940276421440972, queue:1.6333333333333333, delay:0.08600520784892733, throughput:2905, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:160/300, sim_loss:19.52567
+SIM_TRAIN step:161, travel time:89.47582781456954, q_loss:19.671478, rewards:-8.835834418402778, queue:1.6492063492063491, delay:0.0845869639563182, throughput:3011, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:161/300, sim_loss:19.671478
+SIM_TRAIN step:162, travel time:108.99735187024164, q_loss:19.725191, rewards:-9.241111924913195, queue:1.6238095238095238, delay:0.08871163262261285, throughput:2929, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:162/300, sim_loss:19.725191
+REAL_TEST step:162, travel time:309.36370967741937, q_loss:100, rewards:-31.936941189236112, queue:12.525396825396825, delay:0.23396344866071428, throughput:2133, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:163, travel time:175.1221854304636, q_loss:20.668468, rewards:-9.969444444444445, queue:2.2365079365079366, delay:0.10038636828225757, throughput:2871, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:163/300, sim_loss:20.668468
+SIM_TRAIN step:164, travel time:139.43296921549157, q_loss:20.636, rewards:-9.810000949435764, queue:2.342857142857143, delay:0.09533145238482763, throughput:2990, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:164/300, sim_loss:20.636
+SIM_TRAIN step:165, travel time:107.13211920529801, q_loss:22.840542, rewards:-9.866389295789931, queue:1.596825396825397, delay:0.08662518092564174, throughput:2916, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:165/300, sim_loss:22.840542
+REAL_TEST step:165, travel time:239.70803738317758, q_loss:100, rewards:-33.6441650390625, queue:9.246825396825397, delay:0.22138170514787947, throughput:2439, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:166, travel time:103.85600794438928, q_loss:23.605356, rewards:-9.08416748046875, queue:1.6373015873015873, delay:0.08629759531172496, throughput:2908, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:166/300, sim_loss:23.605356
+SIM_TRAIN step:167, travel time:108.42649006622517, q_loss:23.244844, rewards:-9.195000542534721, queue:1.6861111111111111, delay:0.08575521802145337, throughput:2899, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:167/300, sim_loss:23.244844
+SIM_TRAIN step:168, travel time:110.54334877564527, q_loss:22.432537, rewards:-9.766388617621528, queue:1.6134920634920635, delay:0.08329235258556547, throughput:2910, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:168/300, sim_loss:22.432537
+REAL_TEST step:168, travel time:222.51300970873785, q_loss:100, rewards:-32.25361599392361, queue:9.181349206349207, delay:0.2119656032986111, throughput:2303, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:169, travel time:127.3468035773435, q_loss:17.485636, rewards:-9.96277804904514, queue:1.6051587301587302, delay:0.0874130612327939, throughput:2898, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:169/300, sim_loss:17.485636
+SIM_TRAIN step:170, travel time:148.83206359721763, q_loss:17.389246, rewards:-9.215279134114583, queue:1.6738095238095239, delay:0.09188787066747271, throughput:2943, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:170/300, sim_loss:17.389246
+SIM_TRAIN step:171, travel time:150.87549668874172, q_loss:18.702827, rewards:-12.681113009982639, queue:2.1726190476190474, delay:0.10218904283311632, throughput:2991, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:171/300, sim_loss:18.702827
+REAL_TEST step:171, travel time:169.16051984545135, q_loss:100, rewards:-30.518606228298612, queue:7.530555555555556, delay:0.20020601787264386, throughput:2661, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:172, travel time:108.3633355393779, q_loss:19.373974, rewards:-9.538333468967014, queue:1.601984126984127, delay:0.08701232425750248, throughput:2898, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:172/300, sim_loss:19.373974
+SIM_TRAIN step:173, travel time:114.7464415756372, q_loss:20.260489, rewards:-9.991945393880208, queue:1.6547619047619047, delay:0.08891778370690724, throughput:2923, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:173/300, sim_loss:20.260489
+SIM_TRAIN step:174, travel time:130.03043334435992, q_loss:21.471144, rewards:-11.729442003038194, queue:1.907936507936508, delay:0.09705027020166791, throughput:2906, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:174/300, sim_loss:21.471144
+REAL_TEST step:174, travel time:223.54428172942818, q_loss:100, rewards:-39.57111273871528, queue:8.216269841269842, delay:0.21357077946738592, throughput:2682, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:175, travel time:136.95862297252566, q_loss:18.490854, rewards:-9.996666124131945, queue:1.7944444444444445, delay:0.08957334851461743, throughput:2927, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:175/300, sim_loss:18.490854
+SIM_TRAIN step:176, travel time:105.0135761589404, q_loss:20.29658, rewards:-10.029447428385417, queue:1.6142857142857143, delay:0.09018046061197917, throughput:2897, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:176/300, sim_loss:20.29658
+SIM_TRAIN step:177, travel time:109.41073203047367, q_loss:16.950125, rewards:-10.207501220703126, queue:1.6365079365079365, delay:0.09273365565708705, throughput:2917, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:177/300, sim_loss:16.950125
+REAL_TEST step:177, travel time:165.53357712765958, q_loss:100, rewards:-27.401112196180556, queue:8.183730158730159, delay:0.19780340043325273, throughput:2868, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:178, travel time:119.23782709506459, q_loss:16.626883, rewards:-8.656386990017362, queue:1.5226190476190475, delay:0.0894944569421193, throughput:2914, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:178/300, sim_loss:16.626883
+SIM_TRAIN step:179, travel time:121.08771929824562, q_loss:14.91241, rewards:-9.163335503472222, queue:1.5011904761904762, delay:0.08839091951884921, throughput:2900, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:179/300, sim_loss:14.91241
+SIM_TRAIN step:180, travel time:114.69701986754967, q_loss:14.451293, rewards:-9.09194607204861, queue:1.5031746031746032, delay:0.09048805236816407, throughput:2920, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:180/300, sim_loss:14.451293
+REAL_TEST step:180, travel time:267.0472103004292, q_loss:100, rewards:-36.419162326388886, queue:10.468253968253968, delay:0.23100082155257937, throughput:2278, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:181, travel time:102.23800066203243, q_loss:13.573418, rewards:-8.615000406901041, queue:1.4690476190476192, delay:0.08711587209550162, throughput:2908, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:181/300, sim_loss:13.573418
+SIM_TRAIN step:182, travel time:94.05862868499503, q_loss:12.790595, rewards:-9.721111382378472, queue:1.6555555555555554, delay:0.08992751590789311, throughput:2972, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:182/300, sim_loss:12.790595
+SIM_TRAIN step:183, travel time:95.36291390728476, q_loss:13.987446, rewards:-9.324720594618055, queue:1.5972222222222223, delay:0.08772508530389694, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:183/300, sim_loss:13.987446
+REAL_TEST step:183, travel time:235.73779113448535, q_loss:100, rewards:-28.24972873263889, queue:9.633333333333333, delay:0.21296311635819692, throughput:2480, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:184, travel time:128.06591586618086, q_loss:13.118982, rewards:-8.79694552951389, queue:1.4190476190476191, delay:0.08427447969951327, throughput:2956, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:184/300, sim_loss:13.118982
+SIM_TRAIN step:185, travel time:152.92185430463576, q_loss:13.043501, rewards:-12.073334418402778, queue:2.390873015873016, delay:0.10136996072436136, throughput:2972, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:185/300, sim_loss:13.043501
+SIM_TRAIN step:186, travel time:95.56405163853029, q_loss:14.186886, rewards:-9.000833468967015, queue:1.6142857142857143, delay:0.08644214811779204, throughput:3009, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:186/300, sim_loss:14.186886
+REAL_TEST step:186, travel time:286.17872807017545, q_loss:100, rewards:-29.82805718315972, queue:11.71547619047619, delay:0.2300390334356399, throughput:2446, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:187, travel time:134.84271523178808, q_loss:14.060485, rewards:-9.992499457465279, queue:1.7654761904761904, delay:0.08957625495062935, throughput:3009, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:187/300, sim_loss:14.060485
+SIM_TRAIN step:188, travel time:137.96557431314133, q_loss:13.537367, rewards:-8.409724256727431, queue:1.476984126984127, delay:0.08426054091680618, throughput:2921, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:188/300, sim_loss:13.537367
+SIM_TRAIN step:189, travel time:102.28278145695364, q_loss:12.426015, rewards:-9.859722222222222, queue:1.6626984126984128, delay:0.08201332092285156, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:189/300, sim_loss:12.426015
+REAL_TEST step:189, travel time:189.0089655172414, q_loss:100, rewards:-28.83528103298611, queue:6.724206349206349, delay:0.20276783534458706, throughput:2704, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:190, travel time:113.74370860927152, q_loss:10.748262, rewards:-9.556388346354167, queue:1.523015873015873, delay:0.08082151261586991, throughput:2894, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:190/300, sim_loss:10.748262
+SIM_TRAIN step:191, travel time:129.36523178807948, q_loss:10.664447, rewards:-8.67611083984375, queue:1.382936507936508, delay:0.08132605779738654, throughput:2897, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:191/300, sim_loss:10.664447
+SIM_TRAIN step:192, travel time:103.73509933774834, q_loss:10.320589, rewards:-7.864998372395833, queue:1.265079365079365, delay:0.07763235909598214, throughput:2916, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:192/300, sim_loss:10.320589
+REAL_TEST step:192, travel time:338.4057843996494, q_loss:100, rewards:-34.29361165364583, queue:10.935714285714285, delay:0.2185974847702753, throughput:1999, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:193, travel time:142.6383189940437, q_loss:9.8523655, rewards:-9.182499864366319, queue:1.5603174603174603, delay:0.08731651911659846, throughput:2936, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:193/300, sim_loss:9.8523655
+SIM_TRAIN step:194, travel time:112.41986754966888, q_loss:10.110764, rewards:-9.431388346354167, queue:1.5309523809523808, delay:0.08098456973121279, throughput:3011, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:194/300, sim_loss:10.110764
+SIM_TRAIN step:195, travel time:132.81700860357378, q_loss:10.280735, rewards:-9.085834418402778, queue:1.4734126984126985, delay:0.08560527014353919, throughput:2878, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:195/300, sim_loss:10.280735
+REAL_TEST step:195, travel time:215.3332055214724, q_loss:100, rewards:-24.923328993055556, queue:7.576190476190476, delay:0.18864949544270834, throughput:2379, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:196, travel time:129.879099039417, q_loss:9.859702, rewards:-8.997222222222222, queue:1.4218253968253969, delay:0.0847302996923053, throughput:2934, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:196/300, sim_loss:9.859702
+SIM_TRAIN step:197, travel time:122.38723544973546, q_loss:10.049877, rewards:-9.51999986436632, queue:1.5626984126984127, delay:0.08873105730329241, throughput:2858, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:197/300, sim_loss:10.049877
+SIM_TRAIN step:198, travel time:144.46441575637206, q_loss:9.795379, rewards:-11.712779405381944, queue:2.742063492063492, delay:0.10354368421766492, throughput:2969, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:198/300, sim_loss:9.795379
+REAL_TEST step:198, travel time:298.55690737833595, q_loss:100, rewards:-28.584442816840276, queue:12.020238095238096, delay:0.22412007649739582, throughput:2219, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:199, travel time:120.77144749917191, q_loss:11.93329, rewards:-10.232220458984376, queue:2.0984126984126985, delay:0.09338865734281994, throughput:3011, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:199/300, sim_loss:11.93329
+SIM_TRAIN step:200, travel time:129.56045048029148, q_loss:13.161198, rewards:-11.10111083984375, queue:2.057142857142857, delay:0.08908203367203, throughput:3006, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:200/300, sim_loss:13.161198
+SIM_TRAIN step:201, travel time:183.17588605498509, q_loss:14.144992, rewards:-13.726664225260416, queue:2.295238095238095, delay:0.10245575677780878, throughput:2897, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:201/300, sim_loss:14.144992
+REAL_TEST step:201, travel time:245.58823529411765, q_loss:100, rewards:-33.654720052083334, queue:9.725396825396825, delay:0.22317936004154265, throughput:2510, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:202, travel time:131.82257530619, q_loss:14.857301, rewards:-11.259444851345487, queue:2.0801587301587303, delay:0.09210941375248016, throughput:2874, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:202/300, sim_loss:14.857301
+SIM_TRAIN step:203, travel time:107.40946706388613, q_loss:15.119404, rewards:-9.443056911892361, queue:1.7357142857142858, delay:0.08661272563631572, throughput:2898, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:203/300, sim_loss:15.119404
+SIM_TRAIN step:204, travel time:89.82025819265144, q_loss:15.678919, rewards:-9.171389431423611, queue:1.5591269841269841, delay:0.08365467616489955, throughput:3011, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:204/300, sim_loss:15.678919
+REAL_TEST step:204, travel time:250.91179754372908, q_loss:100, rewards:-41.42750379774306, queue:8.629761904761905, delay:0.20805196610708085, throughput:2393, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:205, travel time:161.55345911949686, q_loss:16.247108, rewards:-9.573055691189236, queue:1.928968253968254, delay:0.09195221189468626, throughput:2977, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:205/300, sim_loss:16.247108
+SIM_TRAIN step:206, travel time:137.88245033112582, q_loss:17.183706, rewards:-10.119446478949653, queue:1.7488095238095238, delay:0.09266566321963356, throughput:2972, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:206/300, sim_loss:17.183706
+SIM_TRAIN step:207, travel time:165.4216628022524, q_loss:17.868748, rewards:-12.552224392361111, queue:3.023015873015873, delay:0.10245929294162326, throughput:2930, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:207/300, sim_loss:17.868748
+REAL_TEST step:207, travel time:253.10961538461538, q_loss:100, rewards:-29.710001627604168, queue:10.536111111111111, delay:0.210595945328001, throughput:2301, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:208, travel time:131.0688513737173, q_loss:19.52247, rewards:-9.530556911892361, queue:1.5476190476190477, delay:0.08825015113467262, throughput:2912, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:208/300, sim_loss:19.52247
+SIM_TRAIN step:209, travel time:98.70927152317881, q_loss:20.767054, rewards:-9.573331705729167, queue:1.5765873015873015, delay:0.0873420896984282, throughput:2933, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:209/300, sim_loss:20.767054
+SIM_TRAIN step:210, travel time:84.82175925925925, q_loss:21.608593, rewards:-9.498334418402777, queue:1.6682539682539683, delay:0.08166450621589781, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:210/300, sim_loss:21.608593
+REAL_TEST step:210, travel time:313.6817994222039, q_loss:100, rewards:-31.024443901909724, queue:12.657936507936508, delay:0.223489743187314, throughput:2136, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:211, travel time:131.31005956320317, q_loss:22.107782, rewards:-9.695279947916667, queue:1.6853174603174603, delay:0.08736931937081473, throughput:2988, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:211/300, sim_loss:22.107782
+SIM_TRAIN step:212, travel time:138.09589947089947, q_loss:23.58948, rewards:-8.8308349609375, queue:1.7658730158730158, delay:0.08867527189708892, throughput:2977, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:212/300, sim_loss:23.58948
+SIM_TRAIN step:213, travel time:147.15529801324504, q_loss:20.715004, rewards:-9.391385904947917, queue:1.4912698412698413, delay:0.09463509453667535, throughput:2852, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:213/300, sim_loss:20.715004
+REAL_TEST step:213, travel time:226.4223372781065, q_loss:100, rewards:-35.944721137152776, queue:8.54404761904762, delay:0.21733660016741072, throughput:2474, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:214, travel time:139.2570387545545, q_loss:19.35453, rewards:-11.708053927951388, queue:2.5634920634920637, delay:0.10601070343501984, throughput:2985, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:214/300, sim_loss:19.35453
+SIM_TRAIN step:215, travel time:99.17450331125828, q_loss:21.540688, rewards:-10.147499593098958, queue:1.5611111111111111, delay:0.08338868277413504, throughput:2917, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:215/300, sim_loss:21.540688
+SIM_TRAIN step:216, travel time:87.86966589480649, q_loss:20.666317, rewards:-8.22999742296007, queue:1.4619047619047618, delay:0.08177751208108569, throughput:3011, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:216/300, sim_loss:20.666317
+REAL_TEST step:216, travel time:347.09962640099627, q_loss:100, rewards:-43.19692925347222, queue:13.67142857142857, delay:0.24274476066468254, throughput:2128, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:217, travel time:104.53229546207353, q_loss:18.937092, rewards:-8.251389567057291, queue:1.305952380952381, delay:0.0797880626860119, throughput:2898, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:217/300, sim_loss:18.937092
+SIM_TRAIN step:218, travel time:154.17119205298013, q_loss:18.359812, rewards:-10.716670735677083, queue:2.0944444444444446, delay:0.09471873934306796, throughput:2964, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:218/300, sim_loss:18.359812
+SIM_TRAIN step:219, travel time:82.66148246194574, q_loss:19.826868, rewards:-7.765000406901041, queue:1.3198412698412698, delay:0.0797423832000248, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:219/300, sim_loss:19.826868
+REAL_TEST step:219, travel time:300.0271231658515, q_loss:100, rewards:-26.724430338541666, queue:10.688888888888888, delay:0.1977259075830853, throughput:1969, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:220, travel time:103.70370370370371, q_loss:19.408476, rewards:-7.667220052083334, queue:1.2944444444444445, delay:0.07912720574273004, throughput:2921, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:220/300, sim_loss:19.408476
+SIM_TRAIN step:221, travel time:161.14503311258278, q_loss:21.099018, rewards:-10.416665310329861, queue:1.8484126984126985, delay:0.09068483019632007, throughput:2857, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:221/300, sim_loss:21.099018
+SIM_TRAIN step:222, travel time:146.89930440543228, q_loss:16.866846, rewards:-8.031110297309027, queue:1.2984126984126985, delay:0.08106220184810578, throughput:2903, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:222/300, sim_loss:16.866846
+REAL_TEST step:222, travel time:159.70003428179638, q_loss:100, rewards:-26.48139105902778, queue:5.2555555555555555, delay:0.17084624275328622, throughput:2709, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:223, travel time:148.43131413439258, q_loss:15.961369, rewards:-9.117776150173611, queue:1.6166666666666667, delay:0.0857392810639881, throughput:2872, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:223/300, sim_loss:15.961369
+SIM_TRAIN step:224, travel time:96.48807947019867, q_loss:15.299309, rewards:-8.327499050564237, queue:1.3603174603174604, delay:0.0823508065844339, throughput:2916, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:224/300, sim_loss:15.299309
+SIM_TRAIN step:225, travel time:137.0705298013245, q_loss:14.304418, rewards:-10.264165581597222, queue:1.6416666666666666, delay:0.09101653326125372, throughput:2857, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:225/300, sim_loss:14.304418
+REAL_TEST step:225, travel time:141.6936631650288, q_loss:100, rewards:-28.14111328125, queue:6.392460317460317, delay:0.18259301564050098, throughput:2747, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:226, travel time:154.76714143756212, q_loss:13.719553, rewards:-8.765833875868056, queue:1.675, delay:0.08641974434020028, throughput:2913, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:226/300, sim_loss:13.719553
+SIM_TRAIN step:227, travel time:121.45776747267307, q_loss:12.925139, rewards:-9.565835232204861, queue:1.6416666666666666, delay:0.09089250715952071, throughput:2901, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:227/300, sim_loss:12.925139
+SIM_TRAIN step:228, travel time:98.72218543046358, q_loss:13.37557, rewards:-10.504444715711806, queue:1.7325396825396826, delay:0.09075565035381014, throughput:3012, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:228/300, sim_loss:13.37557
+REAL_TEST step:228, travel time:292.8398865018241, q_loss:100, rewards:-41.1058349609375, queue:10.733333333333333, delay:0.22340853252108134, throughput:2225, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:229, travel time:110.90436796823296, q_loss:11.038478, rewards:-9.796388753255208, queue:1.5984126984126985, delay:0.08516625903901599, throughput:2910, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:229/300, sim_loss:11.038478
+SIM_TRAIN step:230, travel time:111.74238410596027, q_loss:11.200414, rewards:-9.819999186197917, queue:1.58015873015873, delay:0.08490426199776786, throughput:2902, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:230/300, sim_loss:11.200414
+SIM_TRAIN step:231, travel time:98.67350314257361, q_loss:11.603873, rewards:-8.589167616102431, queue:1.4642857142857142, delay:0.0807113284156436, throughput:2916, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:231/300, sim_loss:11.603873
+REAL_TEST step:231, travel time:233.2354377397977, q_loss:100, rewards:-36.634160698784726, queue:10.224603174603175, delay:0.22657218812003968, throughput:2595, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:232, travel time:146.65684976836533, q_loss:11.370098, rewards:-9.574719916449652, queue:1.6178571428571429, delay:0.08647850278824094, throughput:2952, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:232/300, sim_loss:11.370098
+SIM_TRAIN step:233, travel time:186.79602649006623, q_loss:11.227871, rewards:-13.302501085069444, queue:2.2345238095238096, delay:0.10280779883975075, throughput:2962, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:233/300, sim_loss:11.227871
+SIM_TRAIN step:234, travel time:176.82787156570672, q_loss:11.910067, rewards:-10.953336588541667, queue:2.0297619047619047, delay:0.09892302013578869, throughput:2953, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:234/300, sim_loss:11.910067
+REAL_TEST step:234, travel time:241.75683890577508, q_loss:100, rewards:-34.61859809027778, queue:10.943650793650793, delay:0.22631329733227926, throughput:2463, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:235, travel time:147.1830519695465, q_loss:13.221754, rewards:-11.868332248263888, queue:2.0587301587301585, delay:0.09969761560833644, throughput:2883, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:235/300, sim_loss:13.221754
+SIM_TRAIN step:236, travel time:189.7294701986755, q_loss:12.981915, rewards:-13.300554741753473, queue:3.4329365079365077, delay:0.111077638656374, throughput:2852, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:236/300, sim_loss:12.981915
+SIM_TRAIN step:237, travel time:117.2074098577572, q_loss:14.292421, rewards:-9.981389024522569, queue:1.7912698412698413, delay:0.09298830183725508, throughput:2918, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:237/300, sim_loss:14.292421
+REAL_TEST step:237, travel time:366.2812645281264, q_loss:100, rewards:-30.296384006076387, queue:12.114682539682539, delay:0.21923079717726934, throughput:1791, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:238, travel time:126.81601588352085, q_loss:14.02253, rewards:-9.343890380859374, queue:1.5186507936507936, delay:0.08824508303687686, throughput:2916, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:238/300, sim_loss:14.02253
+SIM_TRAIN step:239, travel time:156.41556291390728, q_loss:15.252883, rewards:-11.009445529513888, queue:2.951984126984127, delay:0.10157811603848896, throughput:2932, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:239/300, sim_loss:15.252883
+SIM_TRAIN step:240, travel time:172.77947019867548, q_loss:17.222826, rewards:-10.201666259765625, queue:3.134920634920635, delay:0.10206184992714534, throughput:2843, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:240/300, sim_loss:17.222826
+REAL_TEST step:240, travel time:658.3363329583802, q_loss:100, rewards:-40.89416775173611, queue:19.173015873015874, delay:0.30009247310577875, throughput:1196, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:241, travel time:111.57133399536578, q_loss:18.48369, rewards:-9.18638916015625, queue:1.6984126984126984, delay:0.08632723490397136, throughput:2879, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:241/300, sim_loss:18.48369
+SIM_TRAIN step:242, travel time:177.35771012574455, q_loss:20.210306, rewards:-14.623333062065972, queue:2.4472222222222224, delay:0.108117917984251, throughput:2786, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:242/300, sim_loss:20.210306
+SIM_TRAIN step:243, travel time:155.76026490066226, q_loss:23.623232, rewards:-10.901944308810764, queue:2.58968253968254, delay:0.09821087065197173, throughput:2777, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:243/300, sim_loss:23.623232
+REAL_TEST step:243, travel time:228.60682435052345, q_loss:100, rewards:-33.48750271267361, queue:10.922619047619047, delay:0.21997469947451637, throughput:2296, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:244, travel time:192.55316329910568, q_loss:26.798891, rewards:-14.7125, queue:5.573015873015873, delay:0.13222891186910962, throughput:2662, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:244/300, sim_loss:26.798891
+SIM_TRAIN step:245, travel time:111.14030443414957, q_loss:29.992424, rewards:-10.183055284288194, queue:1.9047619047619047, delay:0.08901703849671379, throughput:2897, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:245/300, sim_loss:29.992424
+SIM_TRAIN step:246, travel time:148.90228552500827, q_loss:31.604597, rewards:-10.516392686631944, queue:2.1107142857142858, delay:0.0965830787779793, throughput:2922, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:246/300, sim_loss:31.604597
+REAL_TEST step:246, travel time:259.78426698450534, q_loss:100, rewards:-39.609722222222224, queue:11.040873015873016, delay:0.2371426779126364, throughput:2281, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:247, travel time:161.81456953642385, q_loss:34.603077, rewards:-10.358609347873264, queue:3.0023809523809524, delay:0.09859651232522632, throughput:2882, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:247/300, sim_loss:34.603077
+SIM_TRAIN step:248, travel time:154.52103345478636, q_loss:35.127728, rewards:-15.878055826822917, queue:2.6031746031746033, delay:0.11105758424789186, throughput:2896, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:248/300, sim_loss:35.127728
+SIM_TRAIN step:249, travel time:264.89400463729714, q_loss:38.698444, rewards:-13.64055447048611, queue:6.012698412698413, delay:0.13569701664031497, throughput:2498, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:249/300, sim_loss:38.698444
+REAL_TEST step:249, travel time:297.8980791846335, q_loss:100, rewards:-40.05832790798611, queue:12.273809523809524, delay:0.24179142543247767, throughput:2247, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:250, travel time:128.25869493209672, q_loss:42.414627, rewards:-9.298891194661458, queue:1.6023809523809525, delay:0.08342630295526414, throughput:2856, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:250/300, sim_loss:42.414627
+SIM_TRAIN step:251, travel time:102.5294701986755, q_loss:40.425426, rewards:-9.489444986979167, queue:1.9277777777777778, delay:0.08553118024553572, throughput:3010, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:251/300, sim_loss:40.425426
+SIM_TRAIN step:252, travel time:126.21946375372393, q_loss:40.78548, rewards:-9.74972195095486, queue:1.767063492063492, delay:0.09399853660946801, throughput:2885, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:252/300, sim_loss:40.78548
+REAL_TEST step:252, travel time:248.17799113737075, q_loss:100, rewards:-34.71861436631944, queue:10.571428571428571, delay:0.23427579365079365, throughput:2399, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:253, travel time:469.6452467704538, q_loss:39.363194, rewards:-22.683052571614585, queue:9.534126984126985, delay:0.16922647385370163, throughput:2130, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:253/300, sim_loss:39.363194
+SIM_TRAIN step:254, travel time:154.39721946375371, q_loss:41.619946, rewards:-11.121388075086806, queue:2.1126984126984127, delay:0.09621671040852865, throughput:2943, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:254/300, sim_loss:41.619946
+SIM_TRAIN step:255, travel time:122.2046357615894, q_loss:40.78546, rewards:-10.733612060546875, queue:1.8706349206349207, delay:0.10002752637106274, throughput:2984, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:255/300, sim_loss:40.78546
+REAL_TEST step:255, travel time:499.3879482071713, q_loss:100, rewards:-35.73500162760417, queue:18.73968253968254, delay:0.25251513284350197, throughput:1454, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:256, travel time:140.5182119205298, q_loss:41.113197, rewards:-13.919721137152777, queue:3.3535714285714286, delay:0.11091897147042411, throughput:2951, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:256/300, sim_loss:41.113197
+SIM_TRAIN step:257, travel time:151.61953642384105, q_loss:39.45715, rewards:-12.023055013020834, queue:1.9674603174603174, delay:0.1018692379906064, throughput:2956, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:257/300, sim_loss:39.45715
+SIM_TRAIN step:258, travel time:194.12413108242305, q_loss:39.510952, rewards:-9.802223714192708, queue:1.7142857142857142, delay:0.08873415750170512, throughput:2562, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:258/300, sim_loss:39.510952
+REAL_TEST step:258, travel time:600.1781140861467, q_loss:100, rewards:-40.86888020833333, queue:17.70952380952381, delay:0.26540905180431545, throughput:1234, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:259, travel time:125.98344370860927, q_loss:36.640873, rewards:-14.0433349609375, queue:2.108730158730159, delay:0.10075547960069445, throughput:2906, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:259/300, sim_loss:36.640873
+SIM_TRAIN step:260, travel time:117.08374710360808, q_loss:33.571968, rewards:-10.581110297309028, queue:1.7123015873015872, delay:0.08813747224353609, throughput:3009, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:260/300, sim_loss:33.571968
+SIM_TRAIN step:261, travel time:153.95993377483444, q_loss:32.12509, rewards:-13.72055392795139, queue:2.1142857142857143, delay:0.09483569917224702, throughput:2830, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:261/300, sim_loss:32.12509
+REAL_TEST step:261, travel time:237.11746522411127, q_loss:100, rewards:-32.78862033420139, queue:8.624603174603175, delay:0.20506509447854662, throughput:2337, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:262, travel time:144.9960264900662, q_loss:31.242573, rewards:-11.10166761610243, queue:2.230952380952381, delay:0.09880269368489583, throughput:2894, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:262/300, sim_loss:31.242573
+SIM_TRAIN step:263, travel time:130.9953642384106, q_loss:29.972021, rewards:-11.311111111111112, queue:3.033333333333333, delay:0.10423840719556052, throughput:2972, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:263/300, sim_loss:29.972021
+SIM_TRAIN step:264, travel time:151.25041404438556, q_loss:31.960718, rewards:-10.86499972873264, queue:1.8896825396825396, delay:0.09894524831620474, throughput:2883, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:264/300, sim_loss:31.960718
+REAL_TEST step:264, travel time:154.41690442225394, q_loss:100, rewards:-25.999994574652778, queue:6.316666666666666, delay:0.1758866204155816, throughput:2693, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:265, travel time:125.23336643495531, q_loss:34.89878, rewards:-11.054999457465279, queue:2.734920634920635, delay:0.09851418147011409, throughput:2910, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:265/300, sim_loss:34.89878
+SIM_TRAIN step:266, travel time:119.83046357615893, q_loss:37.75484, rewards:-11.276112196180556, queue:1.9599206349206348, delay:0.09722975473555308, throughput:2905, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:266/300, sim_loss:37.75484
+SIM_TRAIN step:267, travel time:160.33399536577292, q_loss:35.57215, rewards:-11.142498779296876, queue:1.8884920634920634, delay:0.09659491644965278, throughput:2908, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:267/300, sim_loss:35.57215
+REAL_TEST step:267, travel time:292.0205761316872, q_loss:100, rewards:-28.98944769965278, queue:10.666269841269841, delay:0.20390026758587548, throughput:1882, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:268, travel time:109.2158940397351, q_loss:36.510025, rewards:-10.222775607638889, queue:1.6503968253968253, delay:0.09029690575978112, throughput:2966, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:268/300, sim_loss:36.510025
+SIM_TRAIN step:269, travel time:168.81475355607012, q_loss:35.793476, rewards:-12.553337944878471, queue:2.607142857142857, delay:0.10937254163953992, throughput:2926, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:269/300, sim_loss:35.793476
+SIM_TRAIN step:270, travel time:113.9692256783587, q_loss:35.369484, rewards:-11.55472140842014, queue:1.8305555555555555, delay:0.0921691410125248, throughput:2910, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:270/300, sim_loss:35.369484
+REAL_TEST step:270, travel time:207.63094762095162, q_loss:100, rewards:-25.586664496527778, queue:5.9718253968253965, delay:0.17464588710239956, throughput:2292, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:271, travel time:165.56915949702184, q_loss:32.345295, rewards:-11.904722764756944, queue:2.4896825396825397, delay:0.09796546451629154, throughput:2890, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:271/300, sim_loss:32.345295
+SIM_TRAIN step:272, travel time:219.04968532626697, q_loss:34.983624, rewards:-11.58222384982639, queue:2.912301587301587, delay:0.10933799138144841, throughput:2798, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:272/300, sim_loss:34.983624
+SIM_TRAIN step:273, travel time:164.0254882489242, q_loss:36.322285, rewards:-13.322776963975695, queue:3.020238095238095, delay:0.10865253266834077, throughput:2963, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:273/300, sim_loss:36.322285
+REAL_TEST step:273, travel time:423.8272377285852, q_loss:100, rewards:-28.701936848958333, queue:13.525, delay:0.24264133998325893, throughput:1772, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:274, travel time:164.63278145695364, q_loss:42.00134, rewards:-14.151390245225695, queue:3.1373015873015873, delay:0.11265886094835069, throughput:2965, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:274/300, sim_loss:42.00134
+SIM_TRAIN step:275, travel time:127.02548824892419, q_loss:49.306267, rewards:-12.535557725694444, queue:2.6448412698412698, delay:0.10669635591052827, throughput:2954, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:275/300, sim_loss:49.306267
+SIM_TRAIN step:276, travel time:123.17968232958306, q_loss:49.845985, rewards:-10.787775336371528, queue:2.141269841269841, delay:0.09525587899344308, throughput:2912, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:276/300, sim_loss:49.845985
+REAL_TEST step:276, travel time:285.474855729596, q_loss:100, rewards:-34.02973090277778, queue:9.665079365079364, delay:0.21871054513113838, throughput:2054, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:277, travel time:117.67108314011261, q_loss:48.997723, rewards:-9.781666395399306, queue:1.765079365079365, delay:0.09099302746000744, throughput:2917, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:277/300, sim_loss:48.997723
+SIM_TRAIN step:278, travel time:166.8198078834051, q_loss:43.535107, rewards:-10.936666531032985, queue:1.9115079365079366, delay:0.09454176161024305, throughput:2899, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:278/300, sim_loss:43.535107
+SIM_TRAIN step:279, travel time:167.70274743462429, q_loss:41.562412, rewards:-10.202501085069445, queue:2.1587301587301586, delay:0.09665929400731647, throughput:2903, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:279/300, sim_loss:41.562412
+REAL_TEST step:279, travel time:239.55016313213704, q_loss:100, rewards:-29.01194390190972, queue:8.685714285714285, delay:0.2040522984095982, throughput:2174, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:280, travel time:128.28878597419782, q_loss:40.6867, rewards:-12.083056640625, queue:2.33968253968254, delay:0.10380052839006697, throughput:2966, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:280/300, sim_loss:40.6867
+SIM_TRAIN step:281, travel time:135.3765718067505, q_loss:37.936947, rewards:-9.024722629123264, queue:1.4488095238095238, delay:0.0877733139764695, throughput:2900, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:281/300, sim_loss:37.936947
+SIM_TRAIN step:282, travel time:196.61490066225164, q_loss:37.255333, rewards:-16.385833062065974, queue:2.9543650793650795, delay:0.107061525375124, throughput:2878, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:282/300, sim_loss:37.255333
+REAL_TEST step:282, travel time:349.60758947822336, q_loss:100, rewards:-39.443888346354164, queue:11.556349206349207, delay:0.24463893345424106, throughput:1939, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:283, travel time:439.582119205298, q_loss:41.334896, rewards:-19.558055284288194, queue:8.999206349206348, delay:0.15476875910683283, throughput:2128, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:283/300, sim_loss:41.334896
+SIM_TRAIN step:284, travel time:180.69622766379882, q_loss:39.968266, rewards:-9.954168023003472, queue:2.630952380952381, delay:0.09725854056222098, throughput:3003, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:284/300, sim_loss:39.968266
+SIM_TRAIN step:285, travel time:121.92149718449818, q_loss:43.049404, rewards:-9.605832926432292, queue:1.7412698412698413, delay:0.09486978924463665, throughput:2962, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:285/300, sim_loss:43.049404
+REAL_TEST step:285, travel time:174.20308022922637, q_loss:100, rewards:-29.653043619791667, queue:8.098809523809523, delay:0.20023739527142237, throughput:2609, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:286, travel time:182.24710552431358, q_loss:42.77513, rewards:-14.055278862847222, queue:2.158333333333333, delay:0.10582326253255209, throughput:2891, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:286/300, sim_loss:42.77513
+SIM_TRAIN step:287, travel time:121.1452680344143, q_loss:39.892887, rewards:-9.977776421440971, queue:1.6630952380952382, delay:0.09129477606879341, throughput:2899, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:287/300, sim_loss:39.892887
+SIM_TRAIN step:288, travel time:123.78814961933135, q_loss:37.65038, rewards:-10.14083251953125, queue:1.5726190476190476, delay:0.08942295256115142, throughput:2897, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:288/300, sim_loss:37.65038
+REAL_TEST step:288, travel time:272.934968847352, q_loss:100, rewards:-34.26055772569445, queue:9.212301587301587, delay:0.20496940007285466, throughput:2330, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:289, travel time:186.60019874130506, q_loss:32.746964, rewards:-10.929441324869792, queue:3.125793650793651, delay:0.10066329108344184, throughput:2934, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:289/300, sim_loss:32.746964
+SIM_TRAIN step:290, travel time:108.10526315789474, q_loss:34.299076, rewards:-9.471111382378472, queue:1.5456349206349207, delay:0.0860763670906188, throughput:2916, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:290/300, sim_loss:34.299076
+SIM_TRAIN step:291, travel time:128.24048957988754, q_loss:35.15748, rewards:-9.324166531032986, queue:1.8603174603174604, delay:0.09225187755766369, throughput:2935, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:291/300, sim_loss:35.15748
+REAL_TEST step:291, travel time:490.79959616355376, q_loss:100, rewards:-40.26749945746528, queue:13.344047619047618, delay:0.25902540418836806, throughput:1524, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:292, travel time:127.75074478649454, q_loss:37.220615, rewards:-12.668332248263889, queue:2.0714285714285716, delay:0.09802610609266493, throughput:2903, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:292/300, sim_loss:37.220615
+SIM_TRAIN step:293, travel time:110.40132450331126, q_loss:32.662323, rewards:-10.088608805338541, queue:1.5972222222222223, delay:0.08489911518399677, throughput:2897, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:293/300, sim_loss:32.662323
+SIM_TRAIN step:294, travel time:182.82588546838795, q_loss:29.969519, rewards:-11.488608127170139, queue:2.269047619047619, delay:0.10216621520027282, throughput:2880, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:294/300, sim_loss:29.969519
+REAL_TEST step:294, travel time:352.67048597392335, q_loss:100, rewards:-33.6080322265625, queue:13.079761904761904, delay:0.25039440336681545, throughput:2169, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:295, travel time:109.82814569536424, q_loss:28.07921, rewards:-9.637499321831598, queue:1.534920634920635, delay:0.08688921247209822, throughput:2897, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:295/300, sim_loss:28.07921
+SIM_TRAIN step:296, travel time:145.4837748344371, q_loss:27.008106, rewards:-13.5352783203125, queue:2.128968253968254, delay:0.09969312879774306, throughput:2901, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:296/300, sim_loss:27.008106
+SIM_TRAIN step:297, travel time:165.1089764822789, q_loss:25.052229, rewards:-9.950831434461806, queue:2.2674603174603174, delay:0.09512904939197359, throughput:2941, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:297/300, sim_loss:25.052229
+REAL_TEST step:297, travel time:205.1690484489369, q_loss:100, rewards:-30.858881293402778, queue:9.131349206349206, delay:0.2088995555090526, throughput:2644, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+SIM_TRAIN step:298, travel time:90.54054948692486, q_loss:26.457397, rewards:-7.815835232204861, queue:1.4547619047619047, delay:0.08335970924014137, throughput:3004, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:298/300, sim_loss:26.457397
+SIM_TRAIN step:299, travel time:185.99768135144086, q_loss:24.582727, rewards:-9.5522216796875, queue:2.65515873015873, delay:0.09749415564158606, throughput:2866, violation_rate:0.0000, forceoff_rate:0.0000, violations:0, force_offs:0
+sim step:3600/3600
+episode:299/300, sim_loss:24.582727
+Total time taken: 73214.70920324326
