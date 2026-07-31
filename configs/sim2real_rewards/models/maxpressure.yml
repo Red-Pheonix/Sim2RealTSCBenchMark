@@ -1,0 +1,17 @@
+# Non-RL baseline for the reward gap. Max-pressure optimizes a fixed hand-written
+# surrogate (pressure), not the setting's hidden R_real, so no reward-gap method
+# applies; R_real is simply SCORED on its rollout. Run it as
+# `--reward_model direct_transfer`, which forces sim_episodes=0.
+includes:
+  - configs/sim2real_rewards/base.yml
+
+model:
+  name: maxpressure
+  t_min: 10
+
+trainer:
+  episodes: 0
+  learning_start: 0
+  buffer_size: 0
+  update_model_rate: 0
+  update_target_rate: 0

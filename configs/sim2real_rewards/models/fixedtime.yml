@@ -1,0 +1,19 @@
+# Non-RL baseline for the reward gap. Fixed-time optimizes nothing, so no reward-gap
+# method applies (they all re-optimize a policy against an inferred / scalarized R);
+# the hidden objective R_real is simply SCORED on its rollout. Run it as
+# `--reward_model direct_transfer`, which forces sim_episodes=0.
+# The resulting number is the reward-agnostic reference: what each setting's hidden
+# objective pays a controller that never saw a reward at all.
+includes:
+  - configs/sim2real_rewards/base.yml
+
+model:
+  name: fixedtime
+  t_fixed: 30
+
+trainer:
+  episodes: 0
+  learning_start: 0
+  buffer_size: 0
+  update_model_rate: 0
+  update_target_rate: 0

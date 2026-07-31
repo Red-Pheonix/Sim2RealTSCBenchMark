@@ -1,0 +1,13 @@
+# Non-RL baseline for the transition (dynamics) gap. Nothing to ground and nothing to
+# retrain, so none of the grounding methods (dr / da / gat / ugat / jlgat) apply: the
+# only meaningful run is the zero-adaptation one, `-gt direct_transfer`.
+model:
+  name: maxpressure
+  t_min: 10
+
+trainer:
+  episodes: 0
+  learning_start: 0
+  buffer_size: 0
+  update_model_rate: 0
+  update_target_rate: 0

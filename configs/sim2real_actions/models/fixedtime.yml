@@ -1,0 +1,22 @@
+# Non-RL baseline for the action gap (execution delay + phase-transition validity).
+# Every mitigation on this axis (delayed_q / oblivious_q / prlight) needs a Q-function,
+# so only the zero-adaptation run applies: `--act_model direct_transfer`.
+#
+# Fixed-time reads the EXECUTED phase and its dwell time off the world, so under
+# execution delay it simply rides out the stretched phase -- nothing about the plan
+# changes. Under a phase-transition table it keeps requesting the next phase in cycle
+# order; illegal requests are dropped to a hold by the controller and it is pushed out
+# at force-off, which is exactly the unshielded gap being measured.
+includes:
+  - configs/sim2real_actions/base.yml
+
+model:
+  name: fixedtime
+  t_fixed: 30
+
+trainer:
+  episodes: 0
+  learning_start: 0
+  buffer_size: 0
+  update_model_rate: 0
+  update_target_rate: 0

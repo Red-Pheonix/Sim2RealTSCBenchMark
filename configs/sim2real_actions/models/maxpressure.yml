@@ -1,0 +1,16 @@
+# Non-RL baseline for the action gap (execution delay + phase-transition validity).
+# Every mitigation on this axis (delayed_q / oblivious_q / prlight) needs a Q-function,
+# so only the zero-adaptation run applies: `--act_model direct_transfer`.
+includes:
+  - configs/sim2real_actions/base.yml
+
+model:
+  name: maxpressure
+  t_min: 10
+
+trainer:
+  episodes: 0
+  learning_start: 0
+  buffer_size: 0
+  update_model_rate: 0
+  update_target_rate: 0

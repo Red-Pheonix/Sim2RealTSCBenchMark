@@ -231,6 +231,14 @@ class BaseObservationTrainer(BaseTrainer):
         self.world_sim.observation_transforms = self.sim_observation_transforms
 
     def reset_episode(self, env, world, agents):
+        # TODO(post-submission): ROOT CAUSE -- this is the ONLY trainer in the repo that
+        # resets agents BEFORE env.reset(). world_sumo.reset() rebuilds its Intersection
+        # objects, so on the sumo real side every agent then holds a dead copy and
+        # get_phase() reports a frozen phase all episode (measured: 1 distinct phase
+        # reported vs 8 actually visited, dqn and presslight). Fix = move env.reset()
+        # above this loop, as tsc/rewards/actions/transitions already do. NOT done here
+        # because it changes submitted observation-gap numbers. Several workarounds in
+        # agent/base.py exist only because of this. See notes/nonrl_cleanup_todo.md.
         for agent in agents:
             agent.reset()
             if env is self.env_sim:
@@ -488,11 +496,28 @@ class BaseObservationTrainer(BaseTrainer):
             self.load_agents(self.agents_sim, self.model_dir)
             self.load_agents(self.agents_real, self.model_dir)
 
+    # TODO(post-submission): reaching into agent internals by string attribute name is
+    # a smell -- adding a third non-RL controller means editing this trainer. Replace
+    # with a `decision_generators()` method on the agent. Fixable independently of the
+    # reset-order bug; see notes/nonrl_cleanup_todo.md.
+    # Every generator an agent FEEDS ITS DECISION from has to be rebuilt on the
+    # detection-zone subscription, not just `ob_generator`: max-pressure reads its
+    # counts off a second (in+out) generator, and missing it would leave that agent
+    # on full-visibility counts for the whole dz* family.
+    DECISION_GENERATORS = ("ob_generator", "pressure_generator")
+
     def configure_observation_generator(self, agent, observation_config):
         detection_zone_config = observation_config["detection_zone"]
 
-        ob_generator = getattr(agent, "ob_generator", None)
-        if not isinstance(ob_generator, LaneVehicleGenerator):
+        generators = {
+            name: getattr(agent, name, None) for name in self.DECISION_GENERATORS
+        }
+        generators = {
+            name: gen
+            for name, gen in generators.items()
+            if isinstance(gen, LaneVehicleGenerator)
+        }
+        if not generators:
             return
 
         detection_zone_m = 0.0
@@ -501,15 +526,20 @@ class BaseObservationTrainer(BaseTrainer):
 
         agent.world.detection_zone_m = detection_zone_m
 
-        agent.ob_generator = LaneVehicleGenerator(
-            agent.world,
-            ob_generator.I,
-            ob_generator.fns,
-            in_only=ob_generator.in_only,
-            average=ob_generator.average,
-            negative=ob_generator.negative,
-            detection_zone_m=detection_zone_m,
-        )
+        for name, generator in generators.items():
+            setattr(
+                agent,
+                name,
+                LaneVehicleGenerator(
+                    agent.world,
+                    generator.I,
+                    generator.fns,
+                    in_only=generator.in_only,
+                    average=generator.average,
+                    negative=generator.negative,
+                    detection_zone_m=detection_zone_m,
+                ),
+            )
 
     def create_metrics(self):
         if Registry.mapping["command_mapping"]["setting"].param["delay_type"] == "apx":

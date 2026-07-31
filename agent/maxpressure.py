@@ -1,12 +1,16 @@
-from . import BaseAgent
+import logging
+
+from .base import NonRLAgent
 from common.registry import Registry
 from generator import LaneVehicleGenerator, IntersectionPhaseGenerator, IntersectionVehicleGenerator
 import numpy as np
 import gym
 
+LOG = logging.getLogger(__name__)
+
 
 @Registry.register_model('maxpressure')
-class MaxPressureAgent(BaseAgent):
+class MaxPressureAgent(NonRLAgent):
     '''
     MaxPressureAgent using Max-Pressure method to control traffic light.
     '''
@@ -17,15 +21,28 @@ class MaxPressureAgent(BaseAgent):
         self.model = None
 
         # get generator for each MaxPressure
-        inter_id = self.world.intersection_ids[self.rank]
-        self.id = inter_id
-        self.inter_obj = self.world.id2intersection[inter_id]
-        self.ob_generator = self.ob_generator = LaneVehicleGenerator(self.world, self.inter_obj, ['lane_count'], in_only=True, average=None)
-        self.phase_generator = IntersectionPhaseGenerator(world, self.inter_obj, ["phase"],
+        self.id = self.world.intersection_ids[self.rank]
+        self._build_generators()
+        self.action_space = gym.spaces.Discrete(len(self.inter_obj.phases))
+
+        # the minimum duration of time of one phase
+        self.t_min = Registry.mapping['model_mapping']['setting'].param['t_min']
+
+    def _build_generators(self):
+        '''
+        _build_generators
+        (Re)build every generator this agent reads. Shared by __init__ and reset so
+        the two cannot drift apart.
+
+        :param: None
+        :return: None
+        '''
+        self.ob_generator = LaneVehicleGenerator(self.world, self.inter_obj, ['lane_count'], in_only=True, average=None)
+        self.phase_generator = IntersectionPhaseGenerator(self.world, self.inter_obj, ["phase"],
                                                           targets=["cur_phase"], negative=False)
         self.reward_generator = LaneVehicleGenerator(self.world, self.inter_obj, ["lane_count"],
                                                      in_only=True, average='all', negative=True)
-        
+
         self.queue = LaneVehicleGenerator(self.world, self.inter_obj,
                                                      ["lane_waiting_count"], in_only=True,
                                                      negative=False)
@@ -33,10 +50,52 @@ class MaxPressureAgent(BaseAgent):
         self.delay = LaneVehicleGenerator(self.world, self.inter_obj,
                                                      ["lane_delay"], in_only=True,
                                                      negative=False)
-        self.action_space = gym.spaces.Discrete(len(self.inter_obj.phases))
-        
-        # the minimum duration of time of one phase
-        self.t_min = Registry.mapping['model_mapping']['setting'].param['t_min']
+
+        # Pressure needs BOTH the incoming and the outgoing lane counts, so it cannot
+        # reuse the in-only ob_generator. Reading it through a generator (rather than
+        # world.get_info, as this agent used to) is what puts max-pressure's sensing
+        # behind the observation-gap pipeline: noise and sensor dropout are applied in
+        # LaneVehicleGenerator.generate, the detection zone by swapping the subscribed
+        # fn. Straight off the world none of those fire, and every observation setting
+        # silently reports the no-gap number.
+        self.pressure_generator = LaneVehicleGenerator(self.world, self.inter_obj, ["lane_count"],
+                                                       in_only=False, average=None,
+                                                       negative=False)
+        # TODO(post-submission): measured 0 uncovered lanes on all 10 networks x both
+        # engines, so this fallback is speculative generality -- delete it and assert
+        # coverage instead. See notes/nonrl_cleanup_todo.md.
+        # Lanes the phase lanelinks reference that this intersection's in/out roads do
+        # not cover: no detector of ours reads them, so the setting defines no value
+        # for them and they keep the raw engine count.
+        covered = {lane for group in self.pressure_generator.lanes for lane in group}
+        self._uncovered_lanes = sorted(
+            {lane for links in self.inter_obj.phase_available_lanelinks
+             for pair in links for lane in pair} - covered
+        )
+        if self._uncovered_lanes:
+            LOG.warning(
+                "maxpressure %s: %d lanelink lane(s) outside the in/out roads keep "
+                "untransformed counts (e.g. %s)",
+                self.id, len(self._uncovered_lanes), self._uncovered_lanes[:3],
+            )
+
+    def observed_lane_count(self):
+        '''
+        observed_lane_count
+        Lane id -> vehicle count AS THE CONTROLLER SEES IT, i.e. after the
+        observation-gap transforms. This is the only count max-pressure decides on.
+
+        :param: None
+        :return: dict of lane id -> count
+        '''
+        values = self.pressure_generator.generate()
+        lanes = [lane for group in self.pressure_generator.lanes for lane in group]
+        observed = dict(zip(lanes, values))
+        if self._uncovered_lanes:
+            raw = self.world.get_info("lane_count")
+            for lane in self._uncovered_lanes:
+                observed[lane] = raw[lane]
+        return observed
 
     def reset(self):
         '''
@@ -47,21 +106,7 @@ class MaxPressureAgent(BaseAgent):
         :return: None
         '''
         # get generator for each MaxPressure
-        inter_id = self.world.intersection_ids[self.rank]
-        self.inter_obj = self.world.id2intersection[inter_id]
-        self.ob_generator = self.ob_generator = LaneVehicleGenerator(self.world, self.inter_obj, ['lane_count'], in_only=True, average=None)
-        self.phase_generator = IntersectionPhaseGenerator(self.world, self.inter_obj, ["phase"],
-                                                          targets=["cur_phase"], negative=False)
-        self.reward_generator = LaneVehicleGenerator(self.world, self.inter_obj, ["lane_count"],
-                                                     in_only=True, average='all', negative=True)
-        
-        self.queue = LaneVehicleGenerator(self.world, self.inter_obj,
-                                                     ["lane_waiting_count"], in_only=True,
-                                                     negative=False)
-
-        self.delay = LaneVehicleGenerator(self.world, self.inter_obj,
-                                                     ["lane_delay"], in_only=True,
-                                                     negative=False)
+        self._build_generators()
 
     def __repr__(self):
         return 'Maxpressure Agent has no Network model'
@@ -92,21 +137,10 @@ class MaxPressureAgent(BaseAgent):
         rewards = np.squeeze(np.array(rewards)) * 12
         return rewards
     
-    def get_phase(self):
-        '''
-        get_phase
-        Get current phase of intersection(s) from environment.
-
-        :param: None
-        :return phase: current phase generated by phase_generator
-        '''
-        phase = []
-        phase.append(self.phase_generator.generate())
-        # phase = np.concatenate(phase, dtype=np.int8)
-        phase = (np.concatenate(phase)).astype(np.int8)
-        return phase
+    # get_phase() is inherited from NonRLAgent: it reads the LIVE intersection
+    # instead of phase_generator, whose cached Intersection goes stale on sumo.
     
-    def get_action(self, ob, phase, test=True):
+    def get_action(self, ob, phase, test=True, valid_mask_fn=None):
         '''
         get_action
         Generate action.
@@ -114,16 +148,28 @@ class MaxPressureAgent(BaseAgent):
         :param ob: observation, the shape is (1,12)
         :param phase: current phase, the shape is (1,)
         :param test: boolean, decide whether is test process
+        :param valid_mask_fn: optional `phase -> bool mask` from the phase-transition
+            transform. Under the gap (enforce) baseline this is all-permissive except
+            at force-off, where holding past max-green is illegal; honoring it keeps
+            this baseline's controller semantics identical to the RL agents'.
         :return action: action that has the highest score
         '''
-        # get lane pressure
-        lvc = self.world.get_info("lane_count")
+        # get lane pressure, as the (possibly degraded) detectors report it
+        lvc = self.observed_lane_count()
+        cur = self.inter_obj.current_phase
+        n_phases = len(self.inter_obj.phases)
+        mask = self._valid_mask(valid_mask_fn, phase, n_phases)
+
+        # Hold out the minimum green, unless the controller has masked holding out.
         if self.inter_obj.current_phase_time < self.t_min:
-            return self.inter_obj.current_phase
+            if mask is None or mask[cur]:
+                return cur
 
         max_pressure = None
         action = -1
-        for phase_id in range(len(self.inter_obj.phases)):
+        for phase_id in range(n_phases):
+            if mask is not None and not mask[phase_id]:
+                continue
             pressure = sum([lvc[start] - lvc[end] for start, end in self.inter_obj.phase_available_lanelinks[phase_id]])
             if max_pressure is None or pressure > max_pressure:
                 action = phase_id
