@@ -208,6 +208,17 @@ def main():
         for s in settings:
             cells = []
             for a in AGENTS:
+                # Fixed-time is OPEN-LOOP: a real cabinet executes its plan on its
+                # own clock, so actuation delay does not apply to it. Piping it
+                # through the decision-time delay queue measures an interface
+                # artifact instead (it re-proposes switches off the stale observed
+                # phase while its command is in flight, and the queue's chained
+                # releases compound the backlog) -- the resulting travel times are
+                # huge and non-monotonic in delta. Excluded from the table; its
+                # delay-gap row is its plain direct-transfer number by construction.
+                if axis == "action_delay" and a == "fixedtime":
+                    cells.append(f"{'n/a (open-loop)':>22}")
+                    continue
                 gaps = []
                 for n in nets:
                     tt = real_test_tt(root / f"cityflow_{a}" / n / prefix.format(s=s)
