@@ -14,14 +14,39 @@ collected/
 CityFlow
 data/raw_data/tempe/tempe_flow_tuned_v3.json
 data/raw_data/pb*
-logs
+# Maintainer-only tools: they read ~/exp_results (not shipped). Reviewers reproduce
+# the paper numbers from logs/ via make_figures.ipynb (scripts/gap_tables.py).
+# The checkpoint-replay verifier (verify_top5.py) is parked in notes/parked/ until
+# the public weights release.
+scripts/build_top5_pretrained.py
+scripts/sync_exp_logs.py
+
+# logs/ holds the canonical DTL/BRF mirrors the notebooks read -- meant to be
+# committed (raw-logs-in-repo plan). Scratch subtrees stay ignored.
+logs/nonrl_runs/
+logs/verify_top5/
+logs/nonrl_full_run.log
 *.csv
 *.txt
 ACTION.log
 rename.sh
 convert.sh
 raw_results
-# pretrained
-pretrained/sim2real_transitions
+# pretrained/ ships tsc policies, shared latent-encoder caches, and PT-gap
+# transition weights. top5/ stays out of the repo entirely (weights are 470M
+# compressed; the tree ships whole with the public code release). Every cell's
+# selected episodes + expected numbers are committed as ONE consolidated file
+# instead: tables/top5_selection.json. Only the README rides along in-repo.
+pretrained/top5/**
+!pretrained/top5/README.md
 sbi-logs
 figures
+CLAUDE.md
+notes/*
+slurm/logs
+logs_old
+*.sbatch
+slurm
+
+Figures
+tables/top5_selection.json
