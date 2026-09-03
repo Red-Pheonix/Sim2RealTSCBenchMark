@@ -1,4 +1,4 @@
-# Sim2Real Traffic Signal Control Benchmark
+# Sim2Signal: Sim2Real Traffic Signal Control Benchmark
 
 A benchmark for the sim-to-real gap in reinforcement-learning traffic signal
 control. Policies are trained in CityFlow (sim) and evaluated in SUMO (real)
